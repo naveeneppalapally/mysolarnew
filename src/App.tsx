@@ -19,9 +19,11 @@ import Footer from './components/Footer';
 import FloatingCTA from './components/FloatingCTA';
 import ScrollToTop from './components/ScrollToTop';
 import CustomCursor from './components/CustomCursor';
+import { SolarTimeProvider, useSolarTime } from './context/SolarTimeContext';
 
-function App() {
+function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
+  const { currentPhase } = useSolarTime();
 
   useEffect(() => {
     // Let the Loader component control its own timing
@@ -76,7 +78,7 @@ function App() {
 
       {/* Main Site */}
       <div
-        className={`transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+        className={`transition-opacity duration-700 phase-${currentPhase} ${isLoading ? 'opacity-0' : 'opacity-100'}`}
         style={{ visibility: isLoading ? 'hidden' : 'visible' }}
       >
         {/* Noise texture overlay */}
@@ -103,6 +105,14 @@ function App() {
         <ScrollToTop />
       </div>
     </>
+  );
+}
+
+function App() {
+  return (
+    <SolarTimeProvider>
+      <AppContent />
+    </SolarTimeProvider>
   );
 }
 

@@ -1,4 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react';
+import { useSolarTime } from '../context/SolarTimeContext';
+import type { SolarPhase } from '../context/SolarTimeContext';
 
 /* ============================================
    PARTICLE INTERFACE
@@ -11,7 +13,6 @@ interface Particle {
   vx: number;
   vy: number;
   radius: number;
-  color: string;
   alpha: number;
   phaseX: number;
   phaseY: number;
@@ -21,20 +22,31 @@ interface Particle {
   amplitudeY: number;
 }
 
+interface Ray {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  length: number;
+  color: string;
+  alpha: number;
+  life: number;
+  maxLife: number;
+}
+
 /* ============================================
-   CONSTANTS
+   CONSTANTS & COLORS
    ============================================ */
 const PARTICLE_COUNT = 120;
 const CONNECTION_DISTANCE = 120;
 const MOUSE_RADIUS = 150;
 
-const COLORS = [
-  '#F59E0B', // gold
-  '#FBBF24', // amber
-  '#F97316', // warm orange
-  '#FCD34D', // light gold
-  '#D97706', // deep amber
-];
+const PHASE_COLORS: Record<SolarPhase, string[]> = {
+  dawn: ['#F97316', '#FB923C', '#FDBA74', '#FFEDD5', '#EA580C'],
+  noon: ['#F59E0B', '#FBBF24', '#FCD34D', '#FEF3C7', '#D97706'],
+  dusk: ['#EC4899', '#F43F5E', '#8B5CF6', '#D946EF', '#A21CAF'],
+  night: ['#3B82F6', '#6366F1', '#06B6D4', '#E2E8F0', '#1E1B4B']
+};
 
 /* ============================================
    CREATE PARTICLE
@@ -50,7 +62,6 @@ function createParticle(w: number, h: number): Particle {
     vx: (Math.random() - 0.5) * 0.3,
     vy: (Math.random() - 0.5) * 0.3,
     radius: 1 + Math.random() * 3,
-    color: COLORS[Math.floor(Math.random() * COLORS.length)],
     alpha: 0.2 + Math.random() * 0.5,
     phaseX: Math.random() * Math.PI * 2,
     phaseY: Math.random() * Math.PI * 2,
@@ -67,9 +78,20 @@ function createParticle(w: number, h: number): Particle {
 export default function SunParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
+  const raysRef = useRef<Ray[]>([]);
+  const cachedCardsRef = useRef<{ left: number; top: number; right: number; bottom: number }[]>([]);
+  
   const animFrameRef = useRef<number>(0);
   const mouseRef = useRef({ x: -1000, y: -1000 });
   const timeRef = useRef(0);
+
+  const { currentPhase } = useSolarTime();
+  const currentPhaseRef = useRef(currentPhase);
+
+  // Sync phase to ref for access in canvas animation frame loop
+  useEffect(() => {
+    currentPhaseRef.current = currentPhase;
+  }, [currentPhase]);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     const canvas = canvasRef.current;
@@ -113,30 +135,68 @@ export default function SunParticles() {
     particlesRef.current = Array.from({ length: PARTICLE_COUNT }, () =>
       createParticle(w, h)
     );
+    raysRef.current = [];
+    cachedCardsRef.current = [];
 
     /* ---------- DRAW LOOP ---------- */
     const animate = () => {
       timeRef.current += 1;
+      const t = timeRef.current;
+      const phase = currentPhaseRef.current;
+      const colors = PHASE_COLORS[phase];
+
       ctx.clearRect(0, 0, w, h);
 
-      // Subtle radial ambient glow
+      // Subtle radial ambient glow based on active phase color
       const glowX = w * 0.8;
       const glowY = h * 0.12;
       const glowGrad = ctx.createRadialGradient(glowX, glowY, 0, glowX, glowY, w * 0.45);
-      glowGrad.addColorStop(0, 'rgba(245,158,11,0.06)');
-      glowGrad.addColorStop(0.4, 'rgba(251,191,36,0.02)');
-      glowGrad.addColorStop(1, 'rgba(245,158,11,0)');
+      const primaryColor = colors[0];
+      
+      glowGrad.addColorStop(0, hexToRgba(primaryColor, 0.07));
+      glowGrad.addColorStop(0.4, hexToRgba(primaryColor, 0.02));
+      glowGrad.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = glowGrad;
       ctx.fillRect(0, 0, w, h);
+
+      // Update & cache active solar cards coordinates
+      if (t % 60 === 0) {
+        const cards = document.querySelectorAll('.solar-panel-card');
+        const canvasRect = canvas.getBoundingClientRect();
+        cachedCardsRef.current = Array.from(cards).map((card) => {
+          const rect = card.getBoundingClientRect();
+          return {
+            left: rect.left - canvasRect.left,
+            top: rect.top - canvasRect.top,
+            right: rect.right - canvasRect.left,
+            bottom: rect.bottom - canvasRect.top,
+          };
+        });
+      }
+
+      // Spawn rays descending from top
+      if (raysRef.current.length < 15 && Math.random() < 0.06) {
+        raysRef.current.push({
+          x: Math.random() * w,
+          y: -10,
+          vx: (Math.random() - 0.5) * 1.2,
+          vy: 1.8 + Math.random() * 2.2,
+          length: 12 + Math.random() * 18,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 0.15 + Math.random() * 0.4,
+          life: 180,
+          maxLife: 180,
+        });
+      }
 
       const particles = particlesRef.current;
       const mx = mouseRef.current.x;
       const my = mouseRef.current.y;
-      const t = timeRef.current;
 
       // Update & draw particles
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
+        const pColor = colors[i % colors.length];
 
         // Sine wave floating
         p.phaseX += p.speedX;
@@ -170,23 +230,65 @@ export default function SunParticles() {
         const alphaPulse = p.alpha + Math.sin(t * 0.02 + i) * 0.1;
         const finalAlpha = Math.max(0.08, Math.min(0.7, alphaPulse));
 
-        // Draw particle glow (draw filled circle with transparency)
+        // Draw particle glow (translucent aura)
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius * 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = hexToRgba(p.color, finalAlpha * 0.3);
+        ctx.fillStyle = hexToRgba(pColor, finalAlpha * 0.3);
         ctx.fill();
 
         // Solid core
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = hexToRgba(p.color, finalAlpha);
+        ctx.fillStyle = hexToRgba(pColor, finalAlpha);
         ctx.fill();
 
         // Bright center dot
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius * 0.4, 0, Math.PI * 2);
-        ctx.fillStyle = hexToRgba('#FEF3C7', finalAlpha * 0.9);
+        ctx.fillStyle = hexToRgba('#FFFFFF', finalAlpha * 0.9);
         ctx.fill();
+      }
+
+      // Update & draw ray casting lines with card reflection/bouncing
+      const rays = raysRef.current;
+      const cachedCards = cachedCardsRef.current;
+      for (let r = rays.length - 1; r >= 0; r--) {
+        const ray = rays[r];
+        ray.x += ray.vx;
+        ray.y += ray.vy;
+        ray.life--;
+
+        // Check bounce against cards top borders
+        for (let c = 0; c < cachedCards.length; c++) {
+          const card = cachedCards[c];
+          if (
+            ray.x >= card.left &&
+            ray.x <= card.right &&
+            ray.y >= card.top &&
+            ray.y <= card.bottom
+          ) {
+            // Reflect off solar panels!
+            ray.vy = -ray.vy * 0.65; // bounce back up
+            ray.vx += (Math.random() - 0.5) * 1.5; // scatter
+            ray.y = card.top - 2; // offset from card
+            ray.color = '#FFFFFF'; // spark flash
+            break;
+          }
+        }
+
+        // Ray cleanup
+        if (ray.life <= 0 || ray.y > h + 20 || ray.x < -20 || ray.x > w + 20) {
+          rays.splice(r, 1);
+          continue;
+        }
+
+        const rayLifeRatio = ray.life / ray.maxLife;
+        ctx.beginPath();
+        ctx.moveTo(ray.x - ray.vx * 2, ray.y - ray.vy * 2);
+        ctx.lineTo(ray.x, ray.y);
+        ctx.strokeStyle = hexToRgba(ray.color, ray.alpha * rayLifeRatio);
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
       }
 
       // Draw connections
@@ -201,7 +303,7 @@ export default function SunParticles() {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = hexToRgba('#F59E0B', opacity);
+            ctx.strokeStyle = hexToRgba(colors[0], opacity);
             ctx.stroke();
           }
         }
@@ -245,6 +347,8 @@ export default function SunParticles() {
    HEX TO RGBA HELPER
    ============================================ */
 function hexToRgba(hex: string, alpha: number): string {
+  // Catch already formatted rgb/rgba strings
+  if (hex.startsWith('rgb')) return hex;
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);

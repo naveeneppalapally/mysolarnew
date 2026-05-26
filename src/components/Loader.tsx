@@ -31,165 +31,78 @@ function generateSparkles(count: number): Sparkle[] {
 /* ============================================
    ANIMATED SUN SVG
    ============================================ */
-function AnimatedSun() {
+function AnimatedSun({ progress }: { progress: number }) {
+  const moonOffset = -130 + (progress / 100) * 130;
+  const showDiamond = progress >= 97;
+
   return (
-    <div className="relative w-40 h-40 sm:w-48 sm:h-48">
-      {/* Outermost glow pulse */}
+    <div className="relative w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center">
+      {/* Outer Corona Glow */}
       <motion.div
-        className="absolute inset-0 rounded-full"
+        className="absolute rounded-full"
         style={{
-          background: 'radial-gradient(circle, rgba(245,158,11,0.15) 0%, rgba(251,191,36,0.05) 50%, transparent 70%)',
+          width: '120px',
+          height: '120px',
+          background: 'radial-gradient(circle, rgba(245,158,11,0.8) 0%, rgba(251,191,36,0.3) 50%, transparent 70%)',
+          filter: 'blur(10px)',
         }}
         animate={{
-          scale: [1, 1.3, 1],
-          opacity: [0.4, 0.8, 0.4],
+          scale: [1, 1.08, 1],
+          opacity: [0.6, 0.9, 0.6],
         }}
         transition={{
-          duration: 2.5,
+          duration: 3,
           repeat: Infinity,
           ease: 'easeInOut',
         }}
       />
 
-      {/* Concentric ring 1 — outermost */}
-      <motion.div
-        className="absolute rounded-full"
+      {/* Sun Core */}
+      <div 
+        className="absolute w-[100px] h-[100px] rounded-full border border-amber-400 bg-amber-500/10"
         style={{
-          inset: '-8px',
-          border: '1px solid rgba(245,158,11,0.12)',
-        }}
-        initial={{ scale: 0.6, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-      />
-
-      {/* Concentric ring 2 */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          inset: '6px',
-          border: '1px solid rgba(251,191,36,0.18)',
-        }}
-        initial={{ scale: 0.5, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      />
-
-      {/* Concentric ring 3 — rotating */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          inset: '18px',
-          border: '1.5px solid transparent',
-          borderTopColor: '#F59E0B',
-          borderRightColor: 'rgba(251,191,36,0.4)',
-        }}
-        initial={{ scale: 0.4, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1, rotate: 360 }}
-        transition={{
-          scale: { duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] },
-          opacity: { duration: 0.8, delay: 0.5 },
-          rotate: { duration: 8, repeat: Infinity, ease: 'linear' },
+          boxShadow: '0 0 45px rgba(245, 158, 11, 0.65), inset 0 0 25px rgba(251, 191, 36, 0.4)',
         }}
       />
 
-      {/* Concentric ring 4 — counter-rotating */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          inset: '30px',
-          border: '1px solid transparent',
-          borderBottomColor: '#FBBF24',
-          borderLeftColor: 'rgba(245,158,11,0.3)',
-        }}
-        initial={{ scale: 0.3, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1, rotate: -360 }}
-        transition={{
-          scale: { duration: 0.7, delay: 0.65, ease: [0.16, 1, 0.3, 1] },
-          opacity: { duration: 0.7, delay: 0.65 },
-          rotate: { duration: 6, repeat: Infinity, ease: 'linear' },
-        }}
-      />
-
-      {/* Radiating rays */}
-      {Array.from({ length: 12 }).map((_, i) => (
-        <motion.div
+      {/* Corona rays */}
+      {Array.from({ length: 8 }).map((_, i) => (
+        <div
           key={i}
-          className="absolute left-1/2 top-1/2"
+          className="absolute w-[2px] h-[130px] bg-gradient-to-t from-transparent via-amber-400/25 to-transparent"
           style={{
-            width: '2px',
-            height: '16px',
-            marginLeft: '-1px',
-            marginTop: '-8px',
-            background: `linear-gradient(to top, transparent, ${i % 2 === 0 ? '#F59E0B' : '#FBBF24'})`,
-            transformOrigin: `center ${i % 3 === 0 ? '58px' : '52px'}`,
-            transform: `rotate(${i * 30}deg)`,
-            borderRadius: '1px',
-          }}
-          initial={{ opacity: 0, scaleY: 0 }}
-          animate={{
-            opacity: [0.15, 0.85, 0.15],
-            scaleY: [0.6, 1, 0.6],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: 0.6 + i * 0.08,
+            transform: `rotate(${i * 45}deg)`,
           }}
         />
       ))}
 
-      {/* Inner glow core */}
+      {/* Moon */}
       <motion.div
-        className="absolute rounded-full"
+        className="absolute w-[98px] h-[98px] rounded-full bg-[#030712] border border-white/5"
         style={{
-          inset: '42px',
-          background: 'radial-gradient(circle, rgba(245,158,11,0.25) 0%, rgba(251,191,36,0.08) 60%, transparent 100%)',
-          border: '1px solid rgba(245,158,11,0.15)',
+          transform: `translateX(${moonOffset}%)`,
+          boxShadow: 'inset -8px -8px 20px rgba(0,0,0,0.8)',
         }}
-        animate={{
-          scale: [0.95, 1.1, 0.95],
-          opacity: [0.6, 1, 0.6],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
+        transition={{ type: 'spring', stiffness: 80, damping: 15 }}
       />
 
-      {/* Center sun SVG icon */}
-      <motion.div
-        className="absolute inset-0 flex items-center justify-center z-10"
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <motion.svg
-          width="36"
-          height="36"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#FBBF24"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{ filter: 'drop-shadow(0 0 16px rgba(245,158,11,0.7))' }}
-          animate={{ scale: [0.9, 1.08, 0.9] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+      {/* Diamond Ring Effect */}
+      {showDiamond && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.4 }}
+          animate={{ opacity: [0, 1], scale: [0.4, 1] }}
+          className="absolute w-7 h-7 rounded-full bg-white z-20"
+          style={{
+            top: '36px',
+            right: '36px',
+            boxShadow: '0 0 25px #fff, 0 0 45px rgba(251, 191, 36, 0.9), 0 0 75px rgba(245, 158, 11, 1)',
+          }}
         >
-          <circle cx="12" cy="12" r="4" fill="rgba(251,191,36,0.3)" />
-          <path d="M12 2v2" />
-          <path d="M12 20v2" />
-          <path d="m4.93 4.93 1.41 1.41" />
-          <path d="m17.66 17.66 1.41 1.41" />
-          <path d="M2 12h2" />
-          <path d="M20 12h2" />
-          <path d="m6.34 17.66-1.41 1.41" />
-          <path d="m19.07 4.93-1.41 1.41" />
-        </motion.svg>
-      </motion.div>
+          {/* Flare sparkles */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-[2px] bg-white blur-[0.5px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2px] h-14 bg-white blur-[0.5px]" />
+        </motion.div>
+      )}
     </div>
   );
 }
@@ -258,6 +171,13 @@ const Loader = ({ isVisible }: LoaderProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [sparkles] = useState(() => generateSparkles(24));
   const [progress, setProgress] = useState(0);
+  const [flash, setFlash] = useState(false);
+
+  useEffect(() => {
+    if (progress === 100) {
+      setFlash(true);
+    }
+  }, [progress]);
 
   useEffect(() => {
     // Animate progress
@@ -347,6 +267,19 @@ const Loader = ({ isVisible }: LoaderProps) => {
             );
           })}
 
+          {/* Diamond Flash Overlay */}
+          <AnimatePresence>
+            {flash && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 1, 0] }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                className="absolute inset-0 bg-white z-[110] pointer-events-none"
+              />
+            )}
+          </AnimatePresence>
+
           {/* Sun animation */}
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
@@ -354,7 +287,7 @@ const Loader = ({ isVisible }: LoaderProps) => {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="mb-10"
           >
-            <AnimatedSun />
+            <AnimatedSun progress={progress} />
           </motion.div>
 
           {/* Brand text with typewriter */}

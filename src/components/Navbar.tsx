@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, ArrowRight } from 'lucide-react';
+import { useSolarTime } from '../context/SolarTimeContext';
 
 const navLinks = [
   { label: 'Home', href: '#hero' },
@@ -11,6 +12,94 @@ const navLinks = [
   { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '#contact' },
 ];
+
+function SolarOrbitSlider() {
+  const { timeOfDay, setTimeOfDay, currentPhase } = useSolarTime();
+  
+  const x = (timeOfDay / 24) * 80 + 10;
+  const t = (x - 50) / 40;
+  const y = 8 + 20 * (t * t);
+  
+  const handlePointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
+    if (e.buttons !== 1) return;
+    updateTimeFromEvent(e);
+  };
+  
+  const handlePointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch (err) {}
+    updateTimeFromEvent(e);
+  };
+  
+  const updateTimeFromEvent = (e: React.PointerEvent<SVGSVGElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const pct = Math.max(0, Math.min(1, (clickX - 10) / 80));
+    setTimeOfDay(Math.round(pct * 24 * 10) / 10);
+  };
+
+  const getPhaseColor = () => {
+    switch (currentPhase) {
+      case 'dawn': return 'rgba(251, 146, 60, 0.9)';
+      case 'noon': return 'rgba(250, 204, 21, 0.95)';
+      case 'dusk': return 'rgba(244, 63, 94, 0.9)';
+      case 'night': return 'rgba(99, 102, 241, 0.9)';
+      default: return 'rgba(250, 204, 21, 0.9)';
+    }
+  };
+
+  const formatTime = (time: number) => {
+    const hours = Math.floor(time);
+    const mins = Math.round((time - hours) * 60).toString().padStart(2, '0');
+    return `${hours.toString().padStart(2, '0')}:${mins}`;
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-1 group relative cursor-pointer select-none">
+      <div className="relative w-[100px] h-[36px]">
+        <svg 
+          width="100" 
+          height="36" 
+          className="overflow-visible touch-none"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+        >
+          <path 
+            d="M 10 28 Q 50 8 90 28" 
+            fill="none" 
+            stroke="rgba(255, 255, 255, 0.15)" 
+            strokeWidth="2" 
+            strokeDasharray="2,3"
+            className="group-hover:stroke-amber-500/30 transition-colors"
+          />
+          <path 
+            d="M 10 28 Q 50 8 90 28" 
+            fill="none" 
+            stroke={getPhaseColor()} 
+            strokeWidth="1.5" 
+            className="opacity-20"
+          />
+          <g transform={`translate(${x}, ${y})`}>
+            <circle 
+              r="6" 
+              fill={getPhaseColor()} 
+              style={{
+                filter: `drop-shadow(0 0 6px ${getPhaseColor()})`
+              }} 
+            />
+            {currentPhase === 'night' && (
+              <circle r="4" cx="-2" cy="-2" fill="#030712" />
+            )}
+          </g>
+        </svg>
+      </div>
+      <span className="text-[9px] font-mono tracking-wider text-gray-500 group-hover:text-amber-400 transition-colors">
+        {formatTime(timeOfDay)} ({currentPhase.toUpperCase()})
+      </span>
+    </div>
+  );
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -121,7 +210,8 @@ export default function Navbar() {
         </div>
 
         {/* Desktop right actions */}
-        <div className="hidden lg:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-6">
+          <SolarOrbitSlider />
           <a
             href="tel:9550130770"
             className="text-amber-400 hover:text-amber-300 text-sm font-medium transition-colors flex items-center gap-1"
@@ -187,6 +277,9 @@ export default function Navbar() {
             className="fixed inset-0 z-[99] bg-gray-950/95 backdrop-blur-2xl flex flex-col items-center justify-center"
           >
             <nav className="flex flex-col items-center gap-2">
+              <div className="mb-6 scale-110">
+                <SolarOrbitSlider />
+              </div>
               {navLinks.map((link, i) => {
                 const sectionId = link.href.replace('#', '');
                 const isActive = activeSection === sectionId;
