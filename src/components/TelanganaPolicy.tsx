@@ -79,9 +79,13 @@ export default function TelanganaPolicy() {
               whileInView="visible"
               viewport={{ once: true, margin: '-40px' }}
               variants={cardVariants}
-              whileHover={{ y: -6, scale: 1.02 }}
-              className="group relative rounded-2xl border border-white/[0.07] bg-white/[0.02] backdrop-blur-md overflow-hidden transition-colors duration-500 hover:border-emerald-500/30"
+              className="solar-panel-card solar-panel-card-emerald cursor-default group"
             >
+              {/* Corner brackets */}
+              <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-br" />
               {/* Green accent top */}
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-500/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 

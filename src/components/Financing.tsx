@@ -116,6 +116,11 @@ export default function Financing() {
         <div className="grid md:grid-cols-3 gap-5">
           {options.map((opt, i) => {
             const a = accentMap[opt.accent];
+            const panelAccentClass = 
+              opt.accent === 'amber' ? 'solar-panel-card-gold' :
+              opt.accent === 'cyan' ? 'solar-panel-card-cyan' :
+              'solar-panel-card-emerald';
+
             return (
               <motion.div
                 key={opt.title}
@@ -124,13 +129,13 @@ export default function Financing() {
                 whileInView="visible"
                 viewport={{ once: true, margin: '-40px' }}
                 variants={cardVariants}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className={`
-                  group relative rounded-2xl border bg-white/[0.02] backdrop-blur-md
-                  overflow-hidden transition-all duration-500
-                  ${a.border} ${a.glow}
-                `}
+                className={`solar-panel-card ${panelAccentClass} cursor-default group`}
               >
+                {/* Corner brackets */}
+                <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
+                <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
+                <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
+                <span className="solar-panel-card-corner solar-panel-card-corner-br" />
                 {/* Accent top line */}
                 <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent ${a.line} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
 

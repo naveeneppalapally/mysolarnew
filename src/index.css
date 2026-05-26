@@ -1818,3 +1818,117 @@ a:focus-visible {
   border: 1px solid rgba(16, 185, 129, 0.2);
   border-radius: 9999px;
 }
+
+/* ============================================================
+   TRANSPARENT SOLAR PANEL CARDS
+   ============================================================ */
+.solar-panel-card {
+  --panel-accent: rgba(245, 158, 11, 0.04);
+  --panel-accent-hover: rgba(245, 158, 11, 0.1);
+  --panel-border-hover: rgba(245, 158, 11, 0.25);
+  --panel-glow-hover: rgba(245, 158, 11, 0.08);
+  --panel-corner: rgba(245, 158, 11, 0.3);
+  --panel-corner-hover: rgba(245, 158, 11, 0.6);
+  
+  position: relative;
+  background-color: rgba(6, 10, 20, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Color variations */
+.solar-panel-card-gold {
+  --panel-accent: rgba(245, 158, 11, 0.04);
+  --panel-accent-hover: rgba(245, 158, 11, 0.12);
+  --panel-border-hover: rgba(245, 158, 11, 0.3);
+  --panel-glow-hover: rgba(245, 158, 11, 0.12);
+  --panel-corner: rgba(245, 158, 11, 0.35);
+  --panel-corner-hover: rgba(245, 158, 11, 0.7);
+}
+
+.solar-panel-card-cyan {
+  --panel-accent: rgba(6, 182, 212, 0.04);
+  --panel-accent-hover: rgba(6, 182, 212, 0.12);
+  --panel-border-hover: rgba(6, 182, 212, 0.3);
+  --panel-glow-hover: rgba(6, 182, 212, 0.12);
+  --panel-corner: rgba(6, 182, 212, 0.35);
+  --panel-corner-hover: rgba(6, 182, 212, 0.7);
+}
+
+.solar-panel-card-emerald {
+  --panel-accent: rgba(16, 185, 129, 0.04);
+  --panel-accent-hover: rgba(16, 185, 129, 0.12);
+  --panel-border-hover: rgba(16, 185, 129, 0.3);
+  --panel-glow-hover: rgba(16, 185, 129, 0.12);
+  --panel-corner: rgba(16, 185, 129, 0.35);
+  --panel-corner-hover: rgba(16, 185, 129, 0.7);
+}
+
+/* Solar Cell Grid Lines */
+.solar-panel-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(var(--panel-accent) 1px, transparent 1px),
+    linear-gradient(90deg, var(--panel-accent) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: center;
+  pointer-events: none;
+  opacity: 0.7;
+  z-index: 0;
+  transition: opacity 0.5s ease, background-image 0.5s ease;
+}
+
+/* Reflective gloss overlay */
+.solar-panel-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, transparent 40%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.solar-panel-card-corner {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--panel-corner);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.5;
+  transition: all 0.5s ease;
+}
+.solar-panel-card-corner-tl { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+.solar-panel-card-corner-tr { top: 8px; right: 8px; border-left: 0; border-bottom: 0; }
+.solar-panel-card-corner-bl { bottom: 8px; left: 8px; border-right: 0; border-top: 0; }
+.solar-panel-card-corner-br { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+
+/* Active/Hover states */
+.solar-panel-card:hover {
+  border-color: var(--panel-border-hover) !important;
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.5), 
+    0 0 35px var(--panel-glow-hover) !important;
+  transform: translateY(-5px);
+}
+
+.solar-panel-card:hover::before {
+  opacity: 1;
+  background-image: 
+    linear-gradient(var(--panel-accent-hover) 1px, transparent 1px),
+    linear-gradient(90deg, var(--panel-accent-hover) 1px, transparent 1px);
+}
+
+.solar-panel-card:hover .solar-panel-card-corner {
+  opacity: 1;
+  border-color: var(--panel-corner-hover);
+  transform: scale(1.1);
+}
+

@@ -114,18 +114,14 @@ export default function Services() {
               key={service.title}
               custom={i}
               variants={cardVariants}
-              whileHover={{
-                y: -6,
-                transition: { duration: 0.3, ease: 'easeOut' },
-              }}
-              className="group relative rounded-2xl p-6 sm:p-7 cursor-default
-                         bg-gradient-to-br from-white/[0.04] to-white/[0.01]
-                         border border-white/[0.06]
-                         backdrop-blur-sm
-                         transition-all duration-500
-                         hover:border-amber-500/25
-                         hover:shadow-[0_8px_40px_rgba(245,158,11,0.06),0_0_40px_rgba(245,158,11,0.03)]"
+              className="solar-panel-card solar-panel-card-gold p-6 sm:p-7 cursor-default group"
             >
+              {/* Corner brackets */}
+              <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-br" />
+
               {/* Hover glow overlay */}
               <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-amber-500/[0.03] to-transparent pointer-events-none" />
 

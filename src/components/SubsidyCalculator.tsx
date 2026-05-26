@@ -48,18 +48,11 @@ interface CardProps {
 }
 
 function ResultCard({ icon, label, value, accent = 'default', hero = false, delay = 0 }: CardProps) {
-  const borderColor = {
-    default: 'border-white/[0.06]',
-    gold: 'border-amber-500/40',
-    cyan: 'border-cyan-500/40',
-    emerald: 'border-emerald-500/30',
-  }[accent];
-
-  const glowBg = {
-    default: '',
-    gold: 'shadow-[0_0_40px_-10px_rgba(245,158,11,0.15)]',
-    cyan: 'shadow-[0_0_40px_-10px_rgba(6,182,212,0.15)]',
-    emerald: 'shadow-[0_0_40px_-10px_rgba(16,185,129,0.12)]',
+  const panelAccentClass = {
+    default: 'solar-panel-card-gold',
+    gold: 'solar-panel-card-gold',
+    cyan: 'solar-panel-card-cyan',
+    emerald: 'solar-panel-card-emerald',
   }[accent];
 
   const valueColor = {
@@ -76,23 +69,17 @@ function ResultCard({ icon, label, value, accent = 'default', hero = false, dela
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}
       className={`
-        relative group rounded-2xl border backdrop-blur-md p-5
-        bg-white/[0.03] hover:bg-white/[0.06]
-        transition-all duration-500 ease-out
-        ${borderColor} ${glowBg}
-        ${hero ? 'md:col-span-1 ring-1 ring-inset ring-white/[0.04]' : ''}
+        solar-panel-card ${panelAccentClass} p-5 cursor-default group
+        ${hero ? 'md:col-span-1' : ''}
       `}
     >
-      {/* Accent top line */}
-      {hero && (
-        <div className={`absolute top-0 left-4 right-4 h-[2px] rounded-full ${
-          accent === 'gold' ? 'bg-gradient-to-r from-transparent via-amber-500 to-transparent' :
-          accent === 'cyan' ? 'bg-gradient-to-r from-transparent via-cyan-500 to-transparent' :
-          'bg-gradient-to-r from-transparent via-emerald-500 to-transparent'
-        }`} />
-      )}
+      {/* Corner brackets */}
+      <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
+      <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
+      <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
+      <span className="solar-panel-card-corner solar-panel-card-corner-br" />
 
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-2 mb-3 relative z-10">
         <span className={`
           ${accent === 'gold' ? 'text-amber-500/70' :
             accent === 'cyan' ? 'text-cyan-500/70' :
@@ -106,7 +93,7 @@ function ResultCard({ icon, label, value, accent = 'default', hero = false, dela
         </span>
       </div>
 
-      <div className={`font-heading font-bold leading-none ${valueColor} ${hero ? 'text-2xl sm:text-3xl' : 'text-xl sm:text-2xl'}`}>
+      <div className={`font-heading font-bold leading-none relative z-10 ${valueColor} ${hero ? 'text-2xl sm:text-3xl' : 'text-xl sm:text-2xl'}`}>
         {value}
       </div>
     </motion.div>

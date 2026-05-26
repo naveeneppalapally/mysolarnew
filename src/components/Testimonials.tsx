@@ -105,10 +105,15 @@ export default function Testimonials() {
                 delay: 0.15 * i,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              whileHover={{ y: -6, transition: { duration: 0.3 } }}
-              className="group relative"
+              className="group relative h-full"
             >
-              <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-sm p-8 h-full overflow-hidden transition-colors duration-300 hover:border-amber-500/20 hover:bg-white/[0.05]">
+              <div className="solar-panel-card solar-panel-card-gold p-8 h-full">
+                {/* Corner brackets */}
+                <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
+                <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
+                <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
+                <span className="solar-panel-card-corner solar-panel-card-corner-br" />
+
                 {/* Quote decoration */}
                 <div className="absolute top-4 right-6 text-7xl leading-none font-serif text-amber-500/[0.07] select-none pointer-events-none">
                   "

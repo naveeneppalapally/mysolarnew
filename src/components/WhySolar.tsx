@@ -102,20 +102,16 @@ export default function WhySolar() {
               key={benefit.title}
               custom={i}
               variants={cardVariants}
-              whileHover={{
-                y: -8,
-                transition: { duration: 0.3, ease: 'easeOut' },
-              }}
-              className="group relative rounded-2xl p-6 sm:p-8 cursor-default
-                         bg-gradient-to-br from-white/[0.04] to-white/[0.01]
-                         border border-white/[0.06]
-                         backdrop-blur-sm
-                         transition-all duration-500
-                         hover:border-amber-500/30
-                         hover:shadow-[0_8px_40px_rgba(245,158,11,0.08),0_0_60px_rgba(245,158,11,0.04)]"
+              className="solar-panel-card solar-panel-card-gold p-6 sm:p-8 cursor-default group"
             >
+              {/* Corner brackets */}
+              <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-br" />
+
               {/* Card glow on hover */}
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-amber-500/[0.04] to-transparent pointer-events-none" />
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-amber-500/[0.03] to-transparent pointer-events-none" />
 
               <div className="relative flex items-start gap-5">
                 {/* Icon */}

@@ -119,7 +119,12 @@ export default function SubsidySection() {
             {/* Gold top border */}
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
 
-            <div className="p-6 sm:p-8 bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/[0.06] rounded-2xl backdrop-blur-sm hover:border-amber-500/20 transition-all duration-500">
+            <div className="solar-panel-card solar-panel-card-gold p-6 sm:p-8">
+              {/* Corner brackets */}
+              <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-br" />
               {/* Icon + Badge */}
               <div className="flex items-start justify-between mb-6">
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20">
@@ -186,7 +191,12 @@ export default function SubsidySection() {
             {/* Cyan top border */}
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
 
-            <div className="p-6 sm:p-8 bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/[0.06] rounded-2xl backdrop-blur-sm hover:border-cyan-500/20 transition-all duration-500">
+            <div className="solar-panel-card solar-panel-card-cyan p-6 sm:p-8">
+              {/* Corner brackets */}
+              <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
+              <span className="solar-panel-card-corner solar-panel-card-corner-br" />
               {/* Icon + Badge */}
               <div className="flex items-start justify-between mb-6">
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-br from-cyan-500/20 to-cyan-600/10 border border-cyan-500/20">
