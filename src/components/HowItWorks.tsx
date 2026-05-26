@@ -1,222 +1,253 @@
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import {
-  Search,
-  ClipboardList,
+  ClipboardCheck,
+  PenTool,
+  FileText,
+  HardHat,
   Gauge,
-  Hammer,
-  CheckCircle,
+  HeartHandshake,
 } from 'lucide-react';
-import {
-  staggerContainer,
-  fadeInUp,
-  sectionViewport,
-} from '../lib/animations';
+import { fadeInUp, staggerContainer, sectionViewport } from '../lib/animations';
 
 const steps = [
   {
-    icon: Search,
-    title: 'Site Survey',
-    description: 'Free expert rooftop survey, structural measurements, and shadow analysis.',
+    icon: ClipboardCheck,
+    title: 'Free Site Survey',
+    description:
+      'Our team visits your home for a free assessment — evaluating roof area, orientation, shading, and your energy consumption.',
   },
   {
-    icon: ClipboardList,
-    title: 'Custom Proposal',
-    description: 'Detailed engineering quote, structural design, and custom subsidy breakdown.',
+    icon: PenTool,
+    title: 'Custom System Design',
+    description:
+      'We design the optimal system for your roof layout and monthly usage, maximizing generation and ROI.',
+  },
+  {
+    icon: FileText,
+    title: 'Subsidy Paperwork',
+    description:
+      'We handle all PM Surya Ghar and TSREDCO subsidy applications, approvals, and documentation — zero hassle for you.',
+  },
+  {
+    icon: HardHat,
+    title: 'Professional Installation',
+    description:
+      'Certified technicians install your entire system in just 1-2 days with minimal disruption to your daily routine.',
   },
   {
     icon: Gauge,
-    title: 'Net Metering',
-    description: 'We handle 100% of DISCOM paperwork, approvals, and net meter setup.',
+    title: 'Net Metering Setup',
+    description:
+      'We coordinate with DISCOM for bidirectional meter installation so you can sell excess power back to the grid.',
   },
   {
-    icon: Hammer,
-    title: 'Installation',
-    description: 'Professional system setup in 1–3 days by our certified engineering team.',
-  },
-  {
-    icon: CheckCircle,
-    title: 'Subsidy Release',
-    description: 'DISCOM inspection approval and central subsidy credited directly to your bank.',
+    icon: HeartHandshake,
+    title: 'Lifetime Support',
+    description:
+      '25-year warranty with annual maintenance included. Real-time monitoring and dedicated support whenever you need it.',
   },
 ];
 
-/* Connector line that animates from scale 0→1 */
-const connectorLine = {
-  hidden: { scaleX: 0, scaleY: 0 },
-  visible: {
-    scaleX: 1,
-    scaleY: 1,
-    transition: { duration: 0.8, ease: 'easeOut' as const },
-  },
-};
+function TimelineStep({
+  step,
+  index,
+}: {
+  step: (typeof steps)[0];
+  index: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: false, amount: 0.5 });
+  const isEven = index % 2 === 0;
 
-/* Step reveal — staggered fade-in-up */
-const stepReveal = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      delay: i * 0.15,
-      ease: 'easeOut' as const,
-    },
-  }),
-};
+  return (
+    <div
+      ref={ref}
+      className={`relative flex items-start gap-4 sm:gap-6 lg:gap-8 ${
+        /* On large screens, alternate: even = card on right, odd = card on left */
+        ''
+      }`}
+    >
+      {/* Desktop: Alternating layout */}
+      {/* Left content area (desktop only) */}
+      <div className="hidden lg:flex flex-1 justify-end">
+        {!isEven && (
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+            transition={{
+              duration: 0.7,
+              delay: 0.2,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+            className="max-w-md w-full"
+          >
+            <StepCard step={step} index={index} />
+          </motion.div>
+        )}
+      </div>
+
+      {/* Timeline line + circle */}
+      <div className="relative flex flex-col items-center shrink-0">
+        {/* Circle */}
+        <motion.div
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={
+            isInView
+              ? { scale: 1, opacity: 1 }
+              : { scale: 0.5, opacity: 0 }
+          }
+          transition={{
+            duration: 0.5,
+            delay: 0.1,
+            ease: [0.25, 0.46, 0.45, 0.94],
+          }}
+          className="relative z-10"
+        >
+          {/* Pulse ring when in view */}
+          {isInView && (
+            <div className="absolute inset-0 rounded-full bg-amber-400/30 animate-pulse-ring" />
+          )}
+          <div
+            className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-heading font-bold text-sm sm:text-base transition-all duration-700 ${
+              isInView
+                ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-gray-900 shadow-[0_0_25px_rgba(245,158,11,0.4)]'
+                : 'bg-gray-800 text-gray-500 border border-gray-700'
+            }`}
+          >
+            {index + 1}
+          </div>
+        </motion.div>
+
+        {/* Vertical line segment */}
+        {index < steps.length - 1 && (
+          <div className="w-px flex-1 min-h-[60px] relative">
+            <div className="absolute inset-0 bg-gray-800" />
+            <motion.div
+              initial={{ scaleY: 0 }}
+              animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
+              className="absolute inset-0 origin-top bg-gradient-to-b from-amber-400/60 to-amber-500/20"
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Right content area (desktop) / Main content area (mobile) */}
+      <div className="flex-1 pb-12 sm:pb-16 lg:pb-20">
+        {/* Mobile + Tablet: Always show here */}
+        <div className="lg:hidden">
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
+            transition={{
+              duration: 0.7,
+              delay: 0.2,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+          >
+            <StepCard step={step} index={index} />
+          </motion.div>
+        </div>
+
+        {/* Desktop: Show only for even steps */}
+        <div className="hidden lg:block">
+          {isEven && (
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={
+                isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }
+              }
+              transition={{
+                duration: 0.7,
+                delay: 0.2,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+              className="max-w-md"
+            >
+              <StepCard step={step} index={index} />
+            </motion.div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StepCard({
+  step,
+  index,
+}: {
+  step: (typeof steps)[0];
+  index: number;
+}) {
+  return (
+    <div className="group rounded-2xl p-5 sm:p-6 bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/[0.06] hover:border-amber-500/20 transition-all duration-500 hover:shadow-[0_4px_30px_rgba(245,158,11,0.06)]">
+      <div className="flex items-center gap-3 mb-3">
+        <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-amber-500/10 border border-amber-500/15">
+          <step.icon className="w-4 h-4 text-amber-400" />
+        </div>
+        <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-amber-400/60 font-body">
+          Step {index + 1}
+        </span>
+      </div>
+      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 font-heading">
+        {step.title}
+      </h3>
+      <p className="text-sm text-solar-text-muted leading-relaxed font-body">
+        {step.description}
+      </p>
+    </div>
+  );
+}
 
 export default function HowItWorks() {
   return (
-    <section id="process" className="relative overflow-hidden" style={{ background: 'var(--solar-bg)' }}>
-      {/* Background glow */}
+    <section id="how-it-works" className="relative py-24 sm:py-32 overflow-hidden">
+      {/* Background ambient */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-solar-gold/[0.02] rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-solar-emerald/[0.02] rounded-full blur-[80px]" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-amber-500/[0.015] rounded-full blur-[140px]" />
       </div>
 
-      <div className="section-wrapper relative z-10">
-        {/* Header */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section header */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={sectionViewport}
           variants={staggerContainer}
-          className="text-center mb-10 md:mb-20"
+          className="text-center mb-16 sm:mb-20"
         >
-          <motion.p
+          <motion.span
             variants={fadeInUp}
-            className="text-solar-gold font-body text-sm tracking-[0.2em] uppercase mb-4"
+            className="inline-block text-xs sm:text-sm font-semibold tracking-[0.3em] uppercase text-amber-400 mb-4 font-body"
           >
-            5-Step Solar Journey
-          </motion.p>
+            The Process
+          </motion.span>
           <motion.h2
             variants={fadeInUp}
-            className="section-heading"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-white mb-5 leading-tight"
           >
-            Your 5-Step Solar Journey
+            How It{' '}
+            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+              Works
+            </span>
           </motion.h2>
           <motion.p
             variants={fadeInUp}
-            className="section-subheading mx-auto"
+            className="text-base sm:text-lg text-solar-text-muted max-w-2xl mx-auto font-body"
           >
-            From first call to free electricity — we make it simple.
+            From inquiry to installation in as little as 7 days. Here's our
+            streamlined process designed for zero hassle.
           </motion.p>
         </motion.div>
 
-        {/* ========== DESKTOP TIMELINE (lg+) ========== */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={sectionViewport}
-          className="hidden lg:flex items-start justify-between relative"
-        >
-          {steps.map((step, i) => {
-            const Icon = step.icon;
-            const isLast = i === steps.length - 1;
-
-            return (
-              <div key={step.title} className="relative flex flex-col items-center flex-1">
-                {/* Step content */}
-                <motion.div
-                  custom={i}
-                  variants={stepReveal}
-                  className="flex flex-col items-center text-center"
-                >
-                  {/* Number badge */}
-                  <div className="absolute -top-1 -right-1 z-20 w-6 h-6 rounded-full bg-solar-gold flex items-center justify-center">
-                    <span className="text-[11px] font-heading font-bold text-solar-bg">
-                      {i + 1}
-                    </span>
-                  </div>
-
-                  {/* Icon circle */}
-                  <div className="relative w-16 h-16 rounded-full bg-solar-gold/10 border border-solar-gold/30 flex items-center justify-center mb-5 group">
-                    <Icon
-                      className="w-7 h-7 text-solar-gold"
-                      strokeWidth={1.5}
-                    />
-                    {/* Pulse ring on hover */}
-                    <div className="absolute inset-0 rounded-full border border-solar-gold/20 animate-ping opacity-0 group-hover:opacity-30" />
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="font-heading text-lg text-solar-text font-semibold mb-2 whitespace-nowrap">
-                    {step.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-solar-text-muted text-sm leading-relaxed max-w-[180px]">
-                    {step.description}
-                  </p>
-                </motion.div>
-
-                {/* Connector line (horizontal) — between steps */}
-                {!isLast && (
-                  <motion.div
-                    variants={connectorLine}
-                    className="absolute top-8 left-[60%] right-[-40%] h-[2px] bg-gradient-to-r from-solar-gold/60 to-solar-gold/20 origin-left z-0"
-                    style={{ originX: 0 }}
-                  />
-                )}
-              </div>
-            );
-          })}
-        </motion.div>
-
-        {/* ========== MOBILE / TABLET TIMELINE (< lg) ========== */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={sectionViewport}
-          className="lg:hidden relative pl-12 md:pl-16"
-        >
-          {/* Vertical golden line */}
-          <motion.div
-            variants={connectorLine}
-            className="absolute left-5 md:left-7 top-0 bottom-0 w-[2px] bg-gradient-to-b from-solar-gold/60 via-solar-gold/30 to-solar-gold/10 origin-top"
-            style={{ originY: 0 }}
-          />
-
-          <div className="space-y-12">
-            {steps.map((step, i) => {
-              const Icon = step.icon;
-
-              return (
-                <motion.div
-                  key={step.title}
-                  custom={i}
-                  variants={stepReveal}
-                  className="relative flex items-start gap-5"
-                >
-                  {/* Icon circle on the line */}
-                  <div className="absolute -left-12 md:-left-16 flex items-center justify-center">
-                    <div className="relative w-12 h-12 md:w-14 md:h-14 rounded-full bg-solar-bg-light border border-solar-gold/30 flex items-center justify-center">
-                      <Icon
-                        className="w-5 h-5 md:w-6 md:h-6 text-solar-gold"
-                        strokeWidth={1.5}
-                      />
-                      {/* Number badge */}
-                      <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-solar-gold flex items-center justify-center">
-                        <span className="text-[10px] font-heading font-bold text-solar-bg">
-                          {i + 1}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="pt-1">
-                    <h3 className="font-heading text-lg text-solar-text font-semibold mb-1.5">
-                      {step.title}
-                    </h3>
-                    <p className="text-solar-text-muted text-sm leading-relaxed max-w-sm">
-                      {step.description}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </motion.div>
+        {/* Timeline */}
+        <div className="max-w-4xl mx-auto">
+          {steps.map((step, i) => (
+            <TimelineStep key={step.title} step={step} index={i} />
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,138 +1,277 @@
-import { motion } from 'framer-motion';
-import { CheckCircle2, AlertTriangle, Award } from 'lucide-react';
-import SubsidyCalculator from './SubsidyCalculator';
-import {
-  staggerContainer,
-  fadeInUp,
-  scaleIn,
-  sectionViewport,
-} from '../lib/animations';
+import { motion, useInView } from 'framer-motion';
+import type { Variants } from 'framer-motion';
+import { useRef, useEffect, useState } from 'react';
+import { Landmark, Building2, IndianRupee, ArrowDown, Sparkles } from 'lucide-react';
+import { fadeInUp, staggerContainer, sectionViewport } from '../lib/animations';
 
-/* ================================================================== */
-/*  SubsidySection                                                     */
-/* ================================================================== */
+/**
+ * Hook: animated count-up from 0 to target value
+ */
+function useCountUp(target: number, duration = 2000, trigger = false) {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (!trigger) {
+      setValue(0);
+      return;
+    }
+
+    let start = 0;
+    const startTime = performance.now();
+
+    function animate(now: number) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(eased * target);
+
+      setValue(current);
+
+      if (progress < 1) {
+        start = requestAnimationFrame(animate);
+      }
+    }
+
+    start = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(start);
+  }, [target, duration, trigger]);
+
+  return value;
+}
+
+function formatINR(amount: number): string {
+  return amount.toLocaleString('en-IN');
+}
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 50, scale: 0.96 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.7,
+      delay: i * 0.2,
+      ease: [0.25, 0.46, 0.45, 0.94] as const,
+    },
+  }),
+};
+
 export default function SubsidySection() {
-  return (
-    <section id="subsidy" className="relative bg-solar-bg overflow-hidden">
-      {/* Decorative top gradient divider */}
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-solar-gold/30 to-transparent" />
+  const totalRef = useRef<HTMLDivElement>(null);
+  const totalInView = useInView(totalRef, { once: false, amount: 0.5 });
+  const totalValue = useCountUp(138000, 2200, totalInView);
 
-      <div className="section-wrapper">
+  return (
+    <section id="subsidy" className="relative py-24 sm:py-32 overflow-hidden">
+      {/* Background ambient */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-amber-500/[0.02] rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-1/3 w-[400px] h-[400px] bg-cyan-500/[0.015] rounded-full blur-[100px]" />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section header */}
         <motion.div
-          variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={sectionViewport}
-          className="flex flex-col items-center"
+          variants={staggerContainer}
+          className="text-center mb-16 sm:mb-20"
         >
-          {/* ---- Heading ---- */}
-          <motion.h2 variants={fadeInUp} className="section-heading text-center">
-            Get Up to <span className="text-solar-gold">₹78,000</span> in Central Subsidy
-          </motion.h2>
-          <motion.p variants={fadeInUp} className="section-subheading text-center mb-10">
-            PM Surya Ghar Yojana — Central Government subsidy for rooftop solar.{' '}
-            <strong className="text-solar-text">We handle 100% of the paperwork.</strong>
-          </motion.p>
-
-          {/* ---- Central subsidy breakdown ---- */}
-          <motion.div
+          <motion.span
             variants={fadeInUp}
-            className="w-full max-w-3xl glass-card border-l-4 border-l-solar-gold p-6 sm:p-8 mb-6"
+            className="inline-block text-xs sm:text-sm font-semibold tracking-[0.3em] uppercase text-amber-400 mb-4 font-body"
           >
-            <h3 className="font-heading font-bold text-lg sm:text-xl text-solar-text mb-5 flex items-center gap-2.5">
-              <Award className="w-5 h-5 text-solar-gold shrink-0" />
-              Central Govt (PM Surya Ghar Yojana)
-            </h3>
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { label: '1 kW System', value: '₹30,000' },
-                { label: '2 kW System', value: '₹60,000' },
-                { label: '3 kW System', value: '₹78,000' },
-              ].map((row) => (
-                <div
-                  key={row.label}
-                  className="bg-solar-bg/60 rounded-xl px-4 py-4 text-center"
-                >
-                  <p className="text-solar-text-muted text-sm font-body mb-2">{row.label}</p>
-                  <p className="font-heading font-bold text-xl text-solar-gold">{row.value}</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+            Government Subsidies
+          </motion.span>
+          <motion.h2
+            variants={fadeInUp}
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-white mb-5 leading-tight"
+          >
+            Save Up To{' '}
+            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+              ₹78,000
+            </span>
+          </motion.h2>
+          <motion.p
+            variants={fadeInUp}
+            className="text-base sm:text-lg text-solar-text-muted max-w-2xl mx-auto font-body"
+          >
+            Central government subsidies under PM Surya Ghar Muft Bijli Yojana make solar incredibly affordable. We handle all paperwork so you can claim your subsidy easily.
+          </motion.p>
+        </motion.div>
 
-          {/* ---- Combined highlight ---- */}
+        {/* Two subsidy cards */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={sectionViewport}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-10 sm:mb-14"
+        >
+          {/* Card 1: Central Subsidy */}
           <motion.div
-            variants={scaleIn}
-            className="w-full max-w-3xl glass-card border border-solar-gold/40 p-5 sm:p-7 mb-6 text-center relative overflow-hidden"
+            custom={0}
+            variants={cardVariants}
+            className="group relative rounded-2xl overflow-hidden"
           >
-            <div className="relative z-10">
-              <p className="text-solar-text-muted text-sm font-body mb-1 tracking-wide uppercase">
-                Applicable for 3 kW system
+            {/* Gold top border */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+
+            <div className="p-6 sm:p-8 bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/[0.06] rounded-2xl backdrop-blur-sm hover:border-amber-500/20 transition-all duration-500">
+              {/* Icon + Badge */}
+              <div className="flex items-start justify-between mb-6">
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20">
+                  <Landmark className="w-6 h-6 text-amber-400" />
+                </div>
+                <span className="text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-amber-400/80 bg-amber-400/10 px-3 py-1.5 rounded-full border border-amber-400/15 font-body">
+                  Central Govt
+                </span>
+              </div>
+
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 font-heading">
+                PM Surya Ghar Muft Bijli Yojana
+              </h3>
+              <p className="text-sm text-solar-text-muted mb-6 font-body">
+                National subsidy scheme for residential rooftop solar systems
               </p>
-              <p className="font-heading font-bold text-2xl sm:text-3xl text-solar-text leading-tight">
-                Max Subsidy:{' '}
-                <span className="text-solar-gold-bright">₹78,000</span>
-              </p>
-              <p className="text-solar-text-muted text-sm mt-2 font-body">
-                Credited directly to your bank within 30 days of DISCOM inspection
-              </p>
+
+              {/* Amount */}
+              <div className="mb-6">
+                <p className="text-xs uppercase tracking-wider text-solar-text-dim mb-1 font-body">
+                  Subsidy up to
+                </p>
+                <p className="text-4xl sm:text-5xl font-bold font-heading bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent">
+                  ₹78,000
+                </p>
+              </div>
+
+              {/* Breakdown */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03] border border-white/[0.04]">
+                  <span className="text-sm text-solar-text-muted font-body">
+                    First 2 kW
+                  </span>
+                  <span className="text-sm font-semibold text-amber-300 font-body">
+                    ₹30,000/kW
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03] border border-white/[0.04]">
+                  <span className="text-sm text-solar-text-muted font-body">
+                    2 kW – 3 kW
+                  </span>
+                  <span className="text-sm font-semibold text-amber-300 font-body">
+                    ₹18,000/kW
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03] border border-white/[0.04]">
+                  <span className="text-sm text-solar-text-muted font-body">
+                    Above 3 kW
+                  </span>
+                  <span className="text-sm font-semibold text-amber-300 font-body">
+                    Capped at ₹78,000
+                  </span>
+                </div>
+              </div>
             </div>
-            {/* Subtle glow */}
-            <div className="absolute inset-0 bg-gradient-to-br from-solar-gold/5 to-transparent pointer-events-none" />
           </motion.div>
 
-          {/* ---- Calculator ---- */}
-          <div className="w-full max-w-4xl">
-            <SubsidyCalculator />
+          {/* Card 2: State Subsidy -> Replaced by Claim Process */}
+          <motion.div
+            custom={1}
+            variants={cardVariants}
+            className="group relative rounded-2xl overflow-hidden"
+          >
+            {/* Cyan top border */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+
+            <div className="p-6 sm:p-8 bg-gradient-to-br from-white/[0.05] to-white/[0.02] border border-white/[0.06] rounded-2xl backdrop-blur-sm hover:border-cyan-500/20 transition-all duration-500">
+              {/* Icon + Badge */}
+              <div className="flex items-start justify-between mb-6">
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-br from-cyan-500/20 to-cyan-600/10 border border-cyan-500/20">
+                  <Building2 className="w-6 h-6 text-cyan-400" />
+                </div>
+                <span className="text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-cyan-400/80 bg-cyan-400/10 px-3 py-1.5 rounded-full border border-cyan-400/15 font-body">
+                  Direct Credit
+                </span>
+              </div>
+
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 font-heading">
+                100% Direct Bank Transfer
+              </h3>
+              <p className="text-sm text-solar-text-muted mb-6 font-body">
+                Subsidy is credited directly to your bank account, with zero dealer intervention
+              </p>
+
+              {/* Amount */}
+              <div className="mb-6">
+                <p className="text-xs uppercase tracking-wider text-solar-text-dim mb-1 font-body">
+                  Disbursement timeline
+                </p>
+                <p className="text-4xl sm:text-5xl font-bold font-heading bg-gradient-to-r from-cyan-400 to-teal-300 bg-clip-text text-transparent">
+                  Within 30 Days
+                </p>
+              </div>
+
+              {/* Benefits */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/[0.04]">
+                  <ArrowDown className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <span className="text-sm text-solar-text-muted font-body">
+                    Disbursed directly after net meter commissioning
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/[0.04]">
+                  <IndianRupee className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <span className="text-sm text-solar-text-muted font-body">
+                    Aadhaar-linked Direct Benefit Transfer (DBT)
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/[0.04]">
+                  <Sparkles className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <span className="text-sm text-solar-text-muted font-body">
+                    We handle 100% of the portal submissions & approvals
+                  </span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Summary bar */}
+        <motion.div
+          ref={totalRef}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="relative rounded-2xl overflow-hidden"
+        >
+          {/* Gradient border effect */}
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-500/20 via-cyan-500/20 to-amber-500/20 p-px">
+            <div className="w-full h-full rounded-2xl bg-[#060a14]" />
           </div>
 
-          {/* ---- Eligibility ---- */}
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={sectionViewport}
-            className="w-full max-w-3xl mt-12"
-          >
-            <motion.h3
-              variants={fadeInUp}
-              className="font-heading font-bold text-xl sm:text-2xl text-solar-text mb-5 text-center"
-            >
-              Eligibility Criteria
-            </motion.h3>
-
-            <div className="flex flex-col gap-3">
-              {[
-                'Must use MNRE-approved, Made-in-India panels',
-                'On-grid solar system only (not off-grid)',
-                'Must install through TSREDCO/DISCOM empanelled vendor — that\'s us!',
-              ].map((item) => (
-                <motion.div
-                  key={item}
-                  variants={fadeInUp}
-                  className="flex items-start gap-3 bg-solar-bg-light/60 rounded-xl px-5 py-4"
-                >
-                  <CheckCircle2 className="w-5 h-5 text-solar-emerald flex-shrink-0 mt-0.5" />
-                  <p className="font-body text-base text-solar-text">{item}</p>
-                </motion.div>
-              ))}
+          <div className="relative p-6 sm:p-8 lg:p-10 text-center">
+            {/* Ambient glow */}
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[150px] bg-amber-500/[0.04] rounded-full blur-[80px]" />
             </div>
-          </motion.div>
 
-          {/* ---- Urgency note — tight margin ---- */}
-          <motion.div
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={sectionViewport}
-            className="mt-6 max-w-2xl mx-auto flex items-start gap-3 bg-solar-gold/10 border border-solar-gold/25 rounded-xl px-5 py-4"
-          >
-            <AlertTriangle className="w-5 h-5 text-solar-gold flex-shrink-0 mt-0.5" />
-            <p className="font-body text-sm text-solar-gold font-medium">
-              Subsidy available while the PM Surya Ghar quota lasts — act{' '}
-              <span className="font-bold">now</span> before spots run out!
-            </p>
-          </motion.div>
+            <div className="relative">
+              <p className="text-xs sm:text-sm uppercase tracking-[0.25em] text-solar-text-dim mb-3 font-body">
+                Maximum Direct Subsidy
+              </p>
+              <p className="text-5xl sm:text-6xl lg:text-7xl font-bold font-heading bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent mb-4 tabular-nums">
+                ₹{formatINR(totalValue)}
+              </p>
+              <p className="text-sm sm:text-base text-solar-text-muted max-w-lg mx-auto font-body">
+                Subsidy credited directly to your bank account within 30 days of
+                system commissioning. We handle the entire claim process.
+              </p>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

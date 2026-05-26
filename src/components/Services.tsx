@@ -1,134 +1,159 @@
 import { motion } from 'framer-motion';
-import {
-  Sun,
-  Wrench,
-  Droplets,
-  Shield,
-  Battery,
-  FileText,
-} from 'lucide-react';
-import {
-  staggerContainer,
-  fadeInUp,
-  sectionViewport,
-} from '../lib/animations';
+import type { Variants } from 'framer-motion';
+import { Sun, Wrench, Droplets, Zap, Battery, Gauge, ArrowRight } from 'lucide-react';
+import { fadeInUp, staggerContainer, sectionViewport } from '../lib/animations';
 
 const services = [
   {
     icon: Sun,
-    title: 'Residential Solar EPC',
+    title: 'Residential Solar Installation',
     description:
-      'On-grid & off-grid system design, supply, and installation for homes of all sizes.',
+      '3kW to 10kW rooftop solar systems custom-designed for your home. Tier-1 panels, premium inverters, and professional installation.',
   },
   {
     icon: Wrench,
-    title: 'Solar O&M Services',
+    title: 'Operations & Maintenance',
     description:
-      'Annual maintenance contracts, performance monitoring, cleaning, and repairs.',
+      'Annual maintenance contracts including panel cleaning, inverter checks, wiring inspection, and real-time performance monitoring.',
   },
   {
     icon: Droplets,
     title: 'Solar Water Heaters',
     description:
-      'Slash your geyser electricity bill by 80%. Residential & commercial solutions.',
+      'Energy-efficient hot water systems for homes and businesses. Reduce water heating costs by up to 80% year-round.',
   },
   {
-    icon: Shield,
-    title: 'Solar Fencing & CAMS',
+    icon: Zap,
+    title: 'Solar Fencing',
     description:
-      'Agricultural solar fencing and solar-powered security cameras for farms.',
+      'Protect your agricultural land and property perimeters with solar-powered electric fencing — eco-friendly and cost-effective.',
   },
   {
     icon: Battery,
-    title: 'Battery Storage Solutions',
+    title: 'Battery Storage',
     description:
-      'Hybrid systems with lithium-ion backup. Never face power cuts again.',
+      'Store excess solar energy with lithium-ion battery systems. Power your home through the night and during outages.',
   },
   {
-    icon: FileText,
-    title: 'Net Metering Guidance',
+    icon: Gauge,
+    title: 'Net Metering Setup',
     description:
-      'Full assistance with DISCOM paperwork, approvals, and net meter setup.',
+      'Complete DISCOM paperwork, bidirectional meter installation, and grid connection. Sell excess power back to the grid.',
   },
 ];
 
+const cardVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 50,
+    scale: 0.97,
+  },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      delay: i * 0.1,
+      ease: [0.25, 0.46, 0.45, 0.94] as const,
+    },
+  }),
+};
+
 export default function Services() {
   return (
-    <section id="services" className="relative section-alt overflow-hidden">
-      {/* Subtle background radial glow */}
+    <section id="services" className="relative py-24 sm:py-32 overflow-hidden">
+      {/* Background ambient glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-solar-gold/[0.03] rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-cyan-500/[0.02] rounded-full blur-[120px]" />
+        <div className="absolute top-1/3 left-0 w-[400px] h-[400px] bg-amber-500/[0.015] rounded-full blur-[100px]" />
       </div>
 
-      <div className="section-wrapper relative z-10">
-        {/* Header */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section header */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={sectionViewport}
           variants={staggerContainer}
-          className="text-center mb-10 md:mb-20"
+          className="text-center mb-16 sm:mb-20"
         >
-          <motion.p
+          <motion.span
             variants={fadeInUp}
-            className="text-solar-gold font-body text-sm tracking-[0.2em] uppercase mb-4"
+            className="inline-block text-xs sm:text-sm font-semibold tracking-[0.3em] uppercase text-amber-400 mb-4 font-body"
           >
-            Complete Solar Solutions
-          </motion.p>
+            Our Services
+          </motion.span>
           <motion.h2
             variants={fadeInUp}
-            className="section-heading"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-white mb-5 leading-tight"
           >
-            Everything Solar, Under One Roof
+            Complete Solar{' '}
+            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+              Solutions
+            </span>
           </motion.h2>
           <motion.p
             variants={fadeInUp}
-            className="section-subheading mx-auto"
+            className="text-base sm:text-lg text-solar-text-muted max-w-2xl mx-auto font-body"
           >
-            From installation to maintenance, we handle your complete solar journey.
+            From installation to maintenance, we handle everything — so you can
+            sit back and watch your savings grow.
           </motion.p>
         </motion.div>
 
-        {/* Service Cards Grid */}
+        {/* Services grid */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={sectionViewport}
-          variants={staggerContainer}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
         >
-          {services.map((service) => {
-            const Icon = service.icon;
-            return (
-              <motion.div
-                key={service.title}
-                variants={fadeInUp}
-                className="glass-card p-8 gold-glow-hover tilt-card group"
-              >
+          {services.map((service, i) => (
+            <motion.div
+              key={service.title}
+              custom={i}
+              variants={cardVariants}
+              whileHover={{
+                y: -6,
+                transition: { duration: 0.3, ease: 'easeOut' },
+              }}
+              className="group relative rounded-2xl p-6 sm:p-7 cursor-default
+                         bg-gradient-to-br from-white/[0.04] to-white/[0.01]
+                         border border-white/[0.06]
+                         backdrop-blur-sm
+                         transition-all duration-500
+                         hover:border-amber-500/25
+                         hover:shadow-[0_8px_40px_rgba(245,158,11,0.06),0_0_40px_rgba(245,158,11,0.03)]"
+            >
+              {/* Hover glow overlay */}
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-amber-500/[0.03] to-transparent pointer-events-none" />
+
+              <div className="relative">
                 {/* Icon */}
-                <div className="mb-6 relative">
-                  <div className="w-14 h-14 rounded-xl bg-solar-gold/10 border border-solar-gold/20 flex items-center justify-center group-hover:bg-solar-gold/15 transition-colors duration-300">
-                    <Icon
-                      className="w-7 h-7 text-solar-gold card-icon group-hover:text-solar-gold-bright transition-colors duration-300"
-                      strokeWidth={1.5}
-                    />
+                <div className="mb-5 flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20 group-hover:border-amber-400/40 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] transition-all duration-500">
+                    <service.icon className="w-5 h-5 text-amber-400 group-hover:text-amber-300 transition-colors duration-300" />
                   </div>
-                  {/* Decorative glow behind icon */}
-                  <div className="absolute -inset-2 bg-solar-gold/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+
+                  {/* Arrow that slides in on hover */}
+                  <div className="overflow-hidden w-8 h-8">
+                    <div className="flex items-center justify-center w-8 h-8 -translate-x-10 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-400 ease-out">
+                      <ArrowRight className="w-4 h-4 text-amber-400/70" />
+                    </div>
+                  </div>
                 </div>
 
-                {/* Title */}
-                <h3 className="font-heading text-xl text-solar-text font-semibold mb-3">
+                {/* Content */}
+                <h3 className="text-lg font-bold text-white mb-2.5 font-heading group-hover:text-amber-50 transition-colors duration-300">
                   {service.title}
                 </h3>
-
-                {/* Description */}
-                <p className="text-solar-text-muted text-sm leading-relaxed">
+                <p className="text-sm text-solar-text-muted leading-relaxed font-body">
                   {service.description}
                 </p>
-              </motion.div>
-            );
-          })}
+              </div>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </section>

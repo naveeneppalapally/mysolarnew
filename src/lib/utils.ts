@@ -35,6 +35,7 @@ export function scrollToSection(sectionId: string): void {
 
 /**
  * Solar subsidy calculator logic
+ * Updated with Telangana state subsidy (TSREDCO top-up)
  */
 export interface SubsidyResult {
   systemSize: number;        // kW
@@ -43,6 +44,7 @@ export interface SubsidyResult {
   stateSubsidy: number;      // ₹
   totalSubsidy: number;      // ₹
   netCost: number;           // ₹
+  monthlySavings: number;    // ₹
   annualSavings: number;     // ₹
   paybackYears: number;      // years
   savings25Year: number;     // ₹
@@ -58,29 +60,29 @@ export function calculateSubsidy(monthlyBill: number): SubsidyResult {
   const unitsPerKw = 120;
   const systemSize = Math.max(1, Math.min(10, Math.ceil(monthlyUnits / unitsPerKw)));
 
-  // Cost per kW (approximate market rate)
+  // Cost per kW (approximate market rate including installation)
   const costPerKw = systemSize <= 3 ? 65000 : systemSize <= 5 ? 58000 : 52000;
   const totalCost = systemSize * costPerKw;
 
-  // Central subsidy (PM Surya Ghar)
+  // Central subsidy (PM Surya Ghar Muft Bijli Yojana)
   let centralSubsidy = 0;
   if (systemSize <= 2) {
     centralSubsidy = systemSize * 30000;
   } else if (systemSize <= 3) {
     centralSubsidy = 60000 + (systemSize - 2) * 18000;
   } else {
-    centralSubsidy = 78000;
+    centralSubsidy = 78000; // Max central subsidy capped at ₹78,000
   }
 
-  // State subsidy (Telangana TSREDCO top-up removed by client request)
-  let stateSubsidy = 0;
-
-  const totalSubsidy = centralSubsidy + stateSubsidy;
-  const netCost = totalCost - totalSubsidy;
+  // State subsidy is disabled per user request (was Telangana TSREDCO top-up)
+  const stateSubsidy = 0;
+  const totalSubsidy = centralSubsidy;
+  const netCost = Math.max(0, totalCost - totalSubsidy);
 
   const monthlyGeneration = systemSize * unitsPerKw;
-  const annualSavings = monthlyGeneration * 12 * tariffRate;
-  const paybackYears = parseFloat((netCost / annualSavings).toFixed(1));
+  const monthlySavings = Math.round(monthlyGeneration * tariffRate);
+  const annualSavings = monthlySavings * 12;
+  const paybackYears = annualSavings > 0 ? parseFloat((netCost / annualSavings).toFixed(1)) : 0;
 
   // 25-year savings (accounting for ~5% annual tariff rise)
   let savings25Year = 0;
@@ -97,6 +99,7 @@ export function calculateSubsidy(monthlyBill: number): SubsidyResult {
     stateSubsidy,
     totalSubsidy,
     netCost,
+    monthlySavings,
     annualSavings,
     paybackYears,
     savings25Year,

@@ -1,142 +1,187 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
-import { staggerContainer, fadeInUp, sectionViewport } from '../lib/animations';
+import { useRef, useState } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { Plus, Minus } from 'lucide-react';
 
 interface FAQItem {
   question: string;
   answer: string;
 }
 
-const faqData: FAQItem[] = [
+const faqs: FAQItem[] = [
   {
-    question: 'How much does a 3 kW solar system cost in Hyderabad?',
+    question: 'How much does a solar system cost for my home?',
     answer:
-      'A 3 kW system costs approx. ₹1.5–2.0 lakh before subsidy. After central subsidy (₹78,000) under the PM Surya Ghar scheme, you pay approximately ₹72,000–₹1.22 lakh. We provide free site visits and quotes.',
+      'A typical 3kW residential system costs around ₹1,95,000 before subsidies. After the PM Surya Ghar central government subsidy of ₹78,000, your net cost is only ₹1,17,000.',
   },
   {
-    question: 'How much roof space do I need?',
+    question: 'How much subsidy will I get under PM Surya Ghar?',
     answer:
-      '100 sq ft of shadow-free roof per 1 kW. So a 3 kW system needs ~300 sq ft. Our team does a free site survey to assess your rooftop.',
-  },
-  {
-    question: 'Will my solar work during power cuts?',
-    answer:
-      'On-grid systems shut off during grid outages (safety requirement). For backup during cuts, we recommend a hybrid system with battery storage.',
+      'Under PM Surya Ghar Muft Bijli Yojana, you get ₹30,000/kW for the first 2kW and ₹18,000/kW for the 3rd kW. The maximum central subsidy is capped at ₹78,000 for system sizes of 3kW and above.',
   },
   {
     question: 'How long does installation take?',
     answer:
-      'Site visit: 1 day. Approval: 3–7 days. Installation: 1–3 days. Net meter connection: 7–15 days (handled by us with DISCOM). Total: about 2–4 weeks.',
+      'Typical installation takes 1-2 days. The complete process from site survey to commissioning takes about 7-15 days including paperwork.',
   },
   {
-    question: 'Is MyHome Solar TGREDCO authorized?',
+    question: 'What is net metering?',
     answer:
-      'Yes! We are an authorized TGREDCO vendor and MNRE-empaneled installer. This is mandatory to claim government subsidies. Your subsidy is guaranteed with us.',
+      'Net metering allows you to export excess solar power to the grid and get credit on your electricity bill. We handle the complete DISCOM application and meter installation.',
   },
   {
-    question: 'What warranty do I get?',
+    question: 'Do solar panels work on cloudy days?',
     answer:
-      'Solar panels: 25-year performance warranty. Inverter: 5–10 year warranty. Structure: 10-year warranty. We also offer Annual Maintenance Contracts (AMC).',
+      'Yes! Solar panels generate 25-40% of their rated capacity even on cloudy days. Hyderabad gets 300+ sunny days per year, making it ideal for solar.',
   },
   {
-    question: 'What is the PM Surya Ghar Yojana?',
+    question: 'What warranty do the panels come with?',
     answer:
-      'A central government scheme providing subsidy up to ₹78,000 for residential rooftop solar. Goal: 1 crore homes by 2027. Subsidy transferred directly to your bank within 30 days.',
+      'We provide 25-year performance warranty on panels and 5-year warranty on inverter. Our panels are guaranteed to produce at least 80% power even after 25 years.',
   },
   {
-    question: 'Do you serve agricultural/farm customers?',
+    question: 'Do you handle all the paperwork?',
     answer:
-      'Yes! Under PM-KUSUM scheme, farmers get 60% low-cost EMI loans. We install solar pumps, solar fencing, and farm solar plants.',
+      'Yes! We handle 100% of the paperwork — PM Surya Ghar application, DISCOM net metering application, and all approvals. You just sit back and relax.',
+  },
+  {
+    question: 'What about maintenance?',
+    answer:
+      'Solar panels require minimal maintenance. We offer annual maintenance packages including panel cleaning, electrical checks, and performance monitoring.',
   },
 ];
 
-const FAQ = () => {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+function AccordionItem({
+  item,
+  index,
+  isOpen,
+  onToggle,
+}: {
+  item: FAQItem;
+  index: number;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
+      className="relative"
+    >
+      <div
+        className={`relative rounded-xl border transition-all duration-300 overflow-hidden ${
+          isOpen
+            ? 'border-amber-500/30 bg-amber-500/[0.04]'
+            : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12]'
+        }`}
+      >
+        {/* Gold left accent */}
+        <div
+          className={`absolute left-0 top-0 bottom-0 w-[2px] transition-all duration-300 ${
+            isOpen ? 'bg-gradient-to-b from-amber-400 to-amber-600 opacity-100' : 'opacity-0'
+          }`}
+        />
 
-  const toggleFAQ = (index: number) => {
-    setActiveIndex((prev) => (prev === index ? null : index));
+        <button
+          onClick={onToggle}
+          className="w-full text-left px-6 py-5 flex items-center justify-between gap-4 group cursor-pointer"
+          aria-expanded={isOpen}
+        >
+          <span
+            className={`text-[15px] md:text-base font-medium transition-colors duration-200 ${
+              isOpen ? 'text-amber-400' : 'text-gray-200 group-hover:text-white'
+            }`}
+          >
+            {item.question}
+          </span>
+
+          <motion.span
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center border transition-colors duration-200 ${
+              isOpen
+                ? 'border-amber-500/40 bg-amber-500/10 text-amber-400'
+                : 'border-white/10 bg-white/[0.03] text-gray-400 group-hover:text-white group-hover:border-white/20'
+            }`}
+          >
+            {isOpen ? <Minus size={14} /> : <Plus size={14} />}
+          </motion.span>
+        </button>
+
+        <AnimatePresence initial={false}>
+          {isOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="overflow-hidden"
+            >
+              <div className="px-6 pb-5 text-gray-400 text-sm leading-relaxed border-t border-white/[0.04] pt-4">
+                {item.answer}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
+}
+
+export default function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+
+  const handleToggle = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <section id="faq" className="relative section-alt overflow-hidden">
-      <motion.div
-        className="section-wrapper"
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={sectionViewport}
-      >
-        {/* ── Heading ── */}
-        <motion.div variants={fadeInUp} className="text-center mb-12 md:mb-10">
-          <h2 className="section-heading">Frequently Asked Questions</h2>
-          <p className="section-subheading mx-auto">
-            Everything you need to know about going solar in Hyderabad.
-          </p>
-        </motion.div>
+    <section
+      id="faq"
+      ref={sectionRef}
+      className="relative py-24 md:py-32 overflow-hidden"
+      style={{ background: '#030712' }}
+    >
+      {/* Background radial */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-[0.03] pointer-events-none"
+        style={{ background: 'radial-gradient(circle, #06B6D4, transparent 70%)' }}
+      />
 
-        {/* ── Accordion ── */}
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Header */}
         <motion.div
-          variants={fadeInUp}
-          className="max-w-3xl mx-auto"
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          {faqData.map((item, index) => {
-            const isOpen = activeIndex === index;
-            return (
-              <div
-                key={index}
-                className={`glass-card rounded-xl mb-4 transition-all duration-300 ${
-                  isOpen
-                    ? 'border-l-4 border-l-solar-gold'
-                    : 'border-l-4 border-l-transparent'
-                }`}
-              >
-                {/* Question */}
-                <button
-                  onClick={() => toggleFAQ(index)}
-                  className="w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer group"
-                  aria-expanded={isOpen}
-                >
-                  <span className="font-heading font-semibold text-lg text-solar-text pr-4 group-hover:text-solar-gold transition-colors duration-300">
-                    {item.question}
-                  </span>
-                  <motion.span
-                    animate={{ rotate: isOpen ? 180 : 0 }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    className="flex-shrink-0"
-                  >
-                    <ChevronDown
-                      className={`w-5 h-5 transition-colors duration-300 ${
-                        isOpen ? 'text-solar-gold' : 'text-solar-text-muted'
-                      }`}
-                    />
-                  </motion.span>
-                </button>
-
-                {/* Answer */}
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      key="content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-                      className="overflow-hidden"
-                    >
-                      <p className="px-6 pb-5 text-solar-text-muted leading-relaxed font-body">
-                        {item.answer}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-[0.2em] uppercase border border-cyan-500/30 text-cyan-400 bg-cyan-500/5 mb-6 font-heading">
+            FAQ
+          </span>
+          <h2 className="text-4xl md:text-5xl font-bold font-heading text-white mb-4">
+            Frequently Asked{' '}
+            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+              Questions
+            </span>
+          </h2>
         </motion.div>
-      </motion.div>
+
+        {/* Accordion */}
+        <div className="space-y-3">
+          {faqs.map((faq, i) => (
+            <AccordionItem
+              key={i}
+              item={faq}
+              index={i}
+              isOpen={openIndex === i}
+              onToggle={() => handleToggle(i)}
+            />
+          ))}
+        </div>
+      </div>
     </section>
   );
-};
-
-export default FAQ;
+}

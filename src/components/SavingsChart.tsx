@@ -1,403 +1,187 @@
+import { useMemo } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from 'recharts';
+import { TrendingUp } from 'lucide-react';
 import { generateSavingsData, formatCurrency } from '../lib/utils';
-import {
-  staggerContainer,
-  fadeInUp,
-  sectionViewport,
-} from '../lib/animations';
 
-// ===== DATA =====
-const savingsData = generateSavingsData();
-
-interface InvestmentBar {
-  label: string;
-  percentage: number;
-  color: string;
-  gradient: string;
-}
-
-const investmentBars: InvestmentBar[] = [
-  {
-    label: 'Solar (with subsidy)',
-    percentage: 35,
-    color: '#10B981',
-    gradient: 'linear-gradient(90deg, #059669, #10B981)',
-  },
-  {
-    label: 'Mutual Funds',
-    percentage: 12,
-    color: '#3B82F6',
-    gradient: 'linear-gradient(90deg, #3B82F6, #60A5FA)',
-  },
-  {
-    label: 'Gold ETF',
-    percentage: 10,
-    color: '#D4A04A',
-    gradient: 'linear-gradient(90deg, #D4A04A, #E8C468)',
-  },
-  {
-    label: 'Fixed Deposit',
-    percentage: 7,
-    color: '#6B7280',
-    gradient: 'linear-gradient(90deg, #6B7280, #9CA3AF)',
-  },
-];
-
-// ===== CUSTOM TOOLTIP =====
-interface TooltipPayloadItem {
-  name: string;
-  value: number;
-  color: string;
-  dataKey: string;
-}
-
-interface CustomTooltipProps {
-  active?: boolean;
-  payload?: TooltipPayloadItem[];
-  label?: number;
-}
-
-const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
-  if (!active || !payload || payload.length === 0) return null;
-
+/* ─── Custom Tooltip ─── */
+function CustomTooltip({ active, payload, label }: any) {
+  if (!active || !payload?.length) return null;
   return (
-    <div className="glass-card p-4 !rounded-xl border border-solar-emerald/30 min-w-[200px]">
-      <p className="font-heading font-bold text-solar-emerald text-sm mb-2">
-        Year {label}
-      </p>
-      {payload.map((entry) => (
-        <div key={entry.dataKey} className="flex items-center justify-between gap-4 mb-1">
-          <div className="flex items-center gap-2">
-            <span
-              className="w-2.5 h-2.5 rounded-full shrink-0"
-              style={{ backgroundColor: entry.color }}
-            />
-            <span className="text-solar-text-muted text-xs">
-              {entry.dataKey === 'flatRate' ? 'Current Rate' : 'Rising Tariff'}
-            </span>
-          </div>
-          <span className="font-heading font-semibold text-solar-text text-xs">
-            {formatCurrency(entry.value)}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-// ===== CUSTOM LEGEND =====
-interface LegendPayloadItem {
-  value: string;
-  color: string;
-}
-
-interface CustomLegendProps {
-  payload?: LegendPayloadItem[];
-}
-
-const CustomLegend = ({ payload }: CustomLegendProps) => {
-  if (!payload) return null;
-
-  const labelMap: Record<string, string> = {
-    flatRate: 'At Current Rate',
-    risingRate: 'With Rising Tariff',
-  };
-
-  return (
-    <div className="flex items-center justify-center gap-6 mt-4">
-      {payload.map((entry) => (
-        <div key={entry.value} className="flex items-center gap-2">
+    <div className="rounded-xl border border-white/10 bg-gray-950/90 backdrop-blur-xl px-4 py-3 shadow-2xl">
+      <p className="text-xs text-white/40 font-body mb-2">Year {label}</p>
+      {payload.map((entry: any, i: number) => (
+        <div key={i} className="flex items-center gap-2 text-sm font-body">
           <span
-            className="w-3 h-3 rounded-full"
-            style={{ backgroundColor: entry.color }}
+            className="w-2 h-2 rounded-full"
+            style={{ background: entry.color }}
           />
-          <span className="text-solar-text-muted text-xs font-body">
-            {labelMap[entry.value] || entry.value}
-          </span>
+          <span className="text-white/60">{entry.name}:</span>
+          <span className="font-semibold text-white">{formatCurrency(entry.value)}</span>
         </div>
       ))}
     </div>
   );
-};
+}
 
-// ===== ANIMATED BAR COMPONENT =====
-const AnimatedBar = ({
-  bar,
-  index,
-  isInView,
-}: {
-  bar: InvestmentBar;
-  index: number;
-  isInView: boolean;
-}) => {
-  const maxPercentage = 35; // Normalize against highest value
-
+/* ─── Custom Legend ─── */
+function CustomLegend({ payload }: any) {
+  if (!payload) return null;
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <span className="text-solar-text text-sm font-body font-medium">
-          {bar.label}
-        </span>
-        <span
-          className="font-heading font-bold text-sm"
-          style={{ color: bar.color }}
-        >
-          {bar.percentage}% p.a.
-        </span>
-      </div>
-      <div className="w-full h-8 rounded-full bg-white/5 overflow-hidden relative">
-        <motion.div
-          className="h-full rounded-full relative"
-          style={{ background: bar.gradient }}
-          initial={{ width: 0 }}
-          animate={
-            isInView
-              ? { width: `${(bar.percentage / maxPercentage) * 100}%` }
-              : { width: 0 }
-          }
-          transition={{
-            duration: 1.2,
-            delay: 0.2 + index * 0.15,
-            ease: [0.25, 0.46, 0.45, 0.94],
-          }}
-        >
-          {/* Shimmer overlay */}
-          <div
-            className="absolute inset-0 opacity-30"
-            style={{
-              background:
-                'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
-            }}
-          />
-        </motion.div>
-      </div>
+    <div className="flex justify-center gap-6 mt-4">
+      {payload.map((entry: any, i: number) => (
+        <div key={i} className="flex items-center gap-2 text-xs font-body text-white/50">
+          <span className="w-3 h-1 rounded-full" style={{ background: entry.color }} />
+          {entry.value}
+        </div>
+      ))}
     </div>
   );
-};
+}
 
-// ===== MAIN COMPONENT =====
-const SavingsChart = () => {
-  const barsRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(barsRef, { once: false, amount: 0.3 });
+export default function SavingsChart() {
+  const data = useMemo(() => generateSavingsData(), []);
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-80px' });
+
+  const totalSavings25 = data[data.length - 1]?.risingRate ?? 0;
+  const totalSavingsLakhs = (totalSavings25 / 100000).toFixed(1);
 
   return (
-    <section id="savings" className="relative bg-solar-bg overflow-hidden">
-      {/* Background glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(ellipse at 50% 30%, rgba(16,185,129,0.05) 0%, transparent 60%), radial-gradient(ellipse at 80% 70%, rgba(16,185,129,0.04) 0%, transparent 50%)',
-        }}
-      />
+    <section id="savings-chart" className="relative section-alt overflow-hidden">
+      {/* Ambient glow */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-cyan-500/[0.03] blur-[100px] pointer-events-none" />
 
       <div className="section-wrapper">
-        {/* Heading */}
+        {/* Header */}
         <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-10"
-          initial="hidden"
-          whileInView="visible"
-          viewport={sectionViewport}
-          variants={staggerContainer}
         >
-          <motion.h2 variants={fadeInUp} className="section-heading">
-            See How Much You{' '}
-            <span className="text-solar-gold">Save Over 25 Years</span>
-          </motion.h2>
-          <motion.p
-            variants={fadeInUp}
-            className="section-subheading mx-auto mt-4"
-          >
-            Real numbers based on Hyderabad solar irradiance and current
-            electricity tariffs.
-          </motion.p>
+          <span className="section-label inline-flex items-center gap-2" style={{ color: '#06B6D4' }}>
+            <TrendingUp className="w-3.5 h-3.5" />
+            25-YEAR PROJECTION
+          </span>
+          <h2 className="section-heading mt-2">Your Solar Investment Over Time</h2>
         </motion.div>
 
-        {/* Two Chart Grid */}
+        {/* Chart Container */}
         <motion.div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8"
-          initial="hidden"
-          whileInView="visible"
-          viewport={sectionViewport}
-          variants={staggerContainer}
+          ref={ref}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="relative rounded-3xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-xl overflow-hidden"
         >
-          {/* ===== CHART A: Area Chart ===== */}
-          <motion.div
-            variants={fadeInUp}
-            className="glass-card p-4 sm:p-6"
-          >
-            <h3 className="font-heading text-lg sm:text-xl font-bold text-solar-text mb-2">
-              25-Year Cumulative Savings
-            </h3>
-            <p className="text-solar-text-muted text-xs sm:text-sm mb-6">
-              3 kW system · Hyderabad irradiance
-            </p>
+          {/* Cyan top border */}
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
 
-            <div className="w-full h-[300px] sm:h-[350px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={savingsData}
-                  margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
-                >
+          <div className="px-4 sm:px-8 pt-8 pb-6">
+            <div
+              className="transition-all duration-1000 ease-out"
+              style={{
+                opacity: isInView ? 1 : 0,
+                transform: isInView ? 'translateY(0)' : 'translateY(20px)',
+              }}
+            >
+              <ResponsiveContainer width="100%" height={380}>
+                <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                   <defs>
-                    <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#34D399" stopOpacity={0.4} />
-                      <stop offset="100%" stopColor="#34D399" stopOpacity={0.02} />
+                    <linearGradient id="gradRising" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#F59E0B" stopOpacity={0.3} />
+                      <stop offset="100%" stopColor="#F59E0B" stopOpacity={0} />
                     </linearGradient>
-                    <linearGradient
-                      id="emeraldGrad"
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      <stop offset="0%" stopColor="#059669" stopOpacity={0.4} />
-                      <stop
-                        offset="100%"
-                        stopColor="#059669"
-                        stopOpacity={0.02}
-                      />
+                    <linearGradient id="gradFlat" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#F97316" stopOpacity={0.2} />
+                      <stop offset="100%" stopColor="#F97316" stopOpacity={0} />
                     </linearGradient>
                   </defs>
 
                   <CartesianGrid
                     strokeDasharray="3 3"
-                    stroke="rgba(245,166,35,0.08)"
+                    stroke="rgba(255,255,255,0.04)"
                     vertical={false}
                   />
 
                   <XAxis
                     dataKey="year"
-                    tick={{ fill: '#94A3B8', fontSize: 11 }}
-                    axisLine={{ stroke: 'rgba(245,166,35,0.2)' }}
-                    tickLine={{ stroke: 'rgba(245,166,35,0.2)' }}
+                    tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 11, fontFamily: 'DM Sans' }}
+                    axisLine={{ stroke: 'rgba(255,255,255,0.06)' }}
+                    tickLine={false}
+                    interval={4}
                     label={{
                       value: 'Years',
                       position: 'insideBottomRight',
                       offset: -5,
-                      fill: '#94A3B8',
-                      fontSize: 11,
+                      style: { fill: 'rgba(255,255,255,0.2)', fontSize: 10, fontFamily: 'DM Sans' },
                     }}
                   />
-
                   <YAxis
-                    tick={{ fill: '#94A3B8', fontSize: 11 }}
-                    axisLine={{ stroke: 'rgba(245,166,35,0.2)' }}
-                    tickLine={{ stroke: 'rgba(245,166,35,0.2)' }}
-                    tickFormatter={(value: number) => formatCurrency(value)}
+                    tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 11, fontFamily: 'DM Sans' }}
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(v: number) => `₹${(v / 100000).toFixed(0)}L`}
                     width={55}
                   />
 
-                  <Tooltip
-                    content={<CustomTooltip />}
-                    cursor={{
-                      stroke: 'rgba(245,166,35,0.3)',
-                      strokeWidth: 1,
-                      strokeDasharray: '4 4',
-                    }}
-                  />
-
+                  <Tooltip content={<CustomTooltip />} />
                   <Legend content={<CustomLegend />} />
 
                   <Area
                     type="monotone"
-                    dataKey="flatRate"
-                    name="flatRate"
-                    stroke="#34D399"
-                    strokeWidth={2}
-                    fill="url(#goldGrad)"
+                    dataKey="risingRate"
+                    name="With Solar (Savings)"
+                    stroke="#FBBF24"
+                    strokeWidth={2.5}
+                    fill="url(#gradRising)"
+                    dot={false}
+                    activeDot={{ r: 5, fill: '#FBBF24', stroke: '#0A0A0A', strokeWidth: 2 }}
                     animationDuration={2000}
-                    animationEasing="ease-in-out"
+                    animationEasing="ease-out"
                   />
-
                   <Area
                     type="monotone"
-                    dataKey="risingRate"
-                    name="risingRate"
-                    stroke="#059669"
-                    strokeWidth={2}
-                    fill="url(#emeraldGrad)"
+                    dataKey="flatRate"
+                    name="Without Solar (Rising Bills)"
+                    stroke="#F97316"
+                    strokeWidth={1.5}
+                    strokeDasharray="6 4"
+                    fill="url(#gradFlat)"
+                    dot={false}
+                    activeDot={{ r: 4, fill: '#F97316', stroke: '#0A0A0A', strokeWidth: 2 }}
                     animationDuration={2000}
-                    animationEasing="ease-in-out"
+                    animationEasing="ease-out"
                   />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
+          </div>
 
-            {/* Caption */}
-            <div className="mt-6 pt-4 border-t border-solar-border text-center">
-              <p className="text-solar-gold font-heading font-semibold text-sm">
-                ⚡ 3 kW system saves ₹3–12 lakh over 25 years!
-              </p>
-            </div>
-          </motion.div>
-
-          {/* ===== CHART B: Investment Comparison ===== */}
-          <motion.div
-            variants={fadeInUp}
-            className="glass-card p-4 sm:p-6"
-            ref={barsRef}
-          >
-            <h3 className="font-heading text-lg sm:text-xl font-bold text-solar-text mb-2">
-              Annual Returns Comparison
-            </h3>
-            <p className="text-solar-text-muted text-xs sm:text-sm mb-8">
-              Solar vs traditional investments
+          {/* Summary Stats */}
+          <div className="border-t border-white/[0.06] px-6 sm:px-10 py-8 text-center">
+            <p className="text-sm text-white/40 font-body mb-2">Total 25-Year Savings</p>
+            <motion.p
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3, type: 'spring', stiffness: 120 }}
+              className="font-heading font-extrabold text-4xl sm:text-5xl text-amber-400"
+            >
+              ₹{totalSavingsLakhs} Lakhs
+            </motion.p>
+            <p className="text-xs text-white/25 font-body mt-2">
+              Based on a 3 kW system with 5% annual tariff escalation
             </p>
-
-            <div className="space-y-6">
-              {investmentBars.map((bar, index) => (
-                <AnimatedBar
-                  key={bar.label}
-                  bar={bar}
-                  index={index}
-                  isInView={isInView}
-                />
-              ))}
-            </div>
-
-            {/* Solar advantage callout */}
-            <div className="mt-8 p-4 rounded-xl bg-solar-gold/5 border border-solar-gold/20">
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">🏆</span>
-                <div>
-                  <p className="font-heading font-bold text-solar-gold text-sm mb-1">
-                    Solar delivers the best ROI of any investment in India.
-                  </p>
-                  <p className="text-solar-text-muted text-xs leading-relaxed">
-                    After payback (3-5 years), your electricity is 100% free for
-                    the next 20+ years — effectively a{' '}
-                    <span className="text-solar-gold-bright font-semibold">
-                      35%+ annualized return
-                    </span>
-                    .
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Caption */}
-            <div className="mt-6 pt-4 border-t border-solar-border text-center">
-              <p className="text-solar-emerald font-heading font-semibold text-sm">
-                📈 Solar delivers the best ROI of any investment in India.
-              </p>
-            </div>
-          </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>
   );
-};
-
-export default SavingsChart;
+}

@@ -1,205 +1,151 @@
-import { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { Star, Quote } from 'lucide-react';
-import {
-  staggerContainer,
-  fadeInUp,
-  sectionViewport,
-} from '../lib/animations';
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { Star } from 'lucide-react';
 
-const testimonials = [
+interface Testimonial {
+  name: string;
+  location: string;
+  quote: string;
+  rating: number;
+}
+
+const testimonials: Testimonial[] = [
   {
-    stars: 5,
+    name: 'Rajesh Kumar',
+    location: 'Hayathnagar',
     quote:
-      'Installed a 5 kW Waaree system. Bill dropped from ₹4,200 to under ₹300. Team handled all DISCOM paperwork and the subsidy was credited in 28 days. Very professional.',
-    name: 'Suresh Reddy',
-    location: 'Hayathnagar, Rangareddy',
-    initials: 'SR',
+      'MyHome Solar made the entire process seamless. From subsidy paperwork to installation, everything was handled professionally. My electricity bill went from ₹4,000 to almost zero!',
+    rating: 5,
   },
   {
-    stars: 5,
-    quote:
-      'Got a 3 kW Tata Power Solar system. EMI is ₹2,800/month — less than my old electricity bill! MyHome Solar team did everything from survey to net meter setup.',
     name: 'Priya Sharma',
-    location: 'Medchal, Hyderabad',
-    initials: 'PS',
+    location: 'LB Nagar',
+    quote:
+      'I was skeptical about solar panels, but the team explained everything clearly. The subsidy of ₹78,000 was credited to my account within 30 days. Best investment ever!',
+    rating: 5,
   },
   {
-    stars: 5,
+    name: 'Venkat Reddy',
+    location: 'Uppal',
     quote:
-      'PM Surya Ghar subsidy of ₹78,000 came in exactly 30 days. System generating 18–20 units/day. Best financial decision for my family. Highly recommend MyHome Solar.',
-    name: 'Venkat Narayana',
-    location: 'Mancherial, Telangana',
-    initials: 'VN',
+      'Excellent service! They designed a 5kW system perfectly suited for my home. The net metering setup was done quickly. Highly recommend MyHome Solar.',
+    rating: 5,
+  },
+  {
+    name: 'Lakshmi Devi',
+    location: 'Dilsukhnagar',
+    quote:
+      'The team was very helpful in explaining the PM Surya Ghar scheme. My 3kW system was installed in just 2 days. Very professional and reliable.',
+    rating: 4,
   },
 ];
 
+function StarRating({ rating }: { rating: number }) {
+  return (
+    <div className="flex gap-1 mb-4">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          size={16}
+          className={
+            i < rating
+              ? 'fill-amber-400 text-amber-400'
+              : 'fill-transparent text-gray-600'
+          }
+        />
+      ))}
+    </div>
+  );
+}
 
-const Testimonials = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  // Auto-scroll carousel on mobile
-  useEffect(() => {
-    const container = scrollRef.current;
-    if (!container) return;
-
-    let currentIndex = 0;
-    const totalCards = testimonials.length;
-
-    const interval = setInterval(() => {
-      currentIndex = (currentIndex + 1) % totalCards;
-      const cardWidth = container.scrollWidth / totalCards;
-      container.scrollTo({
-        left: cardWidth * currentIndex,
-        behavior: 'smooth',
-      });
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, []);
+export default function Testimonials() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
 
   return (
-    <section id="testimonials" className="relative section-alt overflow-hidden">
-      {/* Subtle radial glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(ellipse at 50% 50%, rgba(16,185,129,0.04) 0%, transparent 60%)',
-        }}
+    <section
+      id="testimonials"
+      ref={sectionRef}
+      className="relative py-24 md:py-32 overflow-hidden"
+      style={{ background: 'linear-gradient(180deg, #030712 0%, #0a0f1a 50%, #030712 100%)' }}
+    >
+      {/* Decorative orb */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-[0.03] pointer-events-none"
+        style={{ background: 'radial-gradient(circle, #F59E0B, transparent 70%)' }}
       />
 
-      <div className="section-wrapper">
-        {/* Heading */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section header */}
         <motion.div
-          className="text-center mb-10"
-          initial="hidden"
-          whileInView="visible"
-          viewport={sectionViewport}
-          variants={staggerContainer}
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <motion.h2 variants={fadeInUp} className="section-heading">
-            Trusted by 500+ Hyderabad Families
-          </motion.h2>
-          <motion.p
-            variants={fadeInUp}
-            className="section-subheading mx-auto mt-4"
-          >
-            Real stories from real customers who went solar with us.
-          </motion.p>
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-[0.2em] uppercase border border-amber-500/30 text-amber-400 bg-amber-500/5 mb-6 font-heading">
+            Testimonials
+          </span>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-white mb-4">
+            Trusted by{' '}
+            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+              Homeowners
+            </span>
+          </h2>
         </motion.div>
 
-        {/* Desktop: 3-column grid — Mobile: horizontal scroll-snap carousel */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={sectionViewport}
-          variants={staggerContainer}
-        >
-          {/* Desktop grid */}
-          <div className="hidden md:grid md:grid-cols-3 gap-6 lg:gap-8">
-            {testimonials.map((t) => (
-              <TestimonialCard key={t.name} testimonial={t} />
-            ))}
-          </div>
+        {/* Testimonial grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+          {testimonials.map((t, i) => (
+            <motion.div
+              key={t.name}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{
+                duration: 0.6,
+                delay: 0.15 * i,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              whileHover={{ y: -6, transition: { duration: 0.3 } }}
+              className="group relative"
+            >
+              <div className="relative rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-sm p-8 h-full overflow-hidden transition-colors duration-300 hover:border-amber-500/20 hover:bg-white/[0.05]">
+                {/* Quote decoration */}
+                <div className="absolute top-4 right-6 text-7xl leading-none font-serif text-amber-500/[0.07] select-none pointer-events-none">
+                  "
+                </div>
 
-          {/* Mobile carousel */}
-          <div
-            ref={scrollRef}
-            className="md:hidden flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-2 px-2"
-            style={{
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none',
-              WebkitOverflowScrolling: 'touch',
-            }}
-          >
-            {testimonials.map((t) => (
-              <div
-                key={t.name}
-                className="snap-center flex-shrink-0"
-                style={{ width: '85vw', maxWidth: '360px' }}
-              >
-                <TestimonialCard testimonial={t} />
+                {/* Glow on hover */}
+                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(ellipse at 50% 0%, rgba(245,158,11,0.06) 0%, transparent 70%)',
+                  }}
+                />
+
+                <div className="relative z-10">
+                  <StarRating rating={t.rating} />
+
+                  <p className="text-gray-300 italic leading-relaxed mb-6 text-[15px]">
+                    "{t.quote}"
+                  </p>
+
+                  <div className="flex items-center gap-3">
+                    {/* Avatar circle */}
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500/30 to-cyan-500/20 flex items-center justify-center text-white font-semibold text-sm font-heading border border-white/10">
+                      {t.name.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="text-white font-semibold text-sm">
+                        {t.name}
+                      </p>
+                      <p className="text-gray-500 text-xs">{t.location}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
-
-          {/* Mobile scroll indicators */}
-          <div className="flex md:hidden justify-center gap-2 mt-6">
-            {testimonials.map((_, i) => (
-              <div
-                key={i}
-                className="w-2 h-2 rounded-full bg-solar-gold/30"
-                style={{ animationDelay: `${i * 0.2}s` }}
-              />
-            ))}
-          </div>
-        </motion.div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
-};
-
-/* ---- Testimonial Card ---- */
-interface TestimonialCardProps {
-  testimonial: {
-    stars: number;
-    quote: string;
-    name: string;
-    location: string;
-    initials: string;
-  };
 }
-
-const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
-  const { stars, quote, name, location, initials } = testimonial;
-
-  return (
-    <motion.div
-      variants={fadeInUp}
-      className="glass-card p-8 relative flex flex-col h-full"
-    >
-      {/* Decorative quote mark */}
-      <Quote
-        className="absolute top-5 left-6 w-10 h-10 text-solar-gold/20 rotate-180"
-        strokeWidth={1.5}
-      />
-
-      {/* Stars */}
-      <div className="flex gap-1 mb-5 relative z-10">
-        {Array.from({ length: stars }).map((_, i) => (
-          <Star
-            key={i}
-            className="w-5 h-5 text-solar-gold fill-solar-gold"
-          />
-        ))}
-      </div>
-
-      {/* Quote text */}
-      <p className="text-solar-text italic leading-relaxed text-[15px] flex-1 relative z-10">
-        &ldquo;{quote}&rdquo;
-      </p>
-
-      {/* Author */}
-      <div className="flex items-center gap-3 mt-6 pt-6 border-t border-solar-border/30 relative z-10">
-        {/* Avatar */}
-        <div
-          className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold text-solar-bg shrink-0"
-          style={{
-            background: 'linear-gradient(135deg, #059669, #10B981)',
-          }}
-        >
-          {initials}
-        </div>
-        <div>
-          <p className="font-heading font-semibold text-solar-text text-sm">
-            {name}
-          </p>
-          <p className="text-solar-text-muted text-xs">{location}</p>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
-export default Testimonials;

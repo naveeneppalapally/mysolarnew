@@ -1,48 +1,71 @@
 import * as React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import SunParticles from './SunParticles';
 import { scrollToSection } from '../lib/utils';
 import { useCountUp } from '../hooks/useCountUp';
 
 /* ============================================
-   HEADLINE
+   ANIMATED HEADLINE — Clip-reveal per word
    ============================================ */
 const headlineLines = [
-  'Power Your Home.',
-  'Cut Bills by 90%.',
-  'Start Today.',
+  { text: 'Harness The', isGold: false },
+  { text: 'Power Of The Sun', isGold: true },
+  { text: 'Save Up To 90%', isGold: false },
 ];
 
 function AnimatedHeadline() {
+  const ref = React.useRef<HTMLHeadingElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+
+  let globalWordIndex = 0;
+
   return (
-    <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.15] sm:leading-[1.08] tracking-[-0.03em]">
-      {headlineLines.map((line, lineIdx) => (
-        <span
-          key={lineIdx}
-          className="block"
-        >
-          {line.split(' ').map((word, wordIdx) => (
-            <span
-              key={wordIdx}
-              className={`inline-block mr-[0.3em] ${
-                lineIdx === 1
-                  ? 'bg-gradient-to-r from-solar-gold to-solar-gold-bright bg-clip-text text-transparent'
-                  : 'text-solar-text'
-              }`}
-              style={{ display: 'inline-block' }}
-            >
-              {word}
-            </span>
-          ))}
-        </span>
-      ))}
+    <h1
+      ref={ref}
+      className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] font-bold leading-[1.08] tracking-[-0.03em]"
+    >
+      {headlineLines.map((line, lineIdx) => {
+        const words = line.text.split(' ');
+        return (
+          <span key={lineIdx} className="block overflow-hidden">
+            {words.map((word, wordIdx) => {
+              const delay = globalWordIndex * 0.08;
+              globalWordIndex++;
+              return (
+                <span
+                  key={wordIdx}
+                  className="inline-block overflow-hidden mr-[0.3em]"
+                >
+                  <motion.span
+                    className={`inline-block ${
+                      line.isGold
+                        ? 'bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 bg-clip-text text-transparent'
+                        : 'text-white'
+                    }`}
+                    initial={{ y: '110%', opacity: 0 }}
+                    animate={isInView ? { y: '0%', opacity: 1 } : {}}
+                    transition={{
+                      duration: 0.7,
+                      delay: 0.2 + delay,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    style={{ display: 'inline-block' }}
+                  >
+                    {word}
+                  </motion.span>
+                </span>
+              );
+            })}
+          </span>
+        );
+      })}
     </h1>
   );
 }
 
 /* ============================================
-   SOLAR PANEL SVG ILLUSTRATION (Rooftop Solar Array)
+   SOLAR PANEL SVG — Gold/Amber Theme
    ============================================ */
 export function SolarPanelSVG() {
   return (
@@ -55,15 +78,15 @@ export function SolarPanelSVG() {
       <defs>
         {/* Glow and shadows */}
         <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#10B981" stopOpacity="0.25" />
-          <stop offset="60%" stopColor="#34D399" stopOpacity="0.08" />
-          <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
+          <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.25" />
+          <stop offset="60%" stopColor="#FBBF24" stopOpacity="0.08" />
+          <stop offset="100%" stopColor="#F59E0B" stopOpacity="0" />
         </radialGradient>
         
         {/* Sky/Atmosphere dynamic gradient */}
         <radialGradient id="skyAtmosphere" cx="70%" cy="30%" r="65%">
-          <stop offset="0%" stopColor="#10B981" stopOpacity="0.12" />
-          <stop offset="50%" stopColor="#059669" stopOpacity="0.03" />
+          <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.12" />
+          <stop offset="50%" stopColor="#D97706" stopOpacity="0.03" />
           <stop offset="100%" stopColor="transparent" stopOpacity="0" />
         </radialGradient>
 
@@ -88,13 +111,13 @@ export function SolarPanelSVG() {
           <stop offset="100%" stopColor="rgba(255, 255, 255, 0)" />
         </linearGradient>
 
-        {/* Clean Energy Pulse */}
+        {/* Clean Energy Pulse — Gold */}
         <linearGradient id="energyGold" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#34D399" />
-          <stop offset="100%" stopColor="#10B981" />
+          <stop offset="0%" stopColor="#FBBF24" />
+          <stop offset="100%" stopColor="#F59E0B" />
         </linearGradient>
 
-        {/* Lucide-like Glow filter */}
+        {/* Glow filter */}
         <filter id="vectorGlow" x="-20%" y="-20%" width="140%" height="140%">
           <feGaussianBlur stdDeviation="5" result="blur" />
           <feMerge>
@@ -108,11 +131,11 @@ export function SolarPanelSVG() {
       <circle cx="200" cy="200" r="185" fill="url(#sunGlow)" />
       <circle cx="200" cy="200" r="170" fill="url(#skyAtmosphere)" />
 
-      {/* ── Floating Concentric Tech Orbits (Energy Rings) ── */}
+      {/* ── Floating Concentric Tech Orbits ── */}
       <g opacity="0.25">
-        <circle cx="200" cy="200" r="140" stroke="var(--solar-border)" strokeWidth="1" strokeDasharray="5 15" />
-        <ellipse cx="200" cy="200" rx="170" ry="85" stroke="var(--solar-border)" strokeWidth="1" strokeDasharray="8 6" transform="rotate(-15 200 200)" />
-        <ellipse cx="200" cy="200" rx="145" ry="60" stroke="#34D399" strokeWidth="0.75" strokeDasharray="3 12" transform="rotate(25 200 200)">
+        <circle cx="200" cy="200" r="140" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="5 15" />
+        <ellipse cx="200" cy="200" rx="170" ry="85" stroke="rgba(255,255,255,0.06)" strokeWidth="1" strokeDasharray="8 6" transform="rotate(-15 200 200)" />
+        <ellipse cx="200" cy="200" rx="145" ry="60" stroke="#FBBF24" strokeWidth="0.75" strokeDasharray="3 12" transform="rotate(25 200 200)">
           <animateTransform
             attributeName="transform"
             type="rotate"
@@ -126,14 +149,11 @@ export function SolarPanelSVG() {
 
       {/* ── Glowing Sun and Ray Arc ── */}
       <g filter="url(#vectorGlow)" opacity="0.85">
-        {/* Sun source */}
         <circle cx="310" cy="90" r="18" fill="url(#energyGold)" />
-        {/* Radiating particle circles */}
-        <circle cx="310" cy="90" r="30" stroke="#34D399" strokeWidth="0.5" strokeDasharray="2 6" opacity="0.5">
+        <circle cx="310" cy="90" r="30" stroke="#FBBF24" strokeWidth="0.5" strokeDasharray="2 6" opacity="0.5">
           <animate attributeName="r" values="24;42;24" dur="4s" repeatCount="indefinite" />
         </circle>
         
-        {/* Sun rays sweeping from top right */}
         {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle, i) => {
           const rad = (angle * Math.PI) / 180;
           return (
@@ -143,7 +163,7 @@ export function SolarPanelSVG() {
               y1={90 + Math.sin(rad) * 22}
               x2={310 + Math.cos(rad) * 38}
               y2={90 + Math.sin(rad) * 38}
-              stroke="#34D399"
+              stroke="#FBBF24"
               strokeWidth="1.5"
               strokeLinecap="round"
               opacity="0.6"
@@ -160,128 +180,68 @@ export function SolarPanelSVG() {
         })}
       </g>
 
-      {/* ── Pure Floating 3D Solar Array (Tilted Perspective) ── */}
-      {/* Skewed and translated group to float cleanly in center without base stands */}
+      {/* ── Floating 3D Solar Array ── */}
       <g transform="translate(60, 95)" filter="drop-shadow(0 25px 30px rgba(0,0,0,0.45))">
-        
-        {/* 3D Depth Plate Behind Frame (Bevel Edge) */}
-        <polygon
-          points="15,225 265,225 278,215 28,215"
-          fill="#0B132B"
-        />
-        <polygon
-          points="265,25 278,15 278,215 265,225"
-          fill="#1E2B4B"
-        />
+        {/* 3D Depth Plate */}
+        <polygon points="15,225 265,225 278,215 28,215" fill="#0B132B" />
+        <polygon points="265,25 278,15 278,215 265,225" fill="#1E2B4B" />
 
         {/* Main Panel Outer Frame */}
-        <polygon
-          points="0,210 250,210 265,10 15,10"
-          fill="url(#panelBevel)"
-          stroke="#475B82"
-          strokeWidth="1.5"
-        />
+        <polygon points="0,210 250,210 265,10 15,10" fill="url(#panelBevel)" stroke="#475B82" strokeWidth="1.5" />
 
-        {/* Inner Panel Grid Grid Area */}
-        <polygon
-          points="8,202 242,202 255,18 21,18"
-          fill="#050C1E"
-        />
+        {/* Inner Panel Grid Area */}
+        <polygon points="8,202 242,202 255,18 21,18" fill="#050C1E" />
 
-        {/* Silicon Cells (3 Columns x 2 Rows Representation) with perspective */}
-        {/* Cell 1: Top-Left */}
-        <polygon
-          points="25,105 92,105 97,22 30,22"
-          fill="url(#siliconCell)"
-          stroke="#2A3F6D"
-          strokeWidth="0.75"
-        />
+        {/* Silicon Cells */}
+        <polygon points="25,105 92,105 97,22 30,22" fill="url(#siliconCell)" stroke="#2A3F6D" strokeWidth="0.75" />
         <polygon points="25,105 92,105 97,22 30,22" fill="url(#glassReflection)" />
 
-        {/* Cell 2: Top-Middle */}
-        <polygon
-          points="98,105 165,105 170,22 103,22"
-          fill="url(#siliconCell)"
-          stroke="#2A3F6D"
-          strokeWidth="0.75"
-        />
+        <polygon points="98,105 165,105 170,22 103,22" fill="url(#siliconCell)" stroke="#2A3F6D" strokeWidth="0.75" />
         <polygon points="98,105 165,105 170,22 103,22" fill="url(#glassReflection)" />
 
-        {/* Cell 3: Top-Right */}
-        <polygon
-          points="171,105 238,105 243,22 176,22"
-          fill="url(#siliconCell)"
-          stroke="#2A3F6D"
-          strokeWidth="0.75"
-        />
+        <polygon points="171,105 238,105 243,22 176,22" fill="url(#siliconCell)" stroke="#2A3F6D" strokeWidth="0.75" />
         <polygon points="171,105 238,105 243,22 176,22" fill="url(#glassReflection)" />
 
-        {/* Cell 4: Bottom-Left */}
-        <polygon
-          points="18,198 87,198 91,111 22,111"
-          fill="url(#siliconCell)"
-          stroke="#2A3F6D"
-          strokeWidth="0.75"
-        />
+        <polygon points="18,198 87,198 91,111 22,111" fill="url(#siliconCell)" stroke="#2A3F6D" strokeWidth="0.75" />
         <polygon points="18,198 87,198 91,111 22,111" fill="url(#glassReflection)" />
 
-        {/* Cell 5: Bottom-Middle */}
-        <polygon
-          points="93,198 162,198 166,111 97,111"
-          fill="url(#siliconCell)"
-          stroke="#2A3F6D"
-          strokeWidth="0.75"
-        />
+        <polygon points="93,198 162,198 166,111 97,111" fill="url(#siliconCell)" stroke="#2A3F6D" strokeWidth="0.75" />
         <polygon points="93,198 162,198 166,111 97,111" fill="url(#glassReflection)" />
 
-        {/* Cell 6: Bottom-Right */}
-        <polygon
-          points="168,198 237,198 241,111 172,111"
-          fill="url(#siliconCell)"
-          stroke="#2A3F6D"
-          strokeWidth="0.75"
-        />
+        <polygon points="168,198 237,198 241,111 172,111" fill="url(#siliconCell)" stroke="#2A3F6D" strokeWidth="0.75" />
         <polygon points="168,198 237,198 241,111 172,111" fill="url(#glassReflection)" />
 
-        {/* Cell Grid Lines and Busbars (Golden Highlights) */}
-        <g stroke="#10B981" strokeWidth="0.5" opacity="0.35">
-          {/* Main vertical busbars */}
+        {/* Cell Grid Lines — Gold Busbars */}
+        <g stroke="#F59E0B" strokeWidth="0.5" opacity="0.35">
           <line x1="59" y1="20" x2="52" y2="200" />
           <line x1="134" y1="20" x2="128" y2="200" strokeWidth="0.75" />
           <line x1="209" y1="20" x2="203" y2="200" />
         </g>
 
-        {/* Glowing Energy Grid Nodes */}
+        {/* Glowing Energy Grid Nodes — Gold */}
         <g filter="url(#vectorGlow)">
-          <circle cx="131" cy="110" r="3.5" fill="#34D399" />
-          <circle cx="56" cy="110" r="2.5" fill="#34D399" />
-          <circle cx="206" cy="110" r="2.5" fill="#34D399" />
-          
-          <circle cx="131" cy="110" r="6" stroke="#34D399" strokeWidth="0.5" opacity="0.5">
+          <circle cx="131" cy="110" r="3.5" fill="#FBBF24" />
+          <circle cx="56" cy="110" r="2.5" fill="#FBBF24" />
+          <circle cx="206" cy="110" r="2.5" fill="#FBBF24" />
+          <circle cx="131" cy="110" r="6" stroke="#FBBF24" strokeWidth="0.5" opacity="0.5">
             <animate attributeName="r" values="3;9;3" dur="2s" repeatCount="indefinite" />
           </circle>
         </g>
 
-        {/* Golden Sweep Sheen Overlay across entire array */}
-        <polygon
-          points="0,210 250,210 265,10 15,10"
-          fill="url(#glassReflection)"
-          opacity="0.7"
-          pointerEvents="none"
-        />
+        {/* Glass Sheen */}
+        <polygon points="0,210 250,210 265,10 15,10" fill="url(#glassReflection)" opacity="0.7" pointerEvents="none" />
       </g>
 
-      {/* ── Orbiting Clean Energy Particle (Animated Ring Flight) ── */}
+      {/* ── Orbiting Energy Particle ── */}
       <g filter="url(#vectorGlow)">
-        {/* Glowing flight particle */}
-        <circle cx="200" cy="200" r="4" fill="#34D399">
+        <circle cx="200" cy="200" r="4" fill="#FBBF24">
           <animateMotion
             path="M -135,0 A 135,50 0 1,1 135,0 A 135,50 0 1,1 -135,0"
             dur="6s"
             repeatCount="indefinite"
           />
         </circle>
-        <circle cx="200" cy="200" r="8" stroke="#34D399" strokeWidth="0.5" opacity="0.5">
+        <circle cx="200" cy="200" r="8" stroke="#FBBF24" strokeWidth="0.5" opacity="0.5">
           <animateMotion
             path="M -135,0 A 135,50 0 1,1 135,0 A 135,50 0 1,1 -135,0"
             dur="6s"
@@ -291,12 +251,12 @@ export function SolarPanelSVG() {
         </circle>
       </g>
 
-      {/* ── Lightning Core Floating Energy Bolt Emblem ── */}
+      {/* ── Lightning Energy Bolt Emblem ── */}
       <g transform="translate(182, 335) scale(1.3)" filter="url(#vectorGlow)">
-        <circle cx="12" cy="12" r="11" fill="rgba(16, 185, 129, 0.08)" stroke="rgba(16, 185, 129, 0.2)" strokeWidth="0.75" />
+        <circle cx="12" cy="12" r="11" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.2)" strokeWidth="0.75" />
         <path
           d="M12 2 L6 12 L11 12 L8 22 L18 10 L13 10 L16 2 Z"
-          fill="#34D399"
+          fill="#FBBF24"
           opacity="0.9"
         >
           <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" />
@@ -310,10 +270,10 @@ export function SolarPanelSVG() {
    TRUST BADGES
    ============================================ */
 const trustBadges = [
-  'TSSPDCL & TSNPDCL Approved',
+  'TGREDCO Approved',
   'MNRE Empanelled',
-  'PM Surya Ghar Registered',
-  'TSREDCO Empanelled',
+  'PM Surya Ghar',
+  'Tata Power SolaRoof',
 ];
 
 /* ============================================
@@ -328,155 +288,323 @@ interface StatConfig {
 }
 
 const statsData: StatConfig[] = [
-  { end: 15, suffix: '+', label: 'Installations' },
-  { end: 70, suffix: ' kW', label: 'Capacity Installed' },
-  { end: 78, prefix: '₹', suffix: 'K', label: 'Max Subsidy' },
-  { end: 25, suffix: ' Yr', label: 'Panel Warranty' },
+  { end: 500, suffix: '+', label: 'Installations' },
+  { end: 78000, prefix: '₹', suffix: '', label: 'Max Subsidy' },
+  { end: 25, suffix: ' Year', label: 'Warranty' },
+  { end: 4.8, suffix: '★', label: 'Rating', decimals: 1 },
 ];
 
 function StatItem({ end, prefix = '', suffix = '', label, decimals = 0 }: StatConfig) {
   const { ref, displayValue } = useCountUp({ end, prefix, suffix, decimals, duration: 2200 });
   return (
-    <div className="text-center px-3 py-2">
-      <p ref={ref as React.RefObject<HTMLParagraphElement>} className="font-heading text-xl sm:text-2xl md:text-3xl font-bold tracking-tight" style={{ color: 'var(--solar-gold)' }}>
+    <div className="text-center px-4 py-3">
+      <p
+        ref={ref as React.RefObject<HTMLParagraphElement>}
+        className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight"
+        style={{
+          background: 'linear-gradient(135deg, #F59E0B, #FBBF24)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+        }}
+      >
         {displayValue}
       </p>
-      <p className="text-solar-text-muted text-[11px] sm:text-xs mt-0.5 font-body">{label}</p>
+      <p className="text-gray-500 text-[11px] sm:text-xs mt-1 font-body tracking-wide uppercase">
+        {label}
+      </p>
     </div>
   );
 }
 
 /* ============================================
-   HERO
+   SHIMMER BUTTON
+   ============================================ */
+function ShimmerButton({
+  children,
+  onClick,
+  className = '',
+}: {
+  children: React.ReactNode;
+  onClick: () => void;
+  className?: string;
+}) {
+  return (
+    <motion.button
+      onClick={onClick}
+      className={`magnetic relative overflow-hidden font-heading font-semibold px-8 py-4 rounded-xl text-sm cursor-pointer ${className}`}
+      style={{
+        background: 'linear-gradient(135deg, #F59E0B, #D97706)',
+        color: '#030712',
+        boxShadow: '0 4px 24px rgba(245,158,11,0.3), inset 0 1px 0 rgba(255,255,255,0.15)',
+      }}
+      whileHover={{
+        scale: 1.03,
+        boxShadow: '0 8px 32px rgba(245,158,11,0.5), inset 0 1px 0 rgba(255,255,255,0.2)',
+      }}
+      whileTap={{ scale: 0.98 }}
+    >
+      {children}
+      {/* Shimmer sweep */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+          transform: 'translateX(-100%)',
+        }}
+        animate={{ transform: ['translateX(-100%)', 'translateX(200%)'] }}
+        transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut', repeatDelay: 1 }}
+      />
+    </motion.button>
+  );
+}
+
+/* ============================================
+   HERO COMPONENT
    ============================================ */
 export default function Hero() {
   const [tilt, setTilt] = React.useState({ x: 0, y: 0 });
   const panelRef = React.useRef<HTMLDivElement>(null);
   const [hidePanel, setHidePanel] = React.useState(false);
+  const badgeRef = React.useRef<HTMLSpanElement>(null);
+  const badgeInView = useInView(badgeRef, { once: true });
 
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
-    const isMobileDevice = 
-      /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || 
-      ('ontouchstart' in window) || 
-      (navigator.maxTouchPoints > 0);
-    
-    // Hide panel on all mobile/touch devices (both normal mobile view and desktop site mode)
+    const isMobileDevice =
+      /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0;
     setHidePanel(isMobileDevice);
   }, []);
 
-  const handleMouseMove = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const el = panelRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    
-    // Normalize coordinates
-    const normX = x / (rect.width / 2);
-    const normY = y / (rect.height / 2);
-    
-    setTilt({
-      x: -normY * 15, // tilt up/down
-      y: normX * 15,  // tilt left/right
-    });
-  }, []);
+  const handleMouseMove = React.useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const el = panelRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const normX = x / (rect.width / 2);
+      const normY = y / (rect.height / 2);
+      setTilt({ x: -normY * 15, y: normX * 15 });
+    },
+    []
+  );
 
   const handleMouseLeave = React.useCallback(() => {
     setTilt({ x: 0, y: 0 });
   }, []);
 
   return (
-    <section id="home" className="relative overflow-visible" style={{ background: 'var(--solar-bg)', paddingTop: 'calc(4rem + 0.25rem)' }}>
-      {/* Cinematic particles background */}
+    <section
+      id="home"
+      className="relative overflow-hidden min-h-screen flex flex-col"
+      style={{ background: '#030712', paddingTop: 'calc(4rem + 0.25rem)' }}
+    >
+      {/* Particle background */}
       <SunParticles />
 
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 pointer-events-none z-[1]" style={{ background: 'radial-gradient(ellipse at 80% 15%, rgba(16,185,129,0.08) 0%, transparent 55%)' }} />
+      {/* Radial gradient overlays */}
+      <div
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{
+          background:
+            'radial-gradient(ellipse at 80% 15%, rgba(245,158,11,0.08) 0%, transparent 55%), radial-gradient(ellipse at 20% 80%, rgba(249,115,22,0.04) 0%, transparent 50%)',
+        }}
+      />
 
-      {/* Main Content */}
-      <div className="relative z-10 w-full">
-        <div className="section-wrapper w-full !pt-6 md:!pt-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-center">
+      {/* Noise texture overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none z-[2] opacity-[0.03]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+          backgroundRepeat: 'repeat',
+          backgroundSize: '128px 128px',
+        }}
+      />
 
-            {/* LEFT: Text */}
-            <div className="flex flex-col gap-3 md:gap-4">
+      {/* Main content */}
+      <div className="relative z-10 w-full flex-1 flex items-center">
+        <div className="section-wrapper w-full !py-8 md:!py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* LEFT: Text content */}
+            <motion.div
+              className="flex flex-col gap-5 md:gap-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
               {/* Badge */}
-              <div>
-                <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase px-4 py-2 rounded-full border" style={{ color: 'var(--gold-heading)', borderColor: 'rgba(16,185,129,0.2)', background: 'rgba(16,185,129,0.05)' }}>
-                  <span className="w-1.5 h-1.5 rounded-full bg-solar-emerald animate-pulse" />
-                  Hyderabad's Trusted Solar Installer
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <span
+                  ref={badgeRef}
+                  className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase px-4 py-2.5 rounded-full border"
+                  style={{
+                    color: '#F59E0B',
+                    borderColor: 'rgba(245,158,11,0.25)',
+                    background: 'rgba(245,158,11,0.06)',
+                    boxShadow: badgeInView
+                      ? '0 0 20px rgba(245,158,11,0.1), inset 0 0 20px rgba(245,158,11,0.03)'
+                      : 'none',
+                    transition: 'box-shadow 1s ease',
+                  }}
+                >
+                  <span className="text-sm">☀️</span>
+                  Hyderabad's #1 Solar Partner
                 </span>
-              </div>
+              </motion.div>
 
+              {/* Headline */}
               <AnimatedHeadline />
 
-              <p className="text-solar-text-muted text-sm sm:text-base max-w-lg leading-relaxed font-body">
-                MNRE empanelled, DISCOM-approved. Residential 3–10 kW systems.
-                We handle <strong className="text-solar-text font-medium">100% subsidy paperwork</strong> — PM Surya Ghar up to ₹78,000.
-              </p>
+              {/* Subheadline */}
+              <motion.p
+                className="text-gray-400 text-sm sm:text-base max-w-lg leading-relaxed font-body"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              >
+                Government subsidies up to{' '}
+                <strong className="text-white font-medium">₹78,000</strong>. MNRE
+                authorized, Tata Power SolaRoof partner. We handle{' '}
+                <strong className="text-white font-medium">100% paperwork</strong>.
+              </motion.p>
 
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button onClick={() => scrollToSection('contact')} className="shimmer-btn px-6 py-3 rounded-xl text-sm font-semibold cursor-pointer">
-                  Get Free Quote →
-                </button>
-                <button onClick={() => scrollToSection('process')} className="outline-btn px-6 py-3 rounded-xl text-sm cursor-pointer">
-                  How It Works
-                </button>
-              </div>
+              {/* CTAs */}
+              <motion.div
+                className="flex flex-col sm:flex-row gap-3 mt-1"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <ShimmerButton onClick={() => scrollToSection('calculator')}>
+                  Calculate Your Savings →
+                </ShimmerButton>
+                <motion.button
+                  onClick={() => scrollToSection('contact')}
+                  className="magnetic font-heading font-semibold px-8 py-4 rounded-xl text-sm cursor-pointer border"
+                  style={{
+                    borderColor: 'rgba(255,255,255,0.15)',
+                    color: '#E5E7EB',
+                    background: 'transparent',
+                  }}
+                  whileHover={{
+                    borderColor: 'rgba(245,158,11,0.5)',
+                    color: '#F59E0B',
+                    background: 'rgba(245,158,11,0.05)',
+                    scale: 1.03,
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Get Free Consultation
+                </motion.button>
+              </motion.div>
 
-              <div className="flex flex-wrap gap-x-4 gap-y-2 mt-2">
-                {trustBadges.map((badge) => (
-                  <div key={badge} className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-solar-emerald flex-shrink-0" />
-                    <span className="text-xs text-solar-text-muted font-body">{badge}</span>
-                  </div>
+              {/* Trust badges */}
+              <motion.div
+                className="flex flex-wrap gap-x-5 gap-y-2.5 mt-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 1.3 }}
+              >
+                {trustBadges.map((badge, i) => (
+                  <motion.div
+                    key={badge}
+                    className="flex items-center gap-1.5"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.4, delay: 1.3 + i * 0.1 }}
+                  >
+                    <CheckCircle2
+                      className="w-3.5 h-3.5 flex-shrink-0"
+                      style={{ color: '#F59E0B' }}
+                    />
+                    <span className="text-xs text-gray-400 font-body">{badge}</span>
+                  </motion.div>
                 ))}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
-            {/* RIGHT: Icon-type animated solar panel SVG with parallax tilt (hidden ONLY in mobile Chrome desktop site mode) */}
+            {/* RIGHT: Solar Panel SVG (desktop only) */}
             {!hidePanel && (
-              <div className="flex justify-center items-center mt-6 lg:mt-0">
+              <motion.div
+                className="hidden lg:flex justify-center items-center"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              >
                 <div
                   ref={panelRef}
                   onMouseMove={handleMouseMove}
                   onMouseLeave={handleMouseLeave}
-                  className="w-full max-w-[240px] sm:max-w-[300px] lg:max-w-[360px] relative animate-float cursor-grab active:cursor-grabbing"
-                  style={{
-                    perspective: '1000px',
-                  }}
+                  className="w-full max-w-[380px] relative cursor-grab active:cursor-grabbing"
+                  style={{ perspective: '1000px' }}
                 >
+                  {/* Float animation wrapper */}
                   <motion.div
-                    style={{
-                      transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-                      transition: 'transform 0.15s ease-out',
-                      transformStyle: 'preserve-3d',
+                    animate={{ y: [0, -12, 0] }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
                     }}
-                    className="w-full relative z-10"
                   >
-                    <SolarPanelSVG />
+                    <motion.div
+                      style={{
+                        transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+                        transition: 'transform 0.15s ease-out',
+                        transformStyle: 'preserve-3d',
+                      }}
+                      className="w-full relative z-10"
+                    >
+                      <SolarPanelSVG />
+                    </motion.div>
                   </motion.div>
-                  {/* Modern subtle ambient glow behind the SVG */}
-                  <div className="absolute -inset-4 rounded-[28px] bg-gradient-to-tr from-solar-gold/20 to-solar-emerald/10 blur-2xl opacity-70 z-0 pointer-events-none" />
-                </div>
-              </div>
-            )}
 
+                  {/* Ambient glow behind SVG */}
+                  <div
+                    className="absolute -inset-8 rounded-[32px] blur-3xl opacity-60 z-0 pointer-events-none"
+                    style={{
+                      background:
+                        'radial-gradient(ellipse at center, rgba(245,158,11,0.15) 0%, rgba(251,191,36,0.05) 50%, transparent 70%)',
+                    }}
+                  />
+                </div>
+              </motion.div>
+            )}
           </div>
         </div>
       </div>
 
       {/* Stats Bar */}
-      <div className="relative z-10 w-full mt-6 md:mt-10 pb-6 md:pb-8">
-        <div className="section-wrapper !py-0 !pb-4 md:!pb-5">
-          <div className="glass-card px-4 py-3 md:px-8 md:py-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-0 md:divide-x" style={{ borderColor: 'var(--solar-border)' }}>
+      <div className="relative z-10 w-full pb-6 md:pb-10">
+        <div className="section-wrapper !py-0">
+          <motion.div
+            className="rounded-2xl border px-4 py-4 md:px-8 md:py-5"
+            style={{
+              background: 'rgba(255,255,255,0.03)',
+              borderColor: 'rgba(255,255,255,0.08)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)',
+            }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div
+              className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-0 md:divide-x"
+              style={{ borderColor: 'rgba(255,255,255,0.08)' }}
+            >
               {statsData.map((stat) => (
                 <StatItem key={stat.label} {...stat} />
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

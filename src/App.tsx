@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import Lenis from '@studio-freight/lenis';
-import { ThemeProvider } from './context/ThemeContext';
 import Loader from './components/Loader';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -11,31 +10,35 @@ import Services from './components/Services';
 import HowItWorks from './components/HowItWorks';
 import TelanganaPolicy from './components/TelanganaPolicy';
 import SavingsChart from './components/SavingsChart';
-import Testimonials from './components/Testimonials';
+import SubsidyCalculator from './components/SubsidyCalculator';
 import Financing from './components/Financing';
+import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
 import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
 import FloatingCTA from './components/FloatingCTA';
 import ScrollToTop from './components/ScrollToTop';
+import CustomCursor from './components/CustomCursor';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Let the Loader component control its own timing
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 0);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
+    if (isLoading) return;
     if (typeof window === 'undefined') return;
 
-    // Prevent Lenis smooth scroll on mobile devices (even in "Desktop site" mode)
-    const isMobileDevice = 
-      /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || 
-      ('ontouchstart' in window) || 
+    // Prevent Lenis smooth scroll on mobile devices
+    const isMobileDevice =
+      /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+      ('ontouchstart' in window) ||
       (navigator.maxTouchPoints > 0);
 
     if (isMobileDevice || window.innerWidth < 1024) return;
@@ -61,12 +64,24 @@ function App() {
       lenis.destroy();
       cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [isLoading]);
 
   return (
-    <ThemeProvider>
-      {isLoading && <Loader />}
-      <div className={isLoading ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}>
+    <>
+      {/* Custom cursor - desktop only */}
+      <CustomCursor />
+
+      {/* Loader */}
+      <Loader isVisible={isLoading} />
+
+      {/* Main Site */}
+      <div
+        className={`transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+        style={{ visibility: isLoading ? 'hidden' : 'visible' }}
+      >
+        {/* Noise texture overlay */}
+        <div className="noise-overlay" />
+
         <Navbar />
         <main>
           <Hero />
@@ -75,18 +90,19 @@ function App() {
           <SubsidySection />
           <Services />
           <HowItWorks />
-          <TelanganaPolicy />
+          <SubsidyCalculator />
           <SavingsChart />
+          <TelanganaPolicy />
           <Financing />
-          <FAQ />
           <Testimonials />
+          <FAQ />
           <ContactForm />
         </main>
         <Footer />
         <FloatingCTA />
         <ScrollToTop />
       </div>
-    </ThemeProvider>
+    </>
   );
 }
 

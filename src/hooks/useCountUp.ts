@@ -8,7 +8,7 @@ interface UseCountUpOptions {
   decimals?: number;
 }
 
-export function useCountUp({ end, duration = 2000, prefix = '', suffix = '', decimals = 0 }: UseCountUpOptions) {
+export function useCountUp({ end, duration = 2500, prefix = '', suffix = '', decimals = 0 }: UseCountUpOptions) {
   const [count, setCount] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
   const ref = useRef<HTMLElement>(null);
@@ -40,8 +40,8 @@ export function useCountUp({ end, duration = 2000, prefix = '', suffix = '', dec
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / duration, 1);
 
-      // Ease out cubic
-      const eased = 1 - Math.pow(1 - progress, 3);
+      // Ease out expo for dramatic count-up
+      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
       const currentValue = eased * end;
 
       setCount(parseFloat(currentValue.toFixed(decimals)));
