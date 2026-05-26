@@ -4,7 +4,7 @@ import { Sun, ArrowRight } from 'lucide-react';
 import { useSolarTime } from '../context/SolarTimeContext';
 
 const navLinks = [
-  { label: 'Home', href: '#hero' },
+  { label: 'Home', href: '#home' },
   { label: 'Why Solar', href: '#why-solar' },
   { label: 'Services', href: '#services' },
   { label: 'Calculator', href: '#calculator' },
@@ -126,7 +126,7 @@ function SolarOrbitSlider() {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('hero');
+  const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -187,7 +187,7 @@ export default function Navbar() {
       >
         {/* Logo */}
         <button
-          onClick={() => scrollTo('#hero')}
+          onClick={() => scrollTo('#home')}
           className="flex items-center gap-2 cursor-pointer"
         >
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-400 flex items-center justify-center">

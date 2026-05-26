@@ -1,7 +1,7 @@
 import { Sun, Phone, Mail, MapPin, ShieldCheck } from 'lucide-react';
 
 const quickLinks = [
-  { label: 'Home', href: '#hero' },
+  { label: 'Home', href: '#home' },
   { label: 'Services', href: '#services' },
   { label: 'Calculator', href: '#calculator' },
   { label: 'Subsidy', href: '#subsidy' },
