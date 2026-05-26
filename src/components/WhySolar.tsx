@@ -25,8 +25,8 @@ const cards = [
   },
   {
     icon: BarChart3,
-    iconColor: '#F5A623',
-    iconBg: 'rgba(245,166,35,0.08)',
+    iconColor: 'var(--solar-gold)',
+    iconBg: 'rgba(16,185,129,0.08)',
     title: 'Best ROI in India',
     description:
       'Solar delivers 30%+ annual return — beats FDs, gold, mutual funds. Payback period: just 3–5 years. Generates for 25+ years.',

@@ -44,8 +44,9 @@ export default function FloatingCTA() {
         className="fixed z-50 flex items-center justify-center w-12 h-12 rounded-full bg-[#25D366] shadow-lg shadow-green-500/30 hover:scale-110 transition-transform duration-300 cursor-pointer"
         style={{ bottom: '1.5rem', right: '1.5rem' }}
       >
-        {/* Pulse ring */}
-        <span className="absolute inset-0 rounded-full border-2 border-[#25D366] animate-ping opacity-30" />
+        {/* Double pulsing rings */}
+        <span className="absolute inset-0 rounded-full border-2 border-[#25D366] animate-ping opacity-35" style={{ animationDelay: '0s', animationDuration: '1.8s' }} />
+        <span className="absolute inset-0 rounded-full border-2 border-[#25D366] animate-ping opacity-20" style={{ animationDelay: '0.6s', animationDuration: '1.8s' }} />
         <WhatsAppIcon />
       </a>
 

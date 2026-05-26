@@ -42,7 +42,7 @@ const ContactForm = () => {
   };
 
   const inputClasses =
-    'w-full rounded-xl px-4 py-3 text-sm font-body outline-none transition-all duration-200 placeholder:text-solar-text-dim border focus:ring-2 focus:ring-[#F5A623]/30 focus:border-[#F5A623]';
+    'w-full rounded-xl px-4 py-3 text-sm font-body outline-none transition-all duration-200 placeholder:text-solar-text-dim border focus:ring-2 focus:ring-solar-emerald/30 focus:border-solar-emerald';
 
   return (
     <section id="contact" className="relative overflow-hidden" style={{ background: 'var(--solar-bg)' }}>
@@ -88,7 +88,7 @@ const ContactForm = () => {
                     </div>
                     <div>
                       <label htmlFor="phone" className="block text-solar-text-muted text-xs font-medium mb-1.5 uppercase tracking-wider">
-                        Phone <span style={{ color: '#F5A623' }}>*</span>
+                        Phone <span className="text-solar-emerald">*</span>
                       </label>
                       <input
                         type="tel"
@@ -212,14 +212,14 @@ const ContactForm = () => {
                 <div key={item.title} className="glass-card rounded-xl p-4 flex items-start gap-3.5 hover:!translate-y-0">
                   <div
                     className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ background: 'rgba(245,166,35,0.08)', color: '#F5A623' }}
+                    style={{ background: 'rgba(5, 150, 105, 0.08)', color: 'var(--solar-emerald)' }}
                   >
                     {item.icon}
                   </div>
                   <div>
                     <p className="text-xs text-solar-text-muted font-medium uppercase tracking-wider mb-0.5">{item.title}</p>
                     {item.href ? (
-                      <a href={item.href} className="text-sm text-solar-text hover:text-[#F5A623] transition-colors font-body">
+                      <a href={item.href} className="text-sm text-solar-text hover:text-solar-emerald transition-colors font-body">
                         {item.content}
                       </a>
                     ) : (
@@ -374,9 +374,9 @@ const ContactForm = () => {
                   <div
                     className={`rounded-full transition-all duration-300 ${
                       i === activeZoom
-                        ? 'w-2.5 h-2.5 bg-solar-gold shadow-[0_0_8px_rgba(245,166,35,0.7)]'
+                        ? 'w-2.5 h-2.5 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]'
                         : i < activeZoom
-                        ? 'w-1.5 h-1.5 bg-solar-gold/60 group-hover:bg-solar-gold/90'
+                        ? 'w-1.5 h-1.5 bg-emerald-500/60 group-hover:bg-emerald-500/90'
                         : 'w-1.5 h-1.5 bg-white/35 group-hover:bg-white/70'
                     }`}
                   />

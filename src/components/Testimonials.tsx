@@ -65,7 +65,7 @@ const Testimonials = () => {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse at 50% 50%, rgba(245,166,35,0.04) 0%, transparent 60%)',
+            'radial-gradient(ellipse at 50% 50%, rgba(16,185,129,0.04) 0%, transparent 60%)',
         }}
       />
 
@@ -186,7 +186,7 @@ const TestimonialCard = ({ testimonial }: TestimonialCardProps) => {
         <div
           className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold text-solar-bg shrink-0"
           style={{
-            background: 'linear-gradient(135deg, #F5A623, #FFD700)',
+            background: 'linear-gradient(135deg, #059669, #10B981)',
           }}
         >
           {initials}

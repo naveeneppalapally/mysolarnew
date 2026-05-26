@@ -60,11 +60,11 @@ function MobileOverlay({
               onClick={() => onNav('home')}
               className="flex items-center gap-3 cursor-pointer"
             >
-              <div className="w-9 h-9 rounded-xl overflow-hidden border border-solar-border bg-transparent">
-                <img src="/logo.jpg" alt="MyHome Solar" className="w-full h-full object-cover scale-[1.25] transition-transform" />
+              <div className="w-12 h-12 rounded-xl overflow-hidden border border-solar-border bg-transparent">
+                <img src="/logo.png" alt="MyHome Solar" className="w-full h-full object-contain transition-transform" />
               </div>
               <span className="font-heading font-bold text-[15px] text-solar-text">
-                MyHome <span style={{ color: '#F5A623' }}>Solar</span>
+                MyHome <span className="text-solar-gold">Solar</span>
               </span>
             </button>
 
@@ -169,12 +169,12 @@ export default function Navbar() {
               className="flex items-center gap-3 group cursor-pointer shrink-0"
               aria-label="MyHome Solar — Home"
             >
-              <div className="w-9 h-9 rounded-xl overflow-hidden border border-solar-border bg-transparent shadow-sm group-hover:scale-105 transition-transform duration-200 shrink-0">
-                <img src="/logo.jpg" alt="MyHome Solar" className="w-full h-full object-cover scale-[1.25] transition-transform" />
+              <div className="w-12 h-12 rounded-xl overflow-hidden border border-solar-border bg-transparent shadow-sm group-hover:scale-105 transition-transform duration-200 shrink-0">
+                <img src="/logo.png" alt="MyHome Solar" className="w-full h-full object-contain transition-transform" />
               </div>
               <div className="flex flex-col leading-tight">
                 <span className="font-heading font-bold text-[15px] tracking-tight text-solar-text">
-                  MyHome <span style={{ color: '#F5A623' }}>Solar</span>
+                  MyHome <span className="text-solar-gold">Solar</span>
                 </span>
                 <span className="font-body text-[10px] tracking-wider text-solar-text-muted">
                   SOLARSMART ENERGIES
@@ -200,7 +200,7 @@ export default function Navbar() {
               <button
                 onClick={toggle}
                 aria-label={theme === 'dark' ? 'Light mode' : 'Dark mode'}
-                className="w-9 h-9 rounded-lg border flex items-center justify-center cursor-pointer transition-colors hover:border-[#F5A623] hover:text-[#F5A623]"
+                className="w-9 h-9 rounded-lg border flex items-center justify-center cursor-pointer transition-colors hover:border-solar-emerald hover:text-solar-emerald"
                 style={{ borderColor: 'var(--solar-border)', color: 'var(--solar-text-muted)', background: 'transparent' }}
               >
                 {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -208,7 +208,7 @@ export default function Navbar() {
 
               <a
                 href="tel:+919493936249"
-                className="flex items-center gap-2 font-body text-sm font-medium px-4 py-2 rounded-lg border transition-colors hover:border-[#F5A623] hover:text-[#F5A623]"
+                className="flex items-center gap-2 font-body text-sm font-medium px-4 py-2 rounded-lg border transition-colors hover:border-solar-emerald hover:text-solar-emerald"
                 style={{ borderColor: 'var(--solar-border)', color: 'var(--solar-text-muted)' }}
               >
                 <Phone className="w-3.5 h-3.5" />

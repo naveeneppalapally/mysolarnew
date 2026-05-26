@@ -42,7 +42,7 @@ export default function ScrollToTop() {
           style={{
             background: 'var(--solar-card)',
             border: '1px solid var(--solar-border)',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.15), 0 0 15px rgba(245,166,35,0.1)',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.15), 0 0 15px rgba(16,185,129,0.1)',
           }}
           aria-label="Scroll to top"
         >
@@ -66,7 +66,7 @@ export default function ScrollToTop() {
               cy="24"
               r={radius}
               fill="none"
-              stroke="#F5A623"
+              stroke="var(--solar-emerald)"
               strokeWidth="2.5"
               strokeLinecap="round"
               strokeDasharray={circumference}

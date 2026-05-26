@@ -131,7 +131,7 @@ export default function SubsidyCalculator() {
         <input
           id="bill-slider"
           type="range"
-          min={500}
+          min={1000}
           max={10000}
           step={100}
           value={monthlyBill}
@@ -139,8 +139,8 @@ export default function SubsidyCalculator() {
           className="gold-slider w-full"
         />
         <div className="flex justify-between text-xs text-solar-text-muted mt-2 font-body">
-          <span>₹500</span>
-          <span>₹10,000</span>
+          <span>₹1,000</span>
+          <span>₹10,000+</span>
         </div>
       </motion.div>
 

@@ -31,8 +31,8 @@ const investmentBars: InvestmentBar[] = [
   {
     label: 'Solar (with subsidy)',
     percentage: 35,
-    color: '#F5A623',
-    gradient: 'linear-gradient(90deg, #F5A623, #FFD700)',
+    color: '#10B981',
+    gradient: 'linear-gradient(90deg, #059669, #10B981)',
   },
   {
     label: 'Mutual Funds',
@@ -72,8 +72,8 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   if (!active || !payload || payload.length === 0) return null;
 
   return (
-    <div className="glass-card p-4 !rounded-xl border border-solar-gold/30 min-w-[200px]">
-      <p className="font-heading font-bold text-solar-gold text-sm mb-2">
+    <div className="glass-card p-4 !rounded-xl border border-solar-emerald/30 min-w-[200px]">
+      <p className="font-heading font-bold text-solar-emerald text-sm mb-2">
         Year {label}
       </p>
       {payload.map((entry) => (
@@ -198,7 +198,7 @@ const SavingsChart = () => {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse at 50% 30%, rgba(245,166,35,0.05) 0%, transparent 60%), radial-gradient(ellipse at 80% 70%, rgba(16,185,129,0.04) 0%, transparent 50%)',
+            'radial-gradient(ellipse at 50% 30%, rgba(16,185,129,0.05) 0%, transparent 60%), radial-gradient(ellipse at 80% 70%, rgba(16,185,129,0.04) 0%, transparent 50%)',
         }}
       />
 
@@ -252,8 +252,8 @@ const SavingsChart = () => {
                 >
                   <defs>
                     <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#F5A623" stopOpacity={0.4} />
-                      <stop offset="100%" stopColor="#F5A623" stopOpacity={0.02} />
+                      <stop offset="0%" stopColor="#34D399" stopOpacity={0.4} />
+                      <stop offset="100%" stopColor="#34D399" stopOpacity={0.02} />
                     </linearGradient>
                     <linearGradient
                       id="emeraldGrad"
@@ -262,10 +262,10 @@ const SavingsChart = () => {
                       x2="0"
                       y2="1"
                     >
-                      <stop offset="0%" stopColor="#10B981" stopOpacity={0.4} />
+                      <stop offset="0%" stopColor="#059669" stopOpacity={0.4} />
                       <stop
                         offset="100%"
-                        stopColor="#10B981"
+                        stopColor="#059669"
                         stopOpacity={0.02}
                       />
                     </linearGradient>
@@ -314,7 +314,7 @@ const SavingsChart = () => {
                     type="monotone"
                     dataKey="flatRate"
                     name="flatRate"
-                    stroke="#F5A623"
+                    stroke="#34D399"
                     strokeWidth={2}
                     fill="url(#goldGrad)"
                     animationDuration={2000}
@@ -325,7 +325,7 @@ const SavingsChart = () => {
                     type="monotone"
                     dataKey="risingRate"
                     name="risingRate"
-                    stroke="#10B981"
+                    stroke="#059669"
                     strokeWidth={2}
                     fill="url(#emeraldGrad)"
                     animationDuration={2000}

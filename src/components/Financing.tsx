@@ -61,7 +61,7 @@ const Financing = () => {
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(ellipse at 30% 80%, rgba(16,185,129,0.05) 0%, transparent 50%), radial-gradient(ellipse at 70% 20%, rgba(245,166,35,0.05) 0%, transparent 50%)',
+            'radial-gradient(ellipse at 30% 80%, rgba(16,185,129,0.05) 0%, transparent 50%), radial-gradient(ellipse at 70% 20%, rgba(52,211,153,0.05) 0%, transparent 50%)',
         }}
       />
 

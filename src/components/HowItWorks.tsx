@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import {
-  Phone,
   Search,
   ClipboardList,
+  Gauge,
   Hammer,
   CheckCircle,
 } from 'lucide-react';
@@ -14,29 +14,29 @@ import {
 
 const steps = [
   {
-    icon: Phone,
-    title: 'Free Call & Consult',
-    description: 'Share your electricity bill details. We assess your solar potential.',
-  },
-  {
     icon: Search,
-    title: 'Site Visit & Survey',
-    description: 'Our expert visits your rooftop. Shadow analysis, measurements, planning.',
+    title: 'Site Survey',
+    description: 'Free expert rooftop survey, structural measurements, and shadow analysis.',
   },
   {
     icon: ClipboardList,
     title: 'Custom Proposal',
-    description: 'Detailed quote with system design, subsidy breakdown, and financing options.',
+    description: 'Detailed engineering quote, structural design, and custom subsidy breakdown.',
+  },
+  {
+    icon: Gauge,
+    title: 'Net Metering',
+    description: 'We handle 100% of DISCOM paperwork, approvals, and net meter setup.',
   },
   {
     icon: Hammer,
     title: 'Installation',
-    description: 'Professional installation in 1–3 days. We handle all DISCOM approvals.',
+    description: 'Professional system setup in 1–3 days by our certified engineering team.',
   },
   {
     icon: CheckCircle,
-    title: 'Subsidy Claimed',
-    description: 'Net meter installed. Government subsidy credited to your bank in 30 days.',
+    title: 'Subsidy Release',
+    description: 'DISCOM inspection approval and central subsidy credited directly to your bank.',
   },
 ];
 

@@ -77,9 +77,9 @@ function App() {
           <HowItWorks />
           <TelanganaPolicy />
           <SavingsChart />
-          <Testimonials />
           <Financing />
           <FAQ />
+          <Testimonials />
           <ContactForm />
         </main>
         <Footer />

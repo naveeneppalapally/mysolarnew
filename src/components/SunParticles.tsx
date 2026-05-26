@@ -77,9 +77,9 @@ export default function SunParticles() {
       const glowX = w * 0.85;
       const glowY = h * 0.1;
       const glowGrad = ctx.createRadialGradient(glowX, glowY, 0, glowX, glowY, w * 0.4);
-      glowGrad.addColorStop(0, `rgba(245,166,35,${0.07 * opacityScale})`);
-      glowGrad.addColorStop(0.4, `rgba(255,215,0,${0.03 * opacityScale})`);
-      glowGrad.addColorStop(1, 'rgba(245,166,35,0)');
+      glowGrad.addColorStop(0, `rgba(16, 185, 129, ${0.07 * opacityScale})`);
+      glowGrad.addColorStop(0.4, `rgba(52, 211, 153, ${0.03 * opacityScale})`);
+      glowGrad.addColorStop(1, 'rgba(16, 185, 129, 0)');
       ctx.fillStyle = glowGrad;
       ctx.fillRect(0, 0, w, h);
 
@@ -115,9 +115,9 @@ export default function SunParticles() {
 
         // Radial gradient per particle
         const pGrad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 2.5);
-        pGrad.addColorStop(0, `rgba(255,215,0,${scaledOpacity})`);
-        pGrad.addColorStop(0.5, `rgba(245,166,35,${scaledOpacity * 0.5})`);
-        pGrad.addColorStop(1, 'rgba(245,166,35,0)');
+        pGrad.addColorStop(0, `rgba(52, 211, 153, ${scaledOpacity})`);
+        pGrad.addColorStop(0.5, `rgba(16, 185, 129, ${scaledOpacity * 0.5})`);
+        pGrad.addColorStop(1, 'rgba(16, 185, 129, 0)');
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
@@ -127,7 +127,7 @@ export default function SunParticles() {
         // Bright core
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius * 0.45, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,248,220,${scaledOpacity * 0.9})`;
+        ctx.fillStyle = `rgba(240, 253, 244, ${scaledOpacity * 0.9})`;
         ctx.fill();
       }
 
