@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, ArrowRight } from 'lucide-react';
+import { Sun, ArrowRight } from 'lucide-react';
 import { useSolarTime } from '../context/SolarTimeContext';
 
 const navLinks = [
@@ -12,6 +12,28 @@ const navLinks = [
   { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '#contact' },
 ];
+
+function BioSolarMenuIcon({ isOpen }: { isOpen: boolean }) {
+  return (
+    <div className="relative w-6 h-5 flex flex-col justify-between items-center cursor-pointer">
+      <motion.span
+        animate={isOpen ? { rotate: 45, y: 8, backgroundColor: "rgb(239, 68, 68)" } : { rotate: 0, y: 0, backgroundColor: "rgb(16, 185, 129)" }}
+        transition={{ duration: 0.3 }}
+        className="w-6 h-[2.5px] rounded origin-center"
+      />
+      <motion.span
+        animate={isOpen ? { scaleX: 0, opacity: 0 } : { scaleX: 1, opacity: 1, backgroundColor: "rgb(52, 211, 153)" }}
+        transition={{ duration: 0.2 }}
+        className="w-6 h-[2.5px] rounded origin-center"
+      />
+      <motion.span
+        animate={isOpen ? { rotate: -45, y: -8, backgroundColor: "rgb(239, 68, 68)" } : { rotate: 0, y: 0, backgroundColor: "rgb(5, 150, 105)" }}
+        transition={{ duration: 0.3 }}
+        className="w-6 h-[2.5px] rounded origin-center"
+      />
+    </div>
+  );
+}
 
 function SolarOrbitSlider() {
   const { timeOfDay, setTimeOfDay, currentPhase } = useSolarTime();
@@ -237,32 +259,10 @@ export default function Navbar() {
         {/* Mobile hamburger */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="lg:hidden relative w-10 h-10 flex items-center justify-center text-white cursor-pointer"
+          className="lg:hidden relative w-10 h-10 flex items-center justify-center text-white cursor-pointer z-50"
           aria-label="Toggle menu"
         >
-          <AnimatePresence mode="wait">
-            {mobileOpen ? (
-              <motion.span
-                key="close"
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <X size={22} />
-              </motion.span>
-            ) : (
-              <motion.span
-                key="menu"
-                initial={{ rotate: 90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: -90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Menu size={22} />
-              </motion.span>
-            )}
-          </AnimatePresence>
+          <BioSolarMenuIcon isOpen={mobileOpen} />
         </button>
       </motion.nav>
 
@@ -274,10 +274,10 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[99] bg-gray-950/95 backdrop-blur-2xl flex flex-col items-center justify-center"
+            className="fixed inset-0 z-[99] bg-gray-950/95 backdrop-blur-2xl flex flex-col items-center justify-start pt-28 pb-8 overflow-y-auto"
           >
-            <nav className="flex flex-col items-center gap-2">
-              <div className="mb-6 scale-110">
+            <nav className="flex flex-col items-center gap-2 w-full">
+              <div className="mb-6 scale-110 flex justify-center">
                 <SolarOrbitSlider />
               </div>
               {navLinks.map((link, i) => {

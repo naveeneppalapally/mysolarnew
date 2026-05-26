@@ -61,7 +61,7 @@ const cardVariants: Variants = {
 export default function SubsidySection() {
   const totalRef = useRef<HTMLDivElement>(null);
   const totalInView = useInView(totalRef, { once: false, amount: 0.5 });
-  const totalValue = useCountUp(138000, 2200, totalInView);
+  const totalValue = useCountUp(78000, 2000, totalInView);
 
   return (
     <section id="subsidy" className="relative py-24 sm:py-32 overflow-hidden">
