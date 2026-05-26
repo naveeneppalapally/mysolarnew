@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { useState, useMemo, useEffect } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
 import { Zap, Gift, Wallet, PiggyBank, Clock, TrendingUp, Gauge, ArrowRight } from 'lucide-react';
 import { calculateSubsidy } from '../lib/utils';
 
@@ -7,17 +7,25 @@ import { calculateSubsidy } from '../lib/utils';
 function AnimatedValue({ value, prefix = '', suffix = '', decimals = 0 }: {
   value: number; prefix?: string; suffix?: string; decimals?: number;
 }) {
-  const motionVal = useMotionValue(0);
+  const motionVal = useMotionValue(value);
   const springVal = useSpring(motionVal, { stiffness: 60, damping: 18, mass: 0.8 });
-  const display = useTransform(springVal, (v) => {
-    const num = decimals > 0 ? v.toFixed(decimals) : Math.round(v).toLocaleString('en-IN');
+  const [display, setDisplay] = useState(() => {
+    const num = decimals > 0 ? value.toFixed(decimals) : Math.round(value).toLocaleString('en-IN');
     return `${prefix}${num}${suffix}`;
   });
 
-  // Drive the motion value whenever `value` changes
-  useMemo(() => { motionVal.set(value); }, [value, motionVal]);
+  useEffect(() => {
+    motionVal.set(value);
+  }, [value, motionVal]);
 
-  return <motion.span>{display}</motion.span>;
+  useEffect(() => {
+    return springVal.on('change', (latest) => {
+      const num = decimals > 0 ? latest.toFixed(decimals) : Math.round(latest).toLocaleString('en-IN');
+      setDisplay(`${prefix}${num}${suffix}`);
+    });
+  }, [springVal, prefix, suffix, decimals]);
+
+  return <span>{display}</span>;
 }
 
 /* ─── IndianRupee inline icon ─── */
