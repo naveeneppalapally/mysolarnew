@@ -192,6 +192,20 @@ export default function BackgroundSettings() {
                     console.log("HUD Click: Changing font theme to Poppins");
                     setFontTheme('poppins');
                   }}
+                  onTouchStart={(e) => {
+                    const touch = e.touches[0];
+                    if (touch) {
+                      e.currentTarget.setAttribute('data-touch-y', touch.clientY.toString());
+                    }
+                  }}
+                  onTouchEnd={(e) => {
+                    const touch = e.changedTouches[0];
+                    const startY = parseFloat(e.currentTarget.getAttribute('data-touch-y') || '0');
+                    if (touch && Math.abs(touch.clientY - startY) < 10) {
+                      console.log("HUD Touch: Changing font theme to Poppins");
+                      setFontTheme('poppins');
+                    }
+                  }}
                   className={`py-2 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
                     fontTheme === 'poppins'
                       ? 'bg-amber-500/10 border-amber-500/80 text-amber-400 font-bold shadow-md shadow-amber-500/5'
@@ -206,6 +220,20 @@ export default function BackgroundSettings() {
                   onClick={() => {
                     console.log("HUD Click: Changing font theme to Syne");
                     setFontTheme('syne');
+                  }}
+                  onTouchStart={(e) => {
+                    const touch = e.touches[0];
+                    if (touch) {
+                      e.currentTarget.setAttribute('data-touch-y', touch.clientY.toString());
+                    }
+                  }}
+                  onTouchEnd={(e) => {
+                    const touch = e.changedTouches[0];
+                    const startY = parseFloat(e.currentTarget.getAttribute('data-touch-y') || '0');
+                    if (touch && Math.abs(touch.clientY - startY) < 10) {
+                      console.log("HUD Touch: Changing font theme to Syne");
+                      setFontTheme('syne');
+                    }
                   }}
                   className={`py-2 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
                     fontTheme === 'syne'

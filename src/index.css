@@ -13,10 +13,10 @@
 
 /* ─── Live Dynamic Font Class Overrides ─── */
 html.font-theme-poppins {
-  --font-heading: 'Poppins', sans-serif;
+  --font-heading: 'Poppins', sans-serif !important;
 }
 html.font-theme-syne {
-  --font-heading: 'Syne', sans-serif;
+  --font-heading: 'Syne', sans-serif !important;
 }
 
 /* ============================================================
