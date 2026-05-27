@@ -411,13 +411,15 @@ export default function Hero() {
 
       {/* Premium Trifold "Solar Eclipse" Aura Overlay */}
       <div className="absolute inset-0 pointer-events-none z-[1] overflow-hidden flex items-center justify-center">
-        {/* Massive circular purple-indigo atmosphere background */}
+        {/* Massive circular atmosphere background (Amber/Orange in Light mode, Purple/Indigo in Dark mode) */}
         <div 
           className="absolute w-[800px] h-[800px] rounded-full blur-[150px]"
           style={{
-            background: 'radial-gradient(circle, var(--solar-purple) 0%, var(--solar-indigo) 50%, transparent 70%)',
+            background: theme === 'light'
+              ? 'radial-gradient(circle, var(--solar-gold-bright) 0%, var(--solar-orange) 45%, transparent 70%)'
+              : 'radial-gradient(circle, var(--solar-purple) 0%, var(--solar-indigo) 50%, transparent 70%)',
             transform: 'translate(30%, -20%)',
-            opacity: theme === 'light' ? 0.35 : 0.35,
+            opacity: theme === 'light' ? 0.22 : 0.35,
           }}
         />
         
@@ -431,8 +433,13 @@ export default function Hero() {
           {/* Glowing Gold Ring */}
           <div className="absolute w-[270px] h-[270px] rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 blur-[8px] animate-glow-pulse" style={{ opacity: theme === 'light' ? 0.55 : 0.35 }} />
           
-          {/* Glowing Purple atmospheric halo */}
-          <div className="absolute w-[365px] h-[365px] rounded-full bg-indigo-600/30 blur-[24px]" />
+          {/* Glowing atmospheric halo (Gold/Amber in Light mode, Indigo in Dark mode) */}
+          <div 
+            className="absolute w-[365px] h-[365px] rounded-full blur-[24px]" 
+            style={{
+              backgroundColor: theme === 'light' ? 'rgba(224, 144, 16, 0.22)' : 'rgba(79, 70, 229, 0.3)',
+            }}
+          />
           
           {/* The Moon / Dark Silicon Center Disc */}
           <div className="absolute w-[248px] h-[248px] rounded-full bg-solar-bg-secondary border border-solar-border shadow-[inset_0_4px_16px_rgba(255,255,255,0.02)]" />

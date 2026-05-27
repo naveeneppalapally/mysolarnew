@@ -113,7 +113,7 @@
   /* Gradients — Warm trifold, NOT cold flat */
   --gradient-gold: linear-gradient(135deg, #c07c0a, #d4580a);
   --gradient-cyan: linear-gradient(135deg, #c07c0a 0%, #7c3aed 50%, #4338ca 100%);
-  --gradient-hero: linear-gradient(160deg, #faf7f2 0%, #f2eadc 40%, #ede0f5 80%, #faf7f2 100%);
+  --gradient-hero: linear-gradient(160deg, #fafaf8 0%, #fdf8f0 40%, #f5ead6 80%, #fafaf8 100%);
 
   /* Navigation */
   --nav-bg: rgba(250, 247, 242, 0.90);
@@ -132,8 +132,8 @@ html.style-silicon-grid:not(.light-theme) {
   --solar-border: rgba(99, 102, 241, 0.08);
 }
 html.style-silicon-grid.light-theme {
-  --solar-bg: radial-gradient(circle at 50% 50%, #faf6ee 0%, #f2e8f5 100%);
-  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #f8f2e8 0%, #ede0f0 100%);
+  --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdf8f0 70%, #f5ead6 100%);
+  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #fdf5e6 100%);
   --solar-bg-tertiary: #ede5d8;
   --solar-border: rgba(180, 130, 20, 0.10);
 }
@@ -145,8 +145,8 @@ html.style-gradient-embers:not(.light-theme) {
   --solar-bg-tertiary: #160f0a;
 }
 html.style-gradient-embers.light-theme {
-  --solar-bg: radial-gradient(circle at 30% 20%, #faf6ee 0%, #f2eadc 100%);
-  --solar-bg-secondary: radial-gradient(circle at 80% 70%, #f8f2e8 0%, #ede0d5 100%);
+  --solar-bg: radial-gradient(circle at 30% 20%, #fafaf8 0%, #fdf8f0 70%, #f5ead6 100%);
+  --solar-bg-secondary: radial-gradient(circle at 80% 70%, #fafaf8 0%, #fdf5e6 100%);
   --solar-bg-tertiary: #ede5d8;
   --solar-border: rgba(180, 130, 20, 0.10);
 }
@@ -158,8 +158,8 @@ html.style-energy-waves:not(.light-theme) {
   --solar-bg-tertiary: #0a1128;
 }
 html.style-energy-waves.light-theme {
-  --solar-bg: radial-gradient(circle at 50% 50%, #faf6ee 0%, #f2e6f3 100%);
-  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #f8f2e8 0%, #ece0ee 100%);
+  --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdf8f0 60%, #f5eada 100%);
+  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #fdf5e6 100%);
   --solar-bg-tertiary: #ede5d8;
   --solar-border: rgba(180, 130, 20, 0.10);
 }
@@ -171,8 +171,8 @@ html.style-cosmic-wind:not(.light-theme) {
   --solar-bg-tertiary: #1b0a3b;
 }
 html.style-cosmic-wind.light-theme {
-  --solar-bg: radial-gradient(circle at 50% 50%, #faf6ee 0%, #f0e2f2 100%);
-  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #f8f2e8 0%, #e8d8ec 100%);
+  --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdf8f0 60%, #f5e7ce 100%);
+  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #fcf1df 100%);
   --solar-bg-tertiary: #ede5d8;
   --solar-border: rgba(180, 130, 20, 0.10);
 }
@@ -184,8 +184,8 @@ html.style-solar-aurora:not(.light-theme) {
   --solar-bg-tertiary: #0c1538;
 }
 html.style-solar-aurora.light-theme {
-  --solar-bg: radial-gradient(circle at 50% 50%, #faf6ee 0%, #f0e8f5 100%);
-  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #f8f2e8 0%, #e6ddf0 100%);
+  --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdf8f0 60%, #f5ead6 100%);
+  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #faf3e5 100%);
   --solar-bg-tertiary: #ede5d8;
   --solar-border: rgba(180, 130, 20, 0.10);
 }
@@ -197,8 +197,8 @@ html.style-magnetic-resonance:not(.light-theme) {
   --solar-bg-tertiary: #16140c;
 }
 html.style-magnetic-resonance.light-theme {
-  --solar-bg: radial-gradient(circle at 80% 15%, #faf6ee 0%, #f5ece0 100%);
-  --solar-bg-secondary: radial-gradient(circle at 20% 80%, #f8f2e8 0%, #ede2d8 100%);
+  --solar-bg: radial-gradient(circle at 80% 15%, #fafaf8 0%, #fdf8f0 70%, #f5ece0 100%);
+  --solar-bg-secondary: radial-gradient(circle at 20% 80%, #fafaf8 0%, #fdf5e6 100%);
   --solar-bg-tertiary: #ede5d8;
   --solar-border: rgba(180, 130, 20, 0.10);
 }
@@ -210,8 +210,8 @@ html.style-hex-cells:not(.light-theme) {
   --solar-bg-tertiary: #0b0e1a;
 }
 html.style-hex-cells.light-theme {
-  --solar-bg: radial-gradient(circle at 50% 50%, #faf6ee 0%, #f0e8f2 100%);
-  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #f8f2e8 0%, #e8e0ea 100%);
+  --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdf8f0 65%, #f5edd8 100%);
+  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #faf4e6 100%);
   --solar-bg-tertiary: #ede5d8;
   --solar-border: rgba(180, 130, 20, 0.10);
 }
@@ -223,8 +223,8 @@ html.style-liquid-lava:not(.light-theme) {
   --solar-bg-tertiary: #2a0303;
 }
 html.style-liquid-lava.light-theme {
-  --solar-bg: radial-gradient(circle at 50% 50%, #faf6ee 0%, #f5e6f0 100%);
-  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #f8f2e8 0%, #f0dce8 100%);
+  --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdf8f0 60%, #f5e5cc 100%);
+  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #fcf0db 100%);
   --solar-bg-tertiary: #ede5d8;
   --solar-border: rgba(180, 130, 20, 0.10);
 }
@@ -236,8 +236,8 @@ html.style-digital-rain:not(.light-theme) {
   --solar-bg-tertiary: #001205;
 }
 html.style-digital-rain.light-theme {
-  --solar-bg: radial-gradient(circle at 50% 50%, #faf6ee 0%, #f2eaf0 100%);
-  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #f8f2e8 0%, #e8dde5 100%);
+  --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdf8f0 60%, #f4ebd7 100%);
+  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #faf3e4 100%);
   --solar-bg-tertiary: #ede5d8;
   --solar-border: rgba(180, 130, 20, 0.10);
 }
@@ -249,8 +249,8 @@ html.style-prismatic-shards:not(.light-theme) {
   --solar-bg-tertiary: #05143a;
 }
 html.style-prismatic-shards.light-theme {
-  --solar-bg: radial-gradient(circle at 50% 50%, #faf6ee 0%, #f0e5f3 100%);
-  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #f8f2e8 0%, #e6d8ed 100%);
+  --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdf8f0 60%, #f5ead6 100%);
+  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #fbf3e5 100%);
   --solar-bg-tertiary: #ede5d8;
   --solar-border: rgba(180, 130, 20, 0.10);
 }
@@ -263,9 +263,9 @@ html.style-none:not(.light-theme) {
   --solar-border: rgba(99, 102, 241, 0.08);
 }
 html.style-none.light-theme {
-  --solar-bg: #faf7f2;
-  --solar-bg-secondary: #f5f0e8;
-  --solar-bg-tertiary: #ede5d8;
+  --solar-bg: #fafaf8;
+  --solar-bg-secondary: #fdf8f0;
+  --solar-bg-tertiary: #f5ead6;
   --solar-border: rgba(180, 130, 20, 0.08);
 }
 
@@ -361,7 +361,7 @@ html.style-none.light-theme {
 .light-theme .bg-cyan-500\/\[0\.015\],
 .light-theme .bg-cyan-500\/\[0\.03\],
 .light-theme .bg-emerald-500\/\[0\.03\] {
-  background-color: rgba(124, 58, 237, 0.035) !important; /* Soft Amethyst Purple Glow */
+  background-color: rgba(192, 124, 10, 0.035) !important; /* Soft Amber/Gold Glow */
 }
 
 /* 2. Global Heading & Text Gradient Overrides (Amber to Purple-Indigo) */
@@ -2464,6 +2464,61 @@ html:not(.light-theme) .phase-night {
   --solar-border-hover: rgba(6, 182, 212, 0.35);
   --shadow-glow-gold: 0 0 60px rgba(6, 182, 212, 0.15), 0 0 120px rgba(6, 182, 212, 0.05);
   --gradient-gold: linear-gradient(135deg, #06b6d4, #3b82f6);
+}
+
+/* ============================================================
+   CIRCADIAN PHASE THEME OVERRIDES — LIGHT MODE
+   ============================================================ */
+html.light-theme .phase-dawn {
+  --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdf5e6 70%, #f8ead5 100%);
+  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #fdf2df 100%);
+  --solar-bg-tertiary: #ede5d8;
+  --solar-gold: #d97706;
+  --solar-gold-bright: #f59e0b;
+  --solar-gold-dark: #b45309;
+  --solar-orange: #ea580c;
+  --solar-border-hover: rgba(217, 119, 6, 0.35);
+  --shadow-glow-gold: 0 0 60px rgba(217, 119, 6, 0.15), 0 0 120px rgba(217, 119, 6, 0.05);
+  --gradient-gold: linear-gradient(135deg, #d97706, #ea580c);
+}
+
+html.light-theme .phase-noon {
+  --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdf8f0 70%, #f5ead6 100%);
+  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #fdf5e6 100%);
+  --solar-bg-tertiary: #ede5d8;
+  --solar-gold: #c07c0a;
+  --solar-gold-bright: #e09010;
+  --solar-gold-dark: #9a6208;
+  --solar-orange: #d4580a;
+  --solar-border-hover: rgba(180, 130, 20, 0.35);
+  --shadow-glow-gold: 0 0 60px rgba(180, 130, 20, 0.15), 0 0 120px rgba(180, 130, 20, 0.05);
+  --gradient-gold: linear-gradient(135deg, #c07c0a, #d4580a);
+}
+
+html.light-theme .phase-dusk {
+  --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdf0e0 70%, #f2dcb8 100%);
+  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #fcf0db 100%);
+  --solar-bg-tertiary: #ede5d8;
+  --solar-gold: #d4580a;
+  --solar-gold-bright: #ea580c;
+  --solar-gold-dark: #9a3412;
+  --solar-orange: #7c3aed;
+  --solar-border-hover: rgba(212, 88, 10, 0.35);
+  --shadow-glow-gold: 0 0 60px rgba(212, 88, 10, 0.15), 0 0 120px rgba(212, 88, 10, 0.05);
+  --gradient-gold: linear-gradient(135deg, #d4580a, #7c3aed);
+}
+
+html.light-theme .phase-night {
+  --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #f0f3f5 70%, #e5e9ec 100%);
+  --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #edf1f3 100%);
+  --solar-bg-tertiary: #ede5d8;
+  --solar-gold: #0891b2;
+  --solar-gold-bright: #22d3ee;
+  --solar-gold-dark: #0e7490;
+  --solar-orange: #3b82f6;
+  --solar-border-hover: rgba(8, 145, 178, 0.35);
+  --shadow-glow-gold: 0 0 60px rgba(8, 145, 178, 0.15), 0 0 120px rgba(8, 145, 178, 0.05);
+  --gradient-gold: linear-gradient(135deg, #0891b2, #3b82f6);
 }
 
 /* ============================================================

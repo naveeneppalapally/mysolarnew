@@ -877,139 +877,83 @@ export default function SunParticles() {
       // Draw style-specific premium deep-ambient backdrop washes directly in the canvas overlay
       let bgGrad;
       const isLight = themeRef.current === 'light';
-      switch (currentStyle) {
-        case 'silicon-grid':
-          bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-          if (isLight) {
-            bgGrad.addColorStop(0, '#faf6ee');
-            bgGrad.addColorStop(0.5, '#f2e8f5');
-            bgGrad.addColorStop(1, '#ede2d8');
-          } else {
-            bgGrad.addColorStop(0, '#02040a');
-            bgGrad.addColorStop(1, '#040a15');
-          }
-          ctx.fillStyle = bgGrad;
-          ctx.fillRect(0, 0, w, h);
-          break;
-        case 'liquid-lava':
-          bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-          if (isLight) {
-            bgGrad.addColorStop(0, '#faf6ee');
-            bgGrad.addColorStop(0.5, '#f5e6f0');
-            bgGrad.addColorStop(1, '#ede2d8');
-          } else {
-            bgGrad.addColorStop(0, '#100101');
-            bgGrad.addColorStop(0.7, '#040000');
-            bgGrad.addColorStop(1, '#000000');
-          }
-          ctx.fillStyle = bgGrad;
-          ctx.fillRect(0, 0, w, h);
-          break;
-        case 'cosmic-wind':
-          bgGrad = ctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.8);
-          if (isLight) {
-            bgGrad.addColorStop(0, '#faf6ee');
-            bgGrad.addColorStop(0.5, '#f0e2f2');
-            bgGrad.addColorStop(1, '#ede2d8');
-          } else {
-            bgGrad.addColorStop(0, '#0d0422');
-            bgGrad.addColorStop(0.5, '#04010b');
-            bgGrad.addColorStop(1, '#000000');
-          }
-          ctx.fillStyle = bgGrad;
-          ctx.fillRect(0, 0, w, h);
-          break;
-        case 'digital-rain':
-          bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-          if (isLight) {
-            bgGrad.addColorStop(0, '#faf6ee');
-            bgGrad.addColorStop(0.5, '#f2eaf0');
-            bgGrad.addColorStop(1, '#ede2d8');
-          } else {
-            bgGrad.addColorStop(0, '#000502');
-            bgGrad.addColorStop(1, '#000000');
-          }
-          ctx.fillStyle = bgGrad;
-          ctx.fillRect(0, 0, w, h);
-          break;
-        case 'prismatic-shards':
-          bgGrad = ctx.createLinearGradient(0, 0, w, h);
-          if (isLight) {
-            bgGrad.addColorStop(0, '#faf6ee');
-            bgGrad.addColorStop(0.5, '#f0e5f3');
-            bgGrad.addColorStop(1, '#ede2d8');
-          } else {
-            bgGrad.addColorStop(0, '#010512');
-            bgGrad.addColorStop(1, '#000000');
-          }
-          ctx.fillStyle = bgGrad;
-          ctx.fillRect(0, 0, w, h);
-          break;
-        case 'solar-aurora':
-          bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-          if (isLight) {
-            bgGrad.addColorStop(0, '#faf6ee');
-            bgGrad.addColorStop(0.5, '#f0e8f5');
-            bgGrad.addColorStop(1, '#ede2d8');
-          } else {
-            bgGrad.addColorStop(0, '#01020a');
-            bgGrad.addColorStop(1, '#050a1e');
-          }
-          ctx.fillStyle = bgGrad;
-          ctx.fillRect(0, 0, w, h);
-          break;
-        case 'energy-waves':
-          bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-          if (isLight) {
-            bgGrad.addColorStop(0, '#faf6ee');
-            bgGrad.addColorStop(0.5, '#f2e6f3');
-            bgGrad.addColorStop(1, '#ede2d8');
-          } else {
-            bgGrad.addColorStop(0, '#02040c');
-            bgGrad.addColorStop(1, '#000002');
-          }
-          ctx.fillStyle = bgGrad;
-          ctx.fillRect(0, 0, w, h);
-          break;
-        case 'magnetic-resonance':
-          bgGrad = ctx.createRadialGradient(w * 0.8, h * 0.15, 0, w * 0.8, h * 0.15, w * 0.55);
-          if (isLight) {
-            bgGrad.addColorStop(0, hexToRgba('#7c3aed', 0.08));
-            bgGrad.addColorStop(0.5, '#f5ece0');
-            bgGrad.addColorStop(1, '#faf6ee');
-          } else {
-            bgGrad.addColorStop(0, hexToRgba(colors[0] || '#FBBF24', 0.04));
-            bgGrad.addColorStop(1, '#02040a');
-          }
-          ctx.fillStyle = bgGrad;
-          ctx.fillRect(0, 0, w, h);
-          break;
-        case 'hex-cells':
-          bgGrad = ctx.createLinearGradient(0, 0, w, h);
-          if (isLight) {
-            bgGrad.addColorStop(0, '#faf6ee');
-            bgGrad.addColorStop(0.5, '#f0e8f2');
-            bgGrad.addColorStop(1, '#ede2d8');
-          } else {
-            bgGrad.addColorStop(0, '#020308');
-            bgGrad.addColorStop(1, '#000000');
-          }
-          ctx.fillStyle = bgGrad;
-          ctx.fillRect(0, 0, w, h);
-          break;
-        case 'none':
-          if (isLight) {
-            ctx.fillStyle = '#faf7f2';
-          } else {
+      if (!isLight) {
+        switch (currentStyle) {
+          case 'silicon-grid':
             bgGrad = ctx.createLinearGradient(0, 0, 0, h);
             bgGrad.addColorStop(0, '#02040a');
             bgGrad.addColorStop(1, '#040a15');
             ctx.fillStyle = bgGrad;
-          }
-          ctx.fillRect(0, 0, w, h);
-          break;
-        default:
-          break;
+            ctx.fillRect(0, 0, w, h);
+            break;
+          case 'liquid-lava':
+            bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+            bgGrad.addColorStop(0, '#100101');
+            bgGrad.addColorStop(0.7, '#040000');
+            bgGrad.addColorStop(1, '#000000');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, w, h);
+            break;
+          case 'cosmic-wind':
+            bgGrad = ctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.8);
+            bgGrad.addColorStop(0, '#0d0422');
+            bgGrad.addColorStop(0.5, '#04010b');
+            bgGrad.addColorStop(1, '#000000');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, w, h);
+            break;
+          case 'digital-rain':
+            bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+            bgGrad.addColorStop(0, '#000502');
+            bgGrad.addColorStop(1, '#000000');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, w, h);
+            break;
+          case 'prismatic-shards':
+            bgGrad = ctx.createLinearGradient(0, 0, w, h);
+            bgGrad.addColorStop(0, '#010512');
+            bgGrad.addColorStop(1, '#000000');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, w, h);
+            break;
+          case 'solar-aurora':
+            bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+            bgGrad.addColorStop(0, '#01020a');
+            bgGrad.addColorStop(1, '#050a1e');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, w, h);
+            break;
+          case 'energy-waves':
+            bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+            bgGrad.addColorStop(0, '#02040c');
+            bgGrad.addColorStop(1, '#000002');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, w, h);
+            break;
+          case 'magnetic-resonance':
+            bgGrad = ctx.createRadialGradient(w * 0.8, h * 0.15, 0, w * 0.8, h * 0.15, w * 0.55);
+            bgGrad.addColorStop(0, hexToRgba(colors[0] || '#FBBF24', 0.04));
+            bgGrad.addColorStop(1, '#02040a');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, w, h);
+            break;
+          case 'hex-cells':
+            bgGrad = ctx.createLinearGradient(0, 0, w, h);
+            bgGrad.addColorStop(0, '#020308');
+            bgGrad.addColorStop(1, '#000000');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, w, h);
+            break;
+          case 'none':
+            bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+            bgGrad.addColorStop(0, '#02040a');
+            bgGrad.addColorStop(1, '#040a15');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, w, h);
+            break;
+          default:
+            break;
+        }
       }
 
       switch (currentStyle) {
