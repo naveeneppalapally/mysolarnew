@@ -29,10 +29,10 @@ function AppContent() {
 
   useEffect(() => {
     // Let the Loader component control its own timing
-    // Must match the full eclipse timeline: slide-in(1s) + totality(0.3s) + slide-out(0.6s) + pause(0.2s) + buffer
+    // Must match the soothing solar sunrise timeline: fade-in(1.6s) + buffer(0.1s)
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2300);
+    }, 1700);
     return () => clearTimeout(timer);
   }, []);
 

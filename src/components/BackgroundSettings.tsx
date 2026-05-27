@@ -31,7 +31,7 @@ export default function BackgroundSettings() {
     id: BackgroundStyle; 
     name: string; 
     desc: string; 
-    icon: any; 
+    icon: React.ComponentType<{ className?: string; size?: number }>; 
   }[] = [
     { 
       id: 'silicon-grid', 

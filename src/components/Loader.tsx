@@ -1,104 +1,177 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /* ============================================
-   SPARKLE PARTICLE
+   ULTRA-REALISTIC SOOTHING SUN
    ============================================ */
-interface Sparkle {
-  id: number;
-  x: number;
-  y: number;
-  size: number;
-  delay: number;
-  duration: number;
-  angle: number;
-  distance: number;
+interface RealisticSunProps {
+  turbulenceRef: React.RefObject<SVGFETurbulenceElement | null>;
+  rayTurbulenceRef: React.RefObject<SVGFETurbulenceElement | null>;
+  corona1Ref: React.RefObject<SVGGElement | null>;
+  corona2Ref: React.RefObject<SVGGElement | null>;
+  flareRef: React.RefObject<SVGRectElement | null>;
+  lightRaysRef: React.RefObject<SVGGElement | null>;
 }
 
-function generateSparkles(count: number): Sparkle[] {
-  return Array.from({ length: count }, (_, i) => ({
-    id: i,
-    x: 50 + (Math.random() - 0.5) * 10,
-    y: 50 + (Math.random() - 0.5) * 10,
-    size: 2 + Math.random() * 4,
-    delay: Math.random() * 2,
-    duration: 1.5 + Math.random() * 2,
-    angle: Math.random() * 360,
-    distance: 60 + Math.random() * 80,
-  }));
-}
-
-/* ============================================
-   ANIMATED SUN SVG
-   ============================================ */
-function AnimatedSun({ moonOffset, showDiamond }: { moonOffset: number; showDiamond: boolean }) {
+function RealisticSun({
+  turbulenceRef,
+  rayTurbulenceRef,
+  corona1Ref,
+  corona2Ref,
+  flareRef,
+  lightRaysRef,
+}: RealisticSunProps) {
   return (
-    <div className="relative w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center">
-      {/* Outer Corona Glow */}
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: '120px',
-          height: '120px',
-          background: 'radial-gradient(circle, rgba(245,158,11,0.8) 0%, rgba(251,191,36,0.3) 50%, transparent 70%)',
-          filter: 'blur(10px)',
-        }}
-        animate={{
-          scale: [1, 1.08, 1],
-          opacity: [0.6, 0.9, 0.6],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
+    <div className="relative w-64 h-64 flex items-center justify-center select-none">
+      <svg
+        viewBox="0 0 400 400"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-full h-full overflow-visible"
+      >
+        <defs>
+          {/* Gentle, realistic heat shimmer displacement filter (very low frequency) */}
+          <filter id="solarHeatShimmer" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence
+              ref={turbulenceRef}
+              type="fractalNoise"
+              baseFrequency="0.015"
+              numOctaves="2"
+              result="noise"
+              seed="1"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale="6"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
 
-      {/* Sun Core */}
-      <div 
-        className="absolute w-[100px] h-[100px] rounded-full border border-amber-400 bg-amber-500/10"
-        style={{
-          boxShadow: '0 0 45px rgba(245, 158, 11, 0.65), inset 0 0 25px rgba(251, 191, 36, 0.4)',
-        }}
-      />
+          {/* Volumetric ray filter (shimmer noise + high blur for glowing Crepuscular Rays) */}
+          <filter id="rayVolumetric" x="-30%" y="-30%" width="160%" height="160%">
+            <feTurbulence
+              ref={rayTurbulenceRef}
+              type="fractalNoise"
+              baseFrequency="0.012"
+              numOctaves="2"
+              result="noise"
+              seed="2"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="noise"
+              scale="22"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+            <feGaussianBlur stdDeviation="12" />
+          </filter>
 
-      {/* Corona rays */}
-      {Array.from({ length: 8 }).map((_, i) => (
-        <div
-          key={i}
-          className="absolute w-[2px] h-[130px] bg-gradient-to-t from-transparent via-amber-400/25 to-transparent"
-          style={{
-            transform: `rotate(${i * 45}deg)`,
-          }}
+          {/* Volumetric sun core gradient */}
+          <radialGradient id="sunCoreGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#FFFFFF" />
+            <stop offset="15%" stopColor="#FFF9E6" />
+            <stop offset="45%" stopColor="#FBBF24" />
+            <stop offset="75%" stopColor="#F59E0B" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#D97706" stopOpacity="0" />
+          </radialGradient>
+
+          {/* Large soft atmospheric glow */}
+          <radialGradient id="sunAtmosphereGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#FBBF24" stopOpacity="0.6" />
+            <stop offset="50%" stopColor="#F59E0B" stopOpacity="0.18" />
+            <stop offset="100%" stopColor="#D97706" stopOpacity="0" />
+          </radialGradient>
+
+          {/* Anamorphic horizontal lens flare gradient */}
+          <linearGradient id="lensFlareGrad" x1="0%" y1="50%" x2="100%" y2="50%">
+            <stop offset="0%" stopColor="#F59E0B" stopOpacity="0" />
+            <stop offset="35%" stopColor="#FBBF24" stopOpacity="0.25" />
+            <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0.8" />
+            <stop offset="65%" stopColor="#FBBF24" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#F59E0B" stopOpacity="0" />
+          </linearGradient>
+
+          {/* Volumetric light ray gradient that fades out */}
+          <linearGradient id="solarRayGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stopColor="#FFFbeb" stopOpacity="0.8" />
+            <stop offset="12%" stopColor="#FBBF24" stopOpacity="0.55" />
+            <stop offset="45%" stopColor="#F59E0B" stopOpacity="0.18" />
+            <stop offset="100%" stopColor="#D97706" stopOpacity="0" />
+          </linearGradient>
+
+          {/* Soft blur for horizontal lens flare */}
+          <filter id="flareBlur" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur stdDeviation="4" />
+          </filter>
+        </defs>
+
+        {/* Soft atmospheric aura */}
+        <circle cx="200" cy="200" r="170" fill="url(#sunAtmosphereGrad)" className="opacity-90" />
+
+        {/* Slow rotating corona filaments (Layer 1) */}
+        <g ref={corona1Ref} style={{ transformOrigin: '200px 200px' }}>
+          {Array.from({ length: 16 }).map((_, i) => (
+            <path
+              key={i}
+              d="M200,70 Q212,110 200,150 Q188,110 200,70 Z"
+              fill="#F59E0B"
+              className="opacity-[0.08]"
+              style={{ transform: `rotate(${i * 22.5}deg)`, transformOrigin: '200px 200px' }}
+            />
+          ))}
+        </g>
+
+        {/* Slow counter-rotating corona filaments (Layer 2) */}
+        <g ref={corona2Ref} style={{ transformOrigin: '200px 200px' }}>
+          {Array.from({ length: 12 }).map((_, i) => (
+            <path
+              key={i}
+              d="M200,50 Q220,110 200,170 Q180,110 200,50 Z"
+              fill="#D97706"
+              className="opacity-[0.05]"
+              style={{ transform: `rotate(${i * 30 + 15}deg)`, transformOrigin: '200px 200px' }}
+            />
+          ))}
+        </g>
+
+        {/* Volumetric Ray Beams (Visible overlay, scaled, rotated, and noise-shifted dynamically) */}
+        <g ref={lightRaysRef} style={{ transformOrigin: '200px 200px', opacity: 0 }} filter="url(#rayVolumetric)">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <g key={i} style={{ transform: `rotate(${i * 30}deg)`, transformOrigin: '200px 200px' }}>
+              {/* Wide volumetric glow shaft */}
+              <polygon
+                points="168,200 200,-1000 232,200"
+                fill="url(#solarRayGrad)"
+                opacity="0.32"
+              />
+              {/* Narrow intense beam core */}
+              <polygon
+                points="186,200 200,-1000 214,200"
+                fill="url(#solarRayGrad)"
+                opacity="0.65"
+              />
+            </g>
+          ))}
+        </g>
+
+        {/* Realistic Burning Sun Core with Heat Shimmer */}
+        <circle cx="200" cy="200" r="82" fill="url(#sunCoreGrad)" filter="url(#solarHeatShimmer)" />
+
+        {/* Horizontal Anamorphic Lens Flare */}
+        <rect
+          ref={flareRef}
+          x="-100"
+          y="196"
+          width="600"
+          height="8"
+          fill="url(#lensFlareGrad)"
+          filter="url(#flareBlur)"
+          style={{ transformOrigin: '200px 200px' }}
         />
-      ))}
-
-      {/* Moon */}
-      <div
-        className="absolute w-[98px] h-[98px] rounded-full bg-[#030712] border border-white/5"
-        style={{
-          transform: `translateX(${moonOffset}%)`,
-          boxShadow: 'inset -8px -8px 20px rgba(0,0,0,0.8)',
-        }}
-      />
-
-      {/* Diamond Ring Effect */}
-      {showDiamond && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.4 }}
-          animate={{ opacity: [0, 1], scale: [0.4, 1] }}
-          className="absolute w-7 h-7 rounded-full bg-white z-20"
-          style={{
-            top: '36px',
-            right: '36px',
-            boxShadow: '0 0 25px #fff, 0 0 45px rgba(251, 191, 36, 0.9), 0 0 75px rgba(245, 158, 11, 1)',
-          }}
-        >
-          {/* Flare sparkles */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-[2px] bg-white blur-[0.5px]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2px] h-14 bg-white blur-[0.5px]" />
-        </motion.div>
-      )}
+      </svg>
     </div>
   );
 }
@@ -145,7 +218,6 @@ function TypewriterText() {
           {char}
         </motion.span>
       ))}
-      {/* Blinking cursor */}
       <motion.span
         className="inline-block w-[2px] h-[1em] ml-1 align-middle"
         style={{ background: '#F59E0B' }}
@@ -157,7 +229,7 @@ function TypewriterText() {
 }
 
 /* ============================================
-   LOADER COMPONENT
+   LOADER COMPONENT (SUN RAYS REVEAL)
    ============================================ */
 interface LoaderProps {
   isVisible?: boolean;
@@ -165,203 +237,234 @@ interface LoaderProps {
 
 const Loader = ({ isVisible }: LoaderProps) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [sparkles] = useState(() => generateSparkles(24));
-  const [progress, setProgress] = useState(0);
-  const [moonOffset, setMoonOffset] = useState(0);
-  const [showDiamond, setShowDiamond] = useState(false);
-  const [flash, setFlash] = useState(false);
+
+  // References for direct high-performance DOM manipulation
+  const containerRef = useRef<HTMLDivElement>(null);
+  const blackBgRef = useRef<HTMLDivElement>(null);
+  const sunWrapperRef = useRef<HTMLDivElement>(null);
+  const textContainerRef = useRef<HTMLDivElement>(null);
+
+  const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
+  const rayTurbulenceRef = useRef<SVGFETurbulenceElement>(null);
+  const corona1Ref = useRef<SVGGElement>(null);
+  const corona2Ref = useRef<SVGGElement>(null);
+  const flareRef = useRef<SVGRectElement>(null);
+  const lightRaysRef = useRef<SVGGElement>(null);
+  const maskGroupRef = useRef<SVGGElement>(null);
+  const revealStartTimeRef = useRef<number | null>(null);
+
+  // Initialize SVG mask on mounting
+  useEffect(() => {
+    if (blackBgRef.current) {
+      blackBgRef.current.style.setProperty('mask-image', 'url(#rayRevealMask)');
+      blackBgRef.current.style.setProperty('-webkit-mask-image', 'url(#rayRevealMask)');
+    }
+  }, []);
 
   useEffect(() => {
     const startTime = Date.now();
-    let flashTriggered = false;
 
-    const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
     const easeInOutCubic = (x: number) =>
       x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+    const easeOutQuad = (x: number) => 1 - (1 - x) * (1 - x);
 
     let frameId: number;
 
     const tick = () => {
       const elapsed = Date.now() - startTime;
 
-      if (elapsed < 1000) {
-        // Phase 1: Moon covers sun, progress fills (0ms - 1000ms)
-        const pct = elapsed / 1000;
-        const eased = easeOutCubic(pct);
-        setProgress(Math.round(eased * 100));
-        setMoonOffset(0); // Moon stays covering the sun
-        setShowDiamond(false);
-      } else if (elapsed < 1300) {
-        // Phase 2: Diamond ring + flash (1000ms - 1300ms)
-        setProgress(100);
-        setMoonOffset(0);
-        setShowDiamond(true);
-        if (!flashTriggered) {
-          setFlash(true);
-          flashTriggered = true;
-        }
-      } else if (elapsed < 1900) {
-        // Phase 3: Moon slides out to reveal the sun (1300ms - 1900ms)
-        const pct = (elapsed - 1300) / 600;
-        const eased = easeInOutCubic(pct);
-        setProgress(100);
-        setMoonOffset(eased * 130);
-        setShowDiamond(false);
-        setFlash(false);
-      } else if (elapsed < 2100) {
-        // Phase 4: Hold on revealed sun (1900ms - 2100ms)
-        setProgress(100);
-        setMoonOffset(130);
-        setShowDiamond(false);
-        setFlash(false);
-      } else {
-        // End of loading
-        setProgress(100);
-        setMoonOffset(130);
-        setShowDiamond(false);
-        setFlash(false);
-        setIsLoading(false);
-        return;
+      // 1. Slow, realistic corona rotation
+      if (corona1Ref.current) {
+        corona1Ref.current.style.transform = `rotate(${elapsed * 0.006}deg)`;
+      }
+      if (corona2Ref.current) {
+        corona2Ref.current.style.transform = `rotate(${-elapsed * 0.009}deg)`;
       }
 
-      frameId = requestAnimationFrame(tick);
+      // 2. Flare shimmer scale
+      if (flareRef.current) {
+        const flareScale = 1.0 + Math.sin(elapsed * 0.003) * 0.06;
+        flareRef.current.style.transform = `scaleY(${flareScale})`;
+      }
+
+      // 3. SVG Heat Shimmer & Ray turbulence animation (creates organic atmospheric dust motion)
+      if (turbulenceRef.current) {
+        turbulenceRef.current.setAttribute('seed', String(Math.floor(elapsed / 80) % 100));
+      }
+      if (rayTurbulenceRef.current) {
+        rayTurbulenceRef.current.setAttribute('seed', String(Math.floor(elapsed / 100) % 100));
+      }
+
+      // 4. Reveal Mask & Opacity Timelines
+      let rayScale = 0;
+      let rayRotation = 0;
+      let rayOpacity = 0;
+
+      if (isVisible !== false) {
+        if (elapsed < 1000) {
+          // Phase 1: Sun slowly rises in brightness (0ms - 1000ms)
+          const pct = elapsed / 1000;
+          const eased = easeInOutCubic(pct);
+
+          if (sunWrapperRef.current) {
+            sunWrapperRef.current.style.opacity = String(eased);
+            sunWrapperRef.current.style.transform = `scale(${0.92 + eased * 0.08})`;
+          }
+        } else {
+          // Phase 2: Volumetric rays shoot out and rotate on black loading screen (1000ms - 1600ms)
+          if (sunWrapperRef.current) {
+            sunWrapperRef.current.style.opacity = '1';
+            sunWrapperRef.current.style.transform = 'scale(1)';
+          }
+
+          const pct = Math.min(1, (elapsed - 1000) / 600);
+          const eased = easeOutQuad(pct);
+          rayScale = eased * 1.3; // Grows to 1.3x on black background
+          rayRotation = eased * 15; // Rotates 15 degrees
+          rayOpacity = eased * 0.85; // Fades in to 0.85 opacity
+        }
+      } else {
+        // Phase 3: Sunburst Ray Reveal (triggered when isVisible changes to false)
+        if (revealStartTimeRef.current === null) {
+          revealStartTimeRef.current = Date.now();
+        }
+        const revealElapsed = Date.now() - revealStartTimeRef.current;
+        const pct = Math.min(1, revealElapsed / 1400); // 1400ms reveal wipe
+        const easedReveal = easeOutQuad(pct);
+        const opacityVal = 1 - easedReveal;
+
+        // Animate rays scale & rotation from Phase 2 values to reveal ends
+        rayScale = 1.3 + easedReveal * 5.2; // Grows from 1.3x to 6.5x
+        rayRotation = 15 + easedReveal * 25; // Rotates from 15deg to 40deg
+        rayOpacity = 0.85 * opacityVal; // Fades out as reveal completes
+
+        // Fade out sun and text in center
+        if (sunWrapperRef.current) {
+          sunWrapperRef.current.style.opacity = String(opacityVal);
+          sunWrapperRef.current.style.transform = `scale(${1.0 + easedReveal * 0.08})`;
+        }
+        if (textContainerRef.current) {
+          textContainerRef.current.style.opacity = String(opacityVal);
+        }
+      }
+
+      // Update SVG mask position, scale, and rotation (mask is only active during reveal phase)
+      if (maskGroupRef.current) {
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
+        const maskScale = isVisible === false ? rayScale : 0;
+        maskGroupRef.current.style.transform = `translate(${cx}px, ${cy}px) scale(${maskScale}) rotate(${rayRotation}deg)`;
+      }
+
+      // Update visual volumetric rays transform and opacity in sync
+      if (lightRaysRef.current) {
+        lightRaysRef.current.style.transform = `rotate(${rayRotation}deg) scale(${rayScale})`;
+        lightRaysRef.current.style.opacity = String(rayOpacity);
+      }
+
+      // Keep running if isVisible is still true OR if the reveal is in progress
+      const isRevealing = revealStartTimeRef.current !== null && (Date.now() - revealStartTimeRef.current < 1400);
+      if (isVisible !== false || isRevealing) {
+        frameId = requestAnimationFrame(tick);
+      } else {
+        setIsLoading(false);
+      }
     };
 
     frameId = requestAnimationFrame(tick);
-
     return () => cancelAnimationFrame(frameId);
-  }, []);
-
-  const getSparklePosition = useCallback((sparkle: Sparkle) => {
-    const rad = (sparkle.angle * Math.PI) / 180;
-    return {
-      x: `calc(${sparkle.x}% + ${Math.cos(rad) * sparkle.distance}px)`,
-      y: `calc(${sparkle.y}% + ${Math.sin(rad) * sparkle.distance}px)`,
-    };
-  }, []);
+  }, [isVisible]);
 
   return (
     <AnimatePresence>
       {(isVisible !== undefined ? isVisible : isLoading) && (
         <motion.div
+          ref={containerRef}
           key="loader"
-          initial={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: '-100%' }}
-          transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
-          style={{ backgroundColor: '#030712' }}
+          style={{ backgroundColor: 'transparent' }}
         >
-          {/* Deep ambient glow */}
+          {/* Black background that gets masked to reveal the website */}
           <div
-            className="absolute w-[500px] h-[500px] rounded-full opacity-30 blur-[150px]"
+            ref={blackBgRef}
+            className="absolute inset-0 z-0 bg-[#030712] pointer-events-none"
+          />
+
+          {/* Ambient volumetric solar glow background */}
+          <div
+            className="absolute w-[500px] h-[500px] rounded-full opacity-25 blur-[140px] pointer-events-none"
             style={{
-              background: 'radial-gradient(circle, rgba(245,158,11,0.3) 0%, rgba(251,191,36,0.1) 40%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(245,158,11,0.2) 0%, rgba(251,191,36,0.06) 50%, transparent 70%)',
             }}
           />
 
-          {/* Secondary ambient */}
+          {/* Volumetric Sun Wrapper */}
           <div
-            className="absolute w-[300px] h-[300px] rounded-full opacity-20 blur-[100px] translate-y-12"
-            style={{
-              background: 'radial-gradient(circle, rgba(249,115,22,0.25) 0%, transparent 60%)',
-            }}
-          />
-
-          {/* Sparkle particles */}
-          {sparkles.map((sparkle) => {
-            const pos = getSparklePosition(sparkle);
-            return (
-              <motion.div
-                key={sparkle.id}
-                className="absolute rounded-full"
-                style={{
-                  width: sparkle.size,
-                  height: sparkle.size,
-                  left: pos.x,
-                  top: pos.y,
-                  background: sparkle.id % 3 === 0 ? '#F59E0B' : sparkle.id % 3 === 1 ? '#FBBF24' : '#F97316',
-                  boxShadow: `0 0 ${sparkle.size * 2}px ${sparkle.id % 3 === 0 ? 'rgba(245,158,11,0.6)' : 'rgba(251,191,36,0.5)'}`,
-                }}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{
-                  opacity: [0, 0.9, 0],
-                  scale: [0, 1.2, 0],
-                }}
-                transition={{
-                  duration: sparkle.duration,
-                  repeat: Infinity,
-                  delay: sparkle.delay,
-                  ease: 'easeInOut',
-                }}
-              />
-            );
-          })}
-
-          {/* Diamond Flash Overlay */}
-          <AnimatePresence>
-            {flash && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1, 0] }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-                className="absolute inset-0 bg-white z-[110] pointer-events-none"
-              />
-            )}
-          </AnimatePresence>
-
-          {/* Sun animation */}
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-10"
+            ref={sunWrapperRef}
+            className="mb-8 relative z-10"
+            style={{ opacity: 0, transform: 'scale(0.92)', willChange: 'opacity, transform' }}
           >
-            <AnimatedSun moonOffset={moonOffset} showDiamond={showDiamond} />
-          </motion.div>
+            <RealisticSun
+              turbulenceRef={turbulenceRef}
+              rayTurbulenceRef={rayTurbulenceRef}
+              corona1Ref={corona1Ref}
+              corona2Ref={corona2Ref}
+              flareRef={flareRef}
+              lightRaysRef={lightRaysRef}
+            />
+          </div>
 
-          {/* Brand text with typewriter */}
-          <TypewriterText />
-
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="font-body text-[11px] sm:text-xs tracking-[0.35em] uppercase mt-3"
-            style={{ color: '#64748B' }}
+          {/* Brand text typewriter & Subtitle block */}
+          <div
+            ref={textContainerRef}
+            className="relative z-10 flex flex-col items-center select-none"
+            style={{ willChange: 'opacity' }}
           >
-            Hyderabad's Solar Experts
-          </motion.p>
+            <TypewriterText />
 
-          {/* Progress bar */}
-          <div className="absolute bottom-14 sm:bottom-16 w-48 sm:w-56 flex flex-col items-center gap-3">
-            {/* Percentage text */}
-            <motion.span
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="font-heading text-xs tracking-[0.2em]"
-              style={{ color: 'rgba(245,158,11,0.5)' }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="font-body text-[11px] sm:text-xs tracking-[0.35em] uppercase mt-3"
+              style={{ color: '#64748B' }}
             >
-              {progress}%
-            </motion.span>
-
-            {/* Bar track */}
-            <div
-              className="w-full h-[2px] rounded-full overflow-hidden"
-              style={{ backgroundColor: 'rgba(245,158,11,0.1)' }}
-            >
-              <div
-                className="h-full rounded-full transition-all duration-75 ease-out"
-                style={{
-                  width: `${progress}%`,
-                  background: 'linear-gradient(90deg, #F59E0B, #FBBF24, #F97316)',
-                  boxShadow: '0 0 12px rgba(245,158,11,0.5)',
-                }}
-              />
-            </div>
+              Hyderabad's Solar Experts
+            </motion.p>
           </div>
+
+          {/* SVG Sunburst Mask Definition */}
+          <svg className="absolute w-0 h-0 pointer-events-none">
+            <defs>
+              {/* Blur filter for feathering mask edges for realistic soft light reveals */}
+              <filter id="maskBlur" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="15" />
+              </filter>
+
+              <mask id="rayRevealMask" maskUnits="userSpaceOnUse">
+                {/* Loader is visible where white */}
+                <rect x="0" y="0" width="100%" height="100%" fill="white" />
+                {/* Website is revealed where black (sun core + 12 rays with feathered edges) */}
+                <g ref={maskGroupRef} style={{ transformOrigin: '0px 0px' }} filter="url(#maskBlur)">
+                  <circle cx="0" cy="0" r="76" fill="black" />
+                  {Array.from({ length: 12 }).map((_, i) => (
+                    <polygon
+                      key={i}
+                      points="-18,0 0,-1200 18,0"
+                      fill="black"
+                      style={{
+                        transform: `rotate(${i * 30}deg)`,
+                        transformOrigin: '0px 0px',
+                      }}
+                    />
+                  ))}
+                </g>
+              </mask>
+            </defs>
+          </svg>
         </motion.div>
       )}
     </AnimatePresence>

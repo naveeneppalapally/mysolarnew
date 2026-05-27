@@ -50,7 +50,9 @@ function SolarOrbitSlider() {
   const handlePointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
-    } catch (err) {}
+    } catch {
+      /* ignore pointer capture error */
+    }
     updateTimeFromEvent(e);
   };
   

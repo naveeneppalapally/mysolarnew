@@ -81,18 +81,18 @@ export default function SunParticles() {
   const { backgroundStyle, particleCount, speedMultiplier } = useBackgroundSettings();
   const { currentPhase } = useSolarTime();
 
-  // Direct render-phase reference syncing (100% robust, zero delay, triggers immediately on slider drag)
+  // Settings Context values as refs synchronized within an effect
   const styleRef = useRef(backgroundStyle);
-  styleRef.current = backgroundStyle;
-
   const countRef = useRef(particleCount);
-  countRef.current = particleCount;
-
   const speedRef = useRef(speedMultiplier);
-  speedRef.current = speedMultiplier;
-
   const phaseRef = useRef(currentPhase);
-  phaseRef.current = currentPhase;
+
+  useEffect(() => {
+    styleRef.current = backgroundStyle;
+    countRef.current = particleCount;
+    speedRef.current = speedMultiplier;
+    phaseRef.current = currentPhase;
+  }, [backgroundStyle, particleCount, speedMultiplier, currentPhase]);
   
   const timeRef = useRef(0);
   const pulsesRef = useRef<EnergyPulse[]>([]);
@@ -928,7 +928,7 @@ export default function SunParticles() {
           drawSiliconGrid();
           break;
 
-        case 'gradient-embers':
+        case 'gradient-embers': {
           const g1 = ctx.createRadialGradient(w * 0.25, h * 0.2, 0, w * 0.25, h * 0.2, w * 0.4);
           g1.addColorStop(0, hexToRgba(colors[0] || '#FB923C', 0.05));
           g1.addColorStop(1, 'rgba(0,0,0,0)');
@@ -943,6 +943,7 @@ export default function SunParticles() {
 
           drawParticlesSystem(false);
           break;
+        }
 
         case 'energy-waves':
           drawEnergyWaves();

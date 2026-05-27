@@ -12,8 +12,10 @@ function useCountUp(target: number, duration = 2000, trigger = false) {
 
   useEffect(() => {
     if (!trigger) {
-      setValue(0);
-      return;
+      const timer = setTimeout(() => {
+        setValue(0);
+      }, 0);
+      return () => clearTimeout(timer);
     }
 
     let start = 0;

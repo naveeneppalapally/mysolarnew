@@ -42,12 +42,13 @@ export default function CustomCursor() {
       navigator.maxTouchPoints > 0 ||
       /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-    if (isTouchDevice) {
-      setIsTouch(true);
-      return;
-    }
+    const timer = setTimeout(() => {
+      setIsTouch(isTouchDevice);
+    }, 0);
 
-    setIsTouch(false);
+    if (isTouchDevice) {
+      return () => clearTimeout(timer);
+    }
 
     // Add cursor:none to body
     document.body.style.cursor = 'none';
@@ -63,6 +64,7 @@ export default function CustomCursor() {
     document.head.appendChild(style);
 
     return () => {
+      clearTimeout(timer);
       document.body.style.cursor = '';
       const el = document.getElementById('custom-cursor-style');
       if (el) el.remove();

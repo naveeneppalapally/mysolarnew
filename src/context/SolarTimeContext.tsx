@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useMemo } from 'react';
 
 export type SolarPhase = 'dawn' | 'noon' | 'dusk' | 'night';

@@ -65,7 +65,7 @@ export function calculateSubsidy(monthlyBill: number): SubsidyResult {
   const totalCost = systemSize * costPerKw;
 
   // Central subsidy (PM Surya Ghar Muft Bijli Yojana)
-  let centralSubsidy = 0;
+  let centralSubsidy: number;
   if (systemSize <= 2) {
     centralSubsidy = systemSize * 30000;
   } else if (systemSize <= 3) {

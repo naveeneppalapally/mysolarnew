@@ -7,32 +7,55 @@ import {
 import { TrendingUp } from 'lucide-react';
 import { generateSavingsData, formatCurrency } from '../lib/utils';
 
+/* ─── Custom Tooltip Types ─── */
+interface TooltipPayloadEntry {
+  color?: string;
+  name?: string;
+  value?: number;
+}
+
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: TooltipPayloadEntry[];
+  label?: string | number;
+}
+
 /* ─── Custom Tooltip ─── */
-function CustomTooltip({ active, payload, label }: any) {
+function CustomTooltip({ active, payload, label }: CustomTooltipProps) {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-xl border border-white/10 bg-gray-950/90 backdrop-blur-xl px-4 py-3 shadow-2xl">
       <p className="text-xs text-white/40 font-body mb-2">Year {label}</p>
-      {payload.map((entry: any, i: number) => (
+      {payload.map((entry: TooltipPayloadEntry, i: number) => (
         <div key={i} className="flex items-center gap-2 text-sm font-body">
           <span
             className="w-2 h-2 rounded-full"
             style={{ background: entry.color }}
           />
           <span className="text-white/60">{entry.name}:</span>
-          <span className="font-semibold text-white">{formatCurrency(entry.value)}</span>
+          <span className="font-semibold text-white">{formatCurrency(entry.value ?? 0)}</span>
         </div>
       ))}
     </div>
   );
 }
 
+/* ─── Custom Legend Types ─── */
+interface LegendPayloadEntry {
+  color?: string;
+  value?: string;
+}
+
+interface CustomLegendProps {
+  payload?: LegendPayloadEntry[];
+}
+
 /* ─── Custom Legend ─── */
-function CustomLegend({ payload }: any) {
+function CustomLegend({ payload }: CustomLegendProps) {
   if (!payload) return null;
   return (
     <div className="flex justify-center gap-6 mt-4">
-      {payload.map((entry: any, i: number) => (
+      {payload.map((entry: LegendPayloadEntry, i: number) => (
         <div key={i} className="flex items-center gap-2 text-xs font-body text-white/50">
           <span className="w-3 h-1 rounded-full" style={{ background: entry.color }} />
           {entry.value}

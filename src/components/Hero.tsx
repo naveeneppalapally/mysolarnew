@@ -376,7 +376,10 @@ export default function Hero() {
       /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
       'ontouchstart' in window ||
       navigator.maxTouchPoints > 0;
-    setHidePanel(isMobileDevice);
+    const timer = setTimeout(() => {
+      setHidePanel(isMobileDevice);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleMouseMove = React.useCallback(
