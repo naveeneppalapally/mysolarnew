@@ -31,10 +31,7 @@ function generateSparkles(count: number): Sparkle[] {
 /* ============================================
    ANIMATED SUN SVG
    ============================================ */
-function AnimatedSun({ progress }: { progress: number }) {
-  const moonOffset = -130 + (progress / 100) * 130;
-  const showDiamond = progress >= 97;
-
+function AnimatedSun({ moonOffset, showDiamond }: { moonOffset: number; showDiamond: boolean }) {
   return (
     <div className="relative w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center">
       {/* Outer Corona Glow */}
@@ -77,13 +74,12 @@ function AnimatedSun({ progress }: { progress: number }) {
       ))}
 
       {/* Moon */}
-      <motion.div
+      <div
         className="absolute w-[98px] h-[98px] rounded-full bg-[#030712] border border-white/5"
         style={{
           transform: `translateX(${moonOffset}%)`,
           boxShadow: 'inset -8px -8px 20px rgba(0,0,0,0.8)',
         }}
-        transition={{ type: 'spring', stiffness: 80, damping: 15 }}
       />
 
       {/* Diamond Ring Effect */}
@@ -124,9 +120,9 @@ function TypewriterText() {
         if (count >= brandText.length) {
           clearInterval(interval);
         }
-      }, 85);
+      }, 50);
       return () => clearInterval(interval);
-    }, 500);
+    }, 200);
     return () => clearTimeout(startDelay);
   }, []);
 
@@ -171,35 +167,69 @@ const Loader = ({ isVisible }: LoaderProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [sparkles] = useState(() => generateSparkles(24));
   const [progress, setProgress] = useState(0);
+  const [moonOffset, setMoonOffset] = useState(0);
+  const [showDiamond, setShowDiamond] = useState(false);
   const [flash, setFlash] = useState(false);
 
   useEffect(() => {
-    if (progress === 100) {
-      setFlash(true);
-    }
-  }, [progress]);
-
-  useEffect(() => {
-    // Animate progress
     const startTime = Date.now();
-    const duration = 2200;
+    let flashTriggered = false;
+
+    const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
+    const easeInOutCubic = (x: number) =>
+      x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+
+    let frameId: number;
+
     const tick = () => {
       const elapsed = Date.now() - startTime;
-      const pct = Math.min(elapsed / duration, 1);
-      // Ease out quad
-      const eased = 1 - (1 - pct) * (1 - pct);
-      setProgress(Math.round(eased * 100));
-      if (pct < 1) {
-        requestAnimationFrame(tick);
+
+      if (elapsed < 1000) {
+        // Phase 1: Moon covers sun, progress fills (0ms - 1000ms)
+        const pct = elapsed / 1000;
+        const eased = easeOutCubic(pct);
+        setProgress(Math.round(eased * 100));
+        setMoonOffset(0); // Moon stays covering the sun
+        setShowDiamond(false);
+      } else if (elapsed < 1300) {
+        // Phase 2: Diamond ring + flash (1000ms - 1300ms)
+        setProgress(100);
+        setMoonOffset(0);
+        setShowDiamond(true);
+        if (!flashTriggered) {
+          setFlash(true);
+          flashTriggered = true;
+        }
+      } else if (elapsed < 1900) {
+        // Phase 3: Moon slides out to reveal the sun (1300ms - 1900ms)
+        const pct = (elapsed - 1300) / 600;
+        const eased = easeInOutCubic(pct);
+        setProgress(100);
+        setMoonOffset(eased * 130);
+        setShowDiamond(false);
+        setFlash(false);
+      } else if (elapsed < 2100) {
+        // Phase 4: Hold on revealed sun (1900ms - 2100ms)
+        setProgress(100);
+        setMoonOffset(130);
+        setShowDiamond(false);
+        setFlash(false);
+      } else {
+        // End of loading
+        setProgress(100);
+        setMoonOffset(130);
+        setShowDiamond(false);
+        setFlash(false);
+        setIsLoading(false);
+        return;
       }
+
+      frameId = requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
 
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2500);
+    frameId = requestAnimationFrame(tick);
 
-    return () => clearTimeout(timer);
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   const getSparklePosition = useCallback((sparkle: Sparkle) => {
@@ -287,7 +317,7 @@ const Loader = ({ isVisible }: LoaderProps) => {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="mb-10"
           >
-            <AnimatedSun progress={progress} />
+            <AnimatedSun moonOffset={moonOffset} showDiamond={showDiamond} />
           </motion.div>
 
           {/* Brand text with typewriter */}
@@ -297,7 +327,7 @@ const Loader = ({ isVisible }: LoaderProps) => {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 1.2 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
             className="font-body text-[11px] sm:text-xs tracking-[0.35em] uppercase mt-3"
             style={{ color: '#64748B' }}
           >
@@ -322,15 +352,13 @@ const Loader = ({ isVisible }: LoaderProps) => {
               className="w-full h-[2px] rounded-full overflow-hidden"
               style={{ backgroundColor: 'rgba(245,158,11,0.1)' }}
             >
-              <motion.div
-                className="h-full rounded-full"
+              <div
+                className="h-full rounded-full transition-all duration-75 ease-out"
                 style={{
+                  width: `${progress}%`,
                   background: 'linear-gradient(90deg, #F59E0B, #FBBF24, #F97316)',
                   boxShadow: '0 0 12px rgba(245,158,11,0.5)',
                 }}
-                initial={{ width: '0%' }}
-                animate={{ width: '100%' }}
-                transition={{ duration: 2.2, ease: [0.25, 0.46, 0.45, 0.94] }}
               />
             </div>
           </div>

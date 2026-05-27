@@ -29,9 +29,10 @@ function AppContent() {
 
   useEffect(() => {
     // Let the Loader component control its own timing
+    // Must match the full eclipse timeline: slide-in(1s) + totality(0.3s) + slide-out(0.6s) + pause(0.2s) + buffer
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 2300);
     return () => clearTimeout(timer);
   }, []);
 
