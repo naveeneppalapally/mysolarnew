@@ -24,7 +24,7 @@ import { SolarTimeProvider, useSolarTime } from './context/SolarTimeContext';
 import { BackgroundSettingsProvider } from './context/BackgroundSettingsContext';
 
 // How long the loader plays before hiding (ms) — keep in sync with Loader.tsx
-const LOADER_HIDE_DELAY = 1700;
+const LOADER_HIDE_DELAY = 950;
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);

@@ -47,8 +47,8 @@ function AnimatedHeadline() {
                     initial={{ y: '110%', opacity: 0 }}
                     animate={isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
                     transition={{
-                      duration: 0.7,
-                      delay: 0.2 + delay,
+                      duration: 0.5,
+                      delay: 0.1 + delay,
                       ease: [0.16, 1, 0.3, 1],
                     }}
                     style={{ display: 'inline-block' }}
@@ -451,7 +451,7 @@ export default function Hero() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
               >
                 <span
                   ref={badgeRef}
@@ -479,7 +479,7 @@ export default function Hero() {
                 className="text-gray-400 text-sm sm:text-base max-w-lg leading-relaxed font-body"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
               >
                 Government subsidies up to{' '}
                 <strong className="text-white font-medium">₹78,000</strong>. MNRE
@@ -492,7 +492,7 @@ export default function Hero() {
                 className="flex flex-col sm:flex-row gap-3 mt-1"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.5, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
               >
                 <ShimmerButton onClick={() => scrollToSection('calculator')}>
                   Calculate Your Savings →
@@ -522,7 +522,7 @@ export default function Hero() {
                 className="flex flex-wrap gap-x-5 gap-y-2.5 mt-2"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 1.3 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
               >
                 {trustBadges.map((badge, i) => (
                   <motion.div
@@ -530,7 +530,7 @@ export default function Hero() {
                     className="flex items-center gap-1.5"
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.4, delay: 1.3 + i * 0.1 }}
+                    transition={{ duration: 0.3, delay: 0.7 + i * 0.06 }}
                   >
                     <CheckCircle2
                       className="w-3.5 h-3.5 flex-shrink-0"
@@ -548,7 +548,7 @@ export default function Hero() {
                 className="hidden lg:flex justify-center items-center"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               >
                 <div
                   ref={panelRef}
@@ -607,7 +607,7 @@ export default function Hero() {
             }}
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.6, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <div
               className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-0 md:divide-x"

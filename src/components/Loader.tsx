@@ -301,9 +301,9 @@ const Loader = ({ isVisible }: LoaderProps) => {
       let rayOpacity = 0;
 
       if (isVisible !== false) {
-        if (elapsed < 1000) {
-          // Phase 1: Sun slowly rises in brightness (0ms - 1000ms)
-          const pct = elapsed / 1000;
+        if (elapsed < 600) {
+          // Phase 1: Sun slowly rises in brightness (0ms - 600ms)
+          const pct = elapsed / 600;
           const eased = easeInOutCubic(pct);
 
           if (sunWrapperRef.current) {
@@ -311,17 +311,17 @@ const Loader = ({ isVisible }: LoaderProps) => {
             sunWrapperRef.current.style.transform = `scale(${0.92 + eased * 0.08})`;
           }
         } else {
-          // Phase 2: Volumetric rays shoot out and rotate on black loading screen (1000ms - 1600ms)
+          // Phase 2: Volumetric rays shoot out on black loading screen (600ms - 900ms)
           if (sunWrapperRef.current) {
             sunWrapperRef.current.style.opacity = '1';
             sunWrapperRef.current.style.transform = 'scale(1)';
           }
 
-          const pct = Math.min(1, (elapsed - 1000) / 600);
+          const pct = Math.min(1, (elapsed - 600) / 300);
           const eased = easeOutQuad(pct);
-          rayScale = eased * 1.3; // Grows to 1.3x on black background
-          rayRotation = eased * 15; // Rotates 15 degrees
-          rayOpacity = eased * 0.85; // Fades in to 0.85 opacity
+          rayScale = eased * 1.3;
+          rayRotation = eased * 15;
+          rayOpacity = eased * 0.85;
         }
       } else {
         // Phase 3: Sunburst Ray Reveal (triggered when isVisible changes to false)
@@ -329,7 +329,7 @@ const Loader = ({ isVisible }: LoaderProps) => {
           revealStartTimeRef.current = Date.now();
         }
         const revealElapsed = Date.now() - revealStartTimeRef.current;
-        const pct = Math.min(1, revealElapsed / 1400); // 1400ms reveal wipe
+        const pct = Math.min(1, revealElapsed / 800); // 800ms reveal wipe
         const easedReveal = easeOutQuad(pct);
         const opacityVal = 1 - easedReveal;
 
@@ -363,7 +363,7 @@ const Loader = ({ isVisible }: LoaderProps) => {
       }
 
       // Keep running if isVisible is still true OR if the reveal is in progress
-      const isRevealing = revealStartTimeRef.current !== null && (Date.now() - revealStartTimeRef.current < 1400);
+      const isRevealing = revealStartTimeRef.current !== null && (Date.now() - revealStartTimeRef.current < 800);
       if (isVisible !== false || isRevealing) {
         frameId = requestAnimationFrame(tick);
       } else {
@@ -383,7 +383,7 @@ const Loader = ({ isVisible }: LoaderProps) => {
           key="loader"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.5, ease: 'easeOut' }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
           style={{ backgroundColor: 'transparent' }}
         >
