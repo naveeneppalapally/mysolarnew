@@ -14,6 +14,8 @@ export type BackgroundStyle =
   | 'digital-rain'
   | 'prismatic-shards';
 
+export type FontTheme = 'poppins' | 'syne';
+
 interface BackgroundSettingsContextType {
   backgroundStyle: BackgroundStyle;
   setBackgroundStyle: (style: BackgroundStyle) => void;
@@ -21,6 +23,8 @@ interface BackgroundSettingsContextType {
   setParticleCount: (count: number) => void;
   speedMultiplier: number;
   setSpeedMultiplier: (multiplier: number) => void;
+  fontTheme: FontTheme;
+  setFontTheme: (theme: FontTheme) => void;
 }
 
 const BackgroundSettingsContext = createContext<BackgroundSettingsContextType | undefined>(undefined);
@@ -48,6 +52,11 @@ export const BackgroundSettingsProvider: React.FC<{ children: React.ReactNode }>
     return saved ? parseFloat(saved) : 1.0;
   });
 
+  const [fontTheme, setFontTheme] = useState<FontTheme>(() => {
+    const saved = localStorage.getItem('solar_font_theme') as FontTheme;
+    return saved || 'poppins';
+  });
+
   useEffect(() => {
     localStorage.setItem('solar_background_style', backgroundStyle);
   }, [backgroundStyle]);
@@ -60,6 +69,10 @@ export const BackgroundSettingsProvider: React.FC<{ children: React.ReactNode }>
     localStorage.setItem('solar_speed_multiplier', speedMultiplier.toString());
   }, [speedMultiplier]);
 
+  useEffect(() => {
+    localStorage.setItem('solar_font_theme', fontTheme);
+  }, [fontTheme]);
+
   return (
     <BackgroundSettingsContext.Provider 
       value={{ 
@@ -68,7 +81,9 @@ export const BackgroundSettingsProvider: React.FC<{ children: React.ReactNode }>
         particleCount, 
         setParticleCount, 
         speedMultiplier, 
-        setSpeedMultiplier 
+        setSpeedMultiplier,
+        fontTheme,
+        setFontTheme
       }}
     >
       {children}

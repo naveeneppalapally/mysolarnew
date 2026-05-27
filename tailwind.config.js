@@ -30,7 +30,7 @@ export default {
         },
       },
       fontFamily: {
-        'heading': ['"Poppins"', 'sans-serif'],
+        'heading': ['var(--font-heading)', 'sans-serif'],
         'body': ['"DM Sans"', 'sans-serif'],
         'telugu': ['"Noto Sans Telugu"', 'sans-serif'],
       },

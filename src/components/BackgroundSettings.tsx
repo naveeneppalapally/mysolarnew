@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, X, Sparkles, Sun, Zap, Wind, Activity, Layers, Cpu, Compass, Flame, Binary, Gem } from 'lucide-react';
+import { Settings, X, Sparkles, Sun, Zap, Wind, Activity, Layers, Cpu, Compass, Flame, Binary, Gem, Type } from 'lucide-react';
 import { useBackgroundSettings } from '../context/BackgroundSettingsContext';
 import type { BackgroundStyle } from '../context/BackgroundSettingsContext';
 import { useSolarTime } from '../context/SolarTimeContext';
@@ -13,7 +13,9 @@ export default function BackgroundSettings() {
     particleCount, 
     setParticleCount, 
     speedMultiplier, 
-    setSpeedMultiplier 
+    setSpeedMultiplier,
+    fontTheme,
+    setFontTheme
   } = useBackgroundSettings();
 
   const { timeOfDay, setTimeOfDay, currentPhase } = useSolarTime();
@@ -37,6 +39,13 @@ export default function BackgroundSettings() {
     classesToRemove.forEach((cls) => root.classList.remove(cls));
     root.classList.add(`style-${backgroundStyle}`);
   }, [backgroundStyle]);
+
+  // Inject active font theme onto root element
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove('font-theme-poppins', 'font-theme-syne');
+    root.classList.add(`font-theme-${fontTheme}`);
+  }, [fontTheme]);
 
   const handleTimeChange = (phase: 'dawn' | 'noon' | 'dusk' | 'night') => {
     switch (phase) {
@@ -340,6 +349,48 @@ export default function BackgroundSettings() {
               <div className="flex justify-between items-center text-[9px] text-gray-500 mt-1">
                 <span>Synchronized with Navbar Solar Arc slider</span>
                 <span className="font-mono text-gray-400">{Math.floor(timeOfDay)}h</span>
+              </div>
+            </div>
+
+            {/* Section 4: Headline Typography */}
+            <div className="flex flex-col gap-2 pt-3 border-t border-white/10">
+              <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-1">
+                Headline Typography
+              </span>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    console.log("HUD Click: Changing font theme to Poppins");
+                    setFontTheme('poppins');
+                  }}
+                  className={`py-2 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
+                    fontTheme === 'poppins'
+                      ? 'bg-amber-500/10 border-amber-500/80 text-amber-400'
+                      : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
+                  }`}
+                >
+                  <Type size={12} />
+                  Modern Sans
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    console.log("HUD Click: Changing font theme to Syne");
+                    setFontTheme('syne');
+                  }}
+                  className={`py-2 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
+                    fontTheme === 'syne'
+                      ? 'bg-amber-500/10 border-amber-500/80 text-amber-400'
+                      : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
+                  }`}
+                >
+                  <Type size={12} className="rotate-12" />
+                  Futuristic Tech
+                </button>
+              </div>
+              <div className="text-[9px] text-gray-500 leading-tight">
+                Switch between clean geometric Poppins and progressive techno-wide Syne.
               </div>
             </div>
           </motion.div>
