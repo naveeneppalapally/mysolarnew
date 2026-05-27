@@ -31,9 +31,9 @@ export const BackgroundSettingsProvider: React.FC<{ children: React.ReactNode }>
       'star-burst'
     ];
     if (removedStyles.includes(saved as string)) {
-      return 'silicon-grid';
+      return 'magnetic-resonance';
     }
-    return saved || 'silicon-grid';
+    return saved || 'magnetic-resonance';
   });
 
   const [particleCount, setParticleCount] = useState<number>(() => {
