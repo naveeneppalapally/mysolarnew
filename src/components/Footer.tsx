@@ -1,4 +1,6 @@
 import { Sun, Phone, Mail, MapPin, ShieldCheck } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { smoothScrollTo } from '../lib/utils';
 
 interface SocialIconProps extends React.SVGProps<SVGSVGElement> {
   size?: number | string;
@@ -56,10 +58,6 @@ const certifications = [
 ];
 
 export default function Footer() {
-  const scrollTo = (href: string) => {
-    const el = document.querySelector(href);
-    el?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <footer
@@ -124,12 +122,14 @@ export default function Footer() {
             <ul className="space-y-2.5">
               {quickLinks.map((link) => (
                 <li key={link.label}>
-                  <button
-                    onClick={() => scrollTo(link.href)}
-                    className="text-solar-text-muted hover:text-solar-gold text-sm transition-colors duration-200 cursor-pointer"
+                  <motion.button
+                    whileHover={{ x: 6, color: 'var(--solar-gold)' }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    onClick={() => smoothScrollTo(link.href)}
+                    className="text-solar-text-muted text-sm transition-colors duration-200 cursor-pointer flex items-center gap-1.5"
                   >
                     {link.label}
-                  </button>
+                  </motion.button>
                 </li>
               ))}
             </ul>
@@ -163,7 +163,7 @@ export default function Footer() {
                     >
                       +91 9493936249
                     </a>
-                    <span className="text-[7px] font-mono px-1 bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 rounded">Primary & WhatsApp</span>
+                    <span className="whatsapp-badge">Primary & WhatsApp</span>
                   </div>
                 </div>
               </li>

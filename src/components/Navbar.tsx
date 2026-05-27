@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sun, ArrowRight, Moon } from 'lucide-react';
 import { useSolarTime } from '../context/SolarTimeContext';
 import { useTheme } from '../context/ThemeContext';
+import { smoothScrollTo } from '../lib/utils';
 
 const navLinks = [
   { label: 'Home', href: '#home' },
@@ -206,8 +207,7 @@ export default function Navbar() {
 
   const scrollTo = (href: string) => {
     setMobileOpen(false);
-    const el = document.querySelector(href);
-    el?.scrollIntoView({ behavior: 'smooth' });
+    smoothScrollTo(href);
   };
 
   return (

@@ -357,6 +357,37 @@ html.style-none.light-theme {
   color: var(--solar-emerald) !important;
 }
 
+/* ─── Global High-Contrast WhatsApp Badge ─── */
+.whatsapp-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: monospace;
+  font-size: 8px;
+  letter-spacing: 0.05em;
+  padding: 1.5px 5px;
+  border-radius: 4px;
+  font-weight: 600;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981 !important; /* Premium high-contrast emerald green */
+  text-transform: uppercase;
+}
+
+.light-theme .whatsapp-badge {
+  border: 1px solid rgba(4, 120, 87, 0.25);
+  background: rgba(4, 120, 87, 0.08);
+  color: #065f46 !important; /* Premium dark emerald green on light background */
+}
+
+/* ─── Light Theme Grey Text Legibility Overrides ─── */
+.light-theme .text-gray-300,
+.light-theme .text-gray-400,
+.light-theme .text-slate-300,
+.light-theme .text-slate-400,
+.light-theme .text-zinc-300,
+.light-theme .text-zinc-400 {
+  color: var(--solar-text-muted) !important;
+}
 
 /* ─── Premium Light Theme Amethyst Purple Design Adaptations ─── */
 

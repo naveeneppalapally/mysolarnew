@@ -208,7 +208,7 @@ Please contact me for a free site assessment and quote.`;
 
             <div className="space-y-5">
               <ContactRow icon={<MapPin size={18} />} label="Address">
-                <span className="text-gray-300 text-sm leading-relaxed">
+                <span className="text-solar-text text-sm leading-relaxed">
                   Ground floor, Shop No 4-9-180/5, Lectures Colony, Beside Union Bank of India, Hayathnagar, Hyderabad, Telangana 501505
                 </span>
               </ContactRow>
@@ -222,7 +222,7 @@ Please contact me for a free site assessment and quote.`;
                     >
                       +91 9493936249
                     </a>
-                    <span className="text-[9px] font-mono tracking-wider text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/20 px-2 py-0.5 rounded border border-emerald-500/20">Primary & WhatsApp</span>
+                    <span className="whatsapp-badge">Primary & WhatsApp</span>
                   </div>
                 </div>
               </ContactRow>
@@ -238,23 +238,23 @@ Please contact me for a free site assessment and quote.`;
 
               <ContactRow icon={<FileText size={18} />} label="GSTIN & MNRE">
                 <div className="flex flex-col gap-0.5 text-sm">
-                  <span className="text-gray-300 font-mono">
+                  <span className="text-solar-text font-mono">
                     GSTIN: 36AFOFS9652M1ZY
                   </span>
-                  <span className="text-gray-400 text-xs font-mono">
+                  <span className="text-solar-text-muted text-xs font-mono">
                     MNRE ID: TSRE260875
                   </span>
                 </div>
               </ContactRow>
 
               <ContactRow icon={<Globe size={18} />} label="Service Coverage">
-                <span className="text-gray-300 text-sm">
+                <span className="text-solar-text text-sm">
                   Hyderabad, Mancherial, Rangareddy, and Medchal (Telangana only)
                 </span>
               </ContactRow>
 
               <ContactRow icon={<Clock size={18} />} label="Hours">
-                <span className="text-gray-300 text-sm">
+                <span className="text-solar-text text-sm">
                   Mon–Sat &nbsp;10:00 AM – 8:00 PM
                 </span>
               </ContactRow>

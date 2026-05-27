@@ -140,3 +140,36 @@ export function generateSavingsData() {
 
   return data;
 }
+
+/**
+ * Smoothly scrolls to an element using requestAnimationFrame for perfect cross-browser animation,
+ * even when Lenis or other libraries override CSS scroll-behavior.
+ */
+export function smoothScrollTo(elementId: string): void {
+  const targetId = elementId.startsWith('#') ? elementId : `#${elementId}`;
+  const target = document.querySelector(targetId);
+  if (!target) return;
+
+  const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+  const startPosition = window.pageYOffset;
+  const distance = targetPosition - startPosition;
+  const duration = 900; // 900ms smooth scroll
+  let startTimestamp: number | null = null;
+
+  const step = (timestamp: number) => {
+    if (!startTimestamp) startTimestamp = timestamp;
+    const elapsed = timestamp - startTimestamp;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // Ease out cubic
+    const ease = 1 - Math.pow(1 - progress, 3);
+    
+    window.scrollTo(0, startPosition + distance * ease);
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    }
+  };
+
+  requestAnimationFrame(step);
+}
