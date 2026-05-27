@@ -180,6 +180,48 @@ export default function BackgroundSettings() {
               </button>
             </div>
 
+            {/* Section 4: Headline Typography */}
+            <div className="flex flex-col gap-2 pb-3 border-b border-solar-border">
+              <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-1">
+                Headline Typography
+              </span>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    console.log("HUD Click: Changing font theme to Poppins");
+                    setFontTheme('poppins');
+                  }}
+                  className={`py-2 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
+                    fontTheme === 'poppins'
+                      ? 'bg-amber-500/10 border-amber-500/80 text-amber-400 font-bold shadow-md shadow-amber-500/5'
+                      : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
+                  }`}
+                >
+                  <Type size={12} />
+                  Modern Sans
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    console.log("HUD Click: Changing font theme to Syne");
+                    setFontTheme('syne');
+                  }}
+                  className={`py-2 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
+                    fontTheme === 'syne'
+                      ? 'bg-amber-500/10 border-amber-500/80 text-amber-400 font-bold shadow-md shadow-amber-500/5'
+                      : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
+                  }`}
+                >
+                  <Type size={12} className="rotate-12" />
+                  Futuristic Tech
+                </button>
+              </div>
+              <div className="text-[9px] text-gray-500 leading-tight">
+                Switch between clean geometric Poppins and progressive techno-wide Syne.
+              </div>
+            </div>
+
             {/* Section 1: Active Interactive Background Style */}
             <div className="flex flex-col gap-2">
               <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-1">
@@ -349,48 +391,6 @@ export default function BackgroundSettings() {
               <div className="flex justify-between items-center text-[9px] text-gray-500 mt-1">
                 <span>Synchronized with Navbar Solar Arc slider</span>
                 <span className="font-mono text-gray-400">{Math.floor(timeOfDay)}h</span>
-              </div>
-            </div>
-
-            {/* Section 4: Headline Typography */}
-            <div className="flex flex-col gap-2 pt-3 border-t border-white/10">
-              <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-1">
-                Headline Typography
-              </span>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    console.log("HUD Click: Changing font theme to Poppins");
-                    setFontTheme('poppins');
-                  }}
-                  className={`py-2 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
-                    fontTheme === 'poppins'
-                      ? 'bg-amber-500/10 border-amber-500/80 text-amber-400'
-                      : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
-                  }`}
-                >
-                  <Type size={12} />
-                  Modern Sans
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    console.log("HUD Click: Changing font theme to Syne");
-                    setFontTheme('syne');
-                  }}
-                  className={`py-2 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 ${
-                    fontTheme === 'syne'
-                      ? 'bg-amber-500/10 border-amber-500/80 text-amber-400'
-                      : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
-                  }`}
-                >
-                  <Type size={12} className="rotate-12" />
-                  Futuristic Tech
-                </button>
-              </div>
-              <div className="text-[9px] text-gray-500 leading-tight">
-                Switch between clean geometric Poppins and progressive techno-wide Syne.
               </div>
             </div>
           </motion.div>
