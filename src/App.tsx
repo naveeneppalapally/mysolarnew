@@ -22,17 +22,20 @@ import CustomCursor from './components/CustomCursor';
 import BackgroundSettings from './components/BackgroundSettings';
 import { SolarTimeProvider, useSolarTime } from './context/SolarTimeContext';
 import { BackgroundSettingsProvider } from './context/BackgroundSettingsContext';
+import { LoaderDoneProvider } from './context/LoaderDoneContext';
+
+// Loader duration constants (ms) - keep in sync with Loader.tsx
+const LOADER_HIDE_DELAY = 1700;   // when loader becomes invisible
+const LOADER_DONE_DELAY = 2000;   // when page animations should start
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
   const { currentPhase } = useSolarTime();
 
   useEffect(() => {
-    // Let the Loader component control its own timing
-    // Must match the soothing solar sunrise timeline: fade-in(1.6s) + buffer(0.1s)
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1700);
+    }, LOADER_HIDE_DELAY);
     return () => clearTimeout(timer);
   }, []);
 
@@ -40,7 +43,6 @@ function AppContent() {
     if (isLoading) return;
     if (typeof window === 'undefined') return;
 
-    // Prevent Lenis smooth scroll on mobile devices
     const isMobileDevice =
       /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
       ('ontouchstart' in window) ||
@@ -48,7 +50,6 @@ function AppContent() {
 
     if (isMobileDevice || window.innerWidth < 1024) return;
 
-    // Initialize Lenis smooth scroll for true desktop environments only
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -76,13 +77,19 @@ function AppContent() {
       {/* Custom cursor - desktop only */}
       <CustomCursor />
 
-      {/* Loader */}
+      {/* Loader overlay */}
       <Loader isVisible={isLoading} />
 
-      {/* Main Site */}
+      {/* Main Site — kept in DOM but invisible until loader exits.
+          Using opacity+pointer-events instead of visibility:hidden so that
+          React can mount components but Framer Motion won't "pre-play" their
+          entry animations (they only trigger when loaderDone becomes true). */}
       <div
-        className={`transition-opacity duration-700 phase-${currentPhase} ${isLoading ? 'opacity-0' : 'opacity-100'}`}
-        style={{ visibility: isLoading ? 'hidden' : 'visible' }}
+        className={`transition-opacity duration-700 phase-${currentPhase}`}
+        style={{
+          opacity: isLoading ? 0 : 1,
+          pointerEvents: isLoading ? 'none' : 'auto',
+        }}
       >
         {/* Noise texture overlay */}
         <div className="noise-overlay" />
@@ -116,7 +123,11 @@ function App() {
   return (
     <BackgroundSettingsProvider>
       <SolarTimeProvider>
-        <AppContent />
+        {/* LoaderDoneProvider fires at LOADER_DONE_DELAY (slightly after loader
+            exits) so Hero and other page-entry animations play cleanly */}
+        <LoaderDoneProvider delay={LOADER_DONE_DELAY}>
+          <AppContent />
+        </LoaderDoneProvider>
       </SolarTimeProvider>
     </BackgroundSettingsProvider>
   );
