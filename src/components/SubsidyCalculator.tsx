@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { Zap, Gift, Wallet, PiggyBank, Clock, TrendingUp, Gauge, ArrowRight } from 'lucide-react';
 import { calculateSubsidy } from '../lib/utils';
 
@@ -147,15 +147,9 @@ export default function SubsidyCalculator() {
 
             {/* Big Bill Display */}
             <div className="flex items-baseline justify-center gap-1 mb-8">
-              <motion.div
-                key={bill}
-                initial={{ scale: 1.08, opacity: 0.7 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="font-heading font-extrabold text-5xl sm:text-7xl md:text-8xl text-amber-400 tabular-nums"
-              >
-                ₹{bill.toLocaleString('en-IN')}
-              </motion.div>
+              <div className="font-heading font-extrabold text-5xl sm:text-7xl md:text-8xl text-amber-400 tabular-nums">
+                <AnimatedValue value={bill} prefix="₹" />
+              </div>
               <span className="text-white/30 text-lg sm:text-xl font-body">/month</span>
             </div>
 
@@ -213,69 +207,61 @@ export default function SubsidyCalculator() {
 
           {/* ─── Results Dashboard ─── */}
           <div className="px-6 sm:px-10 py-10">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={bill}
-                initial={{ opacity: 0.6 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
-              >
-                <ResultCard
-                  icon={<Zap className="w-4 h-4" />}
-                  label="Recommended System"
-                  value={<><AnimatedValue value={result.systemSize} /> <span className="text-sm font-normal text-white/40">kW</span></>}
-                  delay={0}
-                />
-                <ResultCard
-                  icon={<RupeeIcon className="w-4 h-4" />}
-                  label="Total Cost"
-                  value={<AnimatedValue value={result.totalCost} prefix="₹" />}
-                  delay={0.05}
-                />
-                <ResultCard
-                  icon={<Gift className="w-4 h-4" />}
-                  label="Government Subsidy"
-                  value={<AnimatedValue value={result.totalSubsidy} prefix="₹" />}
-                  accent="emerald"
-                  delay={0.1}
-                />
-                <ResultCard
-                  icon={<Wallet className="w-4 h-4" />}
-                  label="You Pay Only"
-                  value={<AnimatedValue value={result.netCost} prefix="₹" />}
-                  accent="gold"
-                  hero
-                  delay={0.15}
-                />
-                <ResultCard
-                  icon={<PiggyBank className="w-4 h-4" />}
-                  label="Monthly Savings"
-                  value={<AnimatedValue value={Math.round(result.annualSavings / 12)} prefix="₹" />}
-                  delay={0.2}
-                />
-                <ResultCard
-                  icon={<Clock className="w-4 h-4" />}
-                  label="Payback Period"
-                  value={<><AnimatedValue value={result.paybackYears} decimals={1} /> <span className="text-sm font-normal text-white/40">Years</span></>}
-                  delay={0.25}
-                />
-                <ResultCard
-                  icon={<TrendingUp className="w-4 h-4" />}
-                  label="25-Year Savings"
-                  value={<AnimatedValue value={Math.round(result.savings25Year)} prefix="₹" />}
-                  accent="cyan"
-                  hero
-                  delay={0.3}
-                />
-                <ResultCard
-                  icon={<Gauge className="w-4 h-4" />}
-                  label="Monthly Generation"
-                  value={<><AnimatedValue value={result.monthlyGeneration} /> <span className="text-sm font-normal text-white/40">units</span></>}
-                  delay={0.35}
-                />
-              </motion.div>
-            </AnimatePresence>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <ResultCard
+                icon={<Zap className="w-4 h-4" />}
+                label="Recommended System"
+                value={<><AnimatedValue value={result.systemSize} /> <span className="text-sm font-normal text-white/40">kW</span></>}
+                delay={0}
+              />
+              <ResultCard
+                icon={<RupeeIcon className="w-4 h-4" />}
+                label="Total Cost"
+                value={<AnimatedValue value={result.totalCost} prefix="₹" />}
+                delay={0.05}
+              />
+              <ResultCard
+                icon={<Gift className="w-4 h-4" />}
+                label="Government Subsidy"
+                value={<AnimatedValue value={result.totalSubsidy} prefix="₹" />}
+                accent="emerald"
+                delay={0.1}
+              />
+              <ResultCard
+                icon={<Wallet className="w-4 h-4" />}
+                label="You Pay Only"
+                value={<AnimatedValue value={result.netCost} prefix="₹" />}
+                accent="gold"
+                hero
+                delay={0.15}
+              />
+              <ResultCard
+                icon={<PiggyBank className="w-4 h-4" />}
+                label="Monthly Savings"
+                value={<AnimatedValue value={Math.round(result.annualSavings / 12)} prefix="₹" />}
+                delay={0.2}
+              />
+              <ResultCard
+                icon={<Clock className="w-4 h-4" />}
+                label="Payback Period"
+                value={<><AnimatedValue value={result.paybackYears} decimals={1} /> <span className="text-sm font-normal text-white/40">Years</span></>}
+                delay={0.25}
+              />
+              <ResultCard
+                icon={<TrendingUp className="w-4 h-4" />}
+                label="25-Year Savings"
+                value={<AnimatedValue value={Math.round(result.savings25Year)} prefix="₹" />}
+                accent="cyan"
+                hero
+                delay={0.3}
+              />
+              <ResultCard
+                icon={<Gauge className="w-4 h-4" />}
+                label="Monthly Generation"
+                value={<><AnimatedValue value={result.monthlyGeneration} /> <span className="text-sm font-normal text-white/40">units</span></>}
+                delay={0.35}
+              />
+            </div>
           </div>
 
           {/* ─── Bottom CTA ─── */}
