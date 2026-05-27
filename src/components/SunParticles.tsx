@@ -878,6 +878,8 @@ export default function SunParticles() {
       let bgGrad;
       const isLight = themeRef.current === 'light';
       if (!isLight) {
+        ctx.save();
+        ctx.globalAlpha = 0.70; // 30% circadian phase bleed-through!
         switch (currentStyle) {
           case 'silicon-grid':
             bgGrad = ctx.createLinearGradient(0, 0, 0, h);
@@ -954,6 +956,7 @@ export default function SunParticles() {
           default:
             break;
         }
+        ctx.restore();
       }
 
       switch (currentStyle) {

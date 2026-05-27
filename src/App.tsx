@@ -84,8 +84,12 @@ function AppContent() {
         after the Loader fades out. No mount burst, no jank.
       */}
       <div
-        className={`transition-opacity duration-1000 phase-${currentPhase}`}
-        style={{ opacity: isLoading ? 0 : 1 }}
+        className={`transition-all duration-1000 ease-in-out phase-${currentPhase}`}
+        style={{
+          background: 'var(--solar-bg)',
+          minHeight: '100vh',
+          opacity: isLoading ? 0 : 1
+        }}
       >
         {!isLoading && (
           <>
