@@ -164,7 +164,7 @@ export default function ContactForm() {
           <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-[0.2em] uppercase border border-amber-500/30 text-amber-400 bg-amber-500/5 mb-6 font-heading">
             Get in Touch
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold font-heading text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold font-heading text-solar-text mb-4">
             Start Your{' '}
             <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
               Solar Journey
@@ -184,7 +184,7 @@ export default function ContactForm() {
             className="space-y-8"
           >
             <div>
-              <h3 className="text-xl font-bold text-white font-heading mb-1">
+              <h3 className="text-xl font-bold text-solar-text font-heading mb-1">
                 MyHome Solar
               </h3>
               <p className="text-gray-500 text-sm">(Authorised Solar Vendor)</p>
@@ -299,7 +299,7 @@ export default function ContactForm() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-sm p-8 relative overflow-hidden">
+            <div className="rounded-2xl border border-solar-border bg-solar-card backdrop-blur-sm p-8 relative overflow-hidden">
               {/* Top glow */}
               <div
                 className="absolute -top-32 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full opacity-[0.05] pointer-events-none"
@@ -332,7 +332,7 @@ export default function ContactForm() {
                     >
                       <CheckCircle2 className="text-green-400" size={32} />
                     </motion.div>
-                    <h3 className="text-xl font-bold text-white font-heading mb-2">
+                    <h3 className="text-xl font-bold text-solar-text font-heading mb-2">
                       Thank You!
                     </h3>
                     <p className="text-gray-400 text-sm mb-6">
@@ -387,9 +387,9 @@ export default function ContactForm() {
                       onChange={handleChange}
                     />
                     <div>
-                      <label className="block text-sm text-gray-300 mb-1.5 font-medium">
+                      <label className="block text-sm text-solar-text-muted mb-1.5 font-medium">
                         Message{' '}
-                        <span className="text-gray-600 font-normal">
+                        <span className="text-solar-text-dim font-normal">
                           (optional)
                         </span>
                       </label>
@@ -399,7 +399,7 @@ export default function ContactForm() {
                         placeholder="Any specific requirements?"
                         value={formData.message}
                         onChange={handleChange}
-                        className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-sm text-white placeholder-gray-600 outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all duration-200 resize-none"
+                        className="w-full bg-solar-bg-tertiary border border-solar-border rounded-lg px-4 py-3 text-sm text-solar-text placeholder-solar-text-dim/60 outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 transition-all duration-200 resize-none"
                       />
                     </div>
 
@@ -470,7 +470,7 @@ export default function ContactForm() {
             }
           `}</style>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center rounded-2xl bg-white/[0.02] border border-white/[0.06] p-6 sm:p-10 relative overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center rounded-2xl bg-solar-card border border-solar-border p-6 sm:p-10 relative overflow-hidden">
             {/* Subtle background glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-500/[0.02] rounded-full blur-3xl pointer-events-none" />
 
@@ -479,25 +479,25 @@ export default function ContactForm() {
               <span className="font-heading text-xs font-semibold tracking-[0.25em] text-amber-400 uppercase block">
                 ✦ Visit Our Office ✦
               </span>
-              <h3 className="font-heading font-bold text-2xl sm:text-3xl text-white tracking-tight leading-tight">
-                MyHome Solar HQ
+              <h3 className="font-heading font-bold text-2xl sm:text-3xl text-solar-text tracking-tight leading-tight">
+                Our Office
               </h3>
-              
-              <div className="space-y-4">
-                <address className="not-italic font-body text-base text-gray-400 leading-relaxed">
-                  Ground Floor, Shop 4-9-180/5,<br />
-                  Lecturers Colony, beside Union Bank of India,<br />
-                  Hayathnagar, Ranga Reddy District,<br />
-                  <span className="font-semibold text-white">Hyderabad, Telangana – 501505</span>
-                </address>
-                
-                <div className="border-t border-white/[0.06] pt-4 space-y-2.5">
-                  <p className="text-sm text-gray-400 font-body leading-relaxed">
-                    <strong className="text-white font-medium">Landmark:</strong> Beside Union Bank of India, Hayathnagar Depot
-                  </p>
-                  <p className="text-sm text-gray-400 font-body leading-relaxed">
-                    <strong className="text-white font-medium">Business Hours:</strong> Monday – Saturday: 10:00 AM – 8:00 PM
-                  </p>
+              <p className="text-sm sm:text-base text-solar-text-muted font-body leading-relaxed max-w-md">
+                Visit our headquarters to discuss your solar design in person,
+                view panel models, and complete subsidy paperwork.
+              </p>
+              <div className="flex flex-col gap-3 font-body text-sm sm:text-base text-solar-text-muted">
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                  <span className="leading-relaxed">
+                    <span className="font-semibold text-solar-text">Hyderabad, Telangana – 501505</span>
+                    <br />
+                    Ground floor, Shop No 4-9-180/5, Lectures Colony, Hayathnagar Depot.
+                    <br />
+                    <strong className="text-solar-text font-medium">Landmark:</strong> Beside Union Bank of India, Hayathnagar Depot
+                    <br />
+                    <strong className="text-solar-text font-medium">Business Hours:</strong> Monday – Saturday: 10:00 AM – 8:00 PM
+                  </span>
                 </div>
               </div>
               
@@ -515,7 +515,7 @@ export default function ContactForm() {
                       className={`px-3 py-1.5 rounded-lg text-xs font-heading font-semibold transition-all duration-250 cursor-pointer ${
                         activeZoom === i
                           ? 'bg-amber-500 text-gray-950 shadow-md shadow-amber-500/20'
-                          : 'bg-white/[0.03] border border-white/[0.06] text-gray-400 hover:text-white hover:border-amber-500/40'
+                          : 'bg-solar-card border border-solar-border text-solar-text-muted hover:text-solar-text hover:border-amber-500/40'
                       }`}
                     >
                       {level.label}
@@ -611,7 +611,7 @@ export default function ContactForm() {
                       transition={{ type: 'spring', stiffness: 200, damping: 25 }}
                     />
                     {/* Subtle dark gradient overlay at bottom of the map image */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-950/95 via-gray-950/20 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-solar-bg-secondary/95 via-solar-bg-secondary/20 to-transparent" />
                   </motion.div>
                 </AnimatePresence>
               </div>
@@ -626,7 +626,7 @@ export default function ContactForm() {
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.3, delay: 0.05 }}
                   >
-                    <span className="font-heading text-lg font-bold text-white tracking-wide drop-shadow block leading-tight">
+                    <span className="font-heading text-lg font-bold text-solar-text tracking-wide drop-shadow block leading-tight">
                       {MAP_LEVELS[activeZoom].label}
                     </span>
                     <span className="mt-0.5 font-body text-[10px] uppercase tracking-[0.2em] text-amber-400 font-semibold drop-shadow block">
@@ -637,7 +637,7 @@ export default function ContactForm() {
               </div>
 
               {/* Dot Pill Navigation Buttons */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 z-[8] bg-gray-950/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10">
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-3 z-[8] bg-solar-bg-secondary/60 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-solar-border">
                 {MAP_LEVELS.map((level, i) => (
                   <button
                     key={`dot-${level.label}`}
@@ -679,7 +679,7 @@ function ContactRow({
 }) {
   return (
     <div className="flex gap-4">
-      <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-amber-500/[0.08] border border-amber-500/20 flex items-center justify-center text-amber-400">
+      <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-solar-card border border-solar-border flex items-center justify-center text-amber-400">
         {icon}
       </div>
       <div>
@@ -711,7 +711,7 @@ function InputField({
 }) {
   return (
     <div>
-      <label className="block text-sm text-gray-300 mb-1.5 font-medium">
+      <label className="block text-sm text-solar-text-muted mb-1.5 font-medium">
         {label}
       </label>
       <input
@@ -720,10 +720,10 @@ function InputField({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className={`w-full bg-white/[0.04] border rounded-lg px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all duration-200 ${
+        className={`w-full bg-solar-bg-tertiary border rounded-lg px-4 py-3 text-sm text-solar-text placeholder-solar-text-dim/60 outline-none transition-all duration-200 ${
           error
             ? 'border-red-500/60 focus:border-red-500/80 focus:ring-1 focus:ring-red-500/20'
-            : 'border-white/[0.08] focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20'
+            : 'border-solar-border focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20'
         }`}
       />
       <AnimatePresence>

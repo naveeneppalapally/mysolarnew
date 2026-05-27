@@ -26,7 +26,7 @@ import { BackgroundSettingsProvider } from './context/BackgroundSettingsContext'
 import { ThemeProvider } from './context/ThemeContext';
 
 // How long the loader plays before fading out (ms)
-const LOADER_HIDE_DELAY = 950;
+const LOADER_HIDE_DELAY = 2400;
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
@@ -84,7 +84,7 @@ function AppContent() {
         after the Loader fades out. No mount burst, no jank.
       */}
       <div
-        className={`transition-opacity duration-700 phase-${currentPhase}`}
+        className={`transition-opacity duration-1000 phase-${currentPhase}`}
         style={{ opacity: isLoading ? 0 : 1 }}
       >
         <div className="noise-overlay" />

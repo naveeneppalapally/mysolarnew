@@ -34,7 +34,7 @@ export default function FloatingCTA() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 8 }}
                 transition={{ duration: 0.2 }}
-                className="bg-gray-900 border border-white/10 text-white text-xs px-3 py-1.5 rounded-lg shadow-lg whitespace-nowrap mr-1"
+                className="bg-solar-card-solid border border-solar-border text-solar-text text-xs px-3 py-1.5 rounded-lg shadow-lg whitespace-nowrap mr-1"
               >
                 Chat with us on WhatsApp
               </motion.div>

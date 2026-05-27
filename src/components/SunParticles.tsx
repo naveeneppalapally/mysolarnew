@@ -2,6 +2,7 @@ import { useRef, useEffect } from 'react';
 import { useSolarTime } from '../context/SolarTimeContext';
 import { useBackgroundSettings } from '../context/BackgroundSettingsContext';
 import type { SolarPhase } from '../context/SolarTimeContext';
+import { useTheme } from '../context/ThemeContext';
 
 /* ===========================================================
    MULTI-MODE INTERACTIVE BACKGROUND CANVAS — 12 MODES
@@ -74,8 +75,17 @@ const PALETTES: Record<SolarPhase, string[]> = {
   night: ['#4f46e5', '#6366f1', '#1e1b4b', '#8b5cf6'], /* Deep Indigo, Royal Purple, Amethyst, Obsidian Slate */
 };
 
+// Richer, high-visibility palettes for Light Mode so elements don't wash out on light backdrops
+const LIGHT_PALETTES: Record<SolarPhase, string[]> = {
+  dawn:  ['#8b5cf6', '#7c3aed', '#a78bfa', '#d946ef'], /* Amethyst Purple, Royal Purple, Lavender, Orchid Pink */
+  noon:  ['#7c3aed', '#8b5cf6', '#c084fc', '#d97706'], /* Royal Purple, Amethyst, Light Amethyst, Gold */
+  dusk:  ['#8b5cf6', '#a78bfa', '#d8b4fe', '#db2777'], /* Amethyst, Lavender, Pale Amethyst, Rich Rose */
+  night: ['#7c3aed', '#8b5cf6', '#a78bfa', '#6d28d9'], /* Royal Purple, Amethyst, Lavender, Deep Velvet Purple */
+};
+
 export default function SunParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { theme } = useTheme();
   
   // Settings Context values
   const { backgroundStyle, particleCount, speedMultiplier } = useBackgroundSettings();
@@ -86,13 +96,15 @@ export default function SunParticles() {
   const countRef = useRef(particleCount);
   const speedRef = useRef(speedMultiplier);
   const phaseRef = useRef(currentPhase);
+  const themeRef = useRef(theme);
 
   useEffect(() => {
     styleRef.current = backgroundStyle;
     countRef.current = particleCount;
     speedRef.current = speedMultiplier;
     phaseRef.current = currentPhase;
-  }, [backgroundStyle, particleCount, speedMultiplier, currentPhase]);
+    themeRef.current = theme;
+  }, [backgroundStyle, particleCount, speedMultiplier, currentPhase, theme]);
   
   const timeRef = useRef(0);
   const pulsesRef = useRef<EnergyPulse[]>([]);
@@ -138,10 +150,18 @@ export default function SunParticles() {
     let matrixDrops: MatrixDrop[] = [];
     let crystalShards: PrismaticShard[] = [];
 
+    // Helper: Get active theme and phase adapted colors dynamically
+    const getColors = () => {
+      const currentPhase = phaseRef.current;
+      const isLight = themeRef.current === 'light';
+      const palette = isLight ? LIGHT_PALETTES : PALETTES;
+      return palette[currentPhase] || palette.noon;
+    };
+
     // Helper: Initialize particles array
     const initParticles = (width: number, height: number) => {
       const particles: Particle[] = [];
-      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const colors = getColors();
       const count = countRef.current;
 
       for (let i = 0; i < count; i++) {
@@ -151,8 +171,8 @@ export default function SunParticles() {
           vx: (Math.random() - 0.5) * 0.4,
           vy: (Math.random() - 0.5) * 0.4,
           radius: 0.8 + Math.random() * 2.2,
-          alpha: 0.1 + Math.random() * 0.5,
-          baseAlpha: 0.1 + Math.random() * 0.4,
+          alpha: themeRef.current === 'light' ? 0.35 + Math.random() * 0.50 : 0.1 + Math.random() * 0.5,
+          baseAlpha: themeRef.current === 'light' ? 0.30 + Math.random() * 0.40 : 0.1 + Math.random() * 0.4,
           color: colors[Math.floor(Math.random() * colors.length)] || '#FBBF24',
           angle: Math.random() * Math.PI * 2,
           speed: 0.15 + Math.random() * 0.35,
@@ -164,7 +184,7 @@ export default function SunParticles() {
     // Helper: Initialize Liquid Lava Blobs
     const initLavaBlobs = (width: number, height: number) => {
       const list: LavaBlob[] = [];
-      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const colors = getColors();
       const count = Math.max(5, Math.floor(countRef.current / 5));
       for (let i = 0; i < count; i++) {
         list.push({
@@ -199,7 +219,7 @@ export default function SunParticles() {
     // Helper: Initialize Rotating crystal shards
     const initCrystalShards = (width: number, height: number) => {
       const list: PrismaticShard[] = [];
-      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const colors = getColors();
       const count = Math.max(2, Math.floor(countRef.current / 15));
       for (let i = 0; i < count; i++) {
         list.push({
@@ -257,7 +277,7 @@ export default function SunParticles() {
       enableMouseInteract: boolean
     ) => {
       const particles = particlesRef.current;
-      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const colors = getColors();
       const targetCount = countRef.current;
       const speed = speedRef.current;
 
@@ -270,8 +290,8 @@ export default function SunParticles() {
             vx: (Math.random() - 0.5) * 0.4,
             vy: (Math.random() - 0.5) * 0.4,
             radius: 0.8 + Math.random() * 2.2,
-            alpha: 0.1 + Math.random() * 0.5,
-            baseAlpha: 0.1 + Math.random() * 0.4,
+            alpha: themeRef.current === 'light' ? 0.35 + Math.random() * 0.50 : 0.1 + Math.random() * 0.5,
+            baseAlpha: themeRef.current === 'light' ? 0.30 + Math.random() * 0.40 : 0.1 + Math.random() * 0.4,
             color: colors[Math.floor(Math.random() * colors.length)] || '#FBBF24',
             angle: Math.random() * Math.PI * 2,
             speed: 0.15 + Math.random() * 0.35,
@@ -330,8 +350,9 @@ export default function SunParticles() {
       const speed = speedRef.current;
       const targetCount = countRef.current;
       
-      const gridColor = CYBER_GRID_PALETTE[0]; // Cyan
-      const gridAlpha = 0.05;
+      const isLight = themeRef.current === 'light';
+      const gridColor = isLight ? '#7c3aed' : CYBER_GRID_PALETTE[0]; // Amethyst purple in light mode
+      const gridAlpha = isLight ? 0.20 : 0.05;
       ctx.strokeStyle = hexToRgba(gridColor, gridAlpha);
       ctx.lineWidth = 0.5;
 
@@ -349,9 +370,9 @@ export default function SunParticles() {
         ctx.stroke();
       }
 
-      // Draw intersection nodes in orange for high contrast WAFER style
-      const nodeColor = CYBER_GRID_PALETTE[3]; // Orange
-      const nodeAlpha = 0.12;
+      // Draw intersection nodes (amethyst lavender in light mode, orange in dark mode)
+      const nodeColor = isLight ? '#a78bfa' : CYBER_GRID_PALETTE[3];
+      const nodeAlpha = isLight ? 0.24 : 0.12;
       for (let x = GRID_SPACING; x < w; x += GRID_SPACING) {
         for (let y = GRID_SPACING; y < h; y += GRID_SPACING) {
           ctx.beginPath();
@@ -365,8 +386,10 @@ export default function SunParticles() {
       
       if (pulsesRef.current.length < maxPulses && Math.random() < 0.03 * speed) {
         const isHorizontal = Math.random() > 0.5;
-        // Pulse color: Cyan/Neon-Blue variants
-        const color = CYBER_GRID_PALETTE[Math.floor(Math.random() * 3)] || '#00F5FF';
+        // Pulse color: Amethyst variants in light theme, Cyan/Neon-Blue variants in dark theme
+        const color = isLight 
+          ? ['#7c3aed', '#8b5cf6', '#a78bfa'][Math.floor(Math.random() * 3)]
+          : (CYBER_GRID_PALETTE[Math.floor(Math.random() * 3)] || '#00F5FF');
 
         if (isHorizontal) {
           const gridRow = Math.floor(Math.random() * (h / GRID_SPACING)) + 1;
@@ -496,7 +519,7 @@ export default function SunParticles() {
     const drawEnergyWaves = () => {
       const t = timeRef.current;
       const speed = speedRef.current;
-      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const colors = getColors();
       
       ctx.lineWidth = 2.0;
       for (let i = 0; i < 3; i++) {
@@ -527,7 +550,7 @@ export default function SunParticles() {
     const drawMagneticFlux = () => {
       const t = timeRef.current;
       const speed = speedRef.current;
-      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const colors = getColors();
       
       const cx = w * 0.8;
       const cy = h * 0.15;
@@ -554,7 +577,7 @@ export default function SunParticles() {
     const drawHexCells = () => {
       const t = timeRef.current;
       const speed = speedRef.current;
-      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const colors = getColors();
       
       const hexSize = 42;
       const hSpacing = hexSize * 1.5;
@@ -592,7 +615,7 @@ export default function SunParticles() {
     const drawSolarAurora = () => {
       const t = timeRef.current;
       const speed = speedRef.current;
-      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const colors = getColors();
       const targetCount = countRef.current;
 
       const curtainCount = Math.max(1, Math.min(5, Math.floor(targetCount / 25)));
@@ -636,7 +659,7 @@ export default function SunParticles() {
       
       const desiredBlobs = Math.max(5, Math.floor(targetCount / 5));
       if (lavaBlobs.length < desiredBlobs) {
-        const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+        const colors = getColors();
         for (let i = lavaBlobs.length; i < desiredBlobs; i++) {
           lavaBlobs.push({
             x: Math.random() * w,
@@ -694,7 +717,7 @@ export default function SunParticles() {
     const drawDigitalRain = () => {
       const t = timeRef.current;
       const speed = speedRef.current;
-      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const colors = getColors();
       const targetCount = countRef.current;
 
       ctx.font = 'bold 9px monospace';
@@ -763,7 +786,7 @@ export default function SunParticles() {
 
       const desiredShards = Math.max(2, Math.floor(targetCount / 15));
       if (crystalShards.length < desiredShards) {
-        const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+        const colors = getColors();
         for (let i = crystalShards.length; i < desiredShards; i++) {
           crystalShards.push({
             x: Math.random() * w,
@@ -834,7 +857,7 @@ export default function SunParticles() {
     // MAIN RENDERING LOOP SWITCH PANEL
     // ────────────────────────────────────────────────────────
     const animate = () => {
-      timeRef.current += 1;
+      timeRef.current += speedRef.current;
 
       // Dynamically detect container size changes (e.g. after loader hides or parent layout finishes)
       const parent = canvas.parentElement;
@@ -847,76 +870,142 @@ export default function SunParticles() {
       }
 
       const currentStyle = styleRef.current;
-      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const colors = getColors();
 
       ctx.clearRect(0, 0, w, h);
 
       // Draw style-specific premium deep-ambient backdrop washes directly in the canvas overlay
       let bgGrad;
+      const isLight = themeRef.current === 'light';
       switch (currentStyle) {
         case 'silicon-grid':
           bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-          bgGrad.addColorStop(0, '#02040a');
-          bgGrad.addColorStop(1, '#040a15');
+          if (isLight) {
+            bgGrad.addColorStop(0, '#faf6ee');
+            bgGrad.addColorStop(0.5, '#f2e8f5');
+            bgGrad.addColorStop(1, '#ede2d8');
+          } else {
+            bgGrad.addColorStop(0, '#02040a');
+            bgGrad.addColorStop(1, '#040a15');
+          }
           ctx.fillStyle = bgGrad;
           ctx.fillRect(0, 0, w, h);
           break;
         case 'liquid-lava':
           bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-          bgGrad.addColorStop(0, '#100101');
-          bgGrad.addColorStop(0.7, '#040000');
-          bgGrad.addColorStop(1, '#000000');
+          if (isLight) {
+            bgGrad.addColorStop(0, '#faf6ee');
+            bgGrad.addColorStop(0.5, '#f5e6f0');
+            bgGrad.addColorStop(1, '#ede2d8');
+          } else {
+            bgGrad.addColorStop(0, '#100101');
+            bgGrad.addColorStop(0.7, '#040000');
+            bgGrad.addColorStop(1, '#000000');
+          }
           ctx.fillStyle = bgGrad;
           ctx.fillRect(0, 0, w, h);
           break;
         case 'cosmic-wind':
           bgGrad = ctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.8);
-          bgGrad.addColorStop(0, '#0d0422');
-          bgGrad.addColorStop(0.5, '#04010b');
-          bgGrad.addColorStop(1, '#000000');
+          if (isLight) {
+            bgGrad.addColorStop(0, '#faf6ee');
+            bgGrad.addColorStop(0.5, '#f0e2f2');
+            bgGrad.addColorStop(1, '#ede2d8');
+          } else {
+            bgGrad.addColorStop(0, '#0d0422');
+            bgGrad.addColorStop(0.5, '#04010b');
+            bgGrad.addColorStop(1, '#000000');
+          }
           ctx.fillStyle = bgGrad;
           ctx.fillRect(0, 0, w, h);
           break;
         case 'digital-rain':
           bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-          bgGrad.addColorStop(0, '#000502');
-          bgGrad.addColorStop(1, '#000000');
+          if (isLight) {
+            bgGrad.addColorStop(0, '#faf6ee');
+            bgGrad.addColorStop(0.5, '#f2eaf0');
+            bgGrad.addColorStop(1, '#ede2d8');
+          } else {
+            bgGrad.addColorStop(0, '#000502');
+            bgGrad.addColorStop(1, '#000000');
+          }
           ctx.fillStyle = bgGrad;
           ctx.fillRect(0, 0, w, h);
           break;
         case 'prismatic-shards':
           bgGrad = ctx.createLinearGradient(0, 0, w, h);
-          bgGrad.addColorStop(0, '#010512');
-          bgGrad.addColorStop(1, '#000000');
+          if (isLight) {
+            bgGrad.addColorStop(0, '#faf6ee');
+            bgGrad.addColorStop(0.5, '#f0e5f3');
+            bgGrad.addColorStop(1, '#ede2d8');
+          } else {
+            bgGrad.addColorStop(0, '#010512');
+            bgGrad.addColorStop(1, '#000000');
+          }
           ctx.fillStyle = bgGrad;
           ctx.fillRect(0, 0, w, h);
           break;
         case 'solar-aurora':
           bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-          bgGrad.addColorStop(0, '#01020a');
-          bgGrad.addColorStop(1, '#050a1e');
+          if (isLight) {
+            bgGrad.addColorStop(0, '#faf6ee');
+            bgGrad.addColorStop(0.5, '#f0e8f5');
+            bgGrad.addColorStop(1, '#ede2d8');
+          } else {
+            bgGrad.addColorStop(0, '#01020a');
+            bgGrad.addColorStop(1, '#050a1e');
+          }
           ctx.fillStyle = bgGrad;
           ctx.fillRect(0, 0, w, h);
           break;
         case 'energy-waves':
           bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-          bgGrad.addColorStop(0, '#02040c');
-          bgGrad.addColorStop(1, '#000002');
+          if (isLight) {
+            bgGrad.addColorStop(0, '#faf6ee');
+            bgGrad.addColorStop(0.5, '#f2e6f3');
+            bgGrad.addColorStop(1, '#ede2d8');
+          } else {
+            bgGrad.addColorStop(0, '#02040c');
+            bgGrad.addColorStop(1, '#000002');
+          }
           ctx.fillStyle = bgGrad;
           ctx.fillRect(0, 0, w, h);
           break;
         case 'magnetic-resonance':
           bgGrad = ctx.createRadialGradient(w * 0.8, h * 0.15, 0, w * 0.8, h * 0.15, w * 0.55);
-          bgGrad.addColorStop(0, hexToRgba(colors[0] || '#FBBF24', 0.04));
-          bgGrad.addColorStop(1, '#02040a');
+          if (isLight) {
+            bgGrad.addColorStop(0, hexToRgba('#7c3aed', 0.08));
+            bgGrad.addColorStop(0.5, '#f5ece0');
+            bgGrad.addColorStop(1, '#faf6ee');
+          } else {
+            bgGrad.addColorStop(0, hexToRgba(colors[0] || '#FBBF24', 0.04));
+            bgGrad.addColorStop(1, '#02040a');
+          }
           ctx.fillStyle = bgGrad;
           ctx.fillRect(0, 0, w, h);
           break;
         case 'hex-cells':
           bgGrad = ctx.createLinearGradient(0, 0, w, h);
-          bgGrad.addColorStop(0, '#020308');
-          bgGrad.addColorStop(1, '#000000');
+          if (isLight) {
+            bgGrad.addColorStop(0, '#faf6ee');
+            bgGrad.addColorStop(0.5, '#f0e8f2');
+            bgGrad.addColorStop(1, '#ede2d8');
+          } else {
+            bgGrad.addColorStop(0, '#020308');
+            bgGrad.addColorStop(1, '#000000');
+          }
           ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, w, h);
+          break;
+        case 'none':
+          if (isLight) {
+            ctx.fillStyle = '#faf7f2';
+          } else {
+            bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+            bgGrad.addColorStop(0, '#02040a');
+            bgGrad.addColorStop(1, '#040a15');
+            ctx.fillStyle = bgGrad;
+          }
           ctx.fillRect(0, 0, w, h);
           break;
         default:
@@ -975,6 +1064,10 @@ export default function SunParticles() {
 
         case 'prismatic-shards':
           drawPrismaticShards();
+          break;
+
+        case 'none':
+          // Static background: do not draw any overlays or animations
           break;
 
         default:

@@ -67,7 +67,7 @@ export default function Testimonials() {
       id="testimonials"
       ref={sectionRef}
       className="relative py-24 md:py-32 overflow-hidden"
-      style={{ background: 'linear-gradient(180deg, #030712 0%, #0a0f1a 50%, #030712 100%)' }}
+      style={{ background: 'var(--gradient-hero)' }}
     >
       {/* Decorative orb */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-[0.03] pointer-events-none"
@@ -85,7 +85,7 @@ export default function Testimonials() {
           <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-[0.2em] uppercase border border-amber-500/30 text-amber-400 bg-amber-500/5 mb-6 font-heading">
             Testimonials
           </span>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-white mb-4">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-solar-text mb-4">
             Trusted by{' '}
             <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
               Homeowners
@@ -129,20 +129,20 @@ export default function Testimonials() {
                 <div className="relative z-10">
                   <StarRating rating={t.rating} />
 
-                  <p className="text-gray-300 italic leading-relaxed mb-6 text-[15px]">
+                  <p className="text-solar-text-muted italic leading-relaxed mb-6 text-[15px]">
                     "{t.quote}"
                   </p>
 
                   <div className="flex items-center gap-3">
                     {/* Avatar circle */}
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500/30 to-cyan-500/20 flex items-center justify-center text-white font-semibold text-sm font-heading border border-white/10">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500/30 to-cyan-500/20 flex items-center justify-center text-solar-text font-semibold text-sm font-heading border border-solar-border">
                       {t.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="text-white font-semibold text-sm">
+                      <p className="text-solar-text font-semibold text-sm">
                         {t.name}
                       </p>
-                      <p className="text-gray-500 text-xs">{t.location}</p>
+                      <p className="text-solar-text-dim text-xs">{t.location}</p>
                     </div>
                   </div>
                 </div>

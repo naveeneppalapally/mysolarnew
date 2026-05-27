@@ -86,7 +86,7 @@ export default function Services() {
           </motion.span>
           <motion.h2
             variants={fadeInUp}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-white mb-5 leading-tight"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-solar-text mb-5 leading-tight"
           >
             Complete Solar{' '}
             <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
@@ -141,7 +141,7 @@ export default function Services() {
                 </div>
 
                 {/* Content */}
-                <h3 className="text-lg font-bold text-white mb-2.5 font-heading group-hover:text-amber-50 transition-colors duration-300">
+                <h3 className="text-lg font-bold text-solar-text mb-2.5 font-heading group-hover:text-solar-gold transition-colors duration-300">
                   {service.title}
                 </h3>
                 <p className="text-sm text-solar-text-muted leading-relaxed font-body">

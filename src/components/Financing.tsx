@@ -146,12 +146,12 @@ export default function Financing() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="font-heading font-bold text-xl text-white mb-3">
+                  <h3 className="font-heading font-bold text-xl text-solar-text mb-3">
                     {opt.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-sm text-white/40 font-body leading-relaxed mb-6">
+                  <p className="text-sm text-solar-text-muted font-body leading-relaxed mb-6">
                     {opt.description}
                   </p>
 
@@ -164,7 +164,7 @@ export default function Financing() {
                       >
                         <div className="flex items-center gap-2">
                           <span className={`${a.statText} opacity-50`}>{stat.icon}</span>
-                          <span className="text-xs text-white/40 font-body">{stat.label}</span>
+                          <span className="text-xs text-solar-text-muted font-body">{stat.label}</span>
                         </div>
                         <span className={`text-sm font-heading font-bold ${a.statText}`}>
                           {stat.value}
@@ -202,7 +202,7 @@ export default function Financing() {
             Explore Financing Options
             <ArrowRight className="w-4 h-4" />
           </motion.button>
-          <p className="mt-4 text-xs text-white/30 font-body">
+          <p className="mt-4 text-xs text-solar-text-dim font-body">
             We'll help you find the best payment plan for your budget
           </p>
         </motion.div>

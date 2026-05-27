@@ -85,7 +85,7 @@ function ResultCard({ icon, label, value, accent = 'default', hero = false, dela
   }[accent];
 
   const valueColor = {
-    default: 'text-white',
+    default: 'text-solar-text',
     gold: 'text-amber-400',
     cyan: 'text-indigo-400',
     indigo: 'text-indigo-400',
@@ -115,11 +115,11 @@ function ResultCard({ icon, label, value, accent = 'default', hero = false, dela
           ${accent === 'gold' ? 'text-amber-500/70' :
             accent === 'cyan' ? 'text-cyan-500/70' :
             accent === 'emerald' ? 'text-emerald-500/70' :
-            'text-white/30'}
+            'text-solar-text-dim'}
         `}>
           {icon}
         </span>
-        <span className="text-[11px] font-medium tracking-wider uppercase text-white/40 font-body">
+        <span className="text-[11px] font-medium tracking-wider uppercase text-solar-text-muted font-body">
           {label}
         </span>
       </div>
@@ -165,14 +165,14 @@ export default function SubsidyCalculator() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative rounded-3xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-xl overflow-hidden"
+          className="relative rounded-3xl border border-solar-border bg-solar-card backdrop-blur-xl overflow-hidden"
         >
           {/* Gold top border */}
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
 
           {/* ─── Slider Area ─── */}
-          <div className="px-6 sm:px-10 pt-10 pb-8 border-b border-white/[0.06]">
-            <p className="text-white/50 text-sm font-body tracking-wide text-center mb-6">
+          <div className="px-6 sm:px-10 pt-10 pb-8 border-b border-solar-border">
+            <p className="text-solar-text-muted text-sm font-body tracking-wide text-center mb-6">
               What's your monthly electricity bill?
             </p>
 
@@ -181,13 +181,13 @@ export default function SubsidyCalculator() {
               <div className="font-heading font-extrabold text-5xl sm:text-7xl md:text-8xl text-amber-400 tabular-nums">
                 <AnimatedValue value={bill} prefix="₹" />
               </div>
-              <span className="text-white/30 text-lg sm:text-xl font-body">/month</span>
+              <span className="text-solar-text-dim text-lg sm:text-xl font-body">/month</span>
             </div>
 
             {/* Custom Slider */}
             <div className="relative max-w-2xl mx-auto">
               {/* Track background */}
-              <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-2 rounded-full bg-white/[0.06]" />
+              <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-2 rounded-full bg-solar-border" />
               {/* Track fill */}
               <div
                 className="absolute top-1/2 -translate-y-1/2 left-0 h-2 rounded-full bg-gradient-to-r from-amber-500 via-purple-500 to-indigo-600 transition-all duration-75"
@@ -230,7 +230,7 @@ export default function SubsidyCalculator() {
               />
             </div>
 
-            <div className="flex justify-between max-w-2xl mx-auto mt-3 text-xs text-white/25 font-body">
+            <div className="flex justify-between max-w-2xl mx-auto mt-3 text-xs text-solar-text-dim font-body">
               <span>₹500</span>
               <span>₹15,000</span>
             </div>
@@ -242,7 +242,7 @@ export default function SubsidyCalculator() {
               <ResultCard
                 icon={<Zap className="w-4 h-4" />}
                 label="Recommended System"
-                value={<><AnimatedValue value={result.systemSize} /> <span className="text-sm font-normal text-white/40">kW</span></>}
+                value={<><AnimatedValue value={result.systemSize} /> <span className="text-sm font-normal text-solar-text-dim">kW</span></>}
                 delay={0}
               />
               <ResultCard
@@ -275,7 +275,7 @@ export default function SubsidyCalculator() {
               <ResultCard
                 icon={<Clock className="w-4 h-4" />}
                 label="Payback Period"
-                value={<><AnimatedValue value={result.paybackYears} decimals={1} /> <span className="text-sm font-normal text-white/40">Years</span></>}
+                value={<><AnimatedValue value={result.paybackYears} decimals={1} /> <span className="text-sm font-normal text-solar-text-dim">Years</span></>}
                 delay={0.25}
               />
               <ResultCard
@@ -289,7 +289,7 @@ export default function SubsidyCalculator() {
               <ResultCard
                 icon={<Gauge className="w-4 h-4" />}
                 label="Monthly Generation"
-                value={<><AnimatedValue value={result.monthlyGeneration} /> <span className="text-sm font-normal text-white/40">units</span></>}
+                value={<><AnimatedValue value={result.monthlyGeneration} /> <span className="text-sm font-normal text-solar-text-dim">units</span></>}
                 delay={0.35}
               />
             </div>
@@ -313,7 +313,7 @@ export default function SubsidyCalculator() {
               Get Your Exact Quote
               <ArrowRight className="w-4 h-4" />
             </motion.button>
-            <p className="mt-4 text-xs text-white/30 font-body">
+            <p className="mt-4 text-xs text-solar-text-dim font-body">
               Free consultation • No obligation • Subsidy assistance included
             </p>
           </div>

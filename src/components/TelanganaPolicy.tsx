@@ -106,19 +106,19 @@ export default function TelanganaPolicy() {
                 </span>
 
                 {/* Title */}
-                <h3 className="font-heading font-bold text-lg text-white mb-3 leading-snug">
+                <h3 className="font-heading font-bold text-lg text-solar-text mb-3 leading-snug">
                   {comp.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-sm text-white/40 font-body leading-relaxed mb-5">
+                <p className="text-sm text-solar-text-muted font-body leading-relaxed mb-5">
                   {comp.description}
                 </p>
 
                 {/* Highlights */}
                 <ul className="space-y-2">
                   {comp.highlights.map((h) => (
-                    <li key={h} className="flex items-center gap-2 text-xs text-white/50 font-body">
+                    <li key={h} className="flex items-center gap-2 text-xs text-solar-text-muted font-body">
                       <span className="w-1 h-1 rounded-full bg-emerald-500/60 flex-shrink-0" />
                       {h}
                     </li>

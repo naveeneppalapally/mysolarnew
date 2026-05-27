@@ -73,7 +73,7 @@ export default function WhySolar() {
           </motion.span>
           <motion.h2
             variants={fadeInUp}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-white mb-5 leading-tight"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-solar-text mb-5 leading-tight"
           >
             The Smart Investment{' '}
             <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
@@ -133,7 +133,7 @@ export default function WhySolar() {
 
                   {/* Content */}
                   <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2 font-heading group-hover:text-amber-50 transition-colors duration-300">
+                    <h3 className="text-lg sm:text-xl font-bold text-solar-text mb-2 font-heading group-hover:text-solar-gold transition-colors duration-300">
                       {benefit.title}
                     </h3>
                     <p className="text-sm sm:text-base text-solar-text-muted leading-relaxed font-body">

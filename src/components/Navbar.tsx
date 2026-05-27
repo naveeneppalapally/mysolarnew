@@ -134,7 +134,7 @@ function ThemeToggle() {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={toggleTheme}
-      className="relative w-9 h-9 rounded-full flex items-center justify-center cursor-pointer overflow-hidden border border-white/[0.08] bg-white/[0.03] backdrop-blur-md transition-all duration-300 hover:border-amber-500/30 hover:bg-amber-500/5 group"
+      className="relative w-9 h-9 rounded-full flex items-center justify-center cursor-pointer overflow-hidden border border-solar-border bg-solar-card backdrop-blur-md transition-all duration-300 hover:border-solar-border-hover hover:bg-solar-gold/5 group"
       title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
     >
       <AnimatePresence mode="wait" initial={false}>
@@ -217,14 +217,14 @@ export default function Navbar() {
         animate={{
           height: scrolled ? 56 : 64,
           backgroundColor: scrolled
-            ? 'rgba(3,7,18,0.85)'
+            ? 'var(--nav-bg)'
             : 'rgba(3,7,18,0)',
           backdropFilter: scrolled ? 'blur(24px)' : 'blur(0px)',
         }}
         transition={{ duration: 0.3 }}
         style={{
           borderBottom: scrolled
-            ? '1px solid rgba(139, 92, 246, 0.12)'
+            ? '1px solid var(--nav-border)'
             : '1px solid transparent',
         }}
       >
@@ -240,7 +240,7 @@ export default function Navbar() {
             <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
               MYHOME
             </span>{' '}
-            <span className="text-white">SOLAR</span>
+            <span className="text-solar-text">SOLAR</span>
           </span>
         </button>
 
@@ -256,8 +256,8 @@ export default function Navbar() {
                 onClick={() => scrollTo(link.href)}
                 className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer ${
                   isActive
-                    ? 'text-amber-400'
-                    : 'text-gray-400 hover:text-white'
+                    ? 'text-solar-gold'
+                    : 'text-solar-text-muted hover:text-solar-text'
                 }`}
               >
                 {link.label}
@@ -304,7 +304,7 @@ export default function Navbar() {
         {/* Mobile hamburger */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="lg:hidden relative w-10 h-10 flex items-center justify-center text-white cursor-pointer z-50"
+          className="lg:hidden relative w-10 h-10 flex items-center justify-center text-solar-text cursor-pointer z-50"
           aria-label="Toggle menu"
         >
           <BioSolarMenuIcon isOpen={mobileOpen} />
@@ -319,7 +319,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[99] bg-gray-950/95 backdrop-blur-2xl flex flex-col items-center justify-start pt-28 pb-8 overflow-y-auto"
+            className="fixed inset-0 z-[99] bg-solar-bg-secondary/95 text-solar-text backdrop-blur-2xl flex flex-col items-center justify-start pt-28 pb-8 overflow-y-auto"
           >
             <nav className="flex flex-col items-center gap-2 w-full">
               <div className="mb-6 scale-110 flex justify-center items-center gap-6">
@@ -343,7 +343,7 @@ export default function Navbar() {
                     }}
                     onClick={() => scrollTo(link.href)}
                     className={`text-2xl font-heading font-bold py-2 px-4 transition-colors cursor-pointer ${
-                      isActive ? 'text-amber-400' : 'text-gray-300'
+                      isActive ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
                     }`}
                   >
                     {link.label}

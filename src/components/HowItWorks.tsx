@@ -112,7 +112,7 @@ function TimelineStep({
             className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-heading font-bold text-sm sm:text-base transition-all duration-700 ${
               isInView
                 ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-gray-900 shadow-[0_0_25px_rgba(245,158,11,0.4)]'
-                : 'bg-gray-800 text-gray-500 border border-gray-700'
+                : 'timeline-inactive-node'
             }`}
           >
             {index + 1}
@@ -122,7 +122,7 @@ function TimelineStep({
         {/* Vertical line segment */}
         {index < steps.length - 1 && (
           <div className="w-px flex-1 min-h-[60px] relative">
-            <div className="absolute inset-0 bg-gray-800" />
+            <div className="absolute inset-0 timeline-inactive-line" />
             <motion.div
               initial={{ scaleY: 0 }}
               animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
@@ -182,8 +182,14 @@ function StepCard({
   index: number;
 }) {
   return (
-    <div className="group rounded-2xl p-5 sm:p-6 bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/[0.06] hover:border-amber-500/20 transition-all duration-500 hover:shadow-[0_4px_30px_rgba(245,158,11,0.06)]">
-      <div className="flex items-center gap-3 mb-3">
+    <div className="solar-panel-card solar-panel-card-gold p-5 sm:p-6 cursor-default group relative overflow-hidden">
+      {/* Corner brackets */}
+      <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
+      <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
+      <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
+      <span className="solar-panel-card-corner solar-panel-card-corner-br" />
+
+      <div className="flex items-center gap-3 mb-3 relative z-10">
         <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-amber-500/10 border border-amber-500/15">
           <step.icon className="w-4 h-4 text-amber-400" />
         </div>
@@ -191,10 +197,10 @@ function StepCard({
           Step {index + 1}
         </span>
       </div>
-      <h3 className="text-lg sm:text-xl font-bold text-white mb-2 font-heading">
+      <h3 className="text-lg sm:text-xl font-bold text-solar-text mb-2 font-heading relative z-10">
         {step.title}
       </h3>
-      <p className="text-sm text-solar-text-muted leading-relaxed font-body">
+      <p className="text-sm text-solar-text-muted leading-relaxed font-body relative z-10">
         {step.description}
       </p>
     </div>
@@ -226,7 +232,7 @@ export default function HowItWorks() {
           </motion.span>
           <motion.h2
             variants={fadeInUp}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-white mb-5 leading-tight"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-solar-text mb-5 leading-tight"
           >
             How It{' '}
             <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">

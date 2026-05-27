@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, X, Sliders, Sun, Zap, Wind, Activity, Layers, Cpu, Compass, Flame, Binary, Gem } from 'lucide-react';
+import { Settings, X, Sparkles, Sun, Zap, Wind, Activity, Layers, Cpu, Compass, Flame, Binary, Gem } from 'lucide-react';
 import { useBackgroundSettings } from '../context/BackgroundSettingsContext';
 import type { BackgroundStyle } from '../context/BackgroundSettingsContext';
 import { useSolarTime } from '../context/SolarTimeContext';
@@ -18,6 +18,26 @@ export default function BackgroundSettings() {
 
   const { timeOfDay, setTimeOfDay, currentPhase } = useSolarTime();
 
+  // Inject chosen background style as a global class on the root html element
+  useEffect(() => {
+    const root = document.documentElement;
+    const classesToRemove = [
+      'style-none',
+      'style-silicon-grid',
+      'style-gradient-embers',
+      'style-energy-waves',
+      'style-cosmic-wind',
+      'style-solar-aurora',
+      'style-magnetic-resonance',
+      'style-hex-cells',
+      'style-liquid-lava',
+      'style-digital-rain',
+      'style-prismatic-shards'
+    ];
+    classesToRemove.forEach((cls) => root.classList.remove(cls));
+    root.classList.add(`style-${backgroundStyle}`);
+  }, [backgroundStyle]);
+
   const handleTimeChange = (phase: 'dawn' | 'noon' | 'dusk' | 'night') => {
     switch (phase) {
       case 'dawn': setTimeOfDay(7.5); break;
@@ -33,6 +53,12 @@ export default function BackgroundSettings() {
     desc: string; 
     icon: React.ComponentType<{ className?: string; size?: number }>; 
   }[] = [
+    { 
+      id: 'none', 
+      name: 'Static / Off', 
+      desc: 'No moving particles or grid animations. Pure luxury gradient canvas background only.',
+      icon: X
+    },
     { 
       id: 'silicon-grid', 
       name: 'Silicon Cyber Grid', 
@@ -100,10 +126,10 @@ export default function BackgroundSettings() {
       {/* Floating Toggle Button */}
       <div className="fixed bottom-6 left-6 z-[95]">
         <motion.button
-          whileHover={{ scale: 1.1, rotate: 15 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => setIsOpen(!isOpen)}
-          className="w-14 h-14 rounded-full flex items-center justify-center border border-amber-500/30 bg-gray-950/80 backdrop-blur-md text-amber-400 hover:border-amber-400 hover:bg-amber-500/10 shadow-lg shadow-black/40 cursor-pointer relative group"
+          className="w-14 h-14 rounded-full flex items-center justify-center border border-amber-500/30 bg-solar-card-solid backdrop-blur-md text-amber-400 hover:border-amber-400 hover:bg-amber-500/10 shadow-lg shadow-black/40 cursor-pointer relative group"
           aria-label="Customize background atmosphere"
         >
           {/* Subtle glow ring */}
@@ -117,11 +143,11 @@ export default function BackgroundSettings() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, x: -20, y: 10 }}
-            animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, x: -20, y: 10 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-24 left-6 z-[95] w-[340px] sm:w-[380px] max-h-[75vh] overflow-y-auto rounded-2xl bg-gray-950/90 border border-white/10 shadow-2xl p-5 backdrop-blur-xl flex flex-col gap-4 text-white custom-scrollbar"
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 15, scale: 0.98 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed bottom-24 left-6 z-[95] w-[340px] sm:w-[380px] max-h-[75vh] overflow-y-auto rounded-2xl bg-solar-card-solid border border-solar-border shadow-2xl p-5 backdrop-blur-xl flex flex-col gap-4 text-solar-text custom-scrollbar"
             data-lenis-prevent
             style={{
               boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
@@ -129,19 +155,17 @@ export default function BackgroundSettings() {
             }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-white/10">
-              <div>
-                <span className="text-[10px] uppercase tracking-widest font-heading font-semibold text-amber-500">
-                  Interactive HUD
-                </span>
-                <h3 className="text-base font-bold font-heading text-white flex items-center gap-1.5 mt-0.5">
-                  <Sliders size={16} className="text-amber-400" />
-                  Atmosphere Settings
+            <div className="flex items-center justify-between pb-3 border-b border-solar-border">
+              <div className="flex flex-col">
+                <h3 className="text-base font-bold font-heading text-solar-text flex items-center gap-1.5 mt-0.5">
+                  <Sparkles size={15} className="text-amber-400" />
+                  Atmosphere
                 </h3>
+                <span className="text-[10px] text-solar-text-dim font-medium tracking-wide uppercase mt-0.5">Circadian Core</span>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-solar-text-muted hover:text-solar-text hover:bg-solar-border/10 transition-colors cursor-pointer"
               >
                 <X size={18} />
               </button>
@@ -167,6 +191,11 @@ export default function BackgroundSettings() {
                       onClick={() => {
                         console.log("HUD Click: Switching background style to:", style.id);
                         setBackgroundStyle(style.id);
+                        if (style.id === 'none') {
+                          setSpeedMultiplier(0.0);
+                        } else if (speedMultiplier === 0) {
+                          setSpeedMultiplier(1.0);
+                        }
                       }}
                       onTouchStart={(e) => {
                         const touch = e.touches[0];
@@ -180,21 +209,26 @@ export default function BackgroundSettings() {
                         if (touch && Math.abs(touch.clientY - startY) < 10) {
                           console.log("HUD Touch: Switching background style to:", style.id);
                           setBackgroundStyle(style.id);
+                          if (style.id === 'none') {
+                            setSpeedMultiplier(0.0);
+                          } else if (speedMultiplier === 0) {
+                            setSpeedMultiplier(1.0);
+                          }
                         }
                       }}
                       className={`text-left p-3 rounded-xl border transition-all duration-200 cursor-pointer flex gap-3 ${
                         isActive
                           ? 'bg-amber-500/10 border-amber-500/80 shadow-md shadow-amber-500/5'
-                          : 'bg-white/[0.02] border-white/5 hover:border-white/15 hover:bg-white/[0.04]'
+                          : 'bg-solar-card border border-solar-border hover:border-solar-border-hover hover:bg-solar-bg-tertiary'
                       }`}
                     >
                       <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
-                        isActive ? 'bg-amber-500 text-gray-950' : 'bg-white/5 text-gray-300'
+                        isActive ? 'bg-amber-500 text-gray-950' : 'bg-solar-bg-tertiary text-solar-text-muted'
                       }`}>
                         <Icon size={18} />
                       </div>
                       <div className="flex flex-col gap-0.5">
-                        <span className={`text-xs font-semibold ${isActive ? 'text-amber-400 font-bold' : 'text-white'}`}>
+                        <span className={`text-xs font-semibold ${isActive ? 'text-amber-400 font-bold' : 'text-solar-text'}`}>
                           {style.name}
                         </span>
                         <span className="text-[10px] text-gray-400 leading-relaxed">
@@ -230,12 +264,27 @@ export default function BackgroundSettings() {
             <div className="flex flex-col gap-2 pt-2 border-t border-white/5">
               <div className="flex justify-between items-center text-[10px] uppercase tracking-wider font-semibold text-gray-400">
                 <span>Animation Velocity</span>
-                <span className="font-mono text-amber-400">{speedMultiplier.toFixed(1)}x</span>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-amber-400">
+                    {speedMultiplier === 0 ? 'Off / Static' : `${speedMultiplier.toFixed(1)}x`}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setSpeedMultiplier(speedMultiplier > 0 ? 0.0 : 1.0)}
+                    className={`px-1.5 py-0.5 rounded text-[8px] font-bold uppercase transition-all duration-200 cursor-pointer ${
+                      speedMultiplier > 0 
+                        ? 'bg-amber-500/20 border border-amber-500/80 text-amber-400' 
+                        : 'bg-solar-card border border-solar-border text-gray-400'
+                    }`}
+                  >
+                    {speedMultiplier > 0 ? 'On' : 'Off'}
+                  </button>
+                </div>
               </div>
               <div className="flex items-center gap-3">
                 <input
                   type="range"
-                  min="0.3"
+                  min="0.0"
                   max="2.5"
                   step="0.1"
                   value={speedMultiplier}

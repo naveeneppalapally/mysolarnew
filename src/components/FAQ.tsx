@@ -73,7 +73,7 @@ function AccordionItem({
         className={`relative rounded-xl border transition-all duration-300 overflow-hidden ${
           isOpen
             ? 'border-amber-500/30 bg-amber-500/[0.04]'
-            : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12]'
+            : 'border-solar-border bg-solar-card hover:border-solar-border-hover'
         }`}
       >
         {/* Gold left accent */}
@@ -90,7 +90,7 @@ function AccordionItem({
         >
           <span
             className={`text-[15px] md:text-base font-medium transition-colors duration-200 ${
-              isOpen ? 'text-amber-400' : 'text-gray-200 group-hover:text-white'
+              isOpen ? 'text-amber-400' : 'text-solar-text group-hover:text-solar-gold'
             }`}
           >
             {item.question}
@@ -102,7 +102,7 @@ function AccordionItem({
             className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center border transition-colors duration-200 ${
               isOpen
                 ? 'border-amber-500/40 bg-amber-500/10 text-amber-400'
-                : 'border-white/10 bg-white/[0.03] text-gray-400 group-hover:text-white group-hover:border-white/20'
+                : 'border-solar-border bg-solar-card text-solar-text-muted group-hover:text-solar-text group-hover:border-solar-border-hover'
             }`}
           >
             {isOpen ? <Minus size={14} /> : <Plus size={14} />}
@@ -118,7 +118,7 @@ function AccordionItem({
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               className="overflow-hidden"
             >
-              <div className="px-6 pb-5 text-gray-400 text-sm leading-relaxed border-t border-white/[0.04] pt-4">
+              <div className="px-6 pb-5 text-solar-text-muted text-sm leading-relaxed border-t border-solar-border pt-4">
                 {item.answer}
               </div>
             </motion.div>
@@ -161,7 +161,7 @@ export default function FAQ() {
           <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-[0.2em] uppercase border border-cyan-500/30 text-cyan-400 bg-cyan-500/5 mb-6 font-heading">
             FAQ
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold font-heading text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold font-heading text-solar-text mb-4">
             Frequently Asked{' '}
             <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
               Questions

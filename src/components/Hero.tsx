@@ -4,6 +4,7 @@ import { CheckCircle2 } from 'lucide-react';
 import SunParticles from './SunParticles';
 import { scrollToSection } from '../lib/utils';
 import { useCountUp } from '../hooks/useCountUp';
+import { useTheme } from '../context/ThemeContext';
 
 /* ============================================
    ANIMATED HEADLINE — Clip-reveal per word
@@ -41,7 +42,7 @@ function AnimatedHeadline() {
                     className={`inline-block ${
                       line.isGold
                         ? 'bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 bg-clip-text text-transparent'
-                        : 'text-white'
+                        : 'text-solar-text'
                     }`}
                     initial={{ y: '110%', opacity: 0 }}
                     animate={isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
@@ -309,7 +310,7 @@ function StatItem({ end, prefix = '', suffix = '', label, decimals = 0 }: StatCo
       >
         {displayValue}
       </p>
-      <p className="text-gray-500 text-[11px] sm:text-xs mt-1 font-body tracking-wide uppercase">
+      <p className="text-solar-text-dim text-[11px] sm:text-xs mt-1 font-body tracking-wide uppercase">
         {label}
       </p>
     </div>
@@ -362,6 +363,7 @@ function ShimmerButton({
    HERO COMPONENT
    ============================================ */
 export default function Hero() {
+  const { theme } = useTheme();
   const [tilt, setTilt] = React.useState({ x: 0, y: 0 });
   const panelRef = React.useRef<HTMLDivElement>(null);
   const [hidePanel, setHidePanel] = React.useState(false);
@@ -411,10 +413,11 @@ export default function Hero() {
       <div className="absolute inset-0 pointer-events-none z-[1] overflow-hidden flex items-center justify-center">
         {/* Massive circular purple-indigo atmosphere background */}
         <div 
-          className="absolute w-[800px] h-[800px] rounded-full opacity-35 blur-[150px]"
+          className="absolute w-[800px] h-[800px] rounded-full blur-[150px]"
           style={{
             background: 'radial-gradient(circle, var(--solar-purple) 0%, var(--solar-indigo) 50%, transparent 70%)',
             transform: 'translate(30%, -20%)',
+            opacity: theme === 'light' ? 0.35 : 0.35,
           }}
         />
         
@@ -426,13 +429,13 @@ export default function Hero() {
           }}
         >
           {/* Glowing Gold Ring */}
-          <div className="absolute w-[270px] h-[270px] rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 blur-[8px] animate-glow-pulse" />
+          <div className="absolute w-[270px] h-[270px] rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 blur-[8px] animate-glow-pulse" style={{ opacity: theme === 'light' ? 0.55 : 0.35 }} />
           
           {/* Glowing Purple atmospheric halo */}
           <div className="absolute w-[365px] h-[365px] rounded-full bg-indigo-600/30 blur-[24px]" />
           
           {/* The Moon / Dark Silicon Center Disc */}
-          <div className="absolute w-[248px] h-[248px] rounded-full bg-[#030712] border border-white/[0.04] shadow-[inset_0_4px_16px_rgba(255,255,255,0.03)]" />
+          <div className="absolute w-[248px] h-[248px] rounded-full bg-solar-bg-secondary border border-solar-border shadow-[inset_0_4px_16px_rgba(255,255,255,0.02)]" />
         </div>
       </div>
 
@@ -488,16 +491,16 @@ export default function Hero() {
 
               {/* Subheadline */}
               <motion.p
-                className="text-gray-400 text-sm sm:text-base max-w-lg leading-relaxed font-body"
+                className="text-solar-text-muted text-sm sm:text-base max-w-lg leading-relaxed font-body"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
               >
                 Government subsidies up to{' '}
-                <strong className="text-white font-medium">₹78,000</strong>. MNRE
+                <strong className="text-solar-text font-medium">₹78,000</strong>. MNRE
                 Empanelled Vendor (TSRE260875) serving Hyderabad, Mancherial, Rangareddy, and Medchal. We handle{' '}
-                <strong className="text-white font-medium">100% paperwork</strong>.
+                <strong className="text-solar-text font-medium">100% paperwork</strong>.
               </motion.p>
 
               {/* CTAs */}
@@ -515,8 +518,8 @@ export default function Hero() {
                   onClick={() => scrollToSection('contact')}
                   className="magnetic font-heading font-semibold px-8 py-4 rounded-xl text-sm cursor-pointer border"
                   style={{
-                    borderColor: 'rgba(255,255,255,0.15)',
-                    color: '#E5E7EB',
+                    borderColor: 'var(--solar-border)',
+                    color: 'var(--solar-text)',
                     background: 'transparent',
                   }}
                   whileHover={{
@@ -552,7 +555,7 @@ export default function Hero() {
                       className="w-3.5 h-3.5 flex-shrink-0"
                       style={{ color: '#F59E0B' }}
                     />
-                    <span className="text-xs text-gray-400 font-body">{badge}</span>
+                    <span className="text-xs text-solar-text-muted font-body">{badge}</span>
                   </motion.div>
                 ))}
               </motion.div>
@@ -614,23 +617,16 @@ export default function Hero() {
       <div className="relative z-10 w-full pb-6 md:pb-10">
         <div className="section-wrapper !py-0">
           <motion.div
-            className="rounded-2xl border px-4 py-4 md:px-8 md:py-5"
+            className="rounded-2xl border px-4 py-4 md:px-8 md:py-5 border-solar-border bg-solar-card backdrop-blur-xl"
             style={{
-              background: 'rgba(26, 21, 56, 0.22)',
-              borderColor: 'rgba(139, 92, 246, 0.15)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03)',
+              boxShadow: 'var(--shadow-card-lg)',
             }}
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div
-              className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-0 md:divide-x"
-              style={{ borderColor: 'rgba(255,255,255,0.08)' }}
-            >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-0 md:divide-x divide-solar-border">
               {statsData.map((stat) => (
                 <StatItem key={stat.label} {...stat} />
               ))}

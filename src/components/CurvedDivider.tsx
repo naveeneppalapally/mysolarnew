@@ -6,7 +6,7 @@ interface CurvedDividerProps {
 }
 
 export default function CurvedDivider({
-  baseColor = '#030712',
+  baseColor = 'var(--solar-bg)',
   flip = false,
 }: CurvedDividerProps) {
   return (
@@ -31,11 +31,11 @@ export default function CurvedDivider({
             <stop offset="100%" stopColor="#d97706" />
           </linearGradient>
           <linearGradient id="purpleArchGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#312e81" />
-            <stop offset="30%" stopColor="#4f46e5" />
-            <stop offset="50%" stopColor="#8b5cf6" />
-            <stop offset="70%" stopColor="#4f46e5" />
-            <stop offset="100%" stopColor="#312e81" />
+            <stop offset="0%" stopColor="#6d28d9" />
+            <stop offset="30%" stopColor="#7c3aed" />
+            <stop offset="50%" stopColor="#a78bfa" />
+            <stop offset="70%" stopColor="#7c3aed" />
+            <stop offset="100%" stopColor="#6d28d9" />
           </linearGradient>
         </defs>
 

@@ -81,16 +81,16 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-purple-600 flex items-center justify-center">
-                <Sun size={16} className="text-gray-900" />
+                <Sun size={16} className="text-solar-bg" />
               </div>
               <span className="text-lg font-bold font-heading tracking-wide">
                 <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
                   MYHOME
                 </span>{' '}
-                <span className="text-white">SOLAR</span>
+                <span className="text-solar-text">SOLAR</span>
               </span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed mb-4">
+            <p className="text-solar-text-muted text-sm leading-relaxed mb-4">
               Powering homes and businesses across Telangana with clean, affordable solar
               energy. MNRE Empanelled Vendor (TSRE260875) providing end-to-end solar solutions.
             </p>
@@ -99,7 +99,7 @@ export default function Footer() {
                 href="https://www.facebook.com/profile.php?id=61579095321240"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-lg bg-white/[0.03] hover:bg-amber-500/10 border border-white/10 hover:border-amber-500/30 flex items-center justify-center text-gray-400 hover:text-amber-400 transition-all duration-300"
+                className="w-8 h-8 rounded-lg bg-solar-card hover:bg-amber-500/10 border border-solar-border hover:border-amber-500/30 flex items-center justify-center text-solar-text-muted hover:text-solar-gold transition-all duration-300"
                 title="Facebook"
               >
                 <Facebook size={14} />
@@ -108,7 +108,7 @@ export default function Footer() {
                 href="https://www.instagram.com/solarsmart.energies/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-lg bg-white/[0.03] hover:bg-amber-500/10 border border-white/10 hover:border-amber-500/30 flex items-center justify-center text-gray-400 hover:text-amber-400 transition-all duration-300"
+                className="w-8 h-8 rounded-lg bg-solar-card hover:bg-amber-500/10 border border-solar-border hover:border-amber-500/30 flex items-center justify-center text-solar-text-muted hover:text-solar-gold transition-all duration-300"
                 title="Instagram"
               >
                 <Instagram size={14} />
@@ -118,7 +118,7 @@ export default function Footer() {
 
           {/* Column 2 — Quick Links */}
           <div>
-            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-5 font-heading">
+            <h4 className="text-sm font-semibold text-solar-text uppercase tracking-wider mb-5 font-heading">
               Quick Links
             </h4>
             <ul className="space-y-2.5">
@@ -126,7 +126,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <button
                     onClick={() => scrollTo(link.href)}
-                    className="text-gray-400 hover:text-amber-400 text-sm transition-colors duration-200 cursor-pointer"
+                    className="text-solar-text-muted hover:text-solar-gold text-sm transition-colors duration-200 cursor-pointer"
                   >
                     {link.label}
                   </button>
@@ -137,7 +137,7 @@ export default function Footer() {
 
           {/* Column 3 — Contact */}
           <div>
-            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-5 font-heading">
+            <h4 className="text-sm font-semibold text-solar-text uppercase tracking-wider mb-5 font-heading">
               Contact
             </h4>
             <ul className="space-y-4">
@@ -146,7 +146,7 @@ export default function Footer() {
                   size={16}
                   className="text-amber-500/60 flex-shrink-0 mt-0.5"
                 />
-                <span className="text-gray-400 leading-relaxed">
+                <span className="text-solar-text-muted leading-relaxed">
                   Ground floor, Shop No 4-9-180/5, Lectures Colony, Beside Union Bank of India, Hayathnagar, Hyderabad 501505
                 </span>
               </li>
@@ -167,19 +167,19 @@ export default function Footer() {
                   </div>
                   <a
                     href="tel:9550130770"
-                    className="text-gray-400 hover:text-amber-400 transition-colors text-xs"
+                    className="text-solar-text-muted hover:text-solar-gold transition-colors text-xs"
                   >
                     9550130770 (Mr. Gopi)
                   </a>
                   <a
                     href="tel:9951637624"
-                    className="text-gray-400 hover:text-amber-400 transition-colors text-xs"
+                    className="text-solar-text-muted hover:text-solar-gold transition-colors text-xs"
                   >
                     9951637624
                   </a>
                   <a
                     href="tel:9603449393"
-                    className="text-gray-400 hover:text-amber-400 transition-colors text-xs"
+                    className="text-solar-text-muted hover:text-solar-gold transition-colors text-xs"
                   >
                     9603449393
                   </a>
@@ -192,7 +192,7 @@ export default function Footer() {
                 />
                 <a
                   href="mailto:solarsmart.energies@gmail.com"
-                  className="text-gray-400 hover:text-amber-400 transition-colors break-all"
+                  className="text-solar-text-muted hover:text-solar-gold transition-colors break-all"
                 >
                   solarsmart.energies@gmail.com
                 </a>
@@ -202,7 +202,7 @@ export default function Footer() {
 
           {/* Column 4 — Certifications */}
           <div>
-            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-5 font-heading">
+            <h4 className="text-sm font-semibold text-solar-text uppercase tracking-wider mb-5 font-heading">
               Certifications
             </h4>
             <ul className="space-y-3">
@@ -212,7 +212,7 @@ export default function Footer() {
                     size={14}
                     className="text-amber-500/60 flex-shrink-0"
                   />
-                  <span className="text-gray-400">{cert}</span>
+                  <span className="text-solar-text-muted">{cert}</span>
                 </li>
               ))}
             </ul>
@@ -222,16 +222,16 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div
-        className="border-t border-white/[0.04]"
-        style={{ background: 'rgba(0, 0, 0, 0.15)' }}
+        className="border-t border-solar-border"
+        style={{ background: 'rgba(0, 0, 0, 0.05)' }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           {/* Telugu tagline */}
-          <p className="text-center text-amber-400/60 text-sm mb-3 font-telugu">
+          <p className="text-center text-amber-500/80 text-sm mb-3 font-telugu">
             సోలార్ పెట్టుబడి కాదు... అది పొదుపు, అది భవిష్యత్తు!
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-600">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-solar-text-dim">
             <p>
               © 2025 MyHome Solar. All rights reserved.
             </p>

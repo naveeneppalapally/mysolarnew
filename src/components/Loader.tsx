@@ -193,9 +193,9 @@ function TypewriterText() {
         if (count >= brandText.length) {
           clearInterval(interval);
         }
-      }, 50);
+      }, 100);
       return () => clearInterval(interval);
-    }, 200);
+    }, 450);
     return () => clearTimeout(startDelay);
   }, []);
 
@@ -296,9 +296,9 @@ const Loader = ({ isVisible }: LoaderProps) => {
       let rayOpacity = 0;
 
       if (isVisible !== false) {
-        if (elapsed < 600) {
-          // Phase 1: Sun slowly rises in brightness (0ms - 600ms)
-          const pct = elapsed / 600;
+        if (elapsed < 1400) {
+          // Phase 1: Sun slowly rises in brightness (0ms - 1400ms)
+          const pct = elapsed / 1400;
           const eased = easeInOutCubic(pct);
 
           if (sunWrapperRef.current) {
@@ -306,13 +306,13 @@ const Loader = ({ isVisible }: LoaderProps) => {
             sunWrapperRef.current.style.transform = `scale(${0.92 + eased * 0.08})`;
           }
         } else {
-          // Phase 2: Volumetric rays shoot out on black loading screen (600ms - 900ms)
+          // Phase 2: Volumetric rays shoot out on black loading screen (1400ms - 2200ms)
           if (sunWrapperRef.current) {
             sunWrapperRef.current.style.opacity = '1';
             sunWrapperRef.current.style.transform = 'scale(1)';
           }
 
-          const pct = Math.min(1, (elapsed - 600) / 300);
+          const pct = Math.min(1, (elapsed - 1400) / 800);
           const eased = easeOutQuad(pct);
           rayScale = eased * 1.3;
           rayRotation = eased * 15;
@@ -328,7 +328,7 @@ const Loader = ({ isVisible }: LoaderProps) => {
           }
         }
         const revealElapsed = Date.now() - revealStartTimeRef.current;
-        const pct = Math.min(1, revealElapsed / 800); // 800ms reveal wipe
+        const pct = Math.min(1, revealElapsed / 1600); // 1600ms reveal wipe
         const easedReveal = easeOutQuad(pct);
         const opacityVal = 1 - easedReveal;
 
@@ -362,7 +362,7 @@ const Loader = ({ isVisible }: LoaderProps) => {
       }
 
       // Keep running if isVisible is still true OR if the reveal is in progress
-      const isRevealing = revealStartTimeRef.current !== null && (Date.now() - revealStartTimeRef.current < 800);
+      const isRevealing = revealStartTimeRef.current !== null && (Date.now() - revealStartTimeRef.current < 1600);
       if (isVisible !== false || isRevealing) {
         frameId = requestAnimationFrame(tick);
       } else {
@@ -382,7 +382,7 @@ const Loader = ({ isVisible }: LoaderProps) => {
           key="loader"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
+          transition={{ duration: 1.6, ease: 'easeOut' }}
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
           style={{ backgroundColor: 'transparent' }}
         >
@@ -427,7 +427,7 @@ const Loader = ({ isVisible }: LoaderProps) => {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
+              transition={{ duration: 1.0, delay: 1.5 }}
               className="font-body text-[11px] sm:text-xs tracking-[0.35em] uppercase mt-3"
               style={{ color: '#64748B' }}
             >

@@ -90,7 +90,7 @@ export default function SubsidySection() {
           </motion.span>
           <motion.h2
             variants={fadeInUp}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-white mb-5 leading-tight"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-solar-text mb-5 leading-tight"
           >
             Save Up To{' '}
             <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
@@ -137,7 +137,7 @@ export default function SubsidySection() {
                 </span>
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 font-heading">
+              <h3 className="text-xl sm:text-2xl font-bold text-solar-text mb-2 font-heading">
                 PM Surya Ghar Muft Bijli Yojana
               </h3>
               <p className="text-sm text-solar-text-muted mb-6 font-body">
@@ -156,7 +156,7 @@ export default function SubsidySection() {
 
               {/* Breakdown */}
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03] border border-white/[0.04]">
+                <div className="flex items-center justify-between p-3 rounded-lg bg-solar-card border border-solar-border">
                   <span className="text-sm text-solar-text-muted font-body">
                     First 2 kW
                   </span>
@@ -164,7 +164,7 @@ export default function SubsidySection() {
                     ₹30,000/kW
                   </span>
                 </div>
-                <div className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03] border border-white/[0.04]">
+                <div className="flex items-center justify-between p-3 rounded-lg bg-solar-card border border-solar-border">
                   <span className="text-sm text-solar-text-muted font-body">
                     2 kW – 3 kW
                   </span>
@@ -172,7 +172,7 @@ export default function SubsidySection() {
                     ₹18,000/kW
                   </span>
                 </div>
-                <div className="flex items-center justify-between p-3 rounded-lg bg-white/[0.03] border border-white/[0.04]">
+                <div className="flex items-center justify-between p-3 rounded-lg bg-solar-card border border-solar-border">
                   <span className="text-sm text-solar-text-muted font-body">
                     Above 3 kW
                   </span>
@@ -209,7 +209,7 @@ export default function SubsidySection() {
                 </span>
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 font-heading">
+              <h3 className="text-xl sm:text-2xl font-bold text-solar-text mb-2 font-heading">
                 100% Direct Bank Transfer
               </h3>
               <p className="text-sm text-solar-text-muted mb-6 font-body">
@@ -228,19 +228,19 @@ export default function SubsidySection() {
 
               {/* Benefits */}
               <div className="space-y-3">
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/[0.04]">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-solar-card border border-solar-border">
                   <ArrowDown className="w-4 h-4 text-cyan-400 shrink-0" />
                   <span className="text-sm text-solar-text-muted font-body">
                     Disbursed directly after net meter commissioning
                   </span>
                 </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/[0.04]">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-solar-card border border-solar-border">
                   <IndianRupee className="w-4 h-4 text-cyan-400 shrink-0" />
                   <span className="text-sm text-solar-text-muted font-body">
                     Aadhaar-linked Direct Benefit Transfer (DBT)
                   </span>
                 </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/[0.04]">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-solar-card border border-solar-border">
                   <Sparkles className="w-4 h-4 text-cyan-400 shrink-0" />
                   <span className="text-sm text-solar-text-muted font-body">
                     We handle 100% of the portal submissions & approvals
@@ -262,7 +262,7 @@ export default function SubsidySection() {
         >
           {/* Gradient border effect */}
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-500/20 via-cyan-500/20 to-amber-500/20 p-px">
-            <div className="w-full h-full rounded-2xl bg-[#060a14]" />
+            <div className="w-full h-full rounded-2xl bg-solar-bg-secondary" />
           </div>
 
           <div className="relative p-6 sm:p-8 lg:p-10 text-center">

@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export type BackgroundStyle = 
+  | 'none'
   | 'silicon-grid' 
   | 'gradient-embers'
   | 'energy-waves'
