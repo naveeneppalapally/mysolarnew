@@ -30,7 +30,7 @@ export default {
         },
       },
       fontFamily: {
-        'heading': ['"Syne"', 'sans-serif'],
+        'heading': ['"Poppins"', 'sans-serif'],
         'body': ['"DM Sans"', 'sans-serif'],
         'telugu': ['"Noto Sans Telugu"', 'sans-serif'],
       },
