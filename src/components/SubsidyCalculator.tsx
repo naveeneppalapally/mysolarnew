@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { useState, useMemo, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Zap, Gift, Wallet, PiggyBank, Clock, TrendingUp, Gauge, ArrowRight } from 'lucide-react';
 import { calculateSubsidy } from '../lib/utils';
 
@@ -7,25 +7,52 @@ import { calculateSubsidy } from '../lib/utils';
 function AnimatedValue({ value, prefix = '', suffix = '', decimals = 0 }: {
   value: number; prefix?: string; suffix?: string; decimals?: number;
 }) {
-  const motionVal = useMotionValue(value);
-  const springVal = useSpring(motionVal, { stiffness: 60, damping: 18, mass: 0.8 });
-  const [display, setDisplay] = useState(() => {
-    const num = decimals > 0 ? value.toFixed(decimals) : Math.round(value).toLocaleString('en-IN');
-    return `${prefix}${num}${suffix}`;
-  });
+  const spanRef = useRef<HTMLSpanElement>(null);
+  const prevValueRef = useRef(value);
 
   useEffect(() => {
-    motionVal.set(value);
-  }, [value, motionVal]);
+    let startTimestamp: number | null = null;
+    const duration = 250; // Snappy 250ms count-up/down
+    const startVal = prevValueRef.current;
+    const endVal = value;
+    prevValueRef.current = value;
 
-  useEffect(() => {
-    return springVal.on('change', (latest) => {
-      const num = decimals > 0 ? latest.toFixed(decimals) : Math.round(latest).toLocaleString('en-IN');
-      setDisplay(`${prefix}${num}${suffix}`);
-    });
-  }, [springVal, prefix, suffix, decimals]);
+    if (startVal === endVal) {
+      if (spanRef.current) {
+        const num = decimals > 0 ? endVal.toFixed(decimals) : Math.round(endVal).toLocaleString('en-IN');
+        spanRef.current.innerText = `${prefix}${num}${suffix}`;
+      }
+      return;
+    }
 
-  return <span>{display}</span>;
+    let animationFrameId: number;
+
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const elapsed = timestamp - startTimestamp;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Smooth ease out quad
+      const easedProgress = progress * (2 - progress);
+      const currentVal = startVal + (endVal - startVal) * easedProgress;
+
+      if (spanRef.current) {
+        const num = decimals > 0 ? currentVal.toFixed(decimals) : Math.round(currentVal).toLocaleString('en-IN');
+        spanRef.current.innerText = `${prefix}${num}${suffix}`;
+      }
+
+      if (progress < 1) {
+        animationFrameId = requestAnimationFrame(step);
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [value, prefix, suffix, decimals]);
+
+  // Render initial value on mount
+  const initialNum = decimals > 0 ? value.toFixed(decimals) : Math.round(value).toLocaleString('en-IN');
+  return <span ref={spanRef}>{`${prefix}${initialNum}${suffix}`}</span>;
 }
 
 /* ─── IndianRupee inline icon ─── */
