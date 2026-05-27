@@ -5,7 +5,6 @@ import SunParticles from './SunParticles';
 import { scrollToSection } from '../lib/utils';
 import { useCountUp } from '../hooks/useCountUp';
 import { useBackgroundSettings } from '../context/BackgroundSettingsContext';
-import { useLoaderDone } from '../context/LoaderDoneContext';
 
 /* ============================================
    ANIMATED HEADLINE — Clip-reveal per word
@@ -18,8 +17,7 @@ const headlineLines = [
 
 function AnimatedHeadline() {
   const ref = React.useRef<HTMLHeadingElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-  const { loaderDone } = useLoaderDone();
+  const isInView = useInView(ref, { once: true });
 
   let globalWordIndex = 0;
 
@@ -47,7 +45,7 @@ function AnimatedHeadline() {
                         : 'text-white'
                     }`}
                     initial={{ y: '110%', opacity: 0 }}
-                    animate={loaderDone && isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
+                    animate={isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
                     transition={{
                       duration: 0.7,
                       delay: 0.2 + delay,
@@ -366,7 +364,6 @@ function ShimmerButton({
    ============================================ */
 export default function Hero() {
   const { backgroundStyle } = useBackgroundSettings();
-  const { loaderDone } = useLoaderDone();
   const [tilt, setTilt] = React.useState({ x: 0, y: 0 });
   const panelRef = React.useRef<HTMLDivElement>(null);
   const [hidePanel, setHidePanel] = React.useState(false);
@@ -447,13 +444,13 @@ export default function Hero() {
             <motion.div
               className="flex flex-col gap-5 md:gap-6"
               initial={{ opacity: 0 }}
-              animate={loaderDone ? { opacity: 1 } : { opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.6 }}
             >
               {/* Badge */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               >
                 <span
@@ -481,7 +478,7 @@ export default function Hero() {
               <motion.p
                 className="text-gray-400 text-sm sm:text-base max-w-lg leading-relaxed font-body"
                 initial={{ opacity: 0, y: 20 }}
-                animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
               >
                 Government subsidies up to{' '}
@@ -494,7 +491,7 @@ export default function Hero() {
               <motion.div
                 className="flex flex-col sm:flex-row gap-3 mt-1"
                 initial={{ opacity: 0, y: 20 }}
-                animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
               >
                 <ShimmerButton onClick={() => scrollToSection('calculator')}>
@@ -524,7 +521,7 @@ export default function Hero() {
               <motion.div
                 className="flex flex-wrap gap-x-5 gap-y-2.5 mt-2"
                 initial={{ opacity: 0 }}
-                animate={loaderDone ? { opacity: 1 } : { opacity: 0 }}
+                animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 1.3 }}
               >
                 {trustBadges.map((badge, i) => (
@@ -532,7 +529,7 @@ export default function Hero() {
                     key={badge}
                     className="flex items-center gap-1.5"
                     initial={{ opacity: 0, x: -10 }}
-                    animate={loaderDone ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.4, delay: 1.3 + i * 0.1 }}
                   >
                     <CheckCircle2
@@ -550,7 +547,7 @@ export default function Hero() {
               <motion.div
                 className="hidden lg:flex justify-center items-center"
                 initial={{ opacity: 0, scale: 0.9 }}
-                animate={loaderDone ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
               >
                 <div
@@ -609,7 +606,7 @@ export default function Hero() {
               boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)',
             }}
             initial={{ opacity: 0, y: 40 }}
-            animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.5, ease: [0.16, 1, 0.3, 1] }}
           >
             <div

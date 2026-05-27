@@ -22,25 +22,31 @@ import CustomCursor from './components/CustomCursor';
 import BackgroundSettings from './components/BackgroundSettings';
 import { SolarTimeProvider, useSolarTime } from './context/SolarTimeContext';
 import { BackgroundSettingsProvider } from './context/BackgroundSettingsContext';
-import { LoaderDoneProvider } from './context/LoaderDoneContext';
 
-// Loader duration constants (ms) - keep in sync with Loader.tsx
-const LOADER_HIDE_DELAY = 1700;   // when loader becomes invisible
-const LOADER_DONE_DELAY = 2000;   // when page animations should start
+// How long the loader plays before hiding (ms) — keep in sync with Loader.tsx
+const LOADER_HIDE_DELAY = 1700;
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
+  // A second flag that lags slightly so the opacity CSS transition has started
+  // before we render children. This gives the fade-in a head start.
+  const [showContent, setShowContent] = useState(false);
   const { currentPhase } = useSolarTime();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, LOADER_HIDE_DELAY);
-    return () => clearTimeout(timer);
+    // Step 1: hide the loader overlay
+    const hideTimer = setTimeout(() => setIsLoading(false), LOADER_HIDE_DELAY);
+    // Step 2: mount main content one frame later so the wrapper's opacity
+    // transition has already begun → smooth fade while animations play fresh
+    const showTimer = setTimeout(() => setShowContent(true), LOADER_HIDE_DELAY + 50);
+    return () => {
+      clearTimeout(hideTimer);
+      clearTimeout(showTimer);
+    };
   }, []);
 
   useEffect(() => {
-    if (isLoading) return;
+    if (!showContent) return;
     if (typeof window === 'undefined') return;
 
     const isMobileDevice =
@@ -63,57 +69,59 @@ function AppContent() {
       lenis.raf(time);
       rafId = requestAnimationFrame(raf);
     }
-
     rafId = requestAnimationFrame(raf);
 
     return () => {
       lenis.destroy();
       cancelAnimationFrame(rafId);
     };
-  }, [isLoading]);
+  }, [showContent]);
 
   return (
     <>
       {/* Custom cursor - desktop only */}
       <CustomCursor />
 
-      {/* Loader overlay */}
+      {/* Loader overlay — sits on top, exits after LOADER_HIDE_DELAY */}
       <Loader isVisible={isLoading} />
 
-      {/* Main Site — kept in DOM but invisible until loader exits.
-          Using opacity+pointer-events instead of visibility:hidden so that
-          React can mount components but Framer Motion won't "pre-play" their
-          entry animations (they only trigger when loaderDone becomes true). */}
+      {/*
+        Main site wrapper.
+        - Opacity 0 while loader is showing, fades to 1 once loader exits.
+        - Content is NOT rendered (showContent=false) until 50ms after the
+          opacity transition starts. This means Framer Motion components
+          mount fresh — their useInView / entry animations have never
+          pre-fired, so everything plays correctly on first paint.
+      */}
       <div
         className={`transition-opacity duration-700 phase-${currentPhase}`}
-        style={{
-          opacity: isLoading ? 0 : 1,
-          pointerEvents: isLoading ? 'none' : 'auto',
-        }}
+        style={{ opacity: isLoading ? 0 : 1 }}
       >
-        {/* Noise texture overlay */}
-        <div className="noise-overlay" />
-
-        <Navbar />
-        <main>
-          <Hero />
-          <Marquee />
-          <WhySolar />
-          <SubsidySection />
-          <Services />
-          <HowItWorks />
-          <SubsidyCalculator />
-          <SavingsChart />
-          <TelanganaPolicy />
-          <Financing />
-          <Testimonials />
-          <FAQ />
-          <ContactForm />
-        </main>
-        <Footer />
-        <FloatingCTA />
-        <ScrollToTop />
-        <BackgroundSettings />
+        {showContent && (
+          <>
+            <div className="noise-overlay" />
+            <Navbar />
+            <main>
+              <Hero />
+              <Marquee />
+              <WhySolar />
+              <SubsidySection />
+              <Services />
+              <HowItWorks />
+              <SubsidyCalculator />
+              <SavingsChart />
+              <TelanganaPolicy />
+              <Financing />
+              <Testimonials />
+              <FAQ />
+              <ContactForm />
+            </main>
+            <Footer />
+            <FloatingCTA />
+            <ScrollToTop />
+            <BackgroundSettings />
+          </>
+        )}
       </div>
     </>
   );
@@ -123,11 +131,7 @@ function App() {
   return (
     <BackgroundSettingsProvider>
       <SolarTimeProvider>
-        {/* LoaderDoneProvider fires at LOADER_DONE_DELAY (slightly after loader
-            exits) so Hero and other page-entry animations play cleanly */}
-        <LoaderDoneProvider delay={LOADER_DONE_DELAY}>
-          <AppContent />
-        </LoaderDoneProvider>
+        <AppContent />
       </SolarTimeProvider>
     </BackgroundSettingsProvider>
   );
