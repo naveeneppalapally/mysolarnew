@@ -253,13 +253,8 @@ const Loader = ({ isVisible }: LoaderProps) => {
   const maskGroupRef = useRef<SVGGElement>(null);
   const revealStartTimeRef = useRef<number | null>(null);
 
-  // Initialize SVG mask on mounting
-  useEffect(() => {
-    if (blackBgRef.current) {
-      blackBgRef.current.style.setProperty('mask-image', 'url(#rayRevealMask)');
-      blackBgRef.current.style.setProperty('-webkit-mask-image', 'url(#rayRevealMask)');
-    }
-  }, []);
+  // We will initialize the SVG mask only when the reveal phase starts
+  // to avoid browser rendering bugs that make the background transparent during loading.
 
   useEffect(() => {
     const startTime = Date.now();
@@ -327,6 +322,10 @@ const Loader = ({ isVisible }: LoaderProps) => {
         // Phase 3: Sunburst Ray Reveal (triggered when isVisible changes to false)
         if (revealStartTimeRef.current === null) {
           revealStartTimeRef.current = Date.now();
+          if (blackBgRef.current) {
+            blackBgRef.current.style.setProperty('mask-image', 'url(#rayRevealMask)');
+            blackBgRef.current.style.setProperty('-webkit-mask-image', 'url(#rayRevealMask)');
+          }
         }
         const revealElapsed = Date.now() - revealStartTimeRef.current;
         const pct = Math.min(1, revealElapsed / 800); // 800ms reveal wipe

@@ -81,7 +81,10 @@ function AppContent() {
         when the element is actually visible — which happens naturally
         after the Loader fades out. No mount burst, no jank.
       */}
-      <div className={`phase-${currentPhase}`}>
+      <div
+        className={`transition-opacity duration-700 phase-${currentPhase}`}
+        style={{ opacity: isLoading ? 0 : 1 }}
+      >
         <div className="noise-overlay" />
         <Navbar />
         <main>
