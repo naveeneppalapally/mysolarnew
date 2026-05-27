@@ -65,13 +65,13 @@ interface PrismaticShard {
 const GRID_SPACING = 60;
 
 // Style-specific locked color palettes to deliver 100% radical visual differences out-of-the-box
-const CYBER_GRID_PALETTE = ['#06B6D4', '#0891B2', '#00F5FF', '#FF5F1F']; // Cyberpunk Cyan, Neon Blue, Orange nodes
+const CYBER_GRID_PALETTE = ['#8B5CF6', '#4F46E5', '#fbbf24', '#f97316']; // Royal Purple, Deep Indigo, Satin Gold nodes
 
 const PALETTES: Record<SolarPhase, string[]> = {
-  dawn:  ['#FB923C', '#FDBA74', '#F97316', '#EA580C'],
-  noon:  ['#FBBF24', '#FCD34D', '#F59E0B', '#D97706'],
-  dusk:  ['#D946EF', '#A78BFA', '#F9A8D4', '#8B5CF6'],
-  night: ['#38BDF8', '#6366F1', '#22D3EE', '#4F46E5'],
+  dawn:  ['#fbbf24', '#f59e0b', '#f97316', '#8b5cf6'], /* Champagne Gold, Amber, Orange, Amethyst Purple */
+  noon:  ['#FFFFFF', '#FFFBEB', '#fbbf24', '#f59e0b'], /* Diamond White, Champagne, Solar Gold */
+  dusk:  ['#8b5cf6', '#a78bfa', '#6366f1', '#fbbf24'], /* Royal Purple, Amethyst, Royal Indigo, Champagne Gold */
+  night: ['#4f46e5', '#6366f1', '#1e1b4b', '#8b5cf6'], /* Deep Indigo, Royal Purple, Amethyst, Obsidian Slate */
 };
 
 export default function SunParticles() {

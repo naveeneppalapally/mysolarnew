@@ -16,17 +16,17 @@
    ============================================================ */
 :root {
   /* Backgrounds */
-  --solar-bg: #030712;
-  --solar-bg-secondary: #0a0f1e;
-  --solar-bg-tertiary: #111827;
+  --solar-bg: #030712;                /* Deep Obsidian Black */
+  --solar-bg-secondary: #080718;      /* Luxurious Midnight Purple Tint */
+  --solar-bg-tertiary: #0c0a22;       /* Slate Purple Background */
 
   /* Cards */
-  --solar-card: rgba(255, 255, 255, 0.03);
-  --solar-card-solid: #0d1424;
+  --solar-card: rgba(26, 21, 56, 0.2); /* Translucent Indigo-Purple Glass */
+  --solar-card-solid: #0b0a1a;        /* Solid Dark Purple-obsidian */
 
   /* Borders */
-  --solar-border: rgba(255, 255, 255, 0.06);
-  --solar-border-hover: rgba(245, 158, 11, 0.3);
+  --solar-border: rgba(255, 255, 255, 0.05);
+  --solar-border-hover: rgba(245, 158, 11, 0.35);
 
   /* Typography */
   --solar-text: #f8fafc;
@@ -34,31 +34,33 @@
   --solar-text-dim: #475569;
 
   /* Primary — Solar Gold */
-  --solar-gold: #f59e0b;
+  --solar-gold: #fbbf24;              /* Satin Champagne Gold */
   --solar-gold-bright: #fbbf24;
   --solar-gold-dark: #d97706;
 
   /* Secondary — Accents */
   --solar-orange: #f97316;
-  --solar-cyan: #06b6d4;
-  --solar-cyan-bright: #22d3ee;
+  --solar-cyan: #6366f1;              /* Indigo Accent */
+  --solar-cyan-bright: #818cf8;        /* Soft Indigo Accent */
   --solar-emerald: #10b981;
-  --solar-purple: #8b5cf6;
+  --solar-purple: #8b5cf6;            /* Amethyst Royal Purple */
+  --solar-indigo: #4f46e5;            /* Deep Royal Indigo */
 
   /* Shadows & Glows */
-  --shadow-glow-gold: 0 0 60px rgba(245, 158, 11, 0.15), 0 0 120px rgba(245, 158, 11, 0.05);
-  --shadow-glow-cyan: 0 0 60px rgba(6, 182, 212, 0.15);
+  --shadow-glow-gold: 0 0 60px rgba(251, 191, 36, 0.15), 0 0 120px rgba(245, 158, 11, 0.05);
+  --shadow-glow-cyan: 0 0 60px rgba(99, 102, 241, 0.15); /* Indigo Glow */
+  --shadow-glow-purple: 0 0 60px rgba(139, 92, 246, 0.15), 0 0 120px rgba(79, 70, 229, 0.05);
   --shadow-card: 0 4px 30px rgba(0, 0, 0, 0.5);
   --shadow-card-lg: 0 8px 60px rgba(0, 0, 0, 0.6);
 
   /* Gradients */
-  --gradient-gold: linear-gradient(135deg, #f59e0b, #f97316);
-  --gradient-cyan: linear-gradient(135deg, #06b6d4, #8b5cf6);
-  --gradient-hero: linear-gradient(180deg, #030712 0%, #0a0f1e 50%, #030712 100%);
+  --gradient-gold: linear-gradient(135deg, #fbbf24, #f97316); /* Champagne to Orange */
+  --gradient-cyan: linear-gradient(135deg, #fbbf24 0%, #8b5cf6 50%, #4f46e5 100%); /* Trifold Gradient */
+  --gradient-hero: linear-gradient(180deg, #030712 0%, #080718 50%, #030712 100%);
 
   /* Navigation */
-  --nav-bg: rgba(3, 7, 18, 0.8);
-  --nav-border: rgba(255, 255, 255, 0.06);
+  --nav-bg: rgba(3, 2, 12, 0.82);
+  --nav-border: rgba(139, 92, 246, 0.08); /* Faint amethyst line */
 
   /* Timing */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -1962,12 +1964,21 @@ a:focus-visible {
 }
 
 .solar-panel-card-cyan {
-  --panel-accent: rgba(6, 182, 212, 0.04);
-  --panel-accent-hover: rgba(6, 182, 212, 0.12);
-  --panel-border-hover: rgba(6, 182, 212, 0.3);
-  --panel-glow-hover: rgba(6, 182, 212, 0.12);
-  --panel-corner: rgba(6, 182, 212, 0.35);
-  --panel-corner-hover: rgba(6, 182, 212, 0.7);
+  --panel-accent: rgba(99, 102, 241, 0.04); /* Indigo Tint */
+  --panel-accent-hover: rgba(99, 102, 241, 0.12);
+  --panel-border-hover: rgba(99, 102, 241, 0.3);
+  --panel-glow-hover: rgba(99, 102, 241, 0.12);
+  --panel-corner: rgba(99, 102, 241, 0.35);
+  --panel-corner-hover: rgba(99, 102, 241, 0.7);
+}
+
+.solar-panel-card-indigo {
+  --panel-accent: rgba(139, 92, 246, 0.04); /* Purple Tint */
+  --panel-accent-hover: rgba(139, 92, 246, 0.12);
+  --panel-border-hover: rgba(139, 92, 246, 0.3);
+  --panel-glow-hover: rgba(139, 92, 246, 0.12);
+  --panel-corner: rgba(139, 92, 246, 0.35);
+  --panel-corner-hover: rgba(139, 92, 246, 0.7);
 }
 
 .solar-panel-card-emerald {

@@ -97,42 +97,53 @@ export default function WhySolar() {
           viewport={sectionViewport}
           className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8"
         >
-          {benefits.map((benefit, i) => (
-            <motion.div
-              key={benefit.title}
-              custom={i}
-              variants={cardVariants}
-              className="solar-panel-card solar-panel-card-gold p-6 sm:p-8 cursor-default group"
-            >
-              {/* Corner brackets */}
-              <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
-              <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
-              <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
-              <span className="solar-panel-card-corner solar-panel-card-corner-br" />
+          {benefits.map((benefit, i) => {
+            const isPurple = i % 2 !== 0;
+            return (
+              <motion.div
+                key={benefit.title}
+                custom={i}
+                variants={cardVariants}
+                className={`solar-panel-card ${isPurple ? 'solar-panel-card-indigo' : 'solar-panel-card-gold'} p-6 sm:p-8 cursor-default group`}
+              >
+                {/* Corner brackets */}
+                <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
+                <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
+                <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
+                <span className="solar-panel-card-corner solar-panel-card-corner-br" />
 
-              {/* Card glow on hover */}
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-amber-500/[0.03] to-transparent pointer-events-none" />
+                {/* Card glow on hover */}
+                <div className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br ${
+                  isPurple ? 'from-purple-500/[0.04]' : 'from-amber-500/[0.03]'
+                } to-transparent pointer-events-none`} />
 
-              <div className="relative flex items-start gap-5">
-                {/* Icon */}
-                <div className="shrink-0">
-                  <div className="w-14 h-14 rounded-full flex items-center justify-center bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20 group-hover:border-amber-400/40 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] transition-all duration-500">
-                    <benefit.icon className="w-6 h-6 text-amber-400 group-hover:text-amber-300 transition-colors duration-300" />
+                <div className="relative flex items-start gap-5">
+                  {/* Icon */}
+                  <div className="shrink-0">
+                    <div className={`w-14 h-14 rounded-full flex items-center justify-center bg-gradient-to-br ${
+                      isPurple 
+                        ? 'from-purple-500/20 to-indigo-600/10 border border-purple-500/20 group-hover:border-purple-400/40 group-hover:shadow-[0_0_20px_rgba(139,92,246,0.15)]' 
+                        : 'from-amber-500/20 to-amber-600/10 border border-amber-500/20 group-hover:border-amber-400/40 group-hover:shadow-[0_0_20px_rgba(245,158,11,0.15)]'
+                    } transition-all duration-500`}>
+                      <benefit.icon className={`w-6 h-6 ${
+                        isPurple ? 'text-purple-400 group-hover:text-purple-300' : 'text-amber-400 group-hover:text-amber-300'
+                      } transition-colors duration-300`} />
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-white mb-2 font-heading group-hover:text-amber-50 transition-colors duration-300">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-solar-text-muted leading-relaxed font-body">
+                      {benefit.description}
+                    </p>
                   </div>
                 </div>
-
-                {/* Content */}
-                <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white mb-2 font-heading group-hover:text-amber-50 transition-colors duration-300">
-                    {benefit.title}
-                  </h3>
-                  <p className="text-sm sm:text-base text-solar-text-muted leading-relaxed font-body">
-                    {benefit.description}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </section>

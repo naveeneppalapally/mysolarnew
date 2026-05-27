@@ -64,14 +64,14 @@ export default function Footer() {
   return (
     <footer
       className="relative"
-      style={{ background: '#020409' }}
+      style={{ background: '#020308' }}
     >
-      {/* Gold gradient top border */}
+      {/* Gold/Purple gradient top border */}
       <div
         className="h-px w-full"
         style={{
           background:
-            'linear-gradient(90deg, transparent, #F59E0B44, #FBBF2488, #F59E0B44, transparent)',
+            'linear-gradient(90deg, transparent, rgba(139,92,246,0.15) 20%, rgba(251,191,36,0.45) 50%, rgba(139,92,246,0.15) 80%, transparent)',
         }}
       />
 
@@ -80,11 +80,11 @@ export default function Footer() {
           {/* Column 1 — Company */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-400 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-purple-600 flex items-center justify-center">
                 <Sun size={16} className="text-gray-900" />
               </div>
               <span className="text-lg font-bold font-heading tracking-wide">
-                <span className="bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
                   MYHOME
                 </span>{' '}
                 <span className="text-white">SOLAR</span>

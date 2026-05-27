@@ -3,6 +3,7 @@ import Lenis from '@studio-freight/lenis';
 import Loader from './components/Loader';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import CurvedDivider from './components/CurvedDivider';
 import Marquee from './components/Marquee';
 import WhySolar from './components/WhySolar';
 import SubsidySection from './components/SubsidySection';
@@ -89,12 +90,15 @@ function AppContent() {
         <Navbar />
         <main>
           <Hero />
+          <CurvedDivider />
           <Marquee />
           <WhySolar />
           <SubsidySection />
           <Services />
+          <CurvedDivider />
           <HowItWorks />
           <SubsidyCalculator />
+          <CurvedDivider />
           <SavingsChart />
           <TelanganaPolicy />
           <Financing />

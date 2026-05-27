@@ -4,7 +4,6 @@ import { CheckCircle2 } from 'lucide-react';
 import SunParticles from './SunParticles';
 import { scrollToSection } from '../lib/utils';
 import { useCountUp } from '../hooks/useCountUp';
-import { useBackgroundSettings } from '../context/BackgroundSettingsContext';
 
 /* ============================================
    ANIMATED HEADLINE — Clip-reveal per word
@@ -363,7 +362,6 @@ function ShimmerButton({
    HERO COMPONENT
    ============================================ */
 export default function Hero() {
-  const { backgroundStyle } = useBackgroundSettings();
   const [tilt, setTilt] = React.useState({ x: 0, y: 0 });
   const panelRef = React.useRef<HTMLDivElement>(null);
   const [hidePanel, setHidePanel] = React.useState(false);
@@ -409,21 +407,33 @@ export default function Hero() {
       {/* Particle background */}
       <SunParticles />
 
-      {/* Living Gradient Atmosphere — Animated ambient blobs */}
-      <div 
-        className="absolute inset-0 pointer-events-none z-[1] overflow-hidden"
-        style={{
-          opacity: backgroundStyle === 'gradient-embers' ? 1.0 : 0.1,
-          transform: backgroundStyle === 'gradient-embers' ? 'scale(1)' : 'scale(0.85)',
-          transition: 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)'
-        }}
-      >
-        {/* Blob 1: Warm amber — drifts from top-left area */}
-        <div className="ambient-blob ambient-blob-1" />
-        {/* Blob 2: Soft orange — drifts from bottom-right area */}
-        <div className="ambient-blob ambient-blob-2" />
-        {/* Blob 3: Subtle cyan/emerald accent — drifts from center-right */}
-        <div className="ambient-blob ambient-blob-3" />
+      {/* Premium Trifold "Solar Eclipse" Aura Overlay */}
+      <div className="absolute inset-0 pointer-events-none z-[1] overflow-hidden flex items-center justify-center">
+        {/* Massive circular purple-indigo atmosphere background */}
+        <div 
+          className="absolute w-[800px] h-[800px] rounded-full opacity-35 blur-[150px]"
+          style={{
+            background: 'radial-gradient(circle, var(--solar-purple) 0%, var(--solar-indigo) 50%, transparent 70%)',
+            transform: 'translate(30%, -20%)',
+          }}
+        />
+        
+        {/* The Solar Eclipse Core (behind the panels on the right side) */}
+        <div 
+          className="absolute w-[600px] h-[600px] rounded-full flex items-center justify-center opacity-50 blur-[40px]"
+          style={{
+            transform: 'translate(35%, -10%)',
+          }}
+        >
+          {/* Glowing Gold Ring */}
+          <div className="absolute w-[270px] h-[270px] rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 blur-[8px] animate-glow-pulse" />
+          
+          {/* Glowing Purple atmospheric halo */}
+          <div className="absolute w-[365px] h-[365px] rounded-full bg-indigo-600/30 blur-[24px]" />
+          
+          {/* The Moon / Dark Silicon Center Disc */}
+          <div className="absolute w-[248px] h-[248px] rounded-full bg-[#030712] border border-white/[0.04] shadow-[inset_0_4px_16px_rgba(255,255,255,0.03)]" />
+        </div>
       </div>
 
       {/* Noise texture overlay */}
@@ -606,11 +616,11 @@ export default function Hero() {
           <motion.div
             className="rounded-2xl border px-4 py-4 md:px-8 md:py-5"
             style={{
-              background: 'rgba(255,255,255,0.03)',
-              borderColor: 'rgba(255,255,255,0.08)',
+              background: 'rgba(26, 21, 56, 0.22)',
+              borderColor: 'rgba(139, 92, 246, 0.15)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03)',
             }}
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}

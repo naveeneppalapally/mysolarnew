@@ -26,6 +26,7 @@ export default {
           'cyan-bright': 'var(--solar-cyan-bright)',
           'emerald': 'var(--solar-emerald)',
           'purple': 'var(--solar-purple)',
+          'indigo': 'var(--solar-indigo)',
         },
       },
       fontFamily: {
@@ -82,10 +83,12 @@ export default {
         'card-lg': 'var(--shadow-card-lg)',
         'glow-gold': 'var(--shadow-glow-gold)',
         'glow-cyan': 'var(--shadow-glow-cyan)',
+        'glow-purple': 'var(--shadow-glow-purple)',
       },
       backgroundImage: {
         'gradient-gold': 'var(--gradient-gold)',
         'gradient-cyan': 'var(--gradient-cyan)',
+        'gradient-trifold': 'var(--gradient-cyan)',
         'gradient-hero': 'var(--gradient-hero)',
       },
     },

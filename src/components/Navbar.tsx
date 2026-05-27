@@ -183,7 +183,7 @@ export default function Navbar() {
         transition={{ duration: 0.3 }}
         style={{
           borderBottom: scrolled
-            ? '1px solid rgba(245,158,11,0.1)'
+            ? '1px solid rgba(139, 92, 246, 0.12)'
             : '1px solid transparent',
         }}
       >
@@ -192,11 +192,11 @@ export default function Navbar() {
           onClick={() => scrollTo('#home')}
           className="flex items-center gap-2 cursor-pointer"
         >
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-400 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-purple-600 flex items-center justify-center">
             <Sun size={16} className="text-gray-900" />
           </div>
           <span className="text-lg font-bold font-heading tracking-wide">
-            <span className="bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
               MYHOME
             </span>{' '}
             <span className="text-white">SOLAR</span>
@@ -222,7 +222,7 @@ export default function Navbar() {
                 {link.label}
                 {/* Underline */}
                 <motion.span
-                  className="absolute bottom-0 left-3 right-3 h-px bg-amber-400"
+                  className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-amber-400 to-purple-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.4)]"
                   initial={false}
                   animate={{ scaleX: isActive ? 1 : 0 }}
                   transition={{ duration: 0.2 }}

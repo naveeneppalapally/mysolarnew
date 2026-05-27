@@ -69,7 +69,7 @@ interface CardProps {
   icon: React.ReactNode;
   label: string;
   value: React.ReactNode;
-  accent?: 'default' | 'gold' | 'cyan' | 'emerald';
+  accent?: 'default' | 'gold' | 'cyan' | 'emerald' | 'indigo' | 'purple';
   hero?: boolean;
   delay?: number;
 }
@@ -78,14 +78,18 @@ function ResultCard({ icon, label, value, accent = 'default', hero = false, dela
   const panelAccentClass = {
     default: 'solar-panel-card-gold',
     gold: 'solar-panel-card-gold',
-    cyan: 'solar-panel-card-cyan',
+    cyan: 'solar-panel-card-indigo',
+    indigo: 'solar-panel-card-indigo',
+    purple: 'solar-panel-card-indigo',
     emerald: 'solar-panel-card-emerald',
   }[accent];
 
   const valueColor = {
     default: 'text-white',
     gold: 'text-amber-400',
-    cyan: 'text-cyan-400',
+    cyan: 'text-indigo-400',
+    indigo: 'text-indigo-400',
+    purple: 'text-purple-400',
     emerald: 'text-emerald-400',
   }[accent];
 
@@ -186,12 +190,12 @@ export default function SubsidyCalculator() {
               <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-2 rounded-full bg-white/[0.06]" />
               {/* Track fill */}
               <div
-                className="absolute top-1/2 -translate-y-1/2 left-0 h-2 rounded-full bg-gradient-to-r from-amber-600 to-amber-400 transition-all duration-75"
+                className="absolute top-1/2 -translate-y-1/2 left-0 h-2 rounded-full bg-gradient-to-r from-amber-500 via-purple-500 to-indigo-600 transition-all duration-75"
                 style={{ width: `${sliderPercent}%` }}
               />
               {/* Glow on thumb position */}
               <div
-                className="absolute top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-amber-500/20 blur-xl pointer-events-none transition-all duration-75"
+                className="absolute top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-purple-500/30 blur-xl pointer-events-none transition-all duration-75"
                 style={{ left: `calc(${sliderPercent}% - 24px)` }}
               />
 
