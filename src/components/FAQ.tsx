@@ -143,7 +143,7 @@ export default function FAQ() {
       id="faq"
       ref={sectionRef}
       className="relative py-24 md:py-32 overflow-hidden"
-      style={{ background: '#030712' }}
+      style={{ background: 'var(--solar-bg)' }}
     >
       {/* Background radial */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-[0.03] pointer-events-none"

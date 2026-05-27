@@ -142,8 +142,7 @@ export default function ContactForm() {
       ref={sectionRef}
       className="relative py-24 md:py-32 overflow-hidden"
       style={{
-        background:
-          'linear-gradient(180deg, #030712 0%, #070c17 50%, #030712 100%)',
+        background: 'var(--gradient-hero)',
       }}
     >
       {/* Decorative glow */}

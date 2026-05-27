@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, ArrowRight } from 'lucide-react';
+import { Sun, ArrowRight, Moon } from 'lucide-react';
 import { useSolarTime } from '../context/SolarTimeContext';
+import { useTheme } from '../context/ThemeContext';
 
 const navLinks = [
   { label: 'Home', href: '#home' },
@@ -125,6 +126,46 @@ function SolarOrbitSlider() {
   );
 }
 
+function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
+
+  return (
+    <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={toggleTheme}
+      className="relative w-9 h-9 rounded-full flex items-center justify-center cursor-pointer overflow-hidden border border-white/[0.08] bg-white/[0.03] backdrop-blur-md transition-all duration-300 hover:border-amber-500/30 hover:bg-amber-500/5 group"
+      title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        {theme === 'light' ? (
+          <motion.div
+            key="light-moon"
+            initial={{ y: 20, opacity: 0, rotate: -40 }}
+            animate={{ y: 0, opacity: 1, rotate: 0 }}
+            exit={{ y: -20, opacity: 0, rotate: 40 }}
+            transition={{ duration: 0.3 }}
+            className="text-purple-600 group-hover:text-purple-500"
+          >
+            <Moon size={18} />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="dark-sun"
+            initial={{ y: 20, opacity: 0, rotate: -40 }}
+            animate={{ y: 0, opacity: 1, rotate: 0 }}
+            exit={{ y: -20, opacity: 0, rotate: 40 }}
+            transition={{ duration: 0.3 }}
+            className="text-amber-400 group-hover:text-amber-300"
+          >
+            <Sun size={18} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.button>
+  );
+}
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -236,6 +277,7 @@ export default function Navbar() {
         {/* Desktop right actions */}
         <div className="hidden lg:flex items-center gap-6">
           <SolarOrbitSlider />
+          <ThemeToggle />
           <a
             href="tel:9493936249"
             className="text-amber-400 hover:text-amber-300 text-sm font-medium transition-colors flex items-center gap-1"
@@ -280,8 +322,9 @@ export default function Navbar() {
             className="fixed inset-0 z-[99] bg-gray-950/95 backdrop-blur-2xl flex flex-col items-center justify-start pt-28 pb-8 overflow-y-auto"
           >
             <nav className="flex flex-col items-center gap-2 w-full">
-              <div className="mb-6 scale-110 flex justify-center">
+              <div className="mb-6 scale-110 flex justify-center items-center gap-6">
                 <SolarOrbitSlider />
+                <ThemeToggle />
               </div>
               {navLinks.map((link, i) => {
                 const sectionId = link.href.replace('#', '');

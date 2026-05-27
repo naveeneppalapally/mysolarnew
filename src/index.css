@@ -69,6 +69,58 @@
 }
 
 /* ============================================================
+   1b. DYNAMIC THEMING — WORLD-CLASS LIGHT MODE TOKENS
+   ============================================================ */
+.light-theme {
+  /* Backgrounds — Soft Satin Alabaster (Gallery-grade warm white) */
+  --solar-bg: #f8fafc;                
+  --solar-bg-secondary: #f1f5f9;      
+  --solar-bg-tertiary: #e2e8f0;       
+
+  /* Cards — Translucent Soft White Silk */
+  --solar-card: rgba(255, 255, 255, 0.48); 
+  --solar-card-solid: #ffffff;        
+
+  /* Borders — Minimalist Indigo-Purple Faint Edge */
+  --solar-border: rgba(99, 102, 241, 0.08);
+  --solar-border-hover: rgba(245, 158, 11, 0.45);
+
+  /* Typography — Slate Obsidian Tint (Eye-friendly luxury charcoal) */
+  --solar-text: #0f172a;              
+  --solar-text-muted: #475569;        
+  --solar-text-dim: #64748b;          
+
+  /* Primary — Solar Gold (De-saturated amber for premium light readability) */
+  --solar-gold: #d97706;              
+  --solar-gold-bright: #f59e0b;
+  --solar-gold-dark: #b45309;
+
+  /* Secondary — Accents */
+  --solar-orange: #ea580c;
+  --solar-cyan: #4f46e5;              
+  --solar-cyan-bright: #6366f1;        
+  --solar-emerald: #059669;
+  --solar-purple: #7c3aed;            
+  --solar-indigo: #4338ca;            
+
+  /* Shadows & Glows */
+  --shadow-glow-gold: 0 0 60px rgba(245, 158, 11, 0.08), 0 0 120px rgba(245, 158, 11, 0.03);
+  --shadow-glow-cyan: 0 0 60px rgba(79, 70, 229, 0.06);
+  --shadow-glow-purple: 0 0 60px rgba(124, 58, 237, 0.06), 0 0 120px rgba(67, 56, 202, 0.02);
+  --shadow-card: 0 8px 32px rgba(31, 38, 135, 0.04);
+  --shadow-card-lg: 0 12px 48px rgba(31, 38, 135, 0.06);
+
+  /* Gradients */
+  --gradient-gold: linear-gradient(135deg, #d97706, #ea580c);
+  --gradient-cyan: linear-gradient(135deg, #d97706 0%, #7c3aed 50%, #4338ca 100%);
+  --gradient-hero: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
+
+  /* Navigation */
+  --nav-bg: rgba(248, 250, 252, 0.85);
+  --nav-border: rgba(99, 102, 241, 0.05);
+}
+
+/* ============================================================
    2. BASE RESET & GLOBAL STYLES
    ============================================================ */
 *,

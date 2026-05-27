@@ -402,7 +402,7 @@ export default function Hero() {
     <section
       id="home"
       className="relative overflow-hidden min-h-screen flex flex-col"
-      style={{ background: '#030712', paddingTop: 'calc(4rem + 0.25rem)' }}
+      style={{ background: 'var(--solar-bg)', paddingTop: 'calc(4rem + 0.25rem)' }}
     >
       {/* Particle background */}
       <SunParticles />

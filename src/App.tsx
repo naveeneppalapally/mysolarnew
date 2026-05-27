@@ -23,6 +23,7 @@ import CustomCursor from './components/CustomCursor';
 import BackgroundSettings from './components/BackgroundSettings';
 import { SolarTimeProvider, useSolarTime } from './context/SolarTimeContext';
 import { BackgroundSettingsProvider } from './context/BackgroundSettingsContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 // How long the loader plays before fading out (ms)
 const LOADER_HIDE_DELAY = 950;
@@ -117,11 +118,13 @@ function AppContent() {
 
 function App() {
   return (
-    <BackgroundSettingsProvider>
-      <SolarTimeProvider>
-        <AppContent />
-      </SolarTimeProvider>
-    </BackgroundSettingsProvider>
+    <ThemeProvider>
+      <BackgroundSettingsProvider>
+        <SolarTimeProvider>
+          <AppContent />
+        </SolarTimeProvider>
+      </BackgroundSettingsProvider>
+    </ThemeProvider>
   );
 }
 
