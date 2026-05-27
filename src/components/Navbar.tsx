@@ -235,10 +235,11 @@ export default function Navbar() {
         <div className="hidden lg:flex items-center gap-6">
           <SolarOrbitSlider />
           <a
-            href="tel:9550130770"
+            href="tel:9493936249"
             className="text-amber-400 hover:text-amber-300 text-sm font-medium transition-colors flex items-center gap-1"
+            title="Call MyHome Solar"
           >
-            <span>📞</span> 9550130770
+            <span>📞</span> 9493936249
           </a>
           <button
             onClick={() => scrollTo('#contact')}
@@ -312,10 +313,10 @@ export default function Navbar() {
                 className="mt-6 flex flex-col items-center gap-4"
               >
                 <a
-                  href="tel:9550130770"
+                  href="tel:9493936249"
                   className="text-amber-400 text-lg font-medium flex items-center gap-2"
                 >
-                  📞 9550130770
+                  📞 9493936249
                 </a>
                 <button
                   onClick={() => scrollTo('#contact')}

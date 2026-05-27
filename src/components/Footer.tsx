@@ -1,5 +1,43 @@
 import { Sun, Phone, Mail, MapPin, ShieldCheck } from 'lucide-react';
 
+interface SocialIconProps extends React.SVGProps<SVGSVGElement> {
+  size?: number | string;
+}
+
+const Facebook = ({ size = 24, ...props }: SocialIconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    stroke="currentColor"
+    strokeWidth="2"
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+  </svg>
+);
+
+const Instagram = ({ size = 24, ...props }: SocialIconProps) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    stroke="currentColor"
+    strokeWidth="2"
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+  </svg>
+);
+
 const quickLinks = [
   { label: 'Home', href: '#home' },
   { label: 'Services', href: '#services' },
@@ -10,10 +48,11 @@ const quickLinks = [
 ];
 
 const certifications = [
-  'TGREDCO Authorized',
-  'MNRE Empanelled',
-  'Tata Power SolaRoof Partner',
+  'TSREDCO Empanelled',
+  'MNRE Empanelled Vendor',
+  'TSSPDCL & TSNPDCL Approved',
   'PM Surya Ghar Registered',
+  'MNRE ID: TSRE260875',
 ];
 
 export default function Footer() {
@@ -51,11 +90,30 @@ export default function Footer() {
                 <span className="text-white">SOLAR</span>
               </span>
             </div>
-            <p className="text-gray-500 text-sm leading-relaxed">
-              Powering homes across Hyderabad with clean, affordable solar
-              energy. Your trusted partner for rooftop solar installations and
-              government subsidy assistance.
+            <p className="text-gray-500 text-sm leading-relaxed mb-4">
+              Powering homes and businesses across Telangana with clean, affordable solar
+              energy. MNRE Empanelled Vendor (TSRE260875) providing end-to-end solar solutions.
             </p>
+            <div className="flex items-center gap-3 pt-1">
+              <a
+                href="https://www.facebook.com/profile.php?id=61579095321240"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg bg-white/[0.03] hover:bg-amber-500/10 border border-white/10 hover:border-amber-500/30 flex items-center justify-center text-gray-400 hover:text-amber-400 transition-all duration-300"
+                title="Facebook"
+              >
+                <Facebook size={14} />
+              </a>
+              <a
+                href="https://www.instagram.com/solarsmart.energies/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg bg-white/[0.03] hover:bg-amber-500/10 border border-white/10 hover:border-amber-500/30 flex items-center justify-center text-gray-400 hover:text-amber-400 transition-all duration-300"
+                title="Instagram"
+              >
+                <Instagram size={14} />
+              </a>
+            </div>
           </div>
 
           {/* Column 2 — Quick Links */}
@@ -89,8 +147,7 @@ export default function Footer() {
                   className="text-amber-500/60 flex-shrink-0 mt-0.5"
                 />
                 <span className="text-gray-400 leading-relaxed">
-                  Shop 4-9-180/5, Beside Union Bank, Lecturers Colony,
-                  Hayathnagar, Hyderabad 501505
+                  Ground floor, Shop No 4-9-180/5, Lectures Colony, Beside Union Bank of India, Hayathnagar, Hyderabad 501505
                 </span>
               </li>
               <li className="flex gap-3 text-sm">
@@ -99,23 +156,32 @@ export default function Footer() {
                   className="text-amber-500/60 flex-shrink-0 mt-0.5"
                 />
                 <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-1.5">
+                    <a
+                      href="tel:9493936249"
+                      className="text-amber-400 hover:text-amber-300 font-semibold transition-colors text-sm"
+                    >
+                      +91 9493936249
+                    </a>
+                    <span className="text-[7px] font-mono px-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded">Primary</span>
+                  </div>
+                  <a
+                    href="tel:9550130770"
+                    className="text-gray-400 hover:text-amber-400 transition-colors text-xs"
+                  >
+                    9550130770 (Mr. Gopi)
+                  </a>
                   <a
                     href="tel:9951637624"
-                    className="text-gray-400 hover:text-amber-400 transition-colors"
+                    className="text-gray-400 hover:text-amber-400 transition-colors text-xs"
                   >
                     9951637624
                   </a>
                   <a
                     href="tel:9603449393"
-                    className="text-gray-400 hover:text-amber-400 transition-colors"
+                    className="text-gray-400 hover:text-amber-400 transition-colors text-xs"
                   >
                     9603449393
-                  </a>
-                  <a
-                    href="tel:9550130770"
-                    className="text-gray-400 hover:text-amber-400 transition-colors"
-                  >
-                    9550130770
                   </a>
                 </div>
               </li>
@@ -167,7 +233,7 @@ export default function Footer() {
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-600">
             <p>
-              © 2025 MyHome Solar (Solarsmart Energies). All rights reserved.
+              © 2025 MyHome Solar. All rights reserved.
             </p>
             <p className="font-mono">GSTIN: 36AFOFS9652M1ZY</p>
           </div>

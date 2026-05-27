@@ -790,12 +790,122 @@ h1, h2, h3, h4, h5, h6 {
   height: 100%;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.6;
+  opacity: 1;
 }
 
 .particle-canvas canvas {
   width: 100%;
   height: 100%;
+}
+
+/* ============================================================
+   8.5 LIVING GRADIENT ATMOSPHERE — Ambient Blobs
+   Large, soft, blurred color orbs that drift slowly.
+   Pure CSS, GPU-composited via will-change + transform.
+   No origin point. No source. Just warmth.
+   ============================================================ */
+.ambient-blob {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
+  mix-blend-mode: screen;
+}
+
+/* Blob 1: Warm amber — large, top-left drift */
+.ambient-blob-1 {
+  width: 55vw;
+  height: 55vw;
+  max-width: 700px;
+  max-height: 700px;
+  top: -15%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, rgba(245, 158, 11, 0.08) 45%, transparent 70%);
+  filter: blur(80px);
+  animation: blob-drift-1 25s ease-in-out infinite;
+}
+
+/* Blob 2: Soft deep orange — bottom-right drift */
+.ambient-blob-2 {
+  width: 45vw;
+  height: 45vw;
+  max-width: 600px;
+  max-height: 600px;
+  bottom: -20%;
+  right: -5%;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.2) 0%, rgba(249, 115, 22, 0.06) 40%, transparent 70%);
+  filter: blur(90px);
+  animation: blob-drift-2 30s ease-in-out infinite;
+}
+
+/* Blob 3: Subtle cyan/emerald accent — center-right drift */
+.ambient-blob-3 {
+  width: 35vw;
+  height: 35vw;
+  max-width: 450px;
+  max-height: 450px;
+  top: 30%;
+  right: 15%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, rgba(16, 185, 129, 0.04) 40%, transparent 70%);
+  filter: blur(100px);
+  animation: blob-drift-3 22s ease-in-out infinite;
+}
+
+@keyframes blob-drift-1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  25% {
+    transform: translate(6%, 8%) scale(1.05);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(10%, 4%) scale(0.97);
+    opacity: 1;
+  }
+  75% {
+    transform: translate(3%, -3%) scale(1.03);
+    opacity: 0.9;
+  }
+}
+
+@keyframes blob-drift-2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  30% {
+    transform: translate(-7%, -5%) scale(1.04);
+    opacity: 0.8;
+  }
+  60% {
+    transform: translate(-4%, -10%) scale(0.96);
+    opacity: 1;
+  }
+  80% {
+    transform: translate(2%, -3%) scale(1.02);
+    opacity: 0.88;
+  }
+}
+
+@keyframes blob-drift-3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  35% {
+    transform: translate(-8%, 6%) scale(1.06);
+    opacity: 0.75;
+  }
+  65% {
+    transform: translate(-3%, -5%) scale(0.95);
+    opacity: 1;
+  }
+  85% {
+    transform: translate(5%, 2%) scale(1.02);
+    opacity: 0.85;
+  }
 }
 
 /* ============================================================

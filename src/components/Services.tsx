@@ -1,44 +1,44 @@
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
-import { Sun, Wrench, Droplets, Zap, Battery, Gauge, ArrowRight } from 'lucide-react';
+import { Sun, Wrench, Building2, Factory, FileText, Gauge, ArrowRight } from 'lucide-react';
 import { fadeInUp, staggerContainer, sectionViewport } from '../lib/animations';
 
 const services = [
   {
     icon: Sun,
-    title: 'Residential Solar Installation',
+    title: 'Residential Solar',
     description:
-      '3kW to 10kW rooftop solar systems custom-designed for your home. Tier-1 panels, premium inverters, and professional installation.',
+      '3kW to 10kW premium rooftop systems custom-designed for homes and villas. Tier-1 panels, high-efficiency inverters, and maximum savings.',
   },
   {
-    icon: Wrench,
-    title: 'Operations & Maintenance',
+    icon: Building2,
+    title: 'Commercial Solar',
     description:
-      'Annual maintenance contracts including panel cleaning, inverter checks, wiring inspection, and real-time performance monitoring.',
+      'High-return solar power systems optimized for office buildings, retail shops, hospitals, and commercial real estate to cut operational overheads.',
   },
   {
-    icon: Droplets,
-    title: 'Solar Water Heaters',
+    icon: Factory,
+    title: 'Industrial Solar',
     description:
-      'Energy-efficient hot water systems for homes and businesses. Reduce water heating costs by up to 80% year-round.',
+      'Large-scale MW/kW grid-tied solar systems designed for factories, cold storage units, warehouses, and heavy industrial facilities.',
   },
   {
-    icon: Zap,
-    title: 'Solar Fencing',
+    icon: FileText,
+    title: '100% Subsidy Paperwork',
     description:
-      'Protect your agricultural land and property perimeters with solar-powered electric fencing — eco-friendly and cost-effective.',
-  },
-  {
-    icon: Battery,
-    title: 'Battery Storage',
-    description:
-      'Store excess solar energy with lithium-ion battery systems. Power your home through the night and during outages.',
+      'Hassle-free central and state government subsidy processing. We manage all registrations and approvals on behalf of our customers.',
   },
   {
     icon: Gauge,
     title: 'Net Metering Setup',
     description:
-      'Complete DISCOM paperwork, bidirectional meter installation, and grid connection. Sell excess power back to the grid.',
+      'Complete bidirectional net meter coordination and installation with TSSPDCL & TSNPDCL to sell surplus solar power back to the grid.',
+  },
+  {
+    icon: Wrench,
+    title: 'Operations & Maintenance',
+    description:
+      'Annual maintenance contracts including expert solar panel cleaning, inverter efficiency checks, and lifetime wiring inspection.',
   },
 ];
 

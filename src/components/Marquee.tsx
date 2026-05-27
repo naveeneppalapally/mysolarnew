@@ -2,13 +2,14 @@ import { motion } from 'framer-motion';
 import { sectionViewport } from '../lib/animations';
 
 const trustItems = [
-  'TGREDCO Authorized',
-  'MNRE Empanelled',
-  'Tata Power Partner',
-  'PM Surya Ghar',
-  '500+ Installations',
+  'TSREDCO Empanelled',
+  'MNRE Vendor ID: TSRE260875',
+  'TSSPDCL & TSNPDCL Approved',
+  'PM Surya Ghar Registered',
+  '15+ Completed Projects',
+  '70+ kW Capacity Installed',
   '25 Year Warranty',
-  '₹78,000 Subsidy',
+  '₹78,000 Max Subsidy',
 ];
 
 function MarqueeRow({

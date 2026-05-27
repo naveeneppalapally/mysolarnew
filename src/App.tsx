@@ -19,7 +19,9 @@ import Footer from './components/Footer';
 import FloatingCTA from './components/FloatingCTA';
 import ScrollToTop from './components/ScrollToTop';
 import CustomCursor from './components/CustomCursor';
+import BackgroundSettings from './components/BackgroundSettings';
 import { SolarTimeProvider, useSolarTime } from './context/SolarTimeContext';
+import { BackgroundSettingsProvider } from './context/BackgroundSettingsContext';
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
@@ -103,6 +105,7 @@ function AppContent() {
         <Footer />
         <FloatingCTA />
         <ScrollToTop />
+        <BackgroundSettings />
       </div>
     </>
   );
@@ -110,9 +113,11 @@ function AppContent() {
 
 function App() {
   return (
-    <SolarTimeProvider>
-      <AppContent />
-    </SolarTimeProvider>
+    <BackgroundSettingsProvider>
+      <SolarTimeProvider>
+        <AppContent />
+      </SolarTimeProvider>
+    </BackgroundSettingsProvider>
   );
 }
 

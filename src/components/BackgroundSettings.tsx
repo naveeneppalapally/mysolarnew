@@ -1,0 +1,301 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Settings, X, Sliders, Sun, Zap, Wind, Activity, Layers, Cpu, Compass, Flame, Binary, Gem } from 'lucide-react';
+import { useBackgroundSettings } from '../context/BackgroundSettingsContext';
+import type { BackgroundStyle } from '../context/BackgroundSettingsContext';
+import { useSolarTime } from '../context/SolarTimeContext';
+
+export default function BackgroundSettings() {
+  const [isOpen, setIsOpen] = useState(false);
+  const { 
+    backgroundStyle, 
+    setBackgroundStyle, 
+    particleCount, 
+    setParticleCount, 
+    speedMultiplier, 
+    setSpeedMultiplier 
+  } = useBackgroundSettings();
+
+  const { timeOfDay, setTimeOfDay, currentPhase } = useSolarTime();
+
+  const handleTimeChange = (phase: 'dawn' | 'noon' | 'dusk' | 'night') => {
+    switch (phase) {
+      case 'dawn': setTimeOfDay(7.5); break;
+      case 'noon': setTimeOfDay(12); break;
+      case 'dusk': setTimeOfDay(18.5); break;
+      case 'night': setTimeOfDay(22); break;
+    }
+  };
+
+  const backgroundStylesList: { 
+    id: BackgroundStyle; 
+    name: string; 
+    desc: string; 
+    icon: any; 
+  }[] = [
+    { 
+      id: 'silicon-grid', 
+      name: 'Silicon Cyber Grid', 
+      desc: 'High-contrast cyberpunk motherboard pulsing with energetic neon cyan data currents.',
+      icon: Zap
+    },
+    { 
+      id: 'gradient-embers', 
+      name: 'Drifting Solar Embers', 
+      desc: 'Warm gold and solar amber sparks drifting gently over a dual-gradient atmospheric wash.',
+      icon: Sun
+    },
+    { 
+      id: 'energy-waves', 
+      name: 'Solar Wave Currents', 
+      desc: 'Overlapping, high-fidelity ribbon waves representing flowing solar photon current.',
+      icon: Activity
+    },
+    { 
+      id: 'cosmic-wind', 
+      name: 'Cosmic Nebula Wind', 
+      desc: 'Drifting through a dreamy deep-space violet nebula filled with shimmering silver stellar dust.',
+      icon: Wind
+    },
+    {
+      id: 'solar-aurora',
+      name: 'Solar Aurora Curtains',
+      desc: 'Sweeping, massive geomagnetic curtains of jade green and magenta light waves.',
+      icon: Layers
+    },
+    { 
+      id: 'magnetic-resonance', 
+      name: 'Magnetic Flux Loops', 
+      desc: 'Rotating concentric magnetic resonance ellipses surrounding the active solar core.',
+      icon: Compass
+    },
+    { 
+      id: 'hex-cells', 
+      name: 'Glowing Honeycomb Cells', 
+      desc: 'A sleek, high-tech grid of glowing biophilic digital hexagons breathing in and out.',
+      icon: Cpu
+    },
+    { 
+      id: 'liquid-lava', 
+      name: 'Solar Flare Plasma', 
+      desc: 'A heavy, molten crimson and sunset orange lava field that reacts dynamically to your touch.',
+      icon: Flame
+    },
+    { 
+      id: 'digital-rain', 
+      name: 'Retro Telemetry Matrix', 
+      desc: 'A retro-futuristic console screen raining green columns of active solar core data.',
+      icon: Binary
+    },
+    { 
+      id: 'prismatic-shards', 
+      name: 'Prismatic Light Shards', 
+      desc: 'Rotating premium luxury crystal glass prisms reflecting soft rainbow lens flares.',
+      icon: Gem
+    }
+  ];
+
+  return (
+    <>
+      {/* Floating Toggle Button */}
+      <div className="fixed bottom-6 left-6 z-[95]">
+        <motion.button
+          whileHover={{ scale: 1.1, rotate: 15 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-14 h-14 rounded-full flex items-center justify-center border border-amber-500/30 bg-gray-950/80 backdrop-blur-md text-amber-400 hover:border-amber-400 hover:bg-amber-500/10 shadow-lg shadow-black/40 cursor-pointer relative group"
+          aria-label="Customize background atmosphere"
+        >
+          {/* Subtle glow ring */}
+          <span className="absolute -inset-1 rounded-full bg-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
+          
+          <Settings size={24} className={isOpen ? 'text-amber-400' : 'text-amber-400 group-hover:text-amber-300'} />
+        </motion.button>
+      </div>
+
+      {/* Settings HUD Panel */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, x: -20, y: 10 }}
+            animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, x: -20, y: 10 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed bottom-24 left-6 z-[95] w-[340px] sm:w-[380px] max-h-[75vh] overflow-y-auto rounded-2xl bg-gray-950/90 border border-white/10 shadow-2xl p-5 backdrop-blur-xl flex flex-col gap-4 text-white custom-scrollbar"
+            data-lenis-prevent
+            style={{
+              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+              overscrollBehavior: 'contain'
+            }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-white/10">
+              <div>
+                <span className="text-[10px] uppercase tracking-widest font-heading font-semibold text-amber-500">
+                  Interactive HUD
+                </span>
+                <h3 className="text-base font-bold font-heading text-white flex items-center gap-1.5 mt-0.5">
+                  <Sliders size={16} className="text-amber-400" />
+                  Atmosphere Settings
+                </h3>
+              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Section 1: Active Interactive Background Style */}
+            <div className="flex flex-col gap-2">
+              <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-1">
+                Background Algorithm
+              </span>
+              <div 
+                className="flex flex-col gap-2 max-h-[220px] overflow-y-auto pr-1 custom-scrollbar"
+                data-lenis-prevent
+                style={{ overscrollBehavior: 'contain' }}
+              >
+                {backgroundStylesList.map((style) => {
+                  const Icon = style.icon;
+                  const isActive = backgroundStyle === style.id;
+                  return (
+                    <button
+                      key={style.id}
+                      type="button"
+                      onClick={() => {
+                        console.log("HUD Click: Switching background style to:", style.id);
+                        setBackgroundStyle(style.id);
+                      }}
+                      onTouchStart={(e) => {
+                        const touch = e.touches[0];
+                        if (touch) {
+                          e.currentTarget.setAttribute('data-touch-y', touch.clientY.toString());
+                        }
+                      }}
+                      onTouchEnd={(e) => {
+                        const touch = e.changedTouches[0];
+                        const startY = parseFloat(e.currentTarget.getAttribute('data-touch-y') || '0');
+                        if (touch && Math.abs(touch.clientY - startY) < 10) {
+                          console.log("HUD Touch: Switching background style to:", style.id);
+                          setBackgroundStyle(style.id);
+                        }
+                      }}
+                      className={`text-left p-3 rounded-xl border transition-all duration-200 cursor-pointer flex gap-3 ${
+                        isActive
+                          ? 'bg-amber-500/10 border-amber-500/80 shadow-md shadow-amber-500/5'
+                          : 'bg-white/[0.02] border-white/5 hover:border-white/15 hover:bg-white/[0.04]'
+                      }`}
+                    >
+                      <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${
+                        isActive ? 'bg-amber-500 text-gray-950' : 'bg-white/5 text-gray-300'
+                      }`}>
+                        <Icon size={18} />
+                      </div>
+                      <div className="flex flex-col gap-0.5">
+                        <span className={`text-xs font-semibold ${isActive ? 'text-amber-400 font-bold' : 'text-white'}`}>
+                          {style.name}
+                        </span>
+                        <span className="text-[10px] text-gray-400 leading-relaxed">
+                          {style.desc}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Section 2: Parameters Sliders */}
+            {backgroundStyle !== 'energy-waves' && (
+              <div className="flex flex-col gap-2 pt-2 border-t border-white/5">
+                <div className="flex justify-between items-center text-[10px] uppercase tracking-wider font-semibold text-gray-400">
+                  <span>Ember / Particle Density</span>
+                  <span className="font-mono text-amber-400">{particleCount} units</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="range"
+                    min="15"
+                    max="150"
+                    value={particleCount}
+                    onChange={(e) => setParticleCount(parseInt(e.target.value))}
+                    className="w-full h-1.5 rounded bg-gray-800 accent-amber-500 outline-none appearance-none cursor-pointer"
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className="flex flex-col gap-2 pt-2 border-t border-white/5">
+              <div className="flex justify-between items-center text-[10px] uppercase tracking-wider font-semibold text-gray-400">
+                <span>Animation Velocity</span>
+                <span className="font-mono text-amber-400">{speedMultiplier.toFixed(1)}x</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <input
+                  type="range"
+                  min="0.3"
+                  max="2.5"
+                  step="0.1"
+                  value={speedMultiplier}
+                  onChange={(e) => setSpeedMultiplier(parseFloat(e.target.value))}
+                  className="w-full h-1.5 rounded bg-gray-800 accent-amber-500 outline-none appearance-none cursor-pointer"
+                />
+              </div>
+            </div>
+
+            {/* Section 3: Solar Theme Overrides */}
+            <div className="flex flex-col gap-2 pt-3 border-t border-white/10">
+              <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-400 mb-1">
+                Solar Time Theme
+              </span>
+              <div className="grid grid-cols-4 gap-1.5">
+                {(['dawn', 'noon', 'dusk', 'night'] as const).map((phase) => {
+                  const isActive = currentPhase === phase;
+                  const getBadgeColor = () => {
+                    if (phase === 'dawn') return isActive ? 'bg-orange-500/20 border-orange-500 text-orange-400' : 'hover:border-orange-500/30 text-gray-400 hover:text-orange-400';
+                    if (phase === 'noon') return isActive ? 'bg-yellow-500/20 border-yellow-500 text-yellow-400' : 'hover:border-yellow-500/30 text-gray-400 hover:text-yellow-400';
+                    if (phase === 'dusk') return isActive ? 'bg-rose-500/20 border-rose-500 text-rose-400' : 'hover:border-rose-500/30 text-gray-400 hover:text-rose-400';
+                    return isActive ? 'bg-indigo-500/20 border-indigo-500 text-indigo-400' : 'hover:border-indigo-500/30 text-gray-400 hover:text-indigo-400';
+                  };
+
+                  return (
+                    <button
+                      key={phase}
+                      onClick={() => {
+                        console.log("HUD Click: Changing time phase to:", phase);
+                        handleTimeChange(phase);
+                      }}
+                      onTouchStart={(e) => {
+                        const touch = e.touches[0];
+                        if (touch) {
+                          e.currentTarget.setAttribute('data-touch-y', touch.clientY.toString());
+                        }
+                      }}
+                      onTouchEnd={(e) => {
+                        const touch = e.changedTouches[0];
+                        const startY = parseFloat(e.currentTarget.getAttribute('data-touch-y') || '0');
+                        if (touch && Math.abs(touch.clientY - startY) < 10) {
+                          console.log("HUD Touch: Changing time phase to:", phase);
+                          handleTimeChange(phase);
+                        }
+                      }}
+                      className={`py-1.5 px-1 rounded-lg border text-[10px] font-bold text-center capitalize transition-all duration-200 cursor-pointer ${getBadgeColor()}`}
+                    >
+                      {phase}
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="flex justify-between items-center text-[9px] text-gray-500 mt-1">
+                <span>Synchronized with Navbar Solar Arc slider</span>
+                <span className="font-mono text-gray-400">{Math.floor(timeOfDay)}h</span>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}

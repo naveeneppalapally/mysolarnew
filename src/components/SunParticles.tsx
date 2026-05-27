@@ -1,110 +1,127 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect } from 'react';
 import { useSolarTime } from '../context/SolarTimeContext';
+import { useBackgroundSettings } from '../context/BackgroundSettingsContext';
 import type { SolarPhase } from '../context/SolarTimeContext';
 
-/* ============================================
-   PARTICLE INTERFACE
-   ============================================ */
+/* ===========================================================
+   MULTI-MODE INTERACTIVE BACKGROUND CANVAS — 12 MODES
+   =========================================================== */
+
+interface EnergyPulse {
+  x: number;
+  y: number;
+  direction: 'h' | 'v';
+  speed: number;
+  length: number;
+  alpha: number;
+  life: number;
+  maxLife: number;
+  color: string;
+}
+
 interface Particle {
   x: number;
   y: number;
-  baseX: number;
-  baseY: number;
   vx: number;
   vy: number;
   radius: number;
   alpha: number;
-  phaseX: number;
-  phaseY: number;
-  speedX: number;
-  speedY: number;
-  amplitudeX: number;
-  amplitudeY: number;
+  baseAlpha: number;
+  color: string;
+  angle: number;
+  speed: number;
 }
 
-interface Ray {
+interface LavaBlob {
   x: number;
   y: number;
   vx: number;
   vy: number;
-  length: number;
+  radius: number;
   color: string;
-  alpha: number;
-  life: number;
-  maxLife: number;
+  pulseOffset: number;
 }
 
-/* ============================================
-   CONSTANTS & COLORS
-   ============================================ */
-const PARTICLE_COUNT = 120;
-const CONNECTION_DISTANCE = 120;
-const MOUSE_RADIUS = 150;
+interface MatrixDrop {
+  x: number;
+  y: number;
+  speed: number;
+  chars: string[];
+  lastUpdate: number;
+}
 
-const PHASE_COLORS: Record<SolarPhase, string[]> = {
-  dawn: ['#F97316', '#FB923C', '#FDBA74', '#FFEDD5', '#EA580C'],
-  noon: ['#F59E0B', '#FBBF24', '#FCD34D', '#FEF3C7', '#D97706'],
-  dusk: ['#EC4899', '#F43F5E', '#8B5CF6', '#D946EF', '#A21CAF'],
-  night: ['#3B82F6', '#6366F1', '#06B6D4', '#E2E8F0', '#1E1B4B']
+interface PrismaticShard {
+  x: number;
+  y: number;
+  radius: number;
+  rotation: number;
+  rotSpeed: number;
+  vx: number;
+  vy: number;
+  color: string;
+  sides: number;
+}
+
+const GRID_SPACING = 60;
+
+// Style-specific locked color palettes to deliver 100% radical visual differences out-of-the-box
+const CYBER_GRID_PALETTE = ['#06B6D4', '#0891B2', '#00F5FF', '#FF5F1F']; // Cyberpunk Cyan, Neon Blue, Orange nodes
+
+const PALETTES: Record<SolarPhase, string[]> = {
+  dawn:  ['#FB923C', '#FDBA74', '#F97316', '#EA580C'],
+  noon:  ['#FBBF24', '#FCD34D', '#F59E0B', '#D97706'],
+  dusk:  ['#D946EF', '#A78BFA', '#F9A8D4', '#8B5CF6'],
+  night: ['#38BDF8', '#6366F1', '#22D3EE', '#4F46E5'],
 };
 
-/* ============================================
-   CREATE PARTICLE
-   ============================================ */
-function createParticle(w: number, h: number): Particle {
-  const x = Math.random() * w;
-  const y = Math.random() * h;
-  return {
-    x,
-    y,
-    baseX: x,
-    baseY: y,
-    vx: (Math.random() - 0.5) * 0.3,
-    vy: (Math.random() - 0.5) * 0.3,
-    radius: 1 + Math.random() * 3,
-    alpha: 0.2 + Math.random() * 0.5,
-    phaseX: Math.random() * Math.PI * 2,
-    phaseY: Math.random() * Math.PI * 2,
-    speedX: 0.003 + Math.random() * 0.008,
-    speedY: 0.004 + Math.random() * 0.007,
-    amplitudeX: 20 + Math.random() * 40,
-    amplitudeY: 15 + Math.random() * 30,
-  };
-}
-
-/* ============================================
-   COMPONENT
-   ============================================ */
 export default function SunParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Particle[]>([]);
-  const raysRef = useRef<Ray[]>([]);
-  const cachedCardsRef = useRef<{ left: number; top: number; right: number; bottom: number }[]>([]);
   
-  const animFrameRef = useRef<number>(0);
-  const mouseRef = useRef({ x: -1000, y: -1000 });
-  const timeRef = useRef(0);
-
+  // Settings Context values
+  const { backgroundStyle, particleCount, speedMultiplier } = useBackgroundSettings();
   const { currentPhase } = useSolarTime();
-  const currentPhaseRef = useRef(currentPhase);
 
-  // Sync phase to ref for access in canvas animation frame loop
+  // Direct render-phase reference syncing (100% robust, zero delay, triggers immediately on slider drag)
+  const styleRef = useRef(backgroundStyle);
+  styleRef.current = backgroundStyle;
+
+  const countRef = useRef(particleCount);
+  countRef.current = particleCount;
+
+  const speedRef = useRef(speedMultiplier);
+  speedRef.current = speedMultiplier;
+
+  const phaseRef = useRef(currentPhase);
+  phaseRef.current = currentPhase;
+  
+  const timeRef = useRef(0);
+  const pulsesRef = useRef<EnergyPulse[]>([]);
+  const particlesRef = useRef<Particle[]>([]);
+  const mouseRef = useRef({ x: -1000, y: -1000, radius: 150 });
+  const animFrameRef = useRef<number>(0);
+
+  // Handle mouse movements
   useEffect(() => {
-    currentPhaseRef.current = currentPhase;
-  }, [currentPhase]);
-
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
-    mouseRef.current = {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+    const handleMouseMove = (e: MouseEvent) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      mouseRef.current.x = e.clientX - rect.left;
+      mouseRef.current.y = e.clientY - rect.top;
     };
-  }, []);
 
-  const handleMouseLeave = useCallback(() => {
-    mouseRef.current = { x: -1000, y: -1000 };
+    const handleMouseLeave = () => {
+      mouseRef.current.x = -1000;
+      mouseRef.current.y = -1000;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+    };
   }, []);
 
   useEffect(() => {
@@ -116,7 +133,100 @@ export default function SunParticles() {
     let w = 0;
     let h = 0;
 
-    const resizeCanvas = () => {
+    // Local physics data structures (captured in effect closure, re-initialized on resize)
+    let lavaBlobs: LavaBlob[] = [];
+    let matrixDrops: MatrixDrop[] = [];
+    let crystalShards: PrismaticShard[] = [];
+
+    // Helper: Initialize particles array
+    const initParticles = (width: number, height: number) => {
+      const particles: Particle[] = [];
+      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const count = countRef.current;
+
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          radius: 0.8 + Math.random() * 2.2,
+          alpha: 0.1 + Math.random() * 0.5,
+          baseAlpha: 0.1 + Math.random() * 0.4,
+          color: colors[Math.floor(Math.random() * colors.length)] || '#FBBF24',
+          angle: Math.random() * Math.PI * 2,
+          speed: 0.15 + Math.random() * 0.35,
+        });
+      }
+      particlesRef.current = particles;
+    };
+
+    // Helper: Initialize Liquid Lava Blobs
+    const initLavaBlobs = (width: number, height: number) => {
+      const list: LavaBlob[] = [];
+      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const count = Math.max(5, Math.floor(countRef.current / 5));
+      for (let i = 0; i < count; i++) {
+        list.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.7,
+          vy: (Math.random() - 0.5) * 0.7,
+          radius: 60 + Math.random() * 90,
+          color: colors[Math.floor(Math.random() * colors.length)] || '#FBBF24',
+          pulseOffset: Math.random() * Math.PI * 2
+        });
+      }
+      return list;
+    };
+
+    // Helper: Initialize falling telemetry rain matrix
+    const initDigitalRain = (width: number) => {
+      const list: MatrixDrop[] = [];
+      const count = Math.max(5, Math.min(Math.ceil(width / 22), Math.floor(countRef.current / 3)));
+      for (let i = 0; i < count; i++) {
+        list.push({
+          x: Math.random() * width,
+          y: Math.random() * -1000,
+          speed: 1.8 + Math.random() * 3.5,
+          chars: Array.from({ length: 15 }, () => getRandomTelemetryChar()),
+          lastUpdate: 0
+        });
+      }
+      return list;
+    };
+
+    // Helper: Initialize Rotating crystal shards
+    const initCrystalShards = (width: number, height: number) => {
+      const list: PrismaticShard[] = [];
+      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const count = Math.max(2, Math.floor(countRef.current / 15));
+      for (let i = 0; i < count; i++) {
+        list.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: 110 + Math.random() * 150,
+          rotation: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.002,
+          vx: (Math.random() - 0.5) * 0.25,
+          vy: (Math.random() - 0.5) * 0.25,
+          color: colors[Math.floor(Math.random() * colors.length)] || '#FBBF24',
+          sides: Math.random() > 0.5 ? 3 : 4 
+        });
+      }
+      return list;
+    };
+
+    // Matrix character generator
+    const getRandomTelemetryChar = () => {
+      const chars = [
+        '0', '1', '7E', 'A5', 'FF', 'C4', '☀️', '⚡', '⎔', '◆', 
+        'P', 'W', 'V', 'A', 'SYS', 'OK', 'GEN', 'GRID', 'SOLAR'
+      ];
+      return chars[Math.floor(Math.random() * chars.length)] || '1';
+    };
+
+    const resize = () => {
       const parent = canvas.parentElement;
       if (!parent) return;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -127,227 +237,782 @@ export default function SunParticles() {
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Re-initialize all physics systems with fresh canvas bounds
+      initParticles(w, h);
+      lavaBlobs = initLavaBlobs(w, h);
+      matrixDrops = initDigitalRain(w);
+      crystalShards = initCrystalShards(w, h);
     };
 
-    resizeCanvas();
+    resize();
+    pulsesRef.current = [];
 
-    // Initialize particles
-    particlesRef.current = Array.from({ length: PARTICLE_COUNT }, () =>
-      createParticle(w, h)
-    );
-    raysRef.current = [];
-    cachedCardsRef.current = [];
+    // ============================================================
+    // 12 RENDERING HELPERS (Closure-based, accessing w & h)
+    // ============================================================
 
-    /* ---------- DRAW LOOP ---------- */
-    const animate = () => {
-      timeRef.current += 1;
-      const t = timeRef.current;
-      const phase = currentPhaseRef.current;
-      const colors = PHASE_COLORS[phase];
-
-      ctx.clearRect(0, 0, w, h);
-
-      // Subtle radial ambient glow based on active phase color
-      const glowX = w * 0.8;
-      const glowY = h * 0.12;
-      const glowGrad = ctx.createRadialGradient(glowX, glowY, 0, glowX, glowY, w * 0.45);
-      const primaryColor = colors[0];
-      
-      glowGrad.addColorStop(0, hexToRgba(primaryColor, 0.07));
-      glowGrad.addColorStop(0.4, hexToRgba(primaryColor, 0.02));
-      glowGrad.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = glowGrad;
-      ctx.fillRect(0, 0, w, h);
-
-      // Update & cache active solar cards coordinates
-      if (t % 60 === 0) {
-        const cards = document.querySelectorAll('.solar-panel-card');
-        const canvasRect = canvas.getBoundingClientRect();
-        cachedCardsRef.current = Array.from(cards).map((card) => {
-          const rect = card.getBoundingClientRect();
-          return {
-            left: rect.left - canvasRect.left,
-            top: rect.top - canvasRect.top,
-            right: rect.right - canvasRect.left,
-            bottom: rect.bottom - canvasRect.top,
-          };
-        });
-      }
-
-      // Spawn rays descending from top
-      if (raysRef.current.length < 15 && Math.random() < 0.06) {
-        raysRef.current.push({
-          x: Math.random() * w,
-          y: -10,
-          vx: (Math.random() - 0.5) * 1.2,
-          vy: 1.8 + Math.random() * 2.2,
-          length: 12 + Math.random() * 18,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          alpha: 0.15 + Math.random() * 0.4,
-          life: 180,
-          maxLife: 180,
-        });
-      }
-
+    // 1. Particle System (classic-network / cosmic-wind / gradient-embers)
+    const drawParticlesSystem = (
+      enableMouseInteract: boolean
+    ) => {
       const particles = particlesRef.current;
-      const mx = mouseRef.current.x;
-      const my = mouseRef.current.y;
+      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const targetCount = countRef.current;
+      const speed = speedRef.current;
 
-      // Update & draw particles
+      // Adjust particle count dynamically on-the-fly
+      if (particles.length < targetCount) {
+        for (let i = particles.length; i < targetCount; i++) {
+          particles.push({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            vx: (Math.random() - 0.5) * 0.4,
+            vy: (Math.random() - 0.5) * 0.4,
+            radius: 0.8 + Math.random() * 2.2,
+            alpha: 0.1 + Math.random() * 0.5,
+            baseAlpha: 0.1 + Math.random() * 0.4,
+            color: colors[Math.floor(Math.random() * colors.length)] || '#FBBF24',
+            angle: Math.random() * Math.PI * 2,
+            speed: 0.15 + Math.random() * 0.35,
+          });
+        }
+      } else if (particles.length > targetCount) {
+        particles.length = targetCount;
+      }
+
+      // Update & Draw particles
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
-        const pColor = colors[i % colors.length];
 
-        // Sine wave floating
-        p.phaseX += p.speedX;
-        p.phaseY += p.speedY;
-        const targetX = p.baseX + Math.sin(p.phaseX) * p.amplitudeX;
-        const targetY = p.baseY + Math.sin(p.phaseY) * p.amplitudeY;
+        p.angle += 0.005 * speed;
+        p.x += (Math.cos(p.angle) * p.speed + p.vx) * speed;
+        p.y += (Math.sin(p.angle) * p.speed + p.vy) * speed;
 
-        // Smooth drift toward target
-        p.x += (targetX - p.x) * 0.02 + p.vx;
-        p.y += (targetY - p.y) * 0.02 + p.vy;
-
-        // Mouse interaction (gentle repulsion)
-        const dx = p.x - mx;
-        const dy = p.y - my;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < MOUSE_RADIUS && dist > 0) {
-          const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS;
-          const pushX = (dx / dist) * force * 2;
-          const pushY = (dy / dist) * force * 2;
-          p.x += pushX;
-          p.y += pushY;
-        }
-
-        // Wrap around edges
-        if (p.x < -20) { p.x = w + 20; p.baseX = w + 20; }
-        if (p.x > w + 20) { p.x = -20; p.baseX = -20; }
-        if (p.y < -20) { p.y = h + 20; p.baseY = h + 20; }
-        if (p.y > h + 20) { p.y = -20; p.baseY = -20; }
-
-        // Subtle opacity pulse
-        const alphaPulse = p.alpha + Math.sin(t * 0.02 + i) * 0.1;
-        const finalAlpha = Math.max(0.08, Math.min(0.7, alphaPulse));
-
-        // Draw particle glow (translucent aura)
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius * 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = hexToRgba(pColor, finalAlpha * 0.3);
-        ctx.fill();
-
-        // Solid core
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = hexToRgba(pColor, finalAlpha);
-        ctx.fill();
-
-        // Bright center dot
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius * 0.4, 0, Math.PI * 2);
-        ctx.fillStyle = hexToRgba('#FFFFFF', finalAlpha * 0.9);
-        ctx.fill();
-      }
-
-      // Update & draw ray casting lines with card reflection/bouncing
-      const rays = raysRef.current;
-      const cachedCards = cachedCardsRef.current;
-      for (let r = rays.length - 1; r >= 0; r--) {
-        const ray = rays[r];
-        ray.x += ray.vx;
-        ray.y += ray.vy;
-        ray.life--;
-
-        // Check bounce against cards top borders
-        for (let c = 0; c < cachedCards.length; c++) {
-          const card = cachedCards[c];
-          if (
-            ray.x >= card.left &&
-            ray.x <= card.right &&
-            ray.y >= card.top &&
-            ray.y <= card.bottom
-          ) {
-            // Reflect off solar panels!
-            ray.vy = -ray.vy * 0.65; // bounce back up
-            ray.vx += (Math.random() - 0.5) * 1.5; // scatter
-            ray.y = card.top - 2; // offset from card
-            ray.color = '#FFFFFF'; // spark flash
-            break;
+        if (enableMouseInteract && mouseRef.current.x > 0) {
+          const dx = p.x - mouseRef.current.x;
+          const dy = p.y - mouseRef.current.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < mouseRef.current.radius) {
+            const force = (mouseRef.current.radius - dist) / mouseRef.current.radius;
+            p.x += (dx / dist) * force * 1.5 * speed;
+            p.y += (dy / dist) * force * 1.5 * speed;
           }
         }
 
-        // Ray cleanup
-        if (ray.life <= 0 || ray.y > h + 20 || ray.x < -20 || ray.x > w + 20) {
-          rays.splice(r, 1);
-          continue;
-        }
+        if (p.x < -10) p.x = w + 10;
+        if (p.x > w + 10) p.x = -10;
+        if (p.y < -10) p.y = h + 10;
+        if (p.y > h + 10) p.y = -10;
 
-        const rayLifeRatio = ray.life / ray.maxLife;
+        const breathing = Math.sin(timeRef.current * 0.01 + i) * 0.08;
+        const currentAlpha = Math.max(0.02, Math.min(0.8, p.baseAlpha + breathing));
+
         ctx.beginPath();
-        ctx.moveTo(ray.x - ray.vx * 2, ray.y - ray.vy * 2);
-        ctx.lineTo(ray.x, ray.y);
-        ctx.strokeStyle = hexToRgba(ray.color, ray.alpha * rayLifeRatio);
-        ctx.lineWidth = 1.2;
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = hexToRgba(p.color, currentAlpha);
+        ctx.fill();
+
+        if (p.radius > 2.0) {
+          const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 3);
+          glow.addColorStop(0, hexToRgba(p.color, currentAlpha * 0.35));
+          glow.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius * 3, 0, Math.PI * 2);
+          ctx.fillStyle = glow;
+          ctx.fill();
+        }
+      }
+    };
+
+    // 3. Silicon Cyber Grid
+    const drawSiliconGrid = () => {
+      const speed = speedRef.current;
+      const targetCount = countRef.current;
+      
+      const gridColor = CYBER_GRID_PALETTE[0]; // Cyan
+      const gridAlpha = 0.05;
+      ctx.strokeStyle = hexToRgba(gridColor, gridAlpha);
+      ctx.lineWidth = 0.5;
+
+      for (let x = GRID_SPACING; x < w; x += GRID_SPACING) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
         ctx.stroke();
       }
 
-      // Draw connections
-      ctx.lineWidth = 0.5;
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < CONNECTION_DISTANCE) {
-            const opacity = (1 - dist / CONNECTION_DISTANCE) * 0.12;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = hexToRgba(colors[0], opacity);
-            ctx.stroke();
-          }
+      for (let y = GRID_SPACING; y < h; y += GRID_SPACING) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      // Draw intersection nodes in orange for high contrast WAFER style
+      const nodeColor = CYBER_GRID_PALETTE[3]; // Orange
+      const nodeAlpha = 0.12;
+      for (let x = GRID_SPACING; x < w; x += GRID_SPACING) {
+        for (let y = GRID_SPACING; y < h; y += GRID_SPACING) {
+          ctx.beginPath();
+          ctx.arc(x, y, 1.4, 0, Math.PI * 2);
+          ctx.fillStyle = hexToRgba(nodeColor, nodeAlpha);
+          ctx.fill();
         }
       }
+
+      const maxPulses = Math.max(4, Math.floor(targetCount / 4));
+      
+      if (pulsesRef.current.length < maxPulses && Math.random() < 0.03 * speed) {
+        const isHorizontal = Math.random() > 0.5;
+        // Pulse color: Cyan/Neon-Blue variants
+        const color = CYBER_GRID_PALETTE[Math.floor(Math.random() * 3)] || '#00F5FF';
+
+        if (isHorizontal) {
+          const gridRow = Math.floor(Math.random() * (h / GRID_SPACING)) + 1;
+          const y = gridRow * GRID_SPACING;
+          const goRight = Math.random() > 0.5;
+
+          pulsesRef.current.push({
+            x: goRight ? -40 : w + 40,
+            y,
+            direction: 'h',
+            speed: (goRight ? 1 : -1) * (1.2 + Math.random() * 2.2) * speed,
+            length: 80 + Math.random() * 120,
+            alpha: 0.25 + Math.random() * 0.35,
+            life: 350 + Math.random() * 150,
+            maxLife: 350 + Math.random() * 150,
+            color,
+          });
+        } else {
+          const gridCol = Math.floor(Math.random() * (w / GRID_SPACING)) + 1;
+          const x = gridCol * GRID_SPACING;
+          const goDown = Math.random() > 0.5;
+
+          pulsesRef.current.push({
+            x,
+            y: goDown ? -40 : h + 40,
+            direction: 'v',
+            speed: (goDown ? 1 : -1) * (1.2 + Math.random() * 2.2) * speed,
+            length: 80 + Math.random() * 120,
+            alpha: 0.25 + Math.random() * 0.35,
+            life: 350 + Math.random() * 150,
+            maxLife: 350 + Math.random() * 150,
+            color,
+          });
+        }
+      }
+
+      const pulses = pulsesRef.current;
+      for (let i = pulses.length - 1; i >= 0; i--) {
+        const p = pulses[i];
+        p.life -= 1;
+
+        if (p.life <= 0) {
+          pulses.splice(i, 1);
+          continue;
+        }
+
+        if (p.direction === 'h') {
+          p.x += p.speed;
+        } else {
+          p.y += p.speed;
+        }
+
+        if (p.x < -p.length - 50 || p.x > w + p.length + 50 ||
+            p.y < -p.length - 50 || p.y > h + p.length + 50) {
+          pulses.splice(i, 1);
+          continue;
+        }
+
+        const lifeRatio = p.life / p.maxLife;
+        const fadeAlpha = p.alpha * Math.min(1, lifeRatio * 4);
+
+        if (p.direction === 'h') {
+          const tailX = p.x - (p.speed > 0 ? p.length : -p.length);
+          const grad = ctx.createLinearGradient(tailX, p.y, p.x, p.y);
+          grad.addColorStop(0, 'rgba(0,0,0,0)');
+          grad.addColorStop(0.7, hexToRgba(p.color, fadeAlpha * 0.4));
+          grad.addColorStop(1, hexToRgba(p.color, fadeAlpha));
+
+          ctx.beginPath();
+          ctx.moveTo(tailX, p.y);
+          ctx.lineTo(p.x, p.y);
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 1.6;
+          ctx.stroke();
+
+          const headGlow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 7);
+          headGlow.addColorStop(0, hexToRgba('#FFFFFF', fadeAlpha * 0.85));
+          headGlow.addColorStop(0.3, hexToRgba(p.color, fadeAlpha * 0.6));
+          headGlow.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
+          ctx.fillStyle = headGlow;
+          ctx.fill();
+        } else {
+          const tailY = p.y - (p.speed > 0 ? p.length : -p.length);
+          const grad = ctx.createLinearGradient(p.x, tailY, p.x, p.y);
+          grad.addColorStop(0, 'rgba(0,0,0,0)');
+          grad.addColorStop(0.7, hexToRgba(p.color, fadeAlpha * 0.4));
+          grad.addColorStop(1, hexToRgba(p.color, fadeAlpha));
+
+          ctx.beginPath();
+          ctx.moveTo(p.x, tailY);
+          ctx.lineTo(p.x, p.y);
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 1.6;
+          ctx.stroke();
+
+          const headGlow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 7);
+          headGlow.addColorStop(0, hexToRgba('#FFFFFF', fadeAlpha * 0.85));
+          headGlow.addColorStop(0.3, hexToRgba(p.color, fadeAlpha * 0.6));
+          headGlow.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 7, 0, Math.PI * 2);
+          ctx.fillStyle = headGlow;
+          ctx.fill();
+        }
+
+        const nearX = Math.round(p.x / GRID_SPACING) * GRID_SPACING;
+        const nearY = Math.round(p.y / GRID_SPACING) * GRID_SPACING;
+        const dist = Math.sqrt((p.x - nearX) ** 2 + (p.y - nearY) ** 2);
+
+        if (dist < 15) {
+          const intensity = (1 - dist / 15) * fadeAlpha;
+          const nodeGlow = ctx.createRadialGradient(nearX, nearY, 0, nearX, nearY, 10);
+          nodeGlow.addColorStop(0, hexToRgba(p.color, intensity * 0.8));
+          nodeGlow.addColorStop(0.5, hexToRgba(p.color, intensity * 0.25));
+          nodeGlow.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.beginPath();
+          ctx.arc(nearX, nearY, 10, 0, Math.PI * 2);
+          ctx.fillStyle = nodeGlow;
+          ctx.fill();
+        }
+      }
+    };
+
+    // 2. Solar Energy Waves
+    const drawEnergyWaves = () => {
+      const t = timeRef.current;
+      const speed = speedRef.current;
+      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      
+      ctx.lineWidth = 2.0;
+      for (let i = 0; i < 3; i++) {
+        const color = colors[i % colors.length] || '#FBBF24';
+        ctx.beginPath();
+        const baseline = h * (0.35 + i * 0.15);
+        const amplitude = 30 + i * 15;
+        const freq = 0.002 + i * 0.0015;
+        const waveSpeed = 0.015 - i * 0.004;
+        
+        ctx.moveTo(0, baseline + Math.sin(t * waveSpeed * speed) * amplitude);
+        for (let x = 0; x < w; x += 10) {
+          const y = baseline + Math.sin(x * freq + t * waveSpeed * speed) * amplitude;
+          ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = hexToRgba(color, 0.08);
+        ctx.stroke();
+        
+        // Glowing shadow line
+        ctx.lineWidth = 6.0;
+        ctx.strokeStyle = hexToRgba(color, 0.03);
+        ctx.stroke();
+        ctx.lineWidth = 2.0;
+      }
+    };
+
+    // 5. Magnetic Flux Loops
+    const drawMagneticFlux = () => {
+      const t = timeRef.current;
+      const speed = speedRef.current;
+      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      
+      const cx = w * 0.8;
+      const cy = h * 0.15;
+      ctx.lineWidth = 0.7;
+      
+      for (let i = 0; i < 6; i++) {
+        const color = colors[i % colors.length] || '#FBBF24';
+        const radiusX = 60 + i * 45;
+        const radiusY = 40 + i * 30;
+        const rotation = Math.sin(t * 0.002 * speed + i) * 0.1;
+        
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(rotation + (i * Math.PI / 6));
+        ctx.beginPath();
+        ctx.ellipse(0, 0, radiusX, radiusY, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = hexToRgba(color, 0.05);
+        ctx.stroke();
+        ctx.restore();
+      }
+    };
+
+    // 6. Glowing Honeycomb Cells
+    const drawHexCells = () => {
+      const t = timeRef.current;
+      const speed = speedRef.current;
+      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      
+      const hexSize = 42;
+      const hSpacing = hexSize * 1.5;
+      const vSpacing = hexSize * Math.sqrt(3);
+      
+      ctx.lineWidth = 0.6;
+      for (let x = 0; x < w + hexSize; x += hSpacing) {
+        for (let y = 0; y < h + hexSize; y += vSpacing) {
+          const finalY = y + (Math.floor(x / hSpacing) % 2 === 0 ? 0 : vSpacing / 2);
+          
+          // Calculate dynamic glowing opacity based on position and time
+          const noise = Math.sin((x * 0.005) + (finalY * 0.005) + (t * 0.008 * speed));
+          if (noise < 0.2) continue; // Only draw some hexes to keep it clean and fast
+          
+          const alpha = (noise - 0.2) * 0.08;
+          const color = colors[Math.floor((x + finalY) / 100) % colors.length] || '#FBBF24';
+          
+          // Draw hexagon
+          ctx.beginPath();
+          for (let side = 0; side < 6; side++) {
+            const angle = (side * Math.PI) / 3;
+            const hx = x + hexSize * Math.cos(angle);
+            const hy = finalY + hexSize * Math.sin(angle);
+            if (side === 0) ctx.moveTo(hx, hy);
+            else ctx.lineTo(hx, hy);
+          }
+          ctx.closePath();
+          ctx.strokeStyle = hexToRgba(color, alpha);
+          ctx.stroke();
+        }
+      }
+    };
+
+    // 4. Solar Aurora Warp
+    const drawSolarAurora = () => {
+      const t = timeRef.current;
+      const speed = speedRef.current;
+      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const targetCount = countRef.current;
+
+      const curtainCount = Math.max(1, Math.min(5, Math.floor(targetCount / 25)));
+      for (let layer = 0; layer < curtainCount; layer++) {
+        const color = colors[layer % colors.length] || '#FBBF24';
+        const alpha = (0.06 - layer * 0.012);
+        const speedScale = (0.0022 + layer * 0.001) * speed;
+
+        ctx.beginPath();
+        ctx.moveTo(0, h);
+
+        for (let x = 0; x <= w; x += 15) {
+          const w1 = Math.sin(x * 0.0016 + t * speedScale) * (h * 0.14);
+          const w2 = Math.cos(x * 0.0032 - t * speedScale * 1.3) * (h * 0.065);
+          const y = h * (0.33 + layer * 0.11) + w1 + w2;
+          ctx.lineTo(x, y);
+        }
+
+        ctx.lineTo(w, h);
+        ctx.closePath();
+
+        const grad = ctx.createLinearGradient(0, 0, 0, h);
+        grad.addColorStop(0, hexToRgba(color, alpha));
+        grad.addColorStop(0.45, hexToRgba(color, alpha * 0.4));
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        ctx.strokeStyle = hexToRgba(color, alpha * 2.6);
+        ctx.lineWidth = 1.8;
+        ctx.stroke();
+      }
+    };
+
+    // 7. Liquid Solar Plasma
+    const drawLiquidLava = () => {
+      const t = timeRef.current;
+      const speed = speedRef.current;
+      const targetCount = countRef.current;
+      
+      const desiredBlobs = Math.max(5, Math.floor(targetCount / 5));
+      if (lavaBlobs.length < desiredBlobs) {
+        const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+        for (let i = lavaBlobs.length; i < desiredBlobs; i++) {
+          lavaBlobs.push({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            vx: (Math.random() - 0.5) * 0.7,
+            vy: (Math.random() - 0.5) * 0.7,
+            radius: 50 + Math.random() * 80,
+            color: colors[Math.floor(Math.random() * colors.length)] || '#FBBF24',
+            pulseOffset: Math.random() * Math.PI * 2
+          });
+        }
+      } else if (lavaBlobs.length > desiredBlobs) {
+        lavaBlobs.length = desiredBlobs;
+      }
+
+      lavaBlobs.forEach((b) => {
+        b.x += b.vx * speed;
+        b.y += b.vy * speed;
+
+        if (mouseRef.current.x > 0) {
+          const dx = mouseRef.current.x - b.x;
+          const dy = mouseRef.current.y - b.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 400) {
+            const force = (400 - dist) / 400 * 0.5 * speed;
+            const angle = Math.atan2(dy, dx) + Math.PI / 2; 
+            b.x += Math.cos(angle) * force * 1.8;
+            b.y += Math.sin(angle) * force * 1.8;
+          }
+        }
+
+        if (b.x < -b.radius) b.x = w + b.radius;
+        if (b.x > w + b.radius) b.x = -b.radius;
+        if (b.y < -b.radius) b.y = h + b.radius;
+        if (b.y > h + b.radius) b.y = -b.radius;
+
+        const breathing = Math.sin(t * 0.005 * speed + b.pulseOffset) * 15;
+        // Shield radial gradient size against index errors (cannot be <= 0)
+        const currentRadius = Math.max(1, b.radius + breathing);
+
+        const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, currentRadius);
+        grad.addColorStop(0, hexToRgba(b.color, 0.18));
+        grad.addColorStop(0.5, hexToRgba(b.color, 0.08));
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, currentRadius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    };
+
+
+    // 9. Solar Telemetry Matrix
+    const drawDigitalRain = () => {
+      const t = timeRef.current;
+      const speed = speedRef.current;
+      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+      const targetCount = countRef.current;
+
+      ctx.font = 'bold 9px monospace';
+      ctx.textAlign = 'center';
+
+      const desiredColumns = Math.max(5, Math.min(Math.ceil(w / 22), Math.floor(targetCount / 3)));
+      if (matrixDrops.length < desiredColumns) {
+        for (let i = matrixDrops.length; i < desiredColumns; i++) {
+          matrixDrops.push({
+            x: Math.random() * w,
+            y: Math.random() * -1000,
+            speed: 1.8 + Math.random() * 3.5,
+            chars: Array.from({ length: 15 }, () => getRandomTelemetryChar()),
+            lastUpdate: 0
+          });
+        }
+      } else if (matrixDrops.length > desiredColumns) {
+        matrixDrops.length = desiredColumns;
+      }
+
+      matrixDrops.forEach((d) => {
+        d.y += d.speed * speed;
+
+        if (t - d.lastUpdate > 10) {
+          d.chars.shift();
+          d.chars.push(getRandomTelemetryChar());
+          d.lastUpdate = t;
+        }
+
+        if (d.y > h + 300) {
+          d.y = Math.random() * -600;
+          d.x = Math.random() * w; // Randomize x position on reset!
+          d.speed = 1.8 + Math.random() * 3.5;
+        }
+
+        const tailLength = d.chars.length;
+        for (let i = 0; i < tailLength; i++) {
+          const charY = d.y - (tailLength - 1 - i) * 16;
+          if (charY < 0 || charY > h) continue;
+
+          const alphaRatio = (i + 1) / tailLength;
+          const alpha = alphaRatio * 0.22;
+          
+          const isHead = i === tailLength - 1;
+          ctx.fillStyle = isHead 
+            ? 'rgba(255, 255, 255, 0.7)' 
+            : hexToRgba(colors[i % colors.length] || '#FBBF24', alpha);
+
+          const character = d.chars[i] || '0';
+          ctx.fillText(character, d.x, charY);
+
+          if (isHead) {
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = colors[0] || '#FBBF24';
+            ctx.fillText(character, d.x, charY);
+            ctx.shadowBlur = 0; 
+          }
+        }
+      });
+    };
+
+    // 10. Luxury Crystal Shards
+    const drawPrismaticShards = () => {
+      const speed = speedRef.current;
+      const targetCount = countRef.current;
+
+      const desiredShards = Math.max(2, Math.floor(targetCount / 15));
+      if (crystalShards.length < desiredShards) {
+        const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+        for (let i = crystalShards.length; i < desiredShards; i++) {
+          crystalShards.push({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            radius: 100 + Math.random() * 140,
+            rotation: Math.random() * Math.PI * 2,
+            rotSpeed: (Math.random() - 0.5) * 0.002,
+            vx: (Math.random() - 0.5) * 0.25,
+            vy: (Math.random() - 0.5) * 0.25,
+            color: colors[Math.floor(Math.random() * colors.length)] || '#FBBF24',
+            sides: Math.random() > 0.5 ? 3 : 4
+          });
+        }
+      } else if (crystalShards.length > desiredShards) {
+        crystalShards.length = desiredShards;
+      }
+
+      crystalShards.forEach((s) => {
+        s.rotation += s.rotSpeed * speed;
+        s.x += s.vx * speed;
+        s.y += s.vy * speed;
+
+        if (s.x < -s.radius) s.x = w + s.radius;
+        if (s.x > w + s.radius) s.x = -s.radius;
+        if (s.y < -s.radius) s.y = h + s.radius;
+        if (s.y > h + s.radius) s.y = -s.radius;
+
+        ctx.save();
+        ctx.translate(s.x, s.y);
+        ctx.rotate(s.rotation);
+
+        ctx.beginPath();
+        for (let i = 0; i < s.sides; i++) {
+          const angle = (i * Math.PI * 2) / s.sides;
+          const rx = s.radius * Math.cos(angle);
+          const ry = s.radius * 0.55 * Math.sin(angle); 
+          if (i === 0) ctx.moveTo(rx, ry);
+          else ctx.lineTo(rx, ry);
+        }
+        ctx.closePath();
+
+        const grad = ctx.createLinearGradient(-s.radius, -s.radius, s.radius, s.radius);
+        grad.addColorStop(0, hexToRgba(s.color, 0.045));
+        grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.015)');
+        grad.addColorStop(1, hexToRgba('#FFFFFF', 0.005));
+
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        ctx.strokeStyle = hexToRgba(s.color, 0.08);
+        ctx.lineWidth = 0.7;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        for (let i = 0; i < s.sides; i++) {
+          const angle = (i * Math.PI * 2) / s.sides;
+          ctx.lineTo(s.radius * Math.cos(angle), s.radius * 0.55 * Math.sin(angle));
+          ctx.moveTo(0, 0);
+        }
+        ctx.stroke();
+
+        ctx.restore();
+      });
+    };
+
+    // ────────────────────────────────────────────────────────
+    // MAIN RENDERING LOOP SWITCH PANEL
+    // ────────────────────────────────────────────────────────
+    const animate = () => {
+      timeRef.current += 1;
+
+      // Dynamically detect container size changes (e.g. after loader hides or parent layout finishes)
+      const parent = canvas.parentElement;
+      if (parent) {
+        const currentW = parent.clientWidth;
+        const currentH = parent.clientHeight;
+        if (currentW > 0 && currentH > 0 && (currentW !== w || currentH !== h)) {
+          resize();
+        }
+      }
+
+      const currentStyle = styleRef.current;
+      const colors = PALETTES[phaseRef.current] || PALETTES.noon;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Draw style-specific premium deep-ambient backdrop washes directly in the canvas overlay
+      let bgGrad;
+      switch (currentStyle) {
+        case 'silicon-grid':
+          bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+          bgGrad.addColorStop(0, '#02040a');
+          bgGrad.addColorStop(1, '#040a15');
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, w, h);
+          break;
+        case 'liquid-lava':
+          bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+          bgGrad.addColorStop(0, '#100101');
+          bgGrad.addColorStop(0.7, '#040000');
+          bgGrad.addColorStop(1, '#000000');
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, w, h);
+          break;
+        case 'cosmic-wind':
+          bgGrad = ctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.8);
+          bgGrad.addColorStop(0, '#0d0422');
+          bgGrad.addColorStop(0.5, '#04010b');
+          bgGrad.addColorStop(1, '#000000');
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, w, h);
+          break;
+        case 'digital-rain':
+          bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+          bgGrad.addColorStop(0, '#000502');
+          bgGrad.addColorStop(1, '#000000');
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, w, h);
+          break;
+        case 'prismatic-shards':
+          bgGrad = ctx.createLinearGradient(0, 0, w, h);
+          bgGrad.addColorStop(0, '#010512');
+          bgGrad.addColorStop(1, '#000000');
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, w, h);
+          break;
+        case 'solar-aurora':
+          bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+          bgGrad.addColorStop(0, '#01020a');
+          bgGrad.addColorStop(1, '#050a1e');
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, w, h);
+          break;
+        case 'energy-waves':
+          bgGrad = ctx.createLinearGradient(0, 0, 0, h);
+          bgGrad.addColorStop(0, '#02040c');
+          bgGrad.addColorStop(1, '#000002');
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, w, h);
+          break;
+        case 'magnetic-resonance':
+          bgGrad = ctx.createRadialGradient(w * 0.8, h * 0.15, 0, w * 0.8, h * 0.15, w * 0.55);
+          bgGrad.addColorStop(0, hexToRgba(colors[0] || '#FBBF24', 0.04));
+          bgGrad.addColorStop(1, '#02040a');
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, w, h);
+          break;
+        case 'hex-cells':
+          bgGrad = ctx.createLinearGradient(0, 0, w, h);
+          bgGrad.addColorStop(0, '#020308');
+          bgGrad.addColorStop(1, '#000000');
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, w, h);
+          break;
+        default:
+          break;
+      }
+
+      switch (currentStyle) {
+        case 'silicon-grid':
+          drawSiliconGrid();
+          break;
+
+        case 'gradient-embers':
+          const g1 = ctx.createRadialGradient(w * 0.25, h * 0.2, 0, w * 0.25, h * 0.2, w * 0.4);
+          g1.addColorStop(0, hexToRgba(colors[0] || '#FB923C', 0.05));
+          g1.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = g1;
+          ctx.fillRect(0, 0, w, h);
+
+          const g2 = ctx.createRadialGradient(w * 0.8, h * 0.7, 0, w * 0.8, h * 0.7, w * 0.5);
+          g2.addColorStop(0, hexToRgba(colors[1] || '#FDBA74', 0.04));
+          g2.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = g2;
+          ctx.fillRect(0, 0, w, h);
+
+          drawParticlesSystem(false);
+          break;
+
+        case 'energy-waves':
+          drawEnergyWaves();
+          break;
+
+        case 'cosmic-wind':
+          drawParticlesSystem(true);
+          break;
+
+        case 'solar-aurora':
+          drawSolarAurora();
+          break;
+
+        case 'magnetic-resonance':
+          drawMagneticFlux();
+          break;
+
+        case 'hex-cells':
+          drawHexCells();
+          break;
+
+        case 'liquid-lava':
+          drawLiquidLava();
+          break;
+
+        case 'digital-rain':
+          drawDigitalRain();
+          break;
+
+        case 'prismatic-shards':
+          drawPrismaticShards();
+          break;
+
+        default:
+          drawSiliconGrid();
+          break;
+      }
+
+      // Universal background atmospheric warm pulse
+      const wash = ctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.8);
+      wash.addColorStop(0, hexToRgba(colors[0] || '#FBBF24', 0.012));
+      wash.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = wash;
+      ctx.fillRect(0, 0, w, h);
 
       animFrameRef.current = requestAnimationFrame(animate);
     };
 
     animFrameRef.current = requestAnimationFrame(animate);
-
-    const handleResize = () => {
-      resizeCanvas();
-      particlesRef.current = Array.from({ length: PARTICLE_COUNT }, () =>
-        createParticle(w, h)
-      );
-    };
-
-    window.addEventListener('resize', handleResize);
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('resize', resize);
 
     return () => {
       cancelAnimationFrame(animFrameRef.current);
-      window.removeEventListener('resize', handleResize);
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('resize', resize);
     };
-  }, [handleMouseMove, handleMouseLeave]);
+  }, []);
 
   return (
     <canvas
       ref={canvasRef}
       className="particle-canvas"
-      style={{ pointerEvents: 'auto' }}
+      style={{ pointerEvents: 'none' }}
       aria-hidden="true"
     />
   );
 }
 
-/* ============================================
-   HEX TO RGBA HELPER
-   ============================================ */
+/* ── Hex → RGBA Helper ── */
 function hexToRgba(hex: string, alpha: number): string {
-  // Catch already formatted rgb/rgba strings
+  if (!hex) return `rgba(255,255,255,${alpha})`;
   if (hex.startsWith('rgb')) return hex;
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);

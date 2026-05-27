@@ -43,7 +43,7 @@ export default function FloatingCTA() {
 
           {/* Button */}
           <a
-            href="https://wa.me/919550130770"
+            href="https://wa.me/919493936249"
             target="_blank"
             rel="noopener noreferrer"
             className="relative group"

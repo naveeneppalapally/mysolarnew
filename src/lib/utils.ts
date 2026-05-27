@@ -61,7 +61,7 @@ export function calculateSubsidy(monthlyBill: number): SubsidyResult {
   const systemSize = Math.max(1, Math.min(10, Math.ceil(monthlyUnits / unitsPerKw)));
 
   // Cost per kW (approximate market rate including installation)
-  const costPerKw = systemSize <= 3 ? 65000 : systemSize <= 5 ? 58000 : 52000;
+  const costPerKw = systemSize <= 3 ? 88000 : systemSize <= 5 ? 82000 : 76000;
   const totalCost = systemSize * costPerKw;
 
   // Central subsidy (PM Surya Ghar Muft Bijli Yojana)

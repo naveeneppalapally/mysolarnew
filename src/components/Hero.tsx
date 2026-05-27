@@ -4,6 +4,7 @@ import { CheckCircle2 } from 'lucide-react';
 import SunParticles from './SunParticles';
 import { scrollToSection } from '../lib/utils';
 import { useCountUp } from '../hooks/useCountUp';
+import { useBackgroundSettings } from '../context/BackgroundSettingsContext';
 
 /* ============================================
    ANIMATED HEADLINE — Clip-reveal per word
@@ -270,10 +271,10 @@ export function SolarPanelSVG() {
    TRUST BADGES
    ============================================ */
 const trustBadges = [
-  'TGREDCO Approved',
-  'MNRE Empanelled',
-  'PM Surya Ghar',
-  'Tata Power SolaRoof',
+  'TSREDCO Empanelled',
+  'MNRE Empanelled (TSRE260875)',
+  'TSSPDCL & TSNPDCL Approved',
+  'PM Surya Ghar Registered',
 ];
 
 /* ============================================
@@ -288,8 +289,8 @@ interface StatConfig {
 }
 
 const statsData: StatConfig[] = [
-  { end: 500, suffix: '+', label: 'Installations' },
-  { end: 78000, prefix: '₹', suffix: '', label: 'Max Subsidy' },
+  { end: 15, suffix: '+', label: 'Installations' },
+  { end: 70, suffix: '+ kW', label: 'Capacity Installed' },
   { end: 25, suffix: ' Year', label: 'Warranty' },
   { end: 4.8, suffix: '★', label: 'Rating', decimals: 1 },
 ];
@@ -362,6 +363,7 @@ function ShimmerButton({
    HERO COMPONENT
    ============================================ */
 export default function Hero() {
+  const { backgroundStyle } = useBackgroundSettings();
   const [tilt, setTilt] = React.useState({ x: 0, y: 0 });
   const panelRef = React.useRef<HTMLDivElement>(null);
   const [hidePanel, setHidePanel] = React.useState(false);
@@ -404,14 +406,22 @@ export default function Hero() {
       {/* Particle background */}
       <SunParticles />
 
-      {/* Radial gradient overlays */}
-      <div
-        className="absolute inset-0 pointer-events-none z-[1]"
+      {/* Living Gradient Atmosphere — Animated ambient blobs */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-[1] overflow-hidden"
         style={{
-          background:
-            'radial-gradient(ellipse at 80% 15%, rgba(245,158,11,0.08) 0%, transparent 55%), radial-gradient(ellipse at 20% 80%, rgba(249,115,22,0.04) 0%, transparent 50%)',
+          opacity: backgroundStyle === 'gradient-embers' ? 1.0 : 0.1,
+          transform: backgroundStyle === 'gradient-embers' ? 'scale(1)' : 'scale(0.85)',
+          transition: 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)'
         }}
-      />
+      >
+        {/* Blob 1: Warm amber — drifts from top-left area */}
+        <div className="ambient-blob ambient-blob-1" />
+        {/* Blob 2: Soft orange — drifts from bottom-right area */}
+        <div className="ambient-blob ambient-blob-2" />
+        {/* Blob 3: Subtle cyan/emerald accent — drifts from center-right */}
+        <div className="ambient-blob ambient-blob-3" />
+      </div>
 
       {/* Noise texture overlay */}
       <div
@@ -454,7 +464,7 @@ export default function Hero() {
                   }}
                 >
                   <span className="text-sm">☀️</span>
-                  Hyderabad's #1 Solar Partner
+                  Telangana's Authorised Solar Vendor
                 </span>
               </motion.div>
 
@@ -470,7 +480,7 @@ export default function Hero() {
               >
                 Government subsidies up to{' '}
                 <strong className="text-white font-medium">₹78,000</strong>. MNRE
-                authorized, Tata Power SolaRoof partner. We handle{' '}
+                Empanelled Vendor (TSRE260875) serving Hyderabad, Mancherial, Rangareddy, and Medchal. We handle{' '}
                 <strong className="text-white font-medium">100% paperwork</strong>.
               </motion.p>
 
