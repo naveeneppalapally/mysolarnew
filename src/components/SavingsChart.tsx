@@ -82,7 +82,7 @@ export default function SavingsChart() {
   return (
     <section id="savings-chart" className="relative section-alt overflow-hidden">
       {/* Ambient glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-cyan-500/[0.03] blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-purple-500/[0.03] blur-[100px] pointer-events-none" />
 
       <div className="section-wrapper">
         {/* Header */}
@@ -93,7 +93,7 @@ export default function SavingsChart() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-10"
         >
-          <span className="section-label inline-flex items-center gap-2" style={{ color: isLight ? '#7c3aed' : '#06B6D4' }}>
+          <span className="section-label inline-flex items-center gap-2">
             <TrendingUp className="w-3.5 h-3.5" />
             25-YEAR PROJECTION
           </span>
@@ -109,8 +109,8 @@ export default function SavingsChart() {
           transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           className="relative rounded-3xl border border-solar-border bg-solar-card backdrop-blur-xl overflow-hidden"
         >
-          {/* Cyan top border */}
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+          {/* Top border */}
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
 
           <div className="px-4 sm:px-8 pt-8 pb-6">
             <div

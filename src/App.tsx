@@ -87,30 +87,34 @@ function AppContent() {
         className={`transition-opacity duration-1000 phase-${currentPhase}`}
         style={{ opacity: isLoading ? 0 : 1 }}
       >
-        <div className="noise-overlay" />
-        <Navbar />
-        <main>
-          <Hero />
-          <CurvedDivider />
-          <Marquee />
-          <WhySolar />
-          <SubsidySection />
-          <Services />
-          <CurvedDivider />
-          <HowItWorks />
-          <SubsidyCalculator />
-          <CurvedDivider />
-          <SavingsChart />
-          <TelanganaPolicy />
-          <Financing />
-          <Testimonials />
-          <FAQ />
-          <ContactForm />
-        </main>
-        <Footer />
-        <FloatingCTA />
-        <ScrollToTop />
-        <BackgroundSettings />
+        {!isLoading && (
+          <>
+            <div className="noise-overlay" />
+            <Navbar />
+            <main>
+              <Hero />
+              <CurvedDivider />
+              <Marquee />
+              <WhySolar />
+              <SubsidySection />
+              <Services />
+              <CurvedDivider />
+              <HowItWorks />
+              <SubsidyCalculator />
+              <CurvedDivider />
+              <SavingsChart />
+              <TelanganaPolicy />
+              <Financing />
+              <Testimonials />
+              <FAQ />
+              <ContactForm />
+            </main>
+            <Footer />
+            <FloatingCTA />
+            <ScrollToTop />
+            <BackgroundSettings />
+          </>
+        )}
       </div>
     </>
   );

@@ -147,7 +147,7 @@ export default function FAQ() {
     >
       {/* Background radial */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-[0.03] pointer-events-none"
-        style={{ background: 'radial-gradient(circle, #06B6D4, transparent 70%)' }}
+        style={{ background: 'radial-gradient(circle, var(--solar-purple), transparent 70%)' }}
       />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -158,7 +158,7 @@ export default function FAQ() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-[0.2em] uppercase border border-cyan-500/30 text-cyan-400 bg-cyan-500/5 mb-6 font-heading">
+          <span className="section-label mb-6">
             FAQ
           </span>
           <h2 className="text-4xl md:text-5xl font-bold font-heading text-solar-text mb-4">

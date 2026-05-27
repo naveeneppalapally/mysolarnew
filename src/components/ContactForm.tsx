@@ -222,7 +222,7 @@ Please contact me for a free site assessment and quote.`;
                     >
                       +91 9493936249
                     </a>
-                    <span className="text-[9px] font-mono tracking-wider text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/10">Primary & WhatsApp</span>
+                    <span className="text-[9px] font-mono tracking-wider text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-500/20 px-2 py-0.5 rounded border border-emerald-500/20">Primary & WhatsApp</span>
                   </div>
                 </div>
               </ContactRow>

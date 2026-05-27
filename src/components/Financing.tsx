@@ -19,7 +19,7 @@ const options = [
     title: 'Zero-Cost EMI',
     description: 'Pay in easy monthly installments that are less than your current electricity bill. Start saving from day one with zero upfront investment.',
     icon: <CreditCard className="w-7 h-7" />,
-    accent: 'cyan' as const,
+    accent: 'purple' as const,
     stats: [
       { icon: <Percent className="w-3.5 h-3.5" />, label: 'Effective Rate', value: '0%' },
       { icon: <CalendarDays className="w-3.5 h-3.5" />, label: 'Duration', value: '12–24 mo' },
@@ -50,15 +50,15 @@ const accentMap = {
     line: 'via-amber-500',
     badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
   },
-  cyan: {
-    border: 'border-cyan-500/20 hover:border-cyan-500/40',
-    iconBg: 'bg-cyan-500/10',
-    iconText: 'text-cyan-400',
-    glow: 'group-hover:shadow-[0_0_40px_-10px_rgba(6,182,212,0.18)]',
-    statBg: 'bg-cyan-500/[0.06]',
-    statText: 'text-cyan-400',
-    line: 'via-cyan-500',
-    badge: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',
+  purple: {
+    border: 'border-purple-500/20 hover:border-purple-500/40',
+    iconBg: 'bg-purple-500/10',
+    iconText: 'text-purple-400',
+    glow: 'group-hover:shadow-[0_0_40px_-10px_rgba(139,92,246,0.18)]',
+    statBg: 'bg-purple-500/[0.06]',
+    statText: 'text-purple-400',
+    line: 'via-purple-500',
+    badge: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
   },
   emerald: {
     border: 'border-emerald-500/20 hover:border-emerald-500/40',
@@ -91,7 +91,7 @@ export default function Financing() {
     <section id="financing" className="relative section-alt overflow-hidden">
       {/* Ambient glow */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[400px] rounded-full bg-amber-500/[0.02] blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-[400px] h-[300px] rounded-full bg-cyan-500/[0.02] blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[300px] rounded-full bg-purple-500/[0.02] blur-[100px] pointer-events-none" />
 
       <div className="section-wrapper">
         {/* Header */}
@@ -118,7 +118,7 @@ export default function Financing() {
             const a = accentMap[opt.accent];
             const panelAccentClass = 
               opt.accent === 'amber' ? 'solar-panel-card-gold' :
-              opt.accent === 'cyan' ? 'solar-panel-card-cyan' :
+              opt.accent === 'purple' ? 'solar-panel-card-indigo' :
               'solar-panel-card-emerald';
 
             return (

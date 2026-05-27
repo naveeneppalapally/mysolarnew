@@ -65,13 +65,16 @@ export function calculateSubsidy(monthlyBill: number): SubsidyResult {
   const totalCost = systemSize * costPerKw;
 
   // Central subsidy (PM Surya Ghar Muft Bijli Yojana)
+  // 1kw 30000/-
+  // 2kw 60000/-
+  // 3kw and above 78000/-
   let centralSubsidy: number;
-  if (systemSize <= 2) {
-    centralSubsidy = systemSize * 30000;
-  } else if (systemSize <= 3) {
-    centralSubsidy = 60000 + (systemSize - 2) * 18000;
+  if (systemSize === 1) {
+    centralSubsidy = 30000;
+  } else if (systemSize === 2) {
+    centralSubsidy = 60000;
   } else {
-    centralSubsidy = 78000; // Max central subsidy capped at ₹78,000
+    centralSubsidy = 78000;
   }
 
   // State subsidy is disabled per user request (was Telangana TSREDCO top-up)

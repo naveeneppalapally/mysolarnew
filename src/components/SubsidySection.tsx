@@ -70,7 +70,7 @@ export default function SubsidySection() {
       {/* Background ambient */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-amber-500/[0.02] rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 left-1/3 w-[400px] h-[400px] bg-cyan-500/[0.015] rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 left-1/3 w-[400px] h-[400px] bg-purple-500/[0.015] rounded-full blur-[100px]" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -190,10 +190,10 @@ export default function SubsidySection() {
             variants={cardVariants}
             className="group relative rounded-2xl overflow-hidden"
           >
-            {/* Cyan top border */}
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
+            {/* Purple top border */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
 
-            <div className="solar-panel-card solar-panel-card-cyan p-6 sm:p-8">
+            <div className="solar-panel-card solar-panel-card-indigo p-6 sm:p-8">
               {/* Corner brackets */}
               <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
               <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
@@ -201,10 +201,10 @@ export default function SubsidySection() {
               <span className="solar-panel-card-corner solar-panel-card-corner-br" />
               {/* Icon + Badge */}
               <div className="flex items-start justify-between mb-6">
-                <div className="w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-br from-cyan-500/20 to-cyan-600/10 border border-cyan-500/20">
-                  <Building2 className="w-6 h-6 text-cyan-400" />
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center bg-gradient-to-br from-purple-500/20 to-purple-600/10 border border-purple-500/20">
+                  <Building2 className="w-6 h-6 text-purple-400" />
                 </div>
-                <span className="text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-cyan-400/80 bg-cyan-400/10 px-3 py-1.5 rounded-full border border-cyan-400/15 font-body">
+                <span className="text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-purple-400/80 bg-purple-400/10 px-3 py-1.5 rounded-full border border-purple-400/15 font-body">
                   Direct Credit
                 </span>
               </div>
@@ -221,19 +221,19 @@ export default function SubsidySection() {
               {/* Benefits */}
               <div className="space-y-3">
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-solar-card border border-solar-border">
-                  <ArrowDown className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <ArrowDown className="w-4 h-4 text-purple-400 shrink-0" />
                   <span className="text-sm text-solar-text-muted font-body">
                     Disbursed directly after net meter commissioning
                   </span>
                 </div>
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-solar-card border border-solar-border">
-                  <IndianRupee className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <IndianRupee className="w-4 h-4 text-purple-400 shrink-0" />
                   <span className="text-sm text-solar-text-muted font-body">
                     Aadhaar-linked Direct Benefit Transfer (DBT)
                   </span>
                 </div>
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-solar-card border border-solar-border">
-                  <Sparkles className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <Sparkles className="w-4 h-4 text-purple-400 shrink-0" />
                   <span className="text-sm text-solar-text-muted font-body">
                     We handle 100% of the portal submissions & approvals
                   </span>
@@ -253,7 +253,7 @@ export default function SubsidySection() {
           className="relative rounded-2xl overflow-hidden"
         >
           {/* Gradient border effect */}
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-500/20 via-cyan-500/20 to-amber-500/20 p-px">
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-500/20 via-purple-500/20 to-amber-500/20 p-px">
             <div className="w-full h-full rounded-2xl bg-solar-bg-secondary" />
           </div>
 

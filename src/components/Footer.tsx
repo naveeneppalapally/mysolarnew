@@ -163,7 +163,7 @@ export default function Footer() {
                     >
                       +91 9493936249
                     </a>
-                    <span className="text-[7px] font-mono px-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded">Primary & WhatsApp</span>
+                    <span className="text-[7px] font-mono px-1 bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20 rounded">Primary & WhatsApp</span>
                   </div>
                 </div>
               </li>
