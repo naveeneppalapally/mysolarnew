@@ -23,7 +23,6 @@ html.font-theme-syne {
    1. CSS CUSTOM PROPERTIES — DARK MODE ONLY
    ============================================================ */
 :root {
-  --font-heading: 'Poppins', sans-serif;
   /* Backgrounds */
   --solar-bg: #030712;                /* Deep Obsidian Black */
   --solar-bg-secondary: #080718;      /* Luxurious Midnight Purple Tint */
@@ -81,7 +80,6 @@ html.font-theme-syne {
    1b. DYNAMIC THEMING — WORLD-CLASS LIGHT MODE TOKENS
    ============================================================ */
 .light-theme {
-  --font-heading: 'Poppins', sans-serif;
   /* Backgrounds — Warm Satin Ivory (NOT cold white) */
   --solar-bg: #faf7f2;
   --solar-bg-secondary: #f5f0e8;
