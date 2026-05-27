@@ -163,26 +163,8 @@ export default function Footer() {
                     >
                       +91 9493936249
                     </a>
-                    <span className="text-[7px] font-mono px-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded">Primary</span>
+                    <span className="text-[7px] font-mono px-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/10 rounded">Primary & WhatsApp</span>
                   </div>
-                  <a
-                    href="tel:9550130770"
-                    className="text-solar-text-muted hover:text-solar-gold transition-colors text-xs"
-                  >
-                    9550130770 (Mr. Gopi)
-                  </a>
-                  <a
-                    href="tel:9951637624"
-                    className="text-solar-text-muted hover:text-solar-gold transition-colors text-xs"
-                  >
-                    9951637624
-                  </a>
-                  <a
-                    href="tel:9603449393"
-                    className="text-solar-text-muted hover:text-solar-gold transition-colors text-xs"
-                  >
-                    9603449393
-                  </a>
                 </div>
               </li>
               <li className="flex gap-3 text-sm">

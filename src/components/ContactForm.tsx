@@ -123,6 +123,22 @@ export default function ContactForm() {
     e.preventDefault();
     if (validate()) {
       setSubmitted(true);
+      
+      const formattedMessage = `Hello MyHome Solar! I would like to request a solar rooftop quote.
+
+Here are my details:
+• Name: ${formData.name}
+• Phone: ${formData.phone}
+• Monthly Electricity Bill: ₹${formData.bill}
+• Message: ${formData.message || 'No additional message'}
+
+Please contact me for a free site assessment and quote.`;
+
+      const whatsappUrl = `https://wa.me/919493936249?text=${encodeURIComponent(formattedMessage)}`;
+      
+      setTimeout(() => {
+        window.open(whatsappUrl, '_blank');
+      }, 600);
     }
   };
 
@@ -197,7 +213,7 @@ export default function ContactForm() {
                 </span>
               </ContactRow>
 
-              <ContactRow icon={<Phone size={18} />} label="Contact Numbers">
+              <ContactRow icon={<Phone size={18} />} label="Contact Number">
                 <div className="flex flex-col gap-1 text-sm">
                   <div className="flex items-center gap-2">
                     <a
@@ -207,19 +223,6 @@ export default function ContactForm() {
                       +91 9493936249
                     </a>
                     <span className="text-[9px] font-mono tracking-wider text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/10">Primary & WhatsApp</span>
-                  </div>
-                  <div className="flex flex-wrap gap-x-2 gap-y-1 text-xs text-gray-500">
-                    <a href="tel:9550130770" className="hover:text-amber-400 transition-colors">
-                      9550130770 (Mr. Gopi)
-                    </a>
-                    <span>•</span>
-                    <a href="tel:9951637624" className="hover:text-amber-400 transition-colors">
-                      9951637624
-                    </a>
-                    <span>•</span>
-                    <a href="tel:9603449393" className="hover:text-amber-400 transition-colors">
-                      9603449393
-                    </a>
                   </div>
                 </div>
               </ContactRow>
@@ -430,13 +433,6 @@ export default function ContactForm() {
                           className="text-amber-400 hover:text-amber-300 transition-colors font-semibold"
                         >
                           📞 9493936249
-                        </a>
-                        <span className="text-gray-700">|</span>
-                        <a
-                          href="tel:9550130770"
-                          className="text-amber-400 hover:text-amber-300 transition-colors"
-                        >
-                          📞 9550130770
                         </a>
                       </div>
                     </div>

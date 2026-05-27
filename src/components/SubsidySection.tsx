@@ -216,15 +216,7 @@ export default function SubsidySection() {
                 Subsidy is credited directly to your bank account, with zero dealer intervention
               </p>
 
-              {/* Amount */}
-              <div className="mb-6">
-                <p className="text-xs uppercase tracking-wider text-solar-text-dim mb-1 font-body">
-                  Disbursement timeline
-                </p>
-                <p className="text-4xl sm:text-5xl font-bold font-heading bg-gradient-to-r from-cyan-400 to-teal-300 bg-clip-text text-transparent">
-                  Within 30 Days
-                </p>
-              </div>
+
 
               {/* Benefits */}
               <div className="space-y-3">
@@ -279,7 +271,7 @@ export default function SubsidySection() {
                 ₹{formatINR(totalValue)}
               </p>
               <p className="text-sm sm:text-base text-solar-text-muted max-w-lg mx-auto font-body">
-                Subsidy credited directly to your bank account within 30 days of
+                Subsidy credited directly to your bank account after
                 system commissioning. We handle the entire claim process.
               </p>
             </div>

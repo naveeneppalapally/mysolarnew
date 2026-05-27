@@ -21,7 +21,7 @@ const testimonials: Testimonial[] = [
     name: 'Priya Sharma',
     location: 'LB Nagar',
     quote:
-      'I was skeptical about solar panels, but the team explained everything clearly. The subsidy of ₹78,000 was credited to my account within 30 days. Best investment ever!',
+      'I was skeptical about solar panels, but the team explained everything clearly. The subsidy of ₹78,000 was credited directly to my account. Best investment ever!',
     rating: 5,
   },
   {

@@ -43,7 +43,7 @@ export default function FloatingCTA() {
 
           {/* Button */}
           <a
-            href="https://wa.me/919493936249"
+            href={`https://wa.me/919493936249?text=${encodeURIComponent("Hello MyHome Solar! I'm interested in rooftop solar installation. Please share more details.")}`}
             target="_blank"
             rel="noopener noreferrer"
             className="relative group"
