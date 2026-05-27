@@ -444,13 +444,15 @@ export default function Hero() {
             <motion.div
               className="flex flex-col gap-5 md:gap-6"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
               {/* Badge */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
               >
                 <span
@@ -478,7 +480,8 @@ export default function Hero() {
               <motion.p
                 className="text-gray-400 text-sm sm:text-base max-w-lg leading-relaxed font-body"
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
               >
                 Government subsidies up to{' '}
@@ -491,7 +494,8 @@ export default function Hero() {
               <motion.div
                 className="flex flex-col sm:flex-row gap-3 mt-1"
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
               >
                 <ShimmerButton onClick={() => scrollToSection('calculator')}>
@@ -521,7 +525,8 @@ export default function Hero() {
               <motion.div
                 className="flex flex-wrap gap-x-5 gap-y-2.5 mt-2"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.7 }}
               >
                 {trustBadges.map((badge, i) => (
@@ -529,7 +534,8 @@ export default function Hero() {
                     key={badge}
                     className="flex items-center gap-1.5"
                     initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.3, delay: 0.7 + i * 0.06 }}
                   >
                     <CheckCircle2
@@ -547,7 +553,8 @@ export default function Hero() {
               <motion.div
                 className="hidden lg:flex justify-center items-center"
                 initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               >
                 <div
@@ -606,7 +613,8 @@ export default function Hero() {
               boxShadow: '0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)',
             }}
             initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <div

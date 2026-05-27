@@ -23,30 +23,20 @@ import BackgroundSettings from './components/BackgroundSettings';
 import { SolarTimeProvider, useSolarTime } from './context/SolarTimeContext';
 import { BackgroundSettingsProvider } from './context/BackgroundSettingsContext';
 
-// How long the loader plays before hiding (ms) — keep in sync with Loader.tsx
+// How long the loader plays before fading out (ms)
 const LOADER_HIDE_DELAY = 950;
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
-  // A second flag that lags slightly so the opacity CSS transition has started
-  // before we render children. This gives the fade-in a head start.
-  const [showContent, setShowContent] = useState(false);
   const { currentPhase } = useSolarTime();
 
   useEffect(() => {
-    // Step 1: hide the loader overlay
-    const hideTimer = setTimeout(() => setIsLoading(false), LOADER_HIDE_DELAY);
-    // Step 2: mount main content one frame later so the wrapper's opacity
-    // transition has already begun → smooth fade while animations play fresh
-    const showTimer = setTimeout(() => setShowContent(true), LOADER_HIDE_DELAY + 50);
-    return () => {
-      clearTimeout(hideTimer);
-      clearTimeout(showTimer);
-    };
+    const timer = setTimeout(() => setIsLoading(false), LOADER_HIDE_DELAY);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    if (!showContent) return;
+    if (isLoading) return;
     if (typeof window === 'undefined') return;
 
     const isMobileDevice =
@@ -75,53 +65,44 @@ function AppContent() {
       lenis.destroy();
       cancelAnimationFrame(rafId);
     };
-  }, [showContent]);
+  }, [isLoading]);
 
   return (
     <>
-      {/* Custom cursor - desktop only */}
       <CustomCursor />
 
-      {/* Loader overlay — sits on top, exits after LOADER_HIDE_DELAY */}
+      {/* Loader sits on top as a fixed overlay with z-100 */}
       <Loader isVisible={isLoading} />
 
       {/*
-        Main site wrapper.
-        - Opacity 0 while loader is showing, fades to 1 once loader exits.
-        - Content is NOT rendered (showContent=false) until 50ms after the
-          opacity transition starts. This means Framer Motion components
-          mount fresh — their useInView / entry animations have never
-          pre-fired, so everything plays correctly on first paint.
+        All content is ALWAYS mounted (no conditional rendering).
+        The Loader covers it as a z-100 overlay, so users can't see it.
+        Hero uses whileInView (viewport: once) so animations only fire
+        when the element is actually visible — which happens naturally
+        after the Loader fades out. No mount burst, no jank.
       */}
-      <div
-        className={`transition-opacity duration-700 phase-${currentPhase}`}
-        style={{ opacity: isLoading ? 0 : 1 }}
-      >
-        {showContent && (
-          <>
-            <div className="noise-overlay" />
-            <Navbar />
-            <main>
-              <Hero />
-              <Marquee />
-              <WhySolar />
-              <SubsidySection />
-              <Services />
-              <HowItWorks />
-              <SubsidyCalculator />
-              <SavingsChart />
-              <TelanganaPolicy />
-              <Financing />
-              <Testimonials />
-              <FAQ />
-              <ContactForm />
-            </main>
-            <Footer />
-            <FloatingCTA />
-            <ScrollToTop />
-            <BackgroundSettings />
-          </>
-        )}
+      <div className={`phase-${currentPhase}`}>
+        <div className="noise-overlay" />
+        <Navbar />
+        <main>
+          <Hero />
+          <Marquee />
+          <WhySolar />
+          <SubsidySection />
+          <Services />
+          <HowItWorks />
+          <SubsidyCalculator />
+          <SavingsChart />
+          <TelanganaPolicy />
+          <Financing />
+          <Testimonials />
+          <FAQ />
+          <ContactForm />
+        </main>
+        <Footer />
+        <FloatingCTA />
+        <ScrollToTop />
+        <BackgroundSettings />
       </div>
     </>
   );
