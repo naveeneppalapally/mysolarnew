@@ -38,10 +38,11 @@ function AppContent() {
     return '#home';
   });
 
-  // Mount site content early under the loading screen (after 200ms)
-  // to avoid synchronous layout jank/freeze when the loader starts its reveal.
+  // Mount site content in the background after 1800ms
+  // (once the logo typewriter animation is fully finished and static),
+  // which prevents any CPU/layout spikes from stuttering the logo loading animation.
   useEffect(() => {
-    const mountTimer = setTimeout(() => setMounted(true), 200);
+    const mountTimer = setTimeout(() => setMounted(true), 1800);
     return () => clearTimeout(mountTimer);
   }, []);
 
