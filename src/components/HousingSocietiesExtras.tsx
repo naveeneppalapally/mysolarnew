@@ -166,7 +166,7 @@ export default function HousingSocietiesExtras() {
         </section>
 
         {/* 3. Financing Comparison Matrix */}
-        <section className="space-y-8">
+        <section className="space-y-8 w-full overflow-hidden">
           <div className="text-center space-y-3">
             <span className="inline-block text-[10px] font-semibold tracking-widest text-solar-purple uppercase bg-solar-purple-10 px-3 py-1 rounded-full border border-solar-purple-20">
               Financial Models
@@ -244,7 +244,7 @@ export default function HousingSocietiesExtras() {
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.25 }}
                       >
-                        <div className="p-5 pt-0 text-xs sm:text-sm text-solar-text-muted border-t border-solar-border/40 font-body leading-relaxed">
+                        <div className="p-5 pt-4 text-xs sm:text-sm text-solar-text-muted border-t border-solar-border/40 font-body leading-relaxed">
                           {faq.a}
                         </div>
                       </motion.div>

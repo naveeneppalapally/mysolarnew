@@ -214,16 +214,14 @@ Please contact me for a free site assessment and quote.`;
               </ContactRow>
 
               <ContactRow icon={<Phone size={18} />} label="Contact Number">
-                <div className="flex flex-col gap-1 text-sm">
-                  <div className="flex items-center gap-2">
-                    <a
-                      href="tel:9493936249"
-                      className="text-amber-400 hover:text-amber-300 font-semibold transition-colors"
-                    >
-                      +91 9493936249
-                    </a>
-                    <span className="whatsapp-badge">Primary & WhatsApp</span>
-                  </div>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-sm">
+                  <a
+                    href="tel:9493936249"
+                    className="text-amber-400 hover:text-amber-300 font-semibold transition-colors"
+                  >
+                    +91 9493936249
+                  </a>
+                  <span className="whatsapp-badge w-fit">Primary & WhatsApp</span>
                 </div>
               </ContactRow>
 

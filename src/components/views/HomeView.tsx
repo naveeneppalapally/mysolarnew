@@ -6,109 +6,121 @@ import Marquee from '../Marquee';
 import Testimonials from '../Testimonials';
 import ContactForm from '../ContactForm';
 import { fadeInUp, staggerContainer, sectionViewport } from '../../lib/animations';
+import { useBackgroundSettings } from '../../context/BackgroundSettingsContext';
 
 const offerings = [
   {
     title: 'Solar for Homes (Residential)',
     description: 'Save up to 90% on your home electricity bill under the PM Surya Ghar Muft Bijli Yojana. We provide Tier-1 panels, DeccanShield structural mounts, and CEA-compliant inverters backed by a 25-year linear performance guarantee.',
-    icon: <Home className="w-6 h-6 text-solar-gold" />,
+    icon: <Home className="w-5 h-5" />,
     badge: 'Up to ₹78,000 Subsidy',
     hash: '#homes',
+    trifoldAccent: 'amber' as const,
     stats: [
       { label: 'System Size', value: '1kW – 10kWp' },
-      { label: 'Average Payback', value: '4.2 Years' },
+      { label: 'Avg Payback', value: '4.2 Years' },
     ],
-    accent: 'amber' as const,
   },
   {
     title: 'Housing Societies & RWAs',
-    description: 'Cut common area maintenance costs (elevators, water pumps, lighting) dramatically. RWAs and GHS complexes in Telangana can install common rooftop arrays with huge capital subsidies and flexible payment/loan choices.',
-    icon: <Building2 className="w-6 h-6 text-solar-purple" />,
+    description: 'Cut common area maintenance costs dramatically. RWAs and GHS complexes in Telangana can install common rooftop arrays with huge capital subsidies and flexible payment choices.',
+    icon: <Building2 className="w-5 h-5" />,
     badge: '₹18,000 / kW Subsidy',
     hash: '#societies',
+    trifoldAccent: 'sky' as const,
     stats: [
       { label: 'Capacity Cap', value: 'Up to 500 kWp' },
       { label: 'Subsidy Cap', value: 'Max ₹90 Lakhs' },
     ],
-    accent: 'sky' as const,
   },
   {
     title: 'Commercial & Industrial Solar',
-    description: 'Reduce high business overheads under the TSERC 2025 regulatory framework. Claim a first-year 40% Accelerated Depreciation tax benefit, and enjoy grid exemptions with paybacks under 4 years.',
-    icon: <Landmark className="w-6 h-6 text-solar-emerald" />,
+    description: 'Reduce high business overheads under the TSERC 2025 regulatory framework. Claim a first-year 40% Accelerated Depreciation tax benefit and enjoy grid exemptions with paybacks under 4 years.',
+    icon: <Landmark className="w-5 h-5" />,
     badge: 'Slash Overheads by 80%',
     hash: '#commercial',
+    trifoldAccent: 'emerald' as const,
     stats: [
       { label: 'Net Metering', value: 'Up to 500 kWp' },
       { label: 'Surcharge', value: '100% Exempt' },
     ],
-    accent: 'emerald' as const,
   },
   {
     title: 'Agricultural Solar (PM-KUSUM)',
     description: 'Empowering Telangana farmers with reliable solar energy. Special government subsidies for off-grid water pumps and opportunities to monetize barren/fallow land with grid-connected power plants.',
-    icon: <Sprout className="w-6 h-6 text-solar-emerald" />,
+    icon: <Sprout className="w-5 h-5" />,
     badge: 'Up to 60% Subsidized',
     hash: '#farmers',
+    trifoldAccent: 'emerald' as const,
     stats: [
       { label: 'Pump Sizing', value: 'Up to 7.5 HP' },
       { label: 'PPA Tenure', value: '25 Years Income' },
     ],
-    accent: 'emerald' as const,
-  }
+  },
 ];
 
-const accentMap = {
+// Trifold accent colors (old style — for comparison)
+const trifoldMap = {
   amber: {
-    border: 'border-solar-gold/20 hover:border-solar-gold/40',
-    iconBg: 'bg-solar-gold-10',
-    iconText: 'text-solar-gold',
-    glow: 'group-hover:shadow-glow-gold',
-    statBg: 'bg-solar-gold-6',
-    statText: 'text-solar-gold',
-    line: 'via-solar-gold',
-    badge: 'bg-solar-gold-10 text-solar-gold border-solar-gold-20',
-    btn: 'bg-solar-gold text-gray-950 hover:bg-solar-gold-bright shadow-[0_0_15px_rgba(245,158,11,0.2)]',
+    icon: 'rgba(245,158,11,0.08)',
+    iconColor: '#F59E0B',
+    badge: { color: '#F59E0B', border: 'rgba(245,158,11,0.25)', bg: 'rgba(245,158,11,0.06)' },
+    stat: { bg: 'rgba(245,158,11,0.06)', color: '#F59E0B' },
+    btn: { bg: '#F59E0B', color: '#030712', border: '#F59E0B', hoverBg: '#FBBF24', hoverColor: '#030712' },
+    topBorder: 'rgba(245,158,11,0.6)',
+    hoverBorder: 'rgba(245,158,11,0.3)',
+    hoverShadow: 'rgba(245,158,11,0.06)',
   },
   sky: {
-    border: 'border-solar-purple-20 hover:border-solar-purple-40',
-    iconBg: 'bg-solar-purple-10',
-    iconText: 'text-solar-purple',
-    glow: 'group-hover:shadow-glow-purple',
-    statBg: 'bg-solar-purple-6',
-    statText: 'text-solar-purple',
-    line: 'via-solar-purple',
-    badge: 'bg-solar-purple-10 text-solar-purple border-solar-purple-20',
-    btn: 'bg-solar-indigo text-white hover:bg-solar-purple shadow-[0_0_15px_rgba(3,105,161,0.25)]',
+    icon: 'rgba(3,105,161,0.12)',
+    iconColor: '#0284C7',
+    badge: { color: '#0EA5E9', border: 'rgba(14,165,233,0.25)', bg: 'rgba(14,165,233,0.06)' },
+    stat: { bg: 'rgba(14,165,233,0.06)', color: '#0EA5E9' },
+    btn: { bg: '#0369A1', color: '#fff', border: '#0369A1', hoverBg: '#0284C7', hoverColor: '#fff' },
+    topBorder: 'rgba(14,165,233,0.6)',
+    hoverBorder: 'rgba(14,165,233,0.3)',
+    hoverShadow: 'rgba(14,165,233,0.06)',
   },
   emerald: {
-    border: 'border-solar-emerald-20 hover:border-solar-emerald-40',
-    iconBg: 'bg-solar-emerald-10',
-    iconText: 'text-solar-emerald',
-    glow: 'group-hover:shadow-glow-purple',
-    statBg: 'bg-solar-emerald-6',
-    statText: 'text-solar-emerald',
-    line: 'via-solar-emerald',
-    badge: 'bg-solar-emerald-10 text-solar-emerald border-solar-emerald-20',
-    btn: 'bg-solar-emerald text-white hover:opacity-90 shadow-[0_0_15px_rgba(16,185,129,0.25)]',
+    icon: 'rgba(16,185,129,0.1)',
+    iconColor: '#10B981',
+    badge: { color: '#10B981', border: 'rgba(16,185,129,0.25)', bg: 'rgba(16,185,129,0.06)' },
+    stat: { bg: 'rgba(16,185,129,0.06)', color: '#10B981' },
+    btn: { bg: '#10B981', color: '#fff', border: '#10B981', hoverBg: '#059669', hoverColor: '#fff' },
+    topBorder: 'rgba(16,185,129,0.6)',
+    hoverBorder: 'rgba(16,185,129,0.3)',
+    hoverShadow: 'rgba(16,185,129,0.06)',
   },
 };
 
+// Unified gold colors (corrected style)
+const goldAccent = {
+  icon: 'rgba(245,158,11,0.08)',
+  iconColor: '#F59E0B',
+  badge: { color: '#F59E0B', border: 'rgba(245,158,11,0.2)', bg: 'rgba(245,158,11,0.06)' },
+  stat: { bg: 'rgba(245,158,11,0.04)', color: '#F59E0B' },
+  btn: { bg: 'rgba(245,158,11,0.04)', color: '#F59E0B', border: 'rgba(245,158,11,0.35)', hoverBg: '#F59E0B', hoverColor: '#030712' },
+  topBorder: 'rgba(245,158,11,0.6)',
+  hoverBorder: 'rgba(245,158,11,0.3)',
+  hoverShadow: 'rgba(245,158,11,0.06)',
+};
+
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 30, scale: 0.97 },
+  hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      duration: 0.6,
-      delay: 0.12 + i * 0.1,
+      duration: 0.5,
+      delay: 0.08 + i * 0.09,
       ease: [0.16, 1, 0.3, 1] as const,
     },
   }),
 };
 
 export default function HomeView() {
+  const { cardColorMode } = useBackgroundSettings();
+
   const handleNavigate = (hash: string) => {
     window.location.hash = hash;
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -122,126 +134,185 @@ export default function HomeView() {
       {/* 2. Trust Marquee */}
       <Marquee />
 
-      {/* 3. Our Solutions Segment Showcase */}
-      <section className="relative py-24 sm:py-32 overflow-hidden bg-solar-bg">
-        {/* Background glow effects */}
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-amber-500/[0.015] blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-sky-500/[0.015] blur-[100px] pointer-events-none" />
+      {/* 3. Our Solutions */}
+      <section className="relative py-20 sm:py-28 overflow-hidden" style={{ background: 'var(--solar-bg)' }}>
+        {/* Single subtle background glow — gold only */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(245,158,11,0.04) 0%, transparent 70%)',
+          }}
+        />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={sectionViewport}
             variants={staggerContainer}
-            className="text-center mb-16 sm:mb-20"
+            className="text-center mb-12 sm:mb-16"
           >
             <motion.span
               variants={fadeInUp}
-              className="inline-block text-xs sm:text-sm font-semibold tracking-[0.3em] uppercase text-solar-gold mb-4 font-body"
+              className="inline-block text-xs font-semibold tracking-[0.3em] uppercase mb-4 font-body"
+              style={{ color: 'var(--solar-gold)' }}
             >
               Our Offerings
             </motion.span>
             <motion.h2
               variants={fadeInUp}
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-solar-text mb-5 leading-tight"
+              className="text-3xl sm:text-4xl font-bold font-heading mb-4 leading-tight"
+              style={{ color: 'var(--solar-text)' }}
             >
-              Rooftop Solar Solutions for{' '}
-              <span className="text-solar-gold">
-                Every Sector
-              </span>
+              Rooftop Solar for{' '}
+              <span style={{ color: 'var(--solar-gold)' }}>Every Sector</span>
             </motion.h2>
             <motion.p
               variants={fadeInUp}
-              className="text-base sm:text-lg text-solar-text-muted max-w-2xl mx-auto font-body"
+              className="text-sm sm:text-base max-w-xl mx-auto font-body"
+              style={{ color: 'var(--solar-text-muted)' }}
             >
-              Discover customized solar layouts engineered to deliver maximum savings, structural stability, and regulatory compliance.
+              Customized solar layouts engineered for maximum savings, structural stability, and regulatory compliance.
             </motion.p>
           </motion.div>
 
           {/* Offerings Grid */}
-          <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
+          <div className="grid md:grid-cols-2 gap-5 sm:gap-6">
             {offerings.map((off, i) => {
-              const a = accentMap[off.accent];
-              const panelAccentClass = 
-                off.accent === 'amber' ? 'solar-panel-card-gold' :
-                off.accent === 'sky' ? 'solar-panel-card-sky' :
-                'solar-panel-card-emerald';
+              // Pick accent based on mode
+              const a = cardColorMode === 'trifold'
+                ? trifoldMap[off.trifoldAccent]
+                : goldAccent;
 
               return (
-                <motion.div
-                  key={off.title}
-                  custom={i}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: '-40px' }}
-                  variants={cardVariants}
-                  className={`solar-panel-card ${panelAccentClass} cursor-default group flex flex-col justify-between`}
-                >
-                  {/* Corner brackets */}
-                  <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
-                  <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
-                  <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
-                  <span className="solar-panel-card-corner solar-panel-card-corner-br" />
+              <motion.div
+                key={off.title}
+                custom={i}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: '-30px' }}
+                variants={cardVariants}
+                className="group relative flex flex-col rounded-2xl overflow-hidden cursor-default"
+                style={{
+                  background: 'var(--solar-card)',
+                  border: '1px solid var(--solar-border)',
+                  transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLDivElement).style.borderColor = a.hoverBorder;
+                  (e.currentTarget as HTMLDivElement).style.boxShadow = `0 0 30px ${a.hoverShadow}`;
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--solar-border)';
+                  (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
+                }}
+              >
+                {/* Hover top border accent */}
+                <div
+                  className="absolute top-0 left-0 right-0 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ background: `linear-gradient(90deg, transparent, ${a.topBorder}, transparent)` }}
+                />
 
-                  {/* Top line gradient */}
-                  <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent ${a.line} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-
-                  <div className="p-6 sm:p-8 flex flex-col justify-between h-full space-y-6">
-                    <div className="space-y-4">
-                      {/* Icon + Badge */}
-                      <div className="flex items-center justify-between">
-                        <div className={`inline-flex items-center justify-center w-12 h-12 rounded-2xl ${a.iconBg} ${a.iconText} transition-transform duration-300 group-hover:scale-110`}>
-                          {off.icon}
-                        </div>
-                        <span className={`px-3 py-1 rounded-full text-[10px] font-semibold tracking-wide uppercase border ${a.badge}`}>
-                          {off.badge}
-                        </span>
-                      </div>
-
-                      {/* Title */}
-                      <h3 className="font-heading font-bold text-xl text-solar-text group-hover:text-solar-gold transition-colors">
-                        {off.title}
-                      </h3>
-
-                      {/* Description */}
-                      <p className="text-sm text-solar-text-muted font-body leading-relaxed">
-                        {off.description}
-                      </p>
+                <div className="p-6 sm:p-7 flex flex-col h-full gap-5">
+                  {/* Top row: icon + badge */}
+                  <div className="flex items-start justify-between gap-3">
+                    <div
+                      className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center"
+                      style={{ background: a.icon, color: a.iconColor }}
+                    >
+                      {off.icon}
                     </div>
-
-                    {/* Stats & Actions */}
-                    <div className="space-y-5 pt-2 border-t border-solar-border mt-auto">
-                      <div className="grid grid-cols-2 gap-4">
-                        {off.stats.map((stat) => (
-                          <div key={stat.label} className={`rounded-xl p-3 ${a.statBg}`}>
-                            <p className="text-[10px] text-solar-text-dim uppercase tracking-wider font-semibold">{stat.label}</p>
-                            <p className={`font-bold text-sm sm:text-base ${a.statText} mt-0.5`}>{stat.value}</p>
-                          </div>
-                        ))}
-                      </div>
-
-                      <button
-                        onClick={() => handleNavigate(off.hash)}
-                        className={`w-full py-3.5 px-6 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer transition-all duration-300 ${a.btn}`}
-                      >
-                        Explore Detailed Guide
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
-                    </div>
+                    <span
+                      className="text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full border flex-shrink-0"
+                      style={{
+                        color: a.badge.color,
+                        borderColor: a.badge.border,
+                        background: a.badge.bg,
+                      }}
+                    >
+                      {off.badge}
+                    </span>
                   </div>
-                </motion.div>
+
+                  {/* Title + description */}
+                  <div className="space-y-2 flex-1">
+                    <h3
+                      className="font-heading font-bold text-lg leading-snug"
+                      style={{ color: 'var(--solar-text)' }}
+                    >
+                      {off.title}
+                    </h3>
+                    <p
+                      className="text-sm font-body leading-relaxed"
+                      style={{ color: 'var(--solar-text-muted)' }}
+                    >
+                      {off.description}
+                    </p>
+                  </div>
+
+                  {/* Stats */}
+                  <div
+                    className="grid grid-cols-2 gap-3 pt-4"
+                    style={{ borderTop: '1px solid var(--solar-border)' }}
+                  >
+                    {off.stats.map((stat) => (
+                      <div
+                        key={stat.label}
+                        className="rounded-xl p-3"
+                        style={{ background: a.stat.bg }}
+                      >
+                        <p
+                          className="text-[10px] uppercase tracking-wider font-semibold mb-0.5"
+                          style={{ color: 'var(--solar-text-dim)' }}
+                        >
+                          {stat.label}
+                        </p>
+                        <p
+                          className="font-bold text-sm"
+                          style={{ color: a.stat.color }}
+                        >
+                          {stat.value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* CTA button */}
+                  <button
+                    onClick={() => handleNavigate(off.hash)}
+                    className="w-full py-3 px-5 rounded-xl font-heading font-semibold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all duration-300"
+                    style={{
+                      border: `1px solid ${a.btn.border}`,
+                      color: a.btn.color,
+                      background: a.btn.bg,
+                    }}
+                    onMouseEnter={e => {
+                      (e.currentTarget as HTMLButtonElement).style.background = a.btn.hoverBg;
+                      (e.currentTarget as HTMLButtonElement).style.color = a.btn.hoverColor;
+                      (e.currentTarget as HTMLButtonElement).style.borderColor = a.btn.hoverBg;
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLButtonElement).style.background = a.btn.bg;
+                      (e.currentTarget as HTMLButtonElement).style.color = a.btn.color;
+                      (e.currentTarget as HTMLButtonElement).style.borderColor = a.btn.border;
+                    }}
+                  >
+                    Explore Detailed Guide
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </motion.div>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* 4. Testimonials Deck */}
+      {/* 4. Testimonials */}
       <Testimonials />
 
-      {/* 5. Contact Section */}
+      {/* 5. Contact */}
       <ContactForm />
     </div>
   );

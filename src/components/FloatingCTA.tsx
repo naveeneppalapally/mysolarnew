@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { throttleAnimationFrame } from '../lib/utils';
 
 export default function FloatingCTA() {
   const [visible, setVisible] = useState(false);
   const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttleAnimationFrame(() => {
       setVisible(window.scrollY > 300);
-    };
+    });
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    setVisible(window.scrollY > 300);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

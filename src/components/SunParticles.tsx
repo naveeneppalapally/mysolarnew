@@ -1,8 +1,10 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useSolarTime } from '../context/SolarTimeContext';
 import { useBackgroundSettings } from '../context/BackgroundSettingsContext';
 import type { SolarPhase } from '../context/SolarTimeContext';
 import { useTheme } from '../context/ThemeContext';
+import { checkIsLowEndOrReducedMotion } from '../lib/utils';
+import { useLoaderDone } from '../context/LoaderDoneContext';
 
 /* ===========================================================
    MULTI-MODE INTERACTIVE BACKGROUND CANVAS — 12 MODES
@@ -83,13 +85,139 @@ const LIGHT_PALETTES: Record<SolarPhase, string[]> = {
   night: ['#0284c7', '#0ea5e9', '#38bdf8', '#0369a1'], /* Steel Blue, Sky Blue, Deep Steel Blue */
 };
 
+interface RGB {
+  r: number;
+  g: number;
+  b: number;
+}
+
+function hexToRgb(hex: string): RGB {
+  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  const fullHex = hex.replace(shorthandRegex, (_, r, g, b) => r + r + g + g + b + b);
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(fullHex);
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : { r: 0, g: 0, b: 0 };
+}
+
+function rgbToHex(c: RGB): string {
+  const r = Math.max(0, Math.min(255, Math.round(c.r))).toString(16).padStart(2, '0');
+  const g = Math.max(0, Math.min(255, Math.round(c.g))).toString(16).padStart(2, '0');
+  const b = Math.max(0, Math.min(255, Math.round(c.b))).toString(16).padStart(2, '0');
+  return `#${r}${g}${b}`;
+}
+
+function interpolateRGB(color1: RGB, color2: RGB, factor: number): RGB {
+  return {
+    r: color1.r + (color2.r - color1.r) * factor,
+    g: color1.g + (color2.g - color1.g) * factor,
+    b: color1.b + (color2.b - color1.b) * factor,
+  };
+}
+
+interface CircadianKeyframe {
+  time: number;
+  cx: number;
+  cy: number;
+  centerHex: string;
+  outerHex: string;
+  glowHex: string;
+  glowOpacity: number;
+}
+
+const darkCircadianKeyframes: CircadianKeyframe[] = [
+  { time: 0, cx: 80, cy: 20, centerHex: '#02040e', outerHex: '#000002', glowHex: '#38bdf8', glowOpacity: 0.12 },
+  { time: 6, cx: 20, cy: 70, centerHex: '#100502', outerHex: '#050201', glowHex: '#f97316', glowOpacity: 0.20 },
+  { time: 7.5, cx: 30, cy: 50, centerHex: '#3c1808', outerHex: '#160904', glowHex: '#f59e0b', glowOpacity: 0.35 },
+  { time: 9, cx: 50, cy: 35, centerHex: '#0a1835', outerHex: '#030712', glowHex: '#fbbf24', glowOpacity: 0.40 },
+  { time: 12, cx: 50, cy: 25, centerHex: '#0e244c', outerHex: '#030712', glowHex: '#fbbf24', glowOpacity: 0.45 },
+  { time: 15, cx: 50, cy: 35, centerHex: '#081a3e', outerHex: '#030712', glowHex: '#f97316', glowOpacity: 0.30 },
+  { time: 17.5, cx: 70, cy: 50, centerHex: '#2c0a38', outerHex: '#0f0314', glowHex: '#c084fc', glowOpacity: 0.35 },
+  { time: 18.5, cx: 80, cy: 65, centerHex: '#3a0f3d', outerHex: '#120416', glowHex: '#ec4899', glowOpacity: 0.40 },
+  { time: 20, cx: 80, cy: 25, centerHex: '#05091a', outerHex: '#010207', glowHex: '#3b82f6', glowOpacity: 0.15 },
+  { time: 24, cx: 80, cy: 20, centerHex: '#02040e', outerHex: '#000000', glowHex: '#38bdf8', glowOpacity: 0.12 }
+];
+
+const lightCircadianKeyframes: CircadianKeyframe[] = [
+  { time: 0, cx: 80, cy: 20, centerHex: '#eceff1', outerHex: '#fafafa', glowHex: '#90caf9', glowOpacity: 0.15 },
+  { time: 6, cx: 20, cy: 70, centerHex: '#fff3e0', outerHex: '#fafafa', glowHex: '#ffb74d', glowOpacity: 0.25 },
+  { time: 7.5, cx: 30, cy: 50, centerHex: '#ffe0b2', outerHex: '#fafafa', glowHex: '#ffa726', glowOpacity: 0.35 },
+  { time: 9, cx: 50, cy: 35, centerHex: '#fafaf8', outerHex: '#fdf8f0', glowHex: '#f59e0b', glowOpacity: 0.35 },
+  { time: 12, cx: 50, cy: 25, centerHex: '#fffde7', outerHex: '#fafaf8', glowHex: '#fbbf24', glowOpacity: 0.40 },
+  { time: 15, cx: 50, cy: 35, centerHex: '#fff9c4', outerHex: '#fafaf8', glowHex: '#ffe082', glowOpacity: 0.30 },
+  { time: 17.5, cx: 70, cy: 50, centerHex: '#ffe8ec', outerHex: '#fafafa', glowHex: '#ffe082', glowOpacity: 0.30 },
+  { time: 18.5, cx: 80, cy: 65, centerHex: '#f8bbd0', outerHex: '#fafafa', glowHex: '#f8bbd0', glowOpacity: 0.35 },
+  { time: 20, cx: 80, cy: 25, centerHex: '#e1f5fe', outerHex: '#fafafa', glowHex: '#90caf9', glowOpacity: 0.20 },
+  { time: 24, cx: 80, cy: 20, centerHex: '#eceff1', outerHex: '#fafafa', glowHex: '#90caf9', glowOpacity: 0.15 }
+];
+
+function getDynamicBackdrop(time: number, isLight: boolean, w: number, h: number) {
+  const keyframes = isLight ? lightCircadianKeyframes : darkCircadianKeyframes;
+  
+  let i = 0;
+  for (; i < keyframes.length - 1; i++) {
+    if (time >= keyframes[i].time && time <= keyframes[i + 1].time) {
+      break;
+    }
+  }
+  
+  const k1 = keyframes[i];
+  const k2 = keyframes[i + 1];
+  
+  const duration = k2.time - k1.time;
+  const factor = duration === 0 ? 0 : (time - k1.time) / duration;
+  
+  const cx = k1.cx + (k2.cx - k1.cx) * factor;
+  const cy = k1.cy + (k2.cy - k1.cy) * factor;
+  
+  const center = rgbToHex(interpolateRGB(hexToRgb(k1.centerHex), hexToRgb(k2.centerHex), factor));
+  const outer = rgbToHex(interpolateRGB(hexToRgb(k1.outerHex), hexToRgb(k2.outerHex), factor));
+  const glow = rgbToHex(interpolateRGB(hexToRgb(k1.glowHex), hexToRgb(k2.glowHex), factor));
+  const glowOpacity = k1.glowOpacity + (k2.glowOpacity - k1.glowOpacity) * factor;
+  
+  return {
+    sunX: w * (cx / 100),
+    sunY: h * (cy / 100),
+    centerColor: center,
+    outerColor: outer,
+    glowColor: glow,
+    glowOpacity: glowOpacity
+  };
+}
+
 export default function SunParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { theme } = useTheme();
   
   // Settings Context values
   const { backgroundStyle, particleCount, speedMultiplier } = useBackgroundSettings();
-  const { currentPhase } = useSolarTime();
+  const { timeOfDay, currentPhase } = useSolarTime();
+
+  // Low-spec and mobile viewport tracking
+  const [isLowEnd, setIsLowEnd] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsLowEnd(checkIsLowEndOrReducedMotion());
+    setIsMobile(window.innerWidth < 768);
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const { loaderDone } = useLoaderDone();
+  const loaderDoneRef = useRef(loaderDone);
+
+  useEffect(() => {
+    loaderDoneRef.current = loaderDone;
+  }, [loaderDone]);
 
   // Settings Context values as refs synchronized within an effect
   const styleRef = useRef(backgroundStyle);
@@ -97,14 +225,26 @@ export default function SunParticles() {
   const speedRef = useRef(speedMultiplier);
   const phaseRef = useRef(currentPhase);
   const themeRef = useRef(theme);
+  const timeOfDayRef = useRef(timeOfDay);
 
   useEffect(() => {
-    styleRef.current = backgroundStyle;
-    countRef.current = particleCount;
+    // If low-spec or user prefers reduced motion, force style to 'none' (static background)
+    styleRef.current = isLowEnd ? 'none' : backgroundStyle;
+    
+    // Scale particle count dynamically
+    let adjustedCount = particleCount;
+    if (isLowEnd) {
+      adjustedCount = 0;
+    } else if (isMobile) {
+      adjustedCount = Math.min(15, Math.floor(particleCount / 3)); // Hard mobile cap to save frames
+    }
+    countRef.current = adjustedCount;
+    
     speedRef.current = speedMultiplier;
     phaseRef.current = currentPhase;
     themeRef.current = theme;
-  }, [backgroundStyle, particleCount, speedMultiplier, currentPhase, theme]);
+    timeOfDayRef.current = timeOfDay;
+  }, [backgroundStyle, particleCount, speedMultiplier, currentPhase, theme, timeOfDay, isLowEnd, isMobile]);
   
   const timeRef = useRef(0);
   const pulsesRef = useRef<EnergyPulse[]>([]);
@@ -857,6 +997,11 @@ export default function SunParticles() {
     // MAIN RENDERING LOOP SWITCH PANEL
     // ────────────────────────────────────────────────────────
     const animate = () => {
+      if (!loaderDoneRef.current) {
+        animFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
       timeRef.current += speedRef.current;
 
       // Dynamically detect container size changes (e.g. after loader hides or parent layout finishes)
@@ -874,83 +1019,66 @@ export default function SunParticles() {
 
       ctx.clearRect(0, 0, w, h);
 
-      // Draw style-specific premium deep-ambient backdrop washes directly in the canvas overlay
-      let bgGrad;
+      // 1. Calculate dynamic, time-of-day circadian colors and sun position
       const isLight = themeRef.current === 'light';
+      const dynamicBg = getDynamicBackdrop(timeOfDayRef.current, isLight, w, h);
+
+      // 2. Draw the dynamic astronomical sky gradient
+      const skyGrad = ctx.createRadialGradient(
+        dynamicBg.sunX,
+        dynamicBg.sunY,
+        0,
+        dynamicBg.sunX,
+        dynamicBg.sunY,
+        Math.max(w, h) * 0.95
+      );
+      skyGrad.addColorStop(0, dynamicBg.centerColor);
+      skyGrad.addColorStop(1, dynamicBg.outerColor);
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // 3. Draw the dynamic primary sun/moon core glow/flare
+      const sunGlow = ctx.createRadialGradient(
+        dynamicBg.sunX,
+        dynamicBg.sunY,
+        0,
+        dynamicBg.sunX,
+        dynamicBg.sunY,
+        280
+      );
+      sunGlow.addColorStop(0, hexToRgba(dynamicBg.glowColor, dynamicBg.glowOpacity));
+      sunGlow.addColorStop(0.3, hexToRgba(dynamicBg.glowColor, dynamicBg.glowOpacity * 0.4));
+      sunGlow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = sunGlow;
+      ctx.beginPath();
+      ctx.arc(dynamicBg.sunX, dynamicBg.sunY, 280, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 4. Draw style-specific overlays on top of the dynamic backdrop (only in dark mode)
       if (!isLight) {
         ctx.save();
-        ctx.globalAlpha = 0.70; // 30% circadian phase bleed-through!
         switch (currentStyle) {
-          case 'silicon-grid':
-            bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-            bgGrad.addColorStop(0, '#02040a');
-            bgGrad.addColorStop(1, '#040a15');
-            ctx.fillStyle = bgGrad;
-            ctx.fillRect(0, 0, w, h);
-            break;
           case 'liquid-lava':
-            bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-            bgGrad.addColorStop(0, '#100101');
-            bgGrad.addColorStop(0.7, '#040000');
-            bgGrad.addColorStop(1, '#000000');
-            ctx.fillStyle = bgGrad;
+            ctx.globalAlpha = 0.40;
+            ctx.fillStyle = '#2a0303';
             ctx.fillRect(0, 0, w, h);
             break;
           case 'cosmic-wind':
-            bgGrad = ctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.8);
-            bgGrad.addColorStop(0, '#0d0422');
-            bgGrad.addColorStop(0.5, '#04010b');
-            bgGrad.addColorStop(1, '#000000');
-            ctx.fillStyle = bgGrad;
+            ctx.globalAlpha = 0.35;
+            const nebulaGrad = ctx.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.8);
+            nebulaGrad.addColorStop(0, '#0d0422');
+            nebulaGrad.addColorStop(1, '#000000');
+            ctx.fillStyle = nebulaGrad;
             ctx.fillRect(0, 0, w, h);
             break;
           case 'digital-rain':
-            bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-            bgGrad.addColorStop(0, '#000502');
-            bgGrad.addColorStop(1, '#000000');
-            ctx.fillStyle = bgGrad;
+            ctx.globalAlpha = 0.30;
+            ctx.fillStyle = '#000502';
             ctx.fillRect(0, 0, w, h);
             break;
           case 'prismatic-shards':
-            bgGrad = ctx.createLinearGradient(0, 0, w, h);
-            bgGrad.addColorStop(0, '#010512');
-            bgGrad.addColorStop(1, '#000000');
-            ctx.fillStyle = bgGrad;
-            ctx.fillRect(0, 0, w, h);
-            break;
-          case 'solar-aurora':
-            bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-            bgGrad.addColorStop(0, '#01020a');
-            bgGrad.addColorStop(1, '#050a1e');
-            ctx.fillStyle = bgGrad;
-            ctx.fillRect(0, 0, w, h);
-            break;
-          case 'energy-waves':
-            bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-            bgGrad.addColorStop(0, '#02040c');
-            bgGrad.addColorStop(1, '#000002');
-            ctx.fillStyle = bgGrad;
-            ctx.fillRect(0, 0, w, h);
-            break;
-          case 'magnetic-resonance':
-            bgGrad = ctx.createRadialGradient(w * 0.8, h * 0.15, 0, w * 0.8, h * 0.15, w * 0.55);
-            bgGrad.addColorStop(0, hexToRgba(colors[0] || '#FBBF24', 0.04));
-            bgGrad.addColorStop(1, '#02040a');
-            ctx.fillStyle = bgGrad;
-            ctx.fillRect(0, 0, w, h);
-            break;
-          case 'hex-cells':
-            bgGrad = ctx.createLinearGradient(0, 0, w, h);
-            bgGrad.addColorStop(0, '#020308');
-            bgGrad.addColorStop(1, '#000000');
-            ctx.fillStyle = bgGrad;
-            ctx.fillRect(0, 0, w, h);
-            break;
-          case 'none':
-            bgGrad = ctx.createLinearGradient(0, 0, 0, h);
-            bgGrad.addColorStop(0, '#02040a');
-            bgGrad.addColorStop(1, '#040a15');
-            ctx.fillStyle = bgGrad;
+            ctx.globalAlpha = 0.25;
+            ctx.fillStyle = '#010512';
             ctx.fillRect(0, 0, w, h);
             break;
           default:
@@ -1045,7 +1173,12 @@ export default function SunParticles() {
     <canvas
       ref={canvasRef}
       className="particle-canvas"
-      style={{ pointerEvents: 'none' }}
+      style={{ 
+        pointerEvents: 'none',
+        transform: 'translate3d(0,0,0)',
+        backfaceVisibility: 'hidden',
+        willChange: isLowEnd ? 'auto' : 'transform'
+      }}
       aria-hidden="true"
     />
   );

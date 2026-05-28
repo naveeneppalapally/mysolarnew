@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 
 /* ============================================
    ULTRA-REALISTIC SOOTHING SUN
@@ -175,6 +174,15 @@ function TypewriterText() {
           vertical-align: middle;
           animation: blinkCursor 0.8s steps(2, start) infinite;
         }
+        @keyframes fadeInText {
+          0% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+        .subtitle-fade-in {
+          opacity: 0;
+          animation: fadeInText 1.0s forwards;
+          animation-delay: 1.5s;
+        }
       `}</style>
       {brandText.split('').map((char, i) => {
         if (char === ' ') {
@@ -201,15 +209,13 @@ function TypewriterText() {
    LOADER COMPONENT (SUN RAYS REVEAL)
    ============================================ */
 interface LoaderProps {
-  isVisible?: boolean;
+  isVisible: boolean;
+  onHidden?: () => void;
 }
 
-const Loader = ({ isVisible }: LoaderProps) => {
-  const [isLoading, setIsLoading] = useState(true);
-
+const Loader = ({ isVisible, onHidden }: LoaderProps) => {
   // References for direct high-performance DOM manipulation
   const containerRef = useRef<HTMLDivElement>(null);
-  const blackBgRef = useRef<HTMLDivElement>(null);
   const sunWrapperRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
 
@@ -217,10 +223,6 @@ const Loader = ({ isVisible }: LoaderProps) => {
   const corona2Ref = useRef<SVGGElement>(null);
   const flareRef = useRef<SVGRectElement>(null);
   const lightRaysRef = useRef<SVGGElement>(null);
-  const revealStartTimeRef = useRef<number | null>(null);
-
-  // We will initialize the SVG mask only when the reveal phase starts
-  // to avoid browser rendering bugs that make the background transparent during loading.
 
   useEffect(() => {
     const startTime = Date.now();
@@ -276,43 +278,14 @@ const Loader = ({ isVisible }: LoaderProps) => {
           rayRotation = eased * 15;
           rayOpacity = eased * 0.85;
         }
-      } else {
-        // Phase 3: Sunburst Ray Reveal (triggered when isVisible changes to false)
-        if (revealStartTimeRef.current === null) {
-          revealStartTimeRef.current = Date.now();
+
+        // Update visual volumetric rays transform and opacity in sync
+        if (lightRaysRef.current) {
+          lightRaysRef.current.style.transform = `rotate(${rayRotation}deg) scale(${rayScale})`;
+          lightRaysRef.current.style.opacity = String(rayOpacity);
         }
-        const revealElapsed = Date.now() - revealStartTimeRef.current;
-        const pct = Math.min(1, revealElapsed / 1200); // 1200ms reveal wipe
-        const easedReveal = easeOutQuad(pct);
-        const opacityVal = 1 - easedReveal;
 
-        // Animate rays scale & rotation to create dynamic expansion
-        rayScale = 1.3 + easedReveal * 2.7; // Grows from 1.3x to 4.0x
-        rayRotation = 15 + easedReveal * 20; // Rotates
-        rayOpacity = 0.85 * opacityVal; // Fades out as reveal completes
-
-        // Fade out and scale up the sun core to disperse it
-        if (sunWrapperRef.current) {
-          sunWrapperRef.current.style.opacity = String(opacityVal);
-          sunWrapperRef.current.style.transform = `scale(${1.0 + easedReveal * 0.3})`;
-        }
-        if (textContainerRef.current) {
-          textContainerRef.current.style.opacity = String(opacityVal);
-        }
-      }
-
-      // Update visual volumetric rays transform and opacity in sync
-      if (lightRaysRef.current) {
-        lightRaysRef.current.style.transform = `rotate(${rayRotation}deg) scale(${rayScale})`;
-        lightRaysRef.current.style.opacity = String(rayOpacity);
-      }
-
-      // Keep running if isVisible is still true OR if the reveal is in progress
-      const isRevealing = revealStartTimeRef.current !== null && (Date.now() - revealStartTimeRef.current < 1600);
-      if (isVisible !== false || isRevealing) {
         frameId = requestAnimationFrame(tick);
-      } else {
-        setIsLoading(false);
       }
     };
 
@@ -321,67 +294,59 @@ const Loader = ({ isVisible }: LoaderProps) => {
   }, [isVisible]);
 
   return (
-    <AnimatePresence>
-      {(isVisible !== undefined ? isVisible : isLoading) && (
-        <motion.div
-          ref={containerRef}
-          key="loader"
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.6, ease: 'easeOut' }}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
-          style={{ backgroundColor: 'transparent' }}
+    <div
+      ref={containerRef}
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-[#030712]"
+      style={{
+        opacity: isVisible ? 1 : 0,
+        pointerEvents: isVisible ? 'auto' : 'none',
+        transition: 'opacity 0.6s ease-out',
+        willChange: 'opacity',
+      }}
+      onTransitionEnd={(e) => {
+        if (e.target === containerRef.current && !isVisible && onHidden) {
+          onHidden();
+        }
+      }}
+    >
+      {/* Ambient volumetric solar glow background */}
+      <div
+        className="absolute w-[500px] h-[500px] rounded-full opacity-25 blur-[140px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(245,158,11,0.2) 0%, rgba(251,191,36,0.06) 50%, transparent 70%)',
+        }}
+      />
+
+      {/* Volumetric Sun Wrapper */}
+      <div
+        ref={sunWrapperRef}
+        className="mb-8 relative z-10"
+        style={{ opacity: 0, transform: 'scale(0.92)', willChange: 'opacity, transform' }}
+      >
+        <RealisticSun
+          corona1Ref={corona1Ref}
+          corona2Ref={corona2Ref}
+          flareRef={flareRef}
+          lightRaysRef={lightRaysRef}
+        />
+      </div>
+
+      {/* Brand text typewriter & Subtitle block */}
+      <div
+        ref={textContainerRef}
+        className="relative z-10 flex flex-col items-center select-none"
+        style={{ willChange: 'opacity' }}
+      >
+        <TypewriterText />
+
+        <div
+          className="font-body text-[11px] sm:text-xs tracking-[0.35em] uppercase mt-3 subtitle-fade-in"
+          style={{ color: '#64748B' }}
         >
-          {/* Black background that gets masked to reveal the website */}
-          <div
-            ref={blackBgRef}
-            className="absolute inset-0 z-0 bg-[#030712] pointer-events-none"
-          />
-
-          {/* Ambient volumetric solar glow background */}
-          <div
-            className="absolute w-[500px] h-[500px] rounded-full opacity-25 blur-[140px] pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle, rgba(245,158,11,0.2) 0%, rgba(251,191,36,0.06) 50%, transparent 70%)',
-            }}
-          />
-
-          {/* Volumetric Sun Wrapper */}
-          <div
-            ref={sunWrapperRef}
-            className="mb-8 relative z-10"
-            style={{ opacity: 0, transform: 'scale(0.92)', willChange: 'opacity, transform' }}
-          >
-            <RealisticSun
-              corona1Ref={corona1Ref}
-              corona2Ref={corona2Ref}
-              flareRef={flareRef}
-              lightRaysRef={lightRaysRef}
-            />
-          </div>
-
-          {/* Brand text typewriter & Subtitle block */}
-          <div
-            ref={textContainerRef}
-            className="relative z-10 flex flex-col items-center select-none"
-            style={{ willChange: 'opacity' }}
-          >
-            <TypewriterText />
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1.0, delay: 1.5 }}
-              className="font-body text-[11px] sm:text-xs tracking-[0.35em] uppercase mt-3"
-              style={{ color: '#64748B' }}
-            >
-              Hyderabad's Solar Experts
-            </motion.p>
-          </div>
-
-        </motion.div>
-      )}
-    </AnimatePresence>
+          Hyderabad's Solar Experts
+        </div>
+      </div>
+    </div>
   );
 };
 

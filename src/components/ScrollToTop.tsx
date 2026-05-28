@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronUp } from 'lucide-react';
+import { throttleAnimationFrame } from '../lib/utils';
 
 export default function ScrollToTop() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttleAnimationFrame(() => {
       setVisible(window.scrollY > 600);
-    };
+    });
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    setVisible(window.scrollY > 600);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

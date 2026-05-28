@@ -291,3 +291,40 @@ export function smoothScrollTo(elementId: string): void {
 
   requestAnimationFrame(step);
 }
+
+/**
+ * Throttles scroll/resize events using requestAnimationFrame to prevent layout thrashing and excess layout repaints.
+ */
+export function throttleAnimationFrame<T extends (...args: any[]) => any>(fn: T): (...args: Parameters<T>) => void {
+  let active = false;
+  return (...args: Parameters<T>) => {
+    if (active) return;
+    active = true;
+    requestAnimationFrame(() => {
+      fn(...args);
+      active = false;
+    });
+  };
+}
+
+/**
+ * Checks if the user device has low hardware specifications or has prefers-reduced-motion active,
+ * enabling lightweight rendering paths automatically.
+ */
+export function checkIsLowEndOrReducedMotion(): boolean {
+  if (typeof window === 'undefined') return false;
+
+  // 1. Check for reduced motion preference
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (motionQuery.matches) return true;
+
+  // 2. Check for low-end device specifications (CPU Cores or Device RAM)
+  const cores = navigator.hardwareConcurrency;
+  const memory = (navigator as any).deviceMemory; // Not supported on all browsers, standard on Chromium/Android
+
+  if (cores !== undefined && cores < 4) return true;
+  if (memory !== undefined && memory < 4) return true;
+
+  return false;
+}
+

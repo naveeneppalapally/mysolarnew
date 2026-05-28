@@ -198,16 +198,14 @@ export default function Footer() {
                   size={16}
                   className="text-amber-500/60 flex-shrink-0 mt-0.5"
                 />
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-1.5">
-                    <a
-                      href="tel:9493936249"
-                      className="text-amber-400 hover:text-amber-300 font-semibold transition-colors text-sm"
-                    >
-                      +91 9493936249
-                    </a>
-                    <span className="whatsapp-badge">Primary & WhatsApp</span>
-                  </div>
+                <div className="flex flex-col items-start gap-1">
+                  <a
+                    href="tel:9493936249"
+                    className="text-amber-400 hover:text-amber-300 font-semibold transition-colors text-sm"
+                  >
+                    +91 9493936249
+                  </a>
+                  <span className="whatsapp-badge">Primary & WhatsApp</span>
                 </div>
               </li>
               <li className="flex gap-3 text-sm">

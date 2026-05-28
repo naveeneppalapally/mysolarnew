@@ -65,7 +65,7 @@ export default function FarmersExtras() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-28">
         
         {/* 1. KUSUM Pump Subsidy Matrix */}
-        <section className="space-y-8">
+        <section className="space-y-8 w-full overflow-hidden">
           <div className="text-center space-y-3">
             <span className="inline-block text-[10px] font-semibold tracking-widest text-solar-emerald uppercase bg-solar-emerald-10 px-3 py-1 rounded-full border border-solar-emerald-20">
               Pump Subsidies
@@ -236,7 +236,7 @@ export default function FarmersExtras() {
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.25 }}
                       >
-                        <div className="p-5 pt-0 text-xs sm:text-sm text-solar-text-muted border-t border-solar-border/40 font-body leading-relaxed">
+                        <div className="p-5 pt-4 text-xs sm:text-sm text-solar-text-muted border-t border-solar-border/40 font-body leading-relaxed">
                           {faq.a}
                         </div>
                       </motion.div>

@@ -403,8 +403,8 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden min-h-screen flex flex-col"
-      style={{ background: 'var(--solar-bg)', paddingTop: 'calc(4rem + 0.25rem)' }}
+      className="relative overflow-hidden lg:min-h-screen flex flex-col"
+      style={{ background: 'var(--solar-bg)', paddingTop: 'var(--navbar-height, 4rem)' }}
     >
       {/* Particle background */}
       <SunParticles />
@@ -457,8 +457,8 @@ export default function Hero() {
       />
 
       {/* Main content */}
-      <div className="relative z-10 w-full flex-1 flex items-center">
-        <div className="section-wrapper w-full !py-6 md:!py-8">
+      <div className="relative z-10 w-full flex-1 flex items-start lg:items-center">
+        <div className="section-wrapper w-full !pt-6 !pb-4 md:!py-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* LEFT: Text content */}
             <motion.div

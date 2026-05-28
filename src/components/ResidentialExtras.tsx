@@ -119,14 +119,14 @@ export default function ResidentialExtras() {
         </section>
 
         {/* 2. Sizing Guidelines & Documents Checklist */}
-        <section className="grid lg:grid-cols-2 gap-12 sm:gap-16">
+        <section className="grid lg:grid-cols-2 gap-12 sm:gap-16 w-full overflow-hidden">
           {/* Bill-to-System Sizing Matrix */}
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="space-y-6"
+            className="space-y-6 min-w-0"
           >
             <div className="space-y-2">
               <div className="inline-flex items-center gap-1.5 text-xs text-amber-400 font-semibold tracking-wider font-body">
@@ -172,7 +172,7 @@ export default function ResidentialExtras() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="space-y-6"
+            className="space-y-6 min-w-0"
           >
             <div className="space-y-2">
               <div className="inline-flex items-center gap-1.5 text-xs text-sky-400 font-semibold tracking-wider font-body">
@@ -237,7 +237,7 @@ export default function ResidentialExtras() {
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.25 }}
                       >
-                        <div className="p-5 pt-0 text-xs sm:text-sm text-solar-text-muted border-t border-solar-border/40 font-body leading-relaxed">
+                        <div className="p-5 pt-4 text-xs sm:text-sm text-solar-text-muted border-t border-solar-border/40 font-body leading-relaxed">
                           {faq.a}
                         </div>
                       </motion.div>

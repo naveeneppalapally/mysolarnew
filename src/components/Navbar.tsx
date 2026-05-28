@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sun, ArrowRight, Moon, ChevronDown, Home, Building2, Landmark, Sprout, Shield, Database, Hammer, Calculator, Phone } from 'lucide-react';
 import { useSolarTime } from '../context/SolarTimeContext';
 import { useTheme } from '../context/ThemeContext';
-import { smoothScrollTo } from '../lib/utils';
+import { smoothScrollTo, throttleAnimationFrame } from '../lib/utils';
 
 interface DropdownItem {
   label: string;
@@ -169,7 +169,8 @@ function SolarOrbitSlider() {
           </g>
         </svg>
       </div>
-      <span className="text-[9px] font-mono tracking-wider text-gray-500 group-hover:text-amber-400 transition-colors">
+      {/* UPGRADED: current time text is amber colored and slightly spaced */}
+      <span className="text-[9px] font-mono tracking-[0.15em] text-solar-gold transition-colors">
         {formatTime(timeOfDay)} ({currentPhase.toUpperCase()})
       </span>
     </div>
@@ -217,6 +218,7 @@ function ThemeToggle() {
 }
 
 export default function Navbar() {
+  const { theme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeHash, setActiveHash] = useState('#home');
@@ -226,10 +228,49 @@ export default function Navbar() {
   const [mobileOfferingsOpen, setMobileOfferingsOpen] = useState(false);
   const [mobileTechOpen, setMobileTechOpen] = useState(false);
 
+  // Lock body scroll when mobile menu is open using high-fidelity fixed positioning (preventing touch overscroll background movement)
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+    if (mobileOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+      document.body.setAttribute('data-scroll-y', scrollY.toString());
+      
+      document.documentElement.style.overflow = 'hidden';
+      document.documentElement.style.height = '100vh';
+    } else {
+      const scrollAttr = document.body.getAttribute('data-scroll-y');
+      const scrollY = scrollAttr ? parseInt(scrollAttr, 10) : 0;
+      
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      document.body.removeAttribute('data-scroll-y');
+      
+      document.documentElement.style.overflow = '';
+      document.documentElement.style.height = '';
+      
+      if (scrollY > 0) {
+        window.scrollTo({ top: scrollY, behavior: 'instant' as ScrollBehavior });
+      }
+    }
+    return () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      document.documentElement.style.height = '';
     };
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    const handleScroll = throttleAnimationFrame(() => {
+      setScrolled(window.scrollY > 50);
+    });
     
     const handleHashChange = () => {
       const fullHash = window.location.hash || '#home';
@@ -240,7 +281,7 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('hashchange', handleHashChange);
     
-    handleScroll();
+    setScrolled(window.scrollY > 50);
     handleHashChange();
 
     return () => {
@@ -272,6 +313,20 @@ export default function Navbar() {
 
   const isSolutionsActive = offeringsItems.some(item => activeHash === item.href);
   const isTechActive = ['#structure', '#panels', '#standards'].includes(activeHash);
+
+  // UPGRADED: stagger animation variants
+  const navItemVariants = {
+    hidden: { opacity: 0, y: 8 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.05, // 50ms stagger delay per item
+        duration: 0.25,
+        ease: 'easeOut' as const,
+      },
+    }),
+  };
 
   return (
     <>
@@ -350,7 +405,7 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute top-[80%] left-[-80px] w-[560px] rounded-2xl border border-solar-border bg-solar-card-solid backdrop-blur-3xl shadow-card-lg p-5 grid grid-cols-2 gap-4"
+                  className="absolute top-full left-[-80px] mt-3 w-[560px] rounded-2xl border border-solar-border bg-solar-card-solid backdrop-blur-3xl shadow-card-lg p-5 grid grid-cols-2 gap-4 before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-['']"
                 >
                   {offeringsItems.map((item) => (
                     <button
@@ -407,7 +462,7 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute top-[80%] left-[-100px] w-[340px] rounded-2xl border border-solar-border bg-solar-card-solid backdrop-blur-3xl shadow-card-lg p-3 space-y-1"
+                  className="absolute top-full left-[-100px] mt-3 w-[340px] rounded-2xl border border-solar-border bg-solar-card-solid backdrop-blur-3xl shadow-card-lg p-3 space-y-1 before:absolute before:-top-3 before:left-0 before:right-0 before:h-3 before:content-['']"
                 >
                   {techItems.map((item) => {
                     const isActive = window.location.hash === item.href;
@@ -486,7 +541,7 @@ export default function Navbar() {
           </a>
           <button
             onClick={() => navigateTo('#contact')}
-            className="relative group overflow-hidden rounded-lg px-4.5 py-2.5 text-xs font-semibold text-gray-950 cursor-pointer hover:bg-solar-gold-bright transition-colors duration-300"
+            className="relative group overflow-hidden rounded-lg px-5 py-2.5 text-xs font-semibold text-gray-950 cursor-pointer hover:bg-solar-gold-bright transition-colors duration-300"
             style={{
               backgroundColor: 'var(--solar-gold)',
             }}
@@ -499,9 +554,14 @@ export default function Navbar() {
         </div>
 
         {/* Mobile hamburger */}
+        {/* UPGRADED: thin circle border around X, rotates 90deg and subtle amber glow on hover/tap */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="lg:hidden relative w-10 h-10 flex items-center justify-center text-solar-text cursor-pointer z-50"
+          className={`lg:hidden relative w-10 h-10 flex items-center justify-center text-solar-text cursor-pointer z-50 transition-all duration-300 rounded-full ${
+            mobileOpen 
+              ? 'border border-solar-gold/30 hover:rotate-90 hover:shadow-[0_0_12px_rgba(245,158,11,0.35)] active:rotate-90 focus:rotate-90 text-solar-gold bg-white/[0.02]' 
+              : 'border border-transparent'
+          }`}
           aria-label="Toggle menu"
         >
           <BioSolarMenuIcon isOpen={mobileOpen} />
@@ -516,125 +576,275 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[99] bg-solar-bg-secondary/95 text-solar-text backdrop-blur-2xl flex flex-col justify-start pt-24 pb-8 overflow-y-auto px-4"
+            /* UPGRADED: The outer container is completely fixed and does NOT scroll, preventing background leak during overscroll bounce */
+            className="fixed inset-0 z-[99] text-solar-text backdrop-blur-2xl overflow-hidden"
+            style={{
+              /* UPGRADED: subtle gradient background that dynamically adapts to light/dark themes */
+              background: theme === 'light'
+                ? 'linear-gradient(to bottom, #faf7f2 0%, #ede5d8 100%)'
+                : 'linear-gradient(to bottom, #0a0f1e 0%, #030712 100%)',
+            }}
           >
-            <div className="flex flex-col gap-2 w-full max-w-md mx-auto">
-              <div className="mb-6 scale-110 flex justify-center items-center gap-6">
-                <SolarOrbitSlider />
-                <ThemeToggle />
-              </div>
+            {/* UPGRADED: The inner container handles the native scrolling and overscroll behavior inside the solid backdrop */}
+            <div 
+              className="w-full h-full overflow-y-auto pt-24 pb-12 px-4"
+              style={{
+                overscrollBehavior: 'contain',
+              }}
+            >
+              <div className="flex flex-col gap-2 w-full max-w-md mx-auto">
+                {/* UPGRADED: subtle glow behind the sun arc */}
+                <div className="mb-6 scale-110 flex justify-center items-center gap-6 relative">
+                  <div 
+                    className="absolute inset-0 w-32 h-32 bg-amber-500/5 rounded-full filter blur-xl pointer-events-none -z-10 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                    style={{ opacity: 0.05 }}
+                  />
+                  <SolarOrbitSlider />
+                  <ThemeToggle />
+                </div>
 
-              {/* Home */}
-              <button
-                onClick={() => navigateTo('#home')}
-                className={`text-xl font-heading font-bold text-left py-2 border-b border-solar-border/40 ${
-                  activeHash === '#home' ? 'text-solar-gold' : 'text-solar-text-muted'
-                }`}
-              >
-                Home
-              </button>
+                {/* UPGRADED: horizontal divider line below the arc with fade-out on both ends */}
+                <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent mb-6" />
 
-              {/* Solutions Panel Trigger */}
-              <div className="border-b border-solar-border/40 py-2">
-                <button
-                  onClick={() => setMobileOfferingsOpen(!mobileOfferingsOpen)}
-                  className={`w-full text-xl font-heading font-bold text-left flex items-center justify-between ${
-                    isSolutionsActive ? 'text-solar-gold' : 'text-solar-text-muted'
-                  }`}
+                {/* Home Link */}
+                {/* UPGRADED: stagger animation wrapper (custom={0}) */}
+                <motion.div
+                  custom={0}
+                  initial="hidden"
+                  animate="visible"
+                  variants={navItemVariants}
+                  className="w-full"
                 >
-                  <span>Solutions</span>
-                  <ChevronDown size={18} className={`transition-transform duration-200 ${mobileOfferingsOpen ? 'rotate-180' : ''}`} />
-                </button>
-                {mobileOfferingsOpen && (
-                  <div className="pl-4 mt-2 space-y-2">
-                    {offeringsItems.map((item) => (
-                      <button
-                        key={item.label}
-                        onClick={() => navigateTo(item.href)}
-                        className={`w-full text-left py-1.5 flex items-center gap-2.5 ${
-                          activeHash === item.href ? 'text-solar-gold' : 'text-solar-text-muted'
-                        }`}
-                      >
-                        {item.icon}
-                        <span className="text-sm font-semibold">{item.label}</span>
-                      </button>
-                    ))}
+                  {/* UPGRADED: left border only on active/current page item and group hover/tap translation */}
+                  <button
+                    onClick={() => navigateTo('#home')}
+                    className={`w-full text-left py-4 pl-3 border-l-2 transition-all duration-200 flex items-center justify-between group ${
+                      activeHash === '#home' ? 'border-solar-gold text-solar-gold' : 'border-transparent text-solar-text-muted hover:text-solar-text'
+                    }`}
+                  >
+                    <div className="flex flex-col text-left">
+                      <span className="text-lg font-heading font-bold">Home</span>
+                      {/* UPGRADED: subtitle under nav label */}
+                      <span className="text-xs font-normal text-gray-500 font-body mt-0.5">Overview & highlights</span>
+                    </div>
+                    {/* UPGRADED: arrow icon is amber-colored and slides right on hover/tap */}
+                    <ArrowRight size={16} className="text-solar-gold transition-transform duration-200 group-hover:translate-x-1 group-active:translate-x-1" />
+                  </button>
+                </motion.div>
+
+                {/* UPGRADED: gradient divider between items */}
+                <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+
+                {/* Solutions Panel Trigger */}
+                {/* UPGRADED: stagger animation wrapper (custom={1}) */}
+                <motion.div
+                  custom={1}
+                  initial="hidden"
+                  animate="visible"
+                  variants={navItemVariants}
+                  className="w-full"
+                >
+                  {/* UPGRADED: left border only on active/current page item */}
+                  <div className={`py-4 pl-3 border-l-2 transition-all duration-200 ${
+                    isSolutionsActive ? 'border-solar-gold' : 'border-transparent'
+                  }`}>
+                    <button
+                      onClick={() => setMobileOfferingsOpen(!mobileOfferingsOpen)}
+                      className={`w-full text-xl font-heading font-bold text-left flex items-center justify-between transition-colors duration-200 group ${
+                        isSolutionsActive ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
+                      }`}
+                    >
+                      <div className="flex flex-col text-left">
+                        <span className="text-lg font-heading font-bold">Solutions</span>
+                        {/* UPGRADED: subtitle under nav label */}
+                        <span className="text-xs font-normal text-gray-500 font-body mt-0.5">Residential & commercial</span>
+                      </div>
+                      {/* UPGRADED: arrow icon is amber-colored and slides right on hover/tap */}
+                      <ChevronDown size={18} className={`text-solar-gold transition-all duration-200 group-hover:translate-x-1 group-active:translate-x-1 ${mobileOfferingsOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {mobileOfferingsOpen && (
+                      <div className="pl-4 mt-3 space-y-3 pb-1">
+                        {offeringsItems.map((item) => (
+                          <button
+                            key={item.label}
+                            onClick={() => navigateTo(item.href)}
+                            className={`w-full text-left py-2 flex items-center gap-3 transition-colors duration-200 ${
+                              activeHash === item.href ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
+                            }`}
+                          >
+                            <div className="p-1 rounded-md bg-solar-card border border-solar-border text-solar-gold shrink-0">
+                              {item.icon}
+                            </div>
+                            <span className="text-sm font-semibold">{item.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
+                </motion.div>
 
-              {/* Tech Panel Trigger */}
-              <div className="border-b border-solar-border/40 py-2">
-                <button
-                  onClick={() => setMobileTechOpen(!mobileTechOpen)}
-                  className={`w-full text-xl font-heading font-bold text-left flex items-center justify-between ${
-                    isTechActive ? 'text-solar-gold' : 'text-solar-text-muted'
-                  }`}
+                {/* UPGRADED: gradient divider between items */}
+                <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+
+                {/* Tech Panel Trigger */}
+                {/* UPGRADED: stagger animation wrapper (custom={2}) */}
+                <motion.div
+                  custom={2}
+                  initial="hidden"
+                  animate="visible"
+                  variants={navItemVariants}
+                  className="w-full"
                 >
-                  <span>Technology & Specs</span>
-                  <ChevronDown size={18} className={`transition-transform duration-200 ${mobileTechOpen ? 'rotate-180' : ''}`} />
-                </button>
-                {mobileTechOpen && (
-                  <div className="pl-4 mt-2 space-y-2">
-                    {techItems.map((item) => {
-                      const isActive = window.location.hash === item.href;
-                      return (
-                        <button
-                          key={item.label}
-                          onClick={() => navigateTo(item.href)}
-                          className={`w-full text-left py-1.5 flex items-center gap-2.5 ${
-                            isActive ? 'text-solar-gold' : 'text-solar-text-muted'
-                          }`}
-                        >
-                          {item.icon}
-                          <span className="text-sm font-semibold">{item.label}</span>
-                        </button>
-                      );
-                    })}
+                  {/* UPGRADED: left border only on active/current page item */}
+                  <div className={`py-4 pl-3 border-l-2 transition-all duration-200 ${
+                    isTechActive ? 'border-solar-gold' : 'border-transparent'
+                  }`}>
+                    <button
+                      onClick={() => setMobileTechOpen(!mobileTechOpen)}
+                      className={`w-full text-xl font-heading font-bold text-left flex items-center justify-between transition-colors duration-200 group ${
+                        isTechActive ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
+                      }`}
+                    >
+                      <div className="flex flex-col text-left">
+                        <span className="text-lg font-heading font-bold">Technology & Specs</span>
+                        {/* UPGRADED: subtitle under nav label */}
+                        <span className="text-xs font-normal text-gray-500 font-body mt-0.5">Panels, inverters & more</span>
+                      </div>
+                      {/* UPGRADED: arrow icon is amber-colored and slides right on hover/tap */}
+                      <ChevronDown size={18} className={`text-solar-gold transition-all duration-200 group-hover:translate-x-1 group-active:translate-x-1 ${mobileTechOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    {mobileTechOpen && (
+                      <div className="pl-4 mt-3 space-y-3 pb-1">
+                        {techItems.map((item) => {
+                          const isActive = window.location.hash === item.href;
+                          return (
+                            <button
+                              key={item.label}
+                              onClick={() => navigateTo(item.href)}
+                              className={`w-full text-left py-2 flex items-center gap-3 transition-colors duration-200 ${
+                                isActive ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
+                              }`}
+                            >
+                              <div className="p-1 rounded-md bg-solar-card border border-solar-border text-solar-gold shrink-0">
+                                {item.icon}
+                              </div>
+                              <span className="text-sm font-semibold">{item.label}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
+                </motion.div>
 
-              {/* Calculator */}
-              <button
-                onClick={() => navigateTo('#calculator')}
-                className={`text-xl font-heading font-bold text-left py-2 border-b border-solar-border/40 ${
-                  activeHash === '#calculator' ? 'text-solar-gold' : 'text-solar-text-muted'
-                }`}
-              >
-                Cost Calculator
-              </button>
+                {/* UPGRADED: gradient divider between items */}
+                <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
 
-              {/* FAQ */}
-              <button
-                onClick={() => navigateTo('#faq')}
-                className={`text-xl font-heading font-bold text-left py-2 border-b border-solar-border/40 ${
-                  activeHash === '#faq' ? 'text-solar-gold' : 'text-solar-text-muted'
-                }`}
-              >
-                FAQ & Knowledge Base
-              </button>
-
-              {/* Contact Actions */}
-              <div className="mt-8 flex flex-col items-center gap-4 text-center">
-                <a
-                  href="tel:9493936249"
-                  className="text-solar-gold text-lg font-semibold flex items-center gap-2"
+                {/* Calculator */}
+                {/* UPGRADED: stagger animation wrapper (custom={3}) */}
+                <motion.div
+                  custom={3}
+                  initial="hidden"
+                  animate="visible"
+                  variants={navItemVariants}
+                  className="w-full"
                 >
-                  <Phone size={18} className="text-solar-gold" />
-                  <span>+91 9493936249</span>
-                </a>
-                <button
-                  onClick={() => navigateTo('#contact')}
-                  className="w-full rounded-xl py-3.5 text-sm font-bold text-gray-950 font-heading cursor-pointer hover:bg-solar-gold-bright transition-colors duration-300"
-                  style={{
-                    backgroundColor: 'var(--solar-gold)',
-                  }}
+                  {/* UPGRADED: left border only on active/current page item */}
+                  <button
+                    onClick={() => navigateTo('#calculator')}
+                    className={`w-full text-left py-4 pl-3 border-l-2 transition-all duration-200 flex items-center justify-between group ${
+                      activeHash === '#calculator' ? 'border-solar-gold text-solar-gold' : 'border-transparent text-solar-text-muted hover:text-solar-text'
+                    }`}
+                  >
+                    <div className="flex flex-col text-left">
+                      <span className="text-lg font-heading font-bold">Cost Calculator</span>
+                      {/* UPGRADED: subtitle under nav label */}
+                      <span className="text-xs font-normal text-gray-500 font-body mt-0.5">Estimate your savings</span>
+                    </div>
+                    {/* UPGRADED: arrow icon is amber-colored and slides right on hover/tap */}
+                    <ArrowRight size={16} className="text-solar-gold transition-transform duration-200 group-hover:translate-x-1 group-active:translate-x-1" />
+                  </button>
+                </motion.div>
+
+                {/* UPGRADED: gradient divider between items */}
+                <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+
+                {/* FAQ */}
+                {/* UPGRADED: stagger animation wrapper (custom={4}) */}
+                <motion.div
+                  custom={4}
+                  initial="hidden"
+                  animate="visible"
+                  variants={navItemVariants}
+                  className="w-full"
                 >
-                  Get Free Quote →
-                </button>
+                  {/* UPGRADED: left border only on active/current page item */}
+                  <button
+                    onClick={() => navigateTo('#faq')}
+                    className={`w-full text-left py-4 pl-3 border-l-2 transition-all duration-200 flex items-center justify-between group ${
+                      activeHash === '#faq' ? 'border-solar-gold text-solar-gold' : 'border-transparent text-solar-text-muted hover:text-solar-text'
+                    }`}
+                  >
+                    <div className="flex flex-col text-left">
+                      <span className="text-lg font-heading font-bold">FAQ & Knowledge Base</span>
+                      {/* UPGRADED: subtitle under nav label */}
+                      <span className="text-xs font-normal text-gray-500 font-body mt-0.5">Common questions answered</span>
+                    </div>
+                    {/* UPGRADED: arrow icon is amber-colored and slides right on hover/tap */}
+                    <ArrowRight size={16} className="text-solar-gold transition-transform duration-200 group-hover:translate-x-1 group-active:translate-x-1" />
+                  </button>
+                </motion.div>
+
+                {/* Contact Actions */}
+                {/* UPGRADED: stagger animation wrapper (custom={5}) */}
+                <motion.div
+                  custom={5}
+                  initial="hidden"
+                  animate="visible"
+                  variants={navItemVariants}
+                  className="mt-8 flex flex-col items-center gap-4 text-center"
+                >
+                  {/* UPGRADED: phone number wrapped in subtle dark pill background with border */}
+                  <a
+                    href="tel:9493936249"
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/[0.08] bg-white/[0.05] text-solar-gold text-base font-semibold hover:bg-white/[0.08] hover:text-solar-gold-bright transition-all duration-300"
+                  >
+                    {/* UPGRADED: thin phone icon to the left */}
+                    <Phone size={16} className="text-solar-gold" strokeWidth={1.5} />
+                    <span>+91 9493936249</span>
+                  </a>
+                </motion.div>
+
+                {/* UPGRADED: stagger animation wrapper (custom={6}) */}
+                <motion.div
+                  custom={6}
+                  initial="hidden"
+                  animate="visible"
+                  variants={navItemVariants}
+                  className="mt-4 w-full"
+                >
+                  {/* UPGRADED: Get Free Quote CTA button with shimmer sweep, 14px border radius, and faint glow */}
+                  <button
+                    onClick={() => navigateTo('#contact')}
+                    className="w-full rounded-[14px] py-3.5 text-sm font-bold text-gray-950 font-heading cursor-pointer hover:bg-solar-gold-bright transition-all duration-300 relative overflow-hidden"
+                    style={{
+                      backgroundColor: 'var(--solar-gold)',
+                      boxShadow: '0 8px 32px rgba(245,158,11,0.25)',
+                    }}
+                  >
+                    {/* UPGRADED: shimmer on CTA */}
+                    <div 
+                      className="absolute top-0 left-0 w-3/5 h-full pointer-events-none"
+                      style={{
+                        background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent)',
+                        animation: 'shimmer-sweep 3s ease-in-out infinite',
+                      }}
+                    />
+                    <span className="relative z-10">Get Free Quote →</span>
+                  </button>
+                </motion.div>
               </div>
-            </div>
+            </div> {/* UPGRADED: Close inner scrollable container */}
           </motion.div>
         )}
       </AnimatePresence>

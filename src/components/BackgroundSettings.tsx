@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, X, Sparkles, Sun, Zap, Wind, Activity, Layers, Cpu, Compass, Flame, Binary, Gem, Type } from 'lucide-react';
+import { Settings, X, Sparkles, Sun, Zap, Wind, Activity, Layers, Cpu, Compass, Flame, Binary, Gem, Type, Palette } from 'lucide-react';
 import { useBackgroundSettings } from '../context/BackgroundSettingsContext';
 import type { BackgroundStyle } from '../context/BackgroundSettingsContext';
 import { useSolarTime } from '../context/SolarTimeContext';
@@ -15,7 +15,9 @@ export default function BackgroundSettings() {
     speedMultiplier, 
     setSpeedMultiplier,
     fontTheme,
-    setFontTheme
+    setFontTheme,
+    cardColorMode,
+    setCardColorMode
   } = useBackgroundSettings();
 
   const { timeOfDay, setTimeOfDay, currentPhase } = useSolarTime();
@@ -46,6 +48,16 @@ export default function BackgroundSettings() {
     root.classList.remove('font-theme-poppins', 'font-theme-syne');
     root.classList.add(`font-theme-${fontTheme}`);
   }, [fontTheme]);
+
+  // Inject card color mode — 'card-unified' overrides all accent CSS vars to gold
+  useEffect(() => {
+    const root = document.documentElement;
+    if (cardColorMode === 'unified') {
+      root.classList.add('card-unified');
+    } else {
+      root.classList.remove('card-unified');
+    }
+  }, [cardColorMode]);
 
   const handleTimeChange = (phase: 'dawn' | 'noon' | 'dusk' | 'night') => {
     switch (phase) {
@@ -178,6 +190,76 @@ export default function BackgroundSettings() {
               >
                 <X size={18} />
               </button>
+            </div>
+
+            {/* ── Card Color Style Toggle ── */}
+            <div className="flex flex-col gap-2 pb-3 border-b border-solar-border">
+              <div className="flex items-center gap-1.5 mb-1">
+                <Palette size={11} className="text-amber-400" />
+                <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-400">
+                  Card Color Style
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {/* Unified Gold — the corrected option */}
+                <button
+                  type="button"
+                  onClick={() => setCardColorMode('unified')}
+                  onTouchEnd={(e) => {
+                    const touch = e.changedTouches[0];
+                    const startY = parseFloat(e.currentTarget.getAttribute('data-touch-y') || '0');
+                    if (touch && Math.abs(touch.clientY - startY) < 10) setCardColorMode('unified');
+                  }}
+                  onTouchStart={(e) => {
+                    const touch = e.touches[0];
+                    if (touch) e.currentTarget.setAttribute('data-touch-y', touch.clientY.toString());
+                  }}
+                  className={`py-2.5 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex flex-col items-center gap-1.5 ${
+                    cardColorMode === 'unified'
+                      ? 'bg-amber-500/10 border-amber-500/80 text-amber-400'
+                      : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
+                  }`}
+                >
+                  {/* Mini preview: all gold */}
+                  <div className="flex gap-0.5">
+                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#F59E0B' }} />
+                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#F59E0B' }} />
+                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#F59E0B' }} />
+                  </div>
+                  <span>Unified Gold</span>
+                </button>
+
+                {/* Trifold option */}
+                <button
+                  type="button"
+                  onClick={() => setCardColorMode('trifold')}
+                  onTouchEnd={(e) => {
+                    const touch = e.changedTouches[0];
+                    const startY = parseFloat(e.currentTarget.getAttribute('data-touch-y') || '0');
+                    if (touch && Math.abs(touch.clientY - startY) < 10) setCardColorMode('trifold');
+                  }}
+                  onTouchStart={(e) => {
+                    const touch = e.touches[0];
+                    if (touch) e.currentTarget.setAttribute('data-touch-y', touch.clientY.toString());
+                  }}
+                  className={`py-2.5 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex flex-col items-center gap-1.5 ${
+                    cardColorMode === 'trifold'
+                      ? 'bg-sky-500/10 border-sky-400/60 text-sky-400'
+                      : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
+                  }`}
+                >
+                  {/* Mini preview: amber + blue + green */}
+                  <div className="flex gap-0.5">
+                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#F59E0B' }} />
+                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#0EA5E9' }} />
+                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#10B981' }} />
+                  </div>
+                  <span>Trifold Colors</span>
+                </button>
+              </div>
+              <div className="text-[9px] text-gray-500 leading-tight">
+                Compare unified brand gold vs the original amber/blue/green card scheme.
+              </div>
             </div>
 
             {/* Section 4: Headline Typography */}

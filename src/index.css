@@ -19,6 +19,75 @@ html.font-theme-syne {
   --font-heading: 'Syne', sans-serif !important;
 }
 
+/* ─── Card Color Mode: Unified Gold ─── */
+/* Overrides CSS variables AND hardcoded Tailwind classes site-wide */
+html.card-unified {
+  /* CSS Variable overrides */
+  --solar-emerald: #F59E0B !important;
+  --solar-emerald-rgb: 245, 158, 11 !important;
+  --solar-purple: #F59E0B !important;
+  --solar-purple-rgb: 245, 158, 11 !important;
+  --solar-indigo: #D97706 !important;
+  --solar-indigo-rgb: 217, 119, 6 !important;
+  --solar-cyan: #F59E0B !important;
+  --solar-cyan-rgb: 245, 158, 11 !important;
+  --solar-cyan-bright: #FBBF24 !important;
+  --shadow-glow-purple: 0 0 60px rgba(245, 158, 11, 0.15), 0 0 120px rgba(245, 158, 11, 0.05) !important;
+  --shadow-glow-cyan: 0 0 60px rgba(245, 158, 11, 0.15) !important;
+}
+
+/* Hardcoded Tailwind text color overrides */
+html.card-unified .text-emerald-400,
+html.card-unified .text-emerald-500,
+html.card-unified .text-emerald-600 { color: #F59E0B !important; }
+
+html.card-unified .text-sky-300,
+html.card-unified .text-sky-400,
+html.card-unified .text-sky-500 { color: #F59E0B !important; }
+
+html.card-unified .text-blue-400,
+html.card-unified .text-blue-500,
+html.card-unified .text-blue-600 { color: #F59E0B !important; }
+
+html.card-unified .text-cyan-400,
+html.card-unified .text-cyan-500 { color: #F59E0B !important; }
+
+html.card-unified .text-green-400,
+html.card-unified .text-green-500 { color: #F59E0B !important; }
+
+/* Hardcoded Tailwind background color overrides */
+html.card-unified .bg-emerald-500\/10,
+html.card-unified .bg-emerald-500\/\[0\.1\],
+html.card-unified .bg-emerald-500\/\[0\.015\] { background-color: rgba(245, 158, 11, 0.08) !important; }
+
+html.card-unified .bg-sky-500\/10,
+html.card-unified .bg-sky-500\/\[0\.1\],
+html.card-unified .bg-sky-500\/\[0\.015\] { background-color: rgba(245, 158, 11, 0.08) !important; }
+
+html.card-unified .bg-blue-500\/10,
+html.card-unified .bg-blue-500\/20 { background-color: rgba(245, 158, 11, 0.08) !important; }
+
+/* Border color overrides */
+html.card-unified .border-sky-400\/60,
+html.card-unified .border-emerald-400\/60 { border-color: rgba(245, 158, 11, 0.6) !important; }
+
+html.card-unified .border-blue-500 { border-color: rgba(245, 158, 11, 0.8) !important; }
+
+/* Hover color overrides — group-hover variants */
+html.card-unified .group-hover\:text-sky-300:is(:where(.group):hover *),
+html.card-unified .group-hover\:text-emerald-400:is(:where(.group):hover *) {
+  color: #FBBF24 !important;
+}
+
+/* Background glow blobs — make them gold-tinted instead of blue/green */
+html.card-unified .bg-sky-500 { background-color: #F59E0B !important; }
+html.card-unified .bg-emerald-500 { background-color: #F59E0B !important; }
+html.card-unified .bg-sky-500\/70 { background-color: rgba(245, 158, 11, 0.7) !important; }
+html.card-unified .bg-emerald-500\/70 { background-color: rgba(245, 158, 11, 0.7) !important; }
+html.card-unified .bg-emerald-500\/60 { background-color: rgba(245, 158, 11, 0.6) !important; }
+html.card-unified .bg-emerald-500\/40 { background-color: rgba(245, 158, 11, 0.4) !important; }
+
+
 /* ============================================================
    1. CSS CUSTOM PROPERTIES — DARK MODE ONLY
    ============================================================ */
@@ -713,6 +782,7 @@ h1, h2, h3, h4, h5, h6 {
     background: var(--solar-gold);
     box-shadow: 0 0 8px var(--solar-gold);
     animation: glow-pulse 3s ease-in-out infinite;
+    will-change: transform, opacity;
   }
 
   .section-heading {
@@ -822,7 +892,7 @@ h1, h2, h3, h4, h5, h6 {
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
+    left: 0;
     width: 60%;
     height: 100%;
     background: linear-gradient(
@@ -833,6 +903,8 @@ h1, h2, h3, h4, h5, h6 {
     );
     animation: shimmer-sweep 2.5s ease-in-out infinite;
     pointer-events: none;
+    transform: translateX(-160%);
+    will-change: transform;
   }
 
   .shimmer-btn:hover {
@@ -1037,10 +1109,10 @@ h1, h2, h3, h4, h5, h6 {
    ============================================================ */
 @keyframes shimmer-sweep {
   0% {
-    left: -100%;
+    transform: translateX(-160%);
   }
   100% {
-    left: 150%;
+    transform: translateX(260%);
   }
 }
 
@@ -1087,12 +1159,12 @@ h1, h2, h3, h4, h5, h6 {
 
 @keyframes glow-pulse {
   0%, 100% {
-    opacity: 0.4;
-    box-shadow: 0 0 6px var(--solar-gold);
+    opacity: 0.45;
+    transform: scale(0.92);
   }
   50% {
     opacity: 1;
-    box-shadow: 0 0 14px var(--solar-gold);
+    transform: scale(1.15);
   }
 }
 
@@ -2422,7 +2494,7 @@ a:focus-visible {
   content: '';
   position: absolute;
   top: 0;
-  left: -150%;
+  left: 0;
   width: 300%;
   height: 100%;
   background: linear-gradient(
@@ -2435,7 +2507,8 @@ a:focus-visible {
     rgba(6, 182, 212, 0.03) 65%,
     transparent 80%
   );
-  transform: skewX(-30deg);
+  transform: translateX(-100%) skewX(-30deg);
+  will-change: transform;
   pointer-events: none;
   z-index: 1;
 }
@@ -2460,25 +2533,34 @@ a:focus-visible {
 .solar-panel-card-corner-br { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
 
 /* Active/Hover states */
-.solar-panel-card:hover {
-  border-color: var(--panel-border-hover) !important;
-  box-shadow: 
-    0 10px 40px rgba(0, 0, 0, 0.5), 
-    0 0 35px var(--panel-glow-hover) !important;
-  transform: translateY(-5px);
+@media (hover: hover) {
+  .solar-panel-card:hover {
+    border-color: var(--panel-border-hover) !important;
+    box-shadow: 
+      0 10px 40px rgba(0, 0, 0, 0.5), 
+      0 0 35px var(--panel-glow-hover) !important;
+    transform: translateY(-5px);
+  }
+
+  .solar-panel-card:hover::before {
+    opacity: 1;
+    background-image: 
+      linear-gradient(var(--panel-accent-hover) 1px, transparent 1px),
+      linear-gradient(90deg, var(--panel-accent-hover) 1px, transparent 1px);
+  }
+
+  .solar-panel-card:hover .solar-panel-card-corner {
+    opacity: 1;
+    border-color: var(--panel-corner-hover);
+    transform: scale(1.1);
+  }
 }
 
-.solar-panel-card:hover::before {
-  opacity: 1;
-  background-image: 
-    linear-gradient(var(--panel-accent-hover) 1px, transparent 1px),
-    linear-gradient(90deg, var(--panel-accent-hover) 1px, transparent 1px);
-}
-
-.solar-panel-card:hover .solar-panel-card-corner {
-  opacity: 1;
-  border-color: var(--panel-corner-hover);
-  transform: scale(1.1);
+@media (hover: none) {
+  .solar-panel-card:active {
+    border-color: var(--panel-border-hover) !important;
+    background-color: var(--solar-card-solid);
+  }
 }
 
 /* ============================================================
@@ -2488,22 +2570,16 @@ html:not(.light-theme) .phase-dawn {
   --solar-bg: #140905;
   --solar-bg-secondary: #1a0f0a;
   --solar-bg-tertiary: #24140e;
-  --solar-gold: #f97316;
-  --solar-gold-bright: #fdba74;
-  --solar-gold-dark: #ea580c;
   --solar-orange: #ea580c;
-  --solar-border-hover: rgba(249, 115, 22, 0.35);
-  --shadow-glow-gold: 0 0 60px rgba(249, 115, 22, 0.15), 0 0 120px rgba(249, 115, 22, 0.05);
-  --gradient-gold: linear-gradient(135deg, #f97316, #ea580c);
+  --solar-border-hover: rgba(245, 158, 11, 0.35);
+  --shadow-glow-gold: 0 0 60px rgba(245, 158, 11, 0.15), 0 0 120px rgba(245, 158, 11, 0.05);
+  --gradient-gold: linear-gradient(135deg, #f59e0b, #ea580c);
 }
 
 html:not(.light-theme) .phase-noon {
   --solar-bg: #030712;
   --solar-bg-secondary: #0a0f1e;
   --solar-bg-tertiary: #111827;
-  --solar-gold: #f59e0b;
-  --solar-gold-bright: #fbbf24;
-  --solar-gold-dark: #d97706;
   --solar-orange: #f97316;
   --solar-border-hover: rgba(245, 158, 11, 0.35);
   --shadow-glow-gold: 0 0 60px rgba(245, 158, 11, 0.15), 0 0 120px rgba(245, 158, 11, 0.05);
@@ -2514,26 +2590,20 @@ html:not(.light-theme) .phase-dusk {
   --solar-bg: #0d0612;
   --solar-bg-secondary: #140a1d;
   --solar-bg-tertiary: #1d0f2b;
-  --solar-gold: #ec4899;
-  --solar-gold-bright: #f472b6;
-  --solar-gold-dark: #be185d;
   --solar-orange: #8b5cf6;
-  --solar-border-hover: rgba(236, 72, 153, 0.35);
-  --shadow-glow-gold: 0 0 60px rgba(236, 72, 153, 0.15), 0 0 120px rgba(236, 72, 153, 0.05);
-  --gradient-gold: linear-gradient(135deg, #ec4899, #8b5cf6);
+  --solar-border-hover: rgba(245, 158, 11, 0.35);
+  --shadow-glow-gold: 0 0 60px rgba(245, 158, 11, 0.15), 0 0 120px rgba(245, 158, 11, 0.05);
+  --gradient-gold: linear-gradient(135deg, #f59e0b, #8b5cf6);
 }
 
 html:not(.light-theme) .phase-night {
   --solar-bg: #02040a;
   --solar-bg-secondary: #050a18;
   --solar-bg-tertiary: #0c1228;
-  --solar-gold: #06b6d4;
-  --solar-gold-bright: #22d3ee;
-  --solar-gold-dark: #0891b2;
   --solar-orange: #3b82f6;
-  --solar-border-hover: rgba(6, 182, 212, 0.35);
-  --shadow-glow-gold: 0 0 60px rgba(6, 182, 212, 0.15), 0 0 120px rgba(6, 182, 212, 0.05);
-  --gradient-gold: linear-gradient(135deg, #06b6d4, #3b82f6);
+  --solar-border-hover: rgba(245, 158, 11, 0.35);
+  --shadow-glow-gold: 0 0 60px rgba(245, 158, 11, 0.15), 0 0 120px rgba(245, 158, 11, 0.05);
+  --gradient-gold: linear-gradient(135deg, #f59e0b, #3b82f6);
 }
 
 /* ============================================================
@@ -2543,25 +2613,19 @@ html.light-theme .phase-dawn {
   --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdf5e6 70%, #f8ead5 100%);
   --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #fdf2df 100%);
   --solar-bg-tertiary: #ede5d8;
-  --solar-gold: #d97706;
-  --solar-gold-bright: #f59e0b;
-  --solar-gold-dark: #b45309;
   --solar-orange: #ea580c;
-  --solar-border-hover: rgba(217, 119, 6, 0.35);
-  --shadow-glow-gold: 0 0 60px rgba(217, 119, 6, 0.15), 0 0 120px rgba(217, 119, 6, 0.05);
-  --gradient-gold: linear-gradient(135deg, #d97706, #ea580c);
+  --solar-border-hover: rgba(192, 124, 10, 0.35);
+  --shadow-glow-gold: 0 0 60px rgba(192, 124, 10, 0.15), 0 0 120px rgba(192, 124, 10, 0.05);
+  --gradient-gold: linear-gradient(135deg, #c07c0a, #ea580c);
 }
 
 html.light-theme .phase-noon {
   --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdf8f0 70%, #f5ead6 100%);
   --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #fdf5e6 100%);
   --solar-bg-tertiary: #ede5d8;
-  --solar-gold: #c07c0a;
-  --solar-gold-bright: #e09010;
-  --solar-gold-dark: #9a6208;
   --solar-orange: #d4580a;
-  --solar-border-hover: rgba(180, 130, 20, 0.35);
-  --shadow-glow-gold: 0 0 60px rgba(180, 130, 20, 0.15), 0 0 120px rgba(180, 130, 20, 0.05);
+  --solar-border-hover: rgba(192, 124, 10, 0.35);
+  --shadow-glow-gold: 0 0 60px rgba(192, 124, 10, 0.15), 0 0 120px rgba(192, 124, 10, 0.05);
   --gradient-gold: linear-gradient(135deg, #c07c0a, #d4580a);
 }
 
@@ -2569,26 +2633,20 @@ html.light-theme .phase-dusk {
   --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdf0e0 70%, #f2dcb8 100%);
   --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #fcf0db 100%);
   --solar-bg-tertiary: #ede5d8;
-  --solar-gold: #d4580a;
-  --solar-gold-bright: #ea580c;
-  --solar-gold-dark: #9a3412;
   --solar-orange: #7c3aed;
-  --solar-border-hover: rgba(212, 88, 10, 0.35);
-  --shadow-glow-gold: 0 0 60px rgba(212, 88, 10, 0.15), 0 0 120px rgba(212, 88, 10, 0.05);
-  --gradient-gold: linear-gradient(135deg, #d4580a, #7c3aed);
+  --solar-border-hover: rgba(192, 124, 10, 0.35);
+  --shadow-glow-gold: 0 0 60px rgba(192, 124, 10, 0.15), 0 0 120px rgba(192, 124, 10, 0.05);
+  --gradient-gold: linear-gradient(135deg, #c07c0a, #7c3aed);
 }
 
 html.light-theme .phase-night {
   --solar-bg: radial-gradient(circle at 50% 50%, #fafaf8 0%, #f0f3f5 70%, #e5e9ec 100%);
   --solar-bg-secondary: radial-gradient(circle at 30% 20%, #fafaf8 0%, #edf1f3 100%);
   --solar-bg-tertiary: #ede5d8;
-  --solar-gold: #0891b2;
-  --solar-gold-bright: #22d3ee;
-  --solar-gold-dark: #0e7490;
   --solar-orange: #3b82f6;
-  --solar-border-hover: rgba(8, 145, 178, 0.35);
-  --shadow-glow-gold: 0 0 60px rgba(8, 145, 178, 0.15), 0 0 120px rgba(8, 145, 178, 0.05);
-  --gradient-gold: linear-gradient(135deg, #0891b2, #3b82f6);
+  --solar-border-hover: rgba(192, 124, 10, 0.35);
+  --shadow-glow-gold: 0 0 60px rgba(192, 124, 10, 0.15), 0 0 120px rgba(192, 124, 10, 0.05);
+  --gradient-gold: linear-gradient(135deg, #c07c0a, #3b82f6);
 }
 
 /* ============================================================
@@ -2630,7 +2688,7 @@ html.light-theme .phase-night {
   content: '';
   position: absolute;
   top: 0;
-  left: -150%;
+  left: 0;
   width: 300%;
   height: 100%;
   background: linear-gradient(
@@ -2643,7 +2701,8 @@ html.light-theme .phase-night {
     rgba(6, 182, 212, 0.03) 65%,
     transparent 80%
   );
-  transform: skewX(-30deg);
+  transform: translateX(-100%) skewX(-30deg);
+  will-change: transform;
   pointer-events: none;
 }
 
@@ -2653,10 +2712,10 @@ html.light-theme .phase-night {
 
 @keyframes anamorphic-sweep-effect {
   0% {
-    left: -150%;
+    transform: translateX(-100%) skewX(-30deg);
   }
   100% {
-    left: 150%;
+    transform: translateX(100%) skewX(-30deg);
   }
 }
 

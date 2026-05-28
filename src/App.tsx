@@ -29,7 +29,7 @@ const LOADER_HIDE_DELAY = 2400;
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
-  const [mounted, setMounted] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
   const { currentPhase } = useSolarTime();
   const [currentHash, setCurrentHash] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -38,21 +38,13 @@ function AppContent() {
     return '#home';
   });
 
-  // Mount site content in the background after 1800ms
-  // (once the logo typewriter animation is fully finished and static),
-  // which prevents any CPU/layout spikes from stuttering the logo loading animation.
-  useEffect(() => {
-    const mountTimer = setTimeout(() => setMounted(true), 1800);
-    return () => clearTimeout(mountTimer);
-  }, []);
-
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), LOADER_HIDE_DELAY);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
-    if (isLoading) return;
+    if (showLoader) return;
     if (typeof window === 'undefined') return;
 
     const isMobileDevice =
@@ -81,7 +73,7 @@ function AppContent() {
       lenis.destroy();
       cancelAnimationFrame(rafId);
     };
-  }, [isLoading]);
+  }, [showLoader]);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -147,30 +139,31 @@ function AppContent() {
       <CustomCursor />
 
       {/* Loader sits on top as a fixed overlay with z-100 */}
-      <Loader isVisible={isLoading} />
+      {showLoader && (
+        <Loader
+          isVisible={isLoading}
+          onHidden={() => setShowLoader(false)}
+        />
+      )}
 
       <div
-        className={`transition-all duration-1000 ease-in-out phase-${currentPhase}`}
+        className={`phase-${currentPhase}`}
         style={{
           background: 'var(--solar-bg)',
           minHeight: '100vh',
-          opacity: isLoading ? 0 : 1,
+          visibility: isLoading ? 'hidden' : 'visible',
           pointerEvents: isLoading ? 'none' : 'auto'
         }}
       >
-        {mounted && (
-          <>
-            <div className="noise-overlay" />
-            <Navbar />
-            <main>
-              {renderActiveView()}
-            </main>
-            <Footer />
-            <FloatingCTA />
-            <ScrollToTop />
-            <BackgroundSettings />
-          </>
-        )}
+        <div className="noise-overlay" />
+        <Navbar />
+        <main>
+          {renderActiveView()}
+        </main>
+        <Footer />
+        <FloatingCTA />
+        <ScrollToTop />
+        <BackgroundSettings />
       </div>
     </>
   );
