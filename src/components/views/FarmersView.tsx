@@ -28,7 +28,7 @@ export default function FarmersView() {
               className="text-4xl sm:text-5xl lg:text-6xl font-bold font-heading text-solar-text leading-tight"
             >
               PM-KUSUM Scheme for{' '}
-              <span className="bg-gradient-to-r from-emerald-500 to-teal-400 bg-clip-text text-transparent">
+              <span className="text-solar-emerald">
                 Farmers
               </span>
             </motion.h1>

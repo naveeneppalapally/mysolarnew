@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, ArrowRight, Moon, ChevronDown, Home, Building2, Landmark, Sprout, Shield, Database, Hammer, Calculator } from 'lucide-react';
+import { Sun, ArrowRight, Moon, ChevronDown, Home, Building2, Landmark, Sprout, Shield, Database, Hammer, Calculator, Phone } from 'lucide-react';
 import { useSolarTime } from '../context/SolarTimeContext';
 import { useTheme } from '../context/ThemeContext';
 import { smoothScrollTo } from '../lib/utils';
@@ -292,11 +292,11 @@ export default function Navbar() {
           onClick={() => navigateTo('#home')}
           className="flex items-center gap-2 cursor-pointer"
         >
-          <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500">
+          <div className="w-8 h-8 rounded-lg bg-solar-card border border-solar-border flex items-center justify-center text-solar-gold">
             <Sun size={16} />
           </div>
           <span className="text-lg font-bold font-heading tracking-wide">
-            <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+            <span className="text-solar-gold">
               MYHOME
             </span>{' '}
             <span className="text-solar-text">SOLAR</span>
@@ -314,7 +314,7 @@ export default function Navbar() {
           >
             Home
             <motion.span
-              className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full"
+              className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-solar-gold rounded-full"
               initial={false}
               animate={{ scaleX: activeHash === '#home' ? 1 : 0 }}
               transition={{ duration: 0.2 }}
@@ -335,7 +335,7 @@ export default function Navbar() {
               Solutions
               <ChevronDown size={14} className={`transition-transform duration-200 ${hoveredMenu === 'offerings' ? 'rotate-180' : ''}`} />
               <motion.span
-                className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full"
+                className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-solar-gold rounded-full"
                 initial={false}
                 animate={{ scaleX: isSolutionsActive ? 1 : 0 }}
                 transition={{ duration: 0.2 }}
@@ -392,7 +392,7 @@ export default function Navbar() {
               Technology
               <ChevronDown size={14} className={`transition-transform duration-200 ${hoveredMenu === 'tech' ? 'rotate-180' : ''}`} />
               <motion.span
-                className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full"
+                className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-solar-gold rounded-full"
                 initial={false}
                 animate={{ scaleX: isTechActive ? 1 : 0 }}
                 transition={{ duration: 0.2 }}
@@ -448,7 +448,7 @@ export default function Navbar() {
             <Calculator className="w-3.5 h-3.5" />
             Calculator
             <motion.span
-              className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full"
+              className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-solar-gold rounded-full"
               initial={false}
               animate={{ scaleX: activeHash === '#calculator' ? 1 : 0 }}
               transition={{ duration: 0.2 }}
@@ -464,7 +464,7 @@ export default function Navbar() {
           >
             FAQ
             <motion.span
-              className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full"
+              className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-solar-gold rounded-full"
               initial={false}
               animate={{ scaleX: activeHash === '#faq' ? 1 : 0 }}
               transition={{ duration: 0.2 }}
@@ -478,17 +478,17 @@ export default function Navbar() {
           <ThemeToggle />
           <a
             href="tel:9493936249"
-            className="text-amber-400 hover:text-amber-300 text-sm font-semibold transition-colors flex items-center gap-1.5"
+            className="text-solar-gold hover:text-solar-gold-bright text-sm font-semibold transition-colors flex items-center gap-1.5"
             title="Call MyHome Solar"
           >
-            <span>📞</span> 9493936249
+            <Phone size={14} className="text-solar-gold" />
+            <span>9493936249</span>
           </a>
           <button
             onClick={() => navigateTo('#contact')}
-            className="relative group overflow-hidden rounded-lg px-4.5 py-2.5 text-xs font-semibold text-gray-900 cursor-pointer"
+            className="relative group overflow-hidden rounded-lg px-4.5 py-2.5 text-xs font-semibold text-gray-950 cursor-pointer hover:bg-solar-gold-bright transition-colors duration-300"
             style={{
-              background: 'linear-gradient(135deg, #F59E0B, #FBBF24, #F59E0B)',
-              backgroundSize: '200% 200%',
+              backgroundColor: 'var(--solar-gold)',
             }}
           >
             <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
@@ -619,15 +619,16 @@ export default function Navbar() {
               <div className="mt-8 flex flex-col items-center gap-4 text-center">
                 <a
                   href="tel:9493936249"
-                  className="text-amber-400 text-lg font-semibold flex items-center gap-2"
+                  className="text-solar-gold text-lg font-semibold flex items-center gap-2"
                 >
-                  📞 +91 9493936249
+                  <Phone size={18} className="text-solar-gold" />
+                  <span>+91 9493936249</span>
                 </a>
                 <button
                   onClick={() => navigateTo('#contact')}
-                  className="w-full rounded-xl py-3.5 text-sm font-bold text-gray-900 font-heading cursor-pointer"
+                  className="w-full rounded-xl py-3.5 text-sm font-bold text-gray-950 font-heading cursor-pointer hover:bg-solar-gold-bright transition-colors duration-300"
                   style={{
-                    background: 'linear-gradient(135deg, #F59E0B, #FBBF24)',
+                    backgroundColor: 'var(--solar-gold)',
                   }}
                 >
                   Get Free Quote →

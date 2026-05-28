@@ -104,7 +104,7 @@ export default function Footer() {
                 <Sun size={16} />
               </div>
               <span className="text-lg font-bold font-heading tracking-wide">
-                <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+                <span className="text-solar-gold">
                   MYHOME
                 </span>{' '}
                 <span className="text-solar-text">SOLAR</span>

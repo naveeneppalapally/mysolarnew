@@ -127,7 +127,7 @@ export default function CustomCursor() {
               y: lockCoord,
               vx: (Math.random() > 0.5 ? 1 : -1) * (2 + Math.random() * 2),
               vy: 0,
-              color: Math.random() > 0.5 ? '#FBBF24' : '#F59E0B',
+              color: Math.random() > 0.5 ? 'var(--solar-gold-bright)' : 'var(--solar-gold)',
               size: 1 + Math.random() * 1.5,
               life: 40,
               maxLife: 40,
@@ -142,7 +142,7 @@ export default function CustomCursor() {
               y: e.clientY,
               vx: 0,
               vy: (Math.random() > 0.5 ? 1 : -1) * (2 + Math.random() * 2),
-              color: Math.random() > 0.5 ? '#FBBF24' : '#F97316',
+              color: Math.random() > 0.5 ? 'var(--solar-gold-bright)' : 'var(--solar-orange)',
               size: 1 + Math.random() * 1.5,
               life: 40,
               maxLife: 40,
@@ -269,24 +269,24 @@ export default function CustomCursor() {
           ...base,
           width: '4px',
           height: '4px',
-          background: '#F59E0B',
-          boxShadow: '0 0 8px rgba(245,158,11,0.6)',
+          background: 'var(--solar-gold)',
+          boxShadow: '0 0 8px var(--solar-border-hover)',
         };
       case 'text':
         return {
           ...base,
           width: '6px',
           height: '6px',
-          background: '#F59E0B',
-          boxShadow: '0 0 6px rgba(245,158,11,0.4)',
+          background: 'var(--solar-gold)',
+          boxShadow: '0 0 6px var(--solar-border-hover)',
         };
       default:
         return {
           ...base,
           width: '8px',
           height: '8px',
-          background: '#F59E0B',
-          boxShadow: '0 0 10px rgba(245,158,11,0.5)',
+          background: 'var(--solar-gold)',
+          boxShadow: '0 0 10px var(--solar-border-hover)',
         };
     }
   };
@@ -311,24 +311,24 @@ export default function CustomCursor() {
           ...base,
           width: '60px',
           height: '60px',
-          border: '1.5px solid rgba(245,158,11,0.5)',
-          background: 'rgba(245,158,11,0.04)',
-          boxShadow: '0 0 20px rgba(245,158,11,0.1)',
+          border: '1.5px solid var(--solar-border-hover)',
+          background: 'transparent',
+          boxShadow: '0 0 20px var(--solar-border-hover)',
         };
       case 'text':
         return {
           ...base,
           width: '56px',
           height: '56px',
-          border: '1px solid rgba(245,158,11,0.2)',
-          background: 'rgba(245,158,11,0.06)',
+          border: '1px solid var(--solar-border)',
+          background: 'transparent',
         };
       default:
         return {
           ...base,
           width: '40px',
           height: '40px',
-          border: '1px solid rgba(245,158,11,0.35)',
+          border: '1px solid var(--solar-border-hover)',
           background: 'transparent',
         };
     }

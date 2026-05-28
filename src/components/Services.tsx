@@ -89,7 +89,7 @@ export default function Services() {
             className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-solar-text mb-5 leading-tight"
           >
             Complete Solar{' '}
-            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+            <span className="text-solar-gold">
               Solutions
             </span>
           </motion.h2>

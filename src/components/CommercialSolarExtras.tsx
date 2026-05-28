@@ -59,15 +59,15 @@ export default function CommercialSolarExtras() {
 
   return (
     <div className="relative py-24 bg-solar-bg overflow-hidden border-t border-solar-border">
-      <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-emerald-500/[0.015] blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-amber-500/[0.015] blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-solar-emerald opacity-[0.015] blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-solar-gold opacity-[0.015] blur-[100px] pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-28">
         
         {/* 1. Net vs Gross Metering Grid */}
         <section className="space-y-8">
           <div className="text-center space-y-3">
-            <span className="inline-block text-[10px] font-semibold tracking-widest text-emerald-400 uppercase bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/10">
+            <span className="inline-block text-[10px] font-semibold tracking-widest text-solar-emerald uppercase bg-solar-emerald-10 px-3 py-1 rounded-full border border-solar-emerald-20">
               Billing Systems
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-solar-text">
@@ -91,8 +91,8 @@ export default function CommercialSolarExtras() {
                 {regulatoryGrid.map((row, idx) => (
                   <tr key={idx} className="hover:bg-solar-card/30 transition-colors">
                     <td className="p-4 sm:p-5 font-bold text-solar-text">{row.parameter}</td>
-                    <td className="p-4 sm:p-5 text-amber-400 font-semibold">{row.net}</td>
-                    <td className="p-4 sm:p-5 text-emerald-400 font-semibold">{row.gross}</td>
+                    <td className="p-4 sm:p-5 text-solar-gold font-semibold">{row.net}</td>
+                    <td className="p-4 sm:p-5 text-solar-emerald font-semibold">{row.gross}</td>
                   </tr>
                 ))}
               </tbody>
@@ -114,7 +114,7 @@ export default function CommercialSolarExtras() {
             <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
             <span className="solar-panel-card-corner solar-panel-card-corner-br" />
 
-            <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 text-emerald-400">
+            <div className="w-14 h-14 rounded-2xl bg-solar-emerald-10 flex items-center justify-center border border-solar-emerald-20 text-solar-emerald">
               <Calculator className="w-8 h-8" />
             </div>
 
@@ -129,11 +129,11 @@ export default function CommercialSolarExtras() {
               </div>
               <div className="flex justify-between border-b border-solar-border/50 pb-2">
                 <span>Year 1 Accelerated Depreciation (40%)</span>
-                <span className="font-semibold text-amber-400">₹16,00,000 write-off</span>
+                <span className="font-semibold text-solar-gold">₹16,00,000 write-off</span>
               </div>
               <div className="flex justify-between border-b border-solar-border/50 pb-2">
                 <span>Effective Tax Saving (at 25.17% slab)</span>
-                <span className="font-bold text-emerald-400">₹4,02,720 Cash Saved</span>
+                <span className="font-bold text-solar-emerald">₹4,02,720 Cash Saved</span>
               </div>
               <div className="flex justify-between pt-1">
                 <span>Adjusted Net Project Cost</span>
@@ -153,12 +153,12 @@ export default function CommercialSolarExtras() {
             variants={staggerContainer}
             className="lg:col-span-7 space-y-6"
           >
-            <span className="inline-block text-[10px] font-semibold tracking-widest text-amber-400 uppercase bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/10 font-body">
+            <span className="inline-block text-[10px] font-semibold tracking-widest text-solar-gold uppercase bg-solar-gold-10 px-3 py-1 rounded-full border border-solar-gold-20 font-body">
               Tax Optimization
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-solar-text leading-tight">
               40% Accelerated Depreciation{' '}
-              <span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">
+              <span className="text-solar-gold">
                 Tax Write-Off
               </span>
             </h2>
@@ -174,7 +174,7 @@ export default function CommercialSolarExtras() {
         {/* 3. CEIG Checklist */}
         <section className="space-y-12">
           <div className="text-center space-y-3">
-            <span className="inline-block text-[10px] font-semibold tracking-widest text-sky-400 uppercase bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/10">
+            <span className="inline-block text-[10px] font-semibold tracking-widest text-solar-purple uppercase bg-solar-purple-10 px-3 py-1 rounded-full border border-solar-purple-20">
               Regulatory Approval
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-solar-text">
@@ -191,7 +191,7 @@ export default function CommercialSolarExtras() {
                 key={idx}
                 className="flex gap-4 p-5 rounded-2xl border border-solar-border/60 bg-solar-card/25 hover:border-solar-border transition-colors"
               >
-                <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-1" />
+                <CheckCircle2 className="w-5 h-5 text-solar-emerald shrink-0 mt-1" />
                 <div className="space-y-1">
                   <h4 className="font-heading font-bold text-sm sm:text-base text-solar-text">{item.title}</h4>
                   <p className="text-xs text-solar-text-muted font-body leading-relaxed">{item.desc}</p>

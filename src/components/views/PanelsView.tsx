@@ -54,7 +54,7 @@ export default function PanelsView() {
               className="text-4xl sm:text-5xl lg:text-6xl font-bold font-heading text-solar-text leading-tight"
             >
               Hardware &{' '}
-              <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+              <span className="text-solar-gold">
                 Panels Database
               </span>
             </motion.h1>

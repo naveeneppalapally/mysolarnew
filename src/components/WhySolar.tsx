@@ -77,7 +77,7 @@ export default function WhySolar() {
             className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-solar-text mb-5 leading-tight"
           >
             The Smart Investment{' '}
-            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+            <span className="text-solar-gold">
               That Pays You Back
             </span>
           </motion.h2>

@@ -54,6 +54,14 @@ html.font-theme-syne {
   --solar-purple: #0ea5e9;            /* Sky Blue Accent */
   --solar-indigo: #0369a1;            /* Deep Steel Blue */
 
+  /* RGB Values for Transparent Opacity States */
+  --solar-gold-rgb: 251, 191, 36;
+  --solar-orange-rgb: 249, 115, 22;
+  --solar-cyan-rgb: 2, 132, 199;
+  --solar-emerald-rgb: 16, 185, 129;
+  --solar-purple-rgb: 14, 165, 233;
+  --solar-indigo-rgb: 3, 105, 161;
+
   /* Shadows & Glows */
   --shadow-glow-gold: 0 0 60px rgba(251, 191, 36, 0.15), 0 0 120px rgba(245, 158, 11, 0.05);
   --shadow-glow-cyan: 0 0 60px rgba(14, 165, 233, 0.15); /* Steel Blue Glow */
@@ -110,6 +118,14 @@ html.font-theme-syne {
   --solar-emerald: #047857;
   --solar-purple: #0284c7;
   --solar-indigo: #0369a1;
+
+  /* RGB Values for Transparent Opacity States */
+  --solar-gold-rgb: 192, 124, 10;
+  --solar-orange-rgb: 212, 88, 10;
+  --solar-cyan-rgb: 14, 165, 227;
+  --solar-emerald-rgb: 4, 120, 87;
+  --solar-purple-rgb: 2, 132, 199;
+  --solar-indigo-rgb: 3, 105, 161;
 
   /* Shadows — STRONG enough to show on warm white */
   --shadow-glow-gold: 0 0 60px rgba(192, 124, 10, 0.22), 0 0 120px rgba(224, 144, 16, 0.10);
@@ -399,8 +415,17 @@ html.style-none.light-theme {
 .light-theme .bg-cyan-500\/\[0\.02\],
 .light-theme .bg-cyan-500\/\[0\.015\],
 .light-theme .bg-cyan-500\/\[0\.03\],
+.light-theme .bg-sky-500\/\[0\.02\],
+.light-theme .bg-emerald-500\/\[0\.02\],
 .light-theme .bg-emerald-500\/\[0\.03\] {
   background-color: rgba(192, 124, 10, 0.035) !important; /* Soft Amber/Gold Glow */
+}
+
+/* 1b. Global Header Image Glows Overrides */
+.light-theme .bg-amber-500\/10,
+.light-theme .bg-sky-500\/10,
+.light-theme .bg-emerald-500\/10 {
+  background-color: rgba(192, 124, 10, 0.08) !important; /* Warm Amber/Gold Image Halo */
 }
 
 /* 2. Global Heading & Text Gradient Overrides (Amber to Gold/Orange) */
@@ -2633,6 +2658,48 @@ html.light-theme .phase-night {
   100% {
     left: 150%;
   }
+}
+
+/* ============================================================
+   CUSTOM THEME-RESPONSIVE OPACITY UTILITIES
+   ============================================================ */
+.bg-solar-purple-10 {
+  background-color: rgba(var(--solar-purple-rgb), 0.1) !important;
+}
+.bg-solar-purple-6 {
+  background-color: rgba(var(--solar-purple-rgb), 0.06) !important;
+}
+.border-solar-purple-20 {
+  border-color: rgba(var(--solar-purple-rgb), 0.2) !important;
+}
+.border-solar-purple-40 {
+  border-color: rgba(var(--solar-purple-rgb), 0.4) !important;
+}
+
+.bg-solar-emerald-10 {
+  background-color: rgba(var(--solar-emerald-rgb), 0.1) !important;
+}
+.bg-solar-emerald-6 {
+  background-color: rgba(var(--solar-emerald-rgb), 0.06) !important;
+}
+.border-solar-emerald-20 {
+  border-color: rgba(var(--solar-emerald-rgb), 0.2) !important;
+}
+.border-solar-emerald-40 {
+  border-color: rgba(var(--solar-emerald-rgb), 0.4) !important;
+}
+
+.bg-solar-gold-10 {
+  background-color: rgba(var(--solar-gold-rgb), 0.1) !important;
+}
+.bg-solar-gold-6 {
+  background-color: rgba(var(--solar-gold-rgb), 0.06) !important;
+}
+.border-solar-gold-20 {
+  border-color: rgba(var(--solar-gold-rgb), 0.2) !important;
+}
+.border-solar-gold-40 {
+  border-color: rgba(var(--solar-gold-rgb), 0.4) !important;
 }
 
 

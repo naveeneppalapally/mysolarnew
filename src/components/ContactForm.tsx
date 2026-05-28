@@ -182,7 +182,7 @@ Please contact me for a free site assessment and quote.`;
           </span>
           <h2 className="text-4xl md:text-5xl font-bold font-heading text-solar-text mb-4">
             Start Your{' '}
-            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+            <span className="text-solar-gold">
               Solar Journey
             </span>
           </h2>
@@ -465,7 +465,10 @@ Please contact me for a free site assessment and quote.`;
                           href="tel:9493936249"
                           className="text-amber-400 hover:text-amber-300 transition-colors font-semibold"
                         >
-                          📞 9493936249
+                          <>
+                            <Phone size={14} className="inline mr-1 text-solar-gold" />
+                            9493936249
+                          </>
                         </a>
                       </div>
                     </div>

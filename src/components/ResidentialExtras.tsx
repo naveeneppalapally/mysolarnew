@@ -62,7 +62,7 @@ export default function ResidentialExtras() {
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-solar-text leading-tight">
               DeccanShield™ Leakage-Proof{' '}
-              <span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">
+              <span className="text-solar-gold">
                 Anchoring Process
               </span>
             </h2>

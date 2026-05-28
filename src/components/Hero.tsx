@@ -16,14 +16,10 @@ const headlineLines = [
 ];
 
 function AnimatedHeadline() {
-  const ref = React.useRef<HTMLHeadingElement>(null);
-  const isInView = useInView(ref, { once: true });
-
   let globalWordIndex = 0;
 
   return (
     <h1
-      ref={ref}
       className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] font-bold leading-[1.08] tracking-[-0.03em]"
     >
       {headlineLines.map((line, lineIdx) => {
@@ -41,11 +37,11 @@ function AnimatedHeadline() {
                   <motion.span
                     className={`inline-block ${
                       line.isGold
-                        ? 'bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-400 bg-clip-text text-transparent'
+                        ? 'text-solar-gold'
                         : 'text-solar-text'
                     }`}
                     initial={{ y: '110%', opacity: 0 }}
-                    animate={isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
+                    animate={{ y: '0%', opacity: 1 }}
                     transition={{
                       duration: 0.5,
                       delay: 0.1 + delay,
@@ -79,15 +75,15 @@ export function SolarPanelSVG() {
       <defs>
         {/* Glow and shadows */}
         <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.25" />
-          <stop offset="60%" stopColor="#FBBF24" stopOpacity="0.08" />
-          <stop offset="100%" stopColor="#F59E0B" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--solar-gold)" stopOpacity="0.25" />
+          <stop offset="60%" stopColor="var(--solar-gold-bright)" stopOpacity="0.08" />
+          <stop offset="100%" stopColor="var(--solar-gold)" stopOpacity="0" />
         </radialGradient>
         
         {/* Sky/Atmosphere dynamic gradient */}
         <radialGradient id="skyAtmosphere" cx="70%" cy="30%" r="65%">
-          <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.12" />
-          <stop offset="50%" stopColor="#D97706" stopOpacity="0.03" />
+          <stop offset="0%" stopColor="var(--solar-gold)" stopOpacity="0.12" />
+          <stop offset="50%" stopColor="var(--solar-gold-dark)" stopOpacity="0.03" />
           <stop offset="100%" stopColor="transparent" stopOpacity="0" />
         </radialGradient>
 
@@ -114,8 +110,8 @@ export function SolarPanelSVG() {
 
         {/* Clean Energy Pulse — Gold */}
         <linearGradient id="energyGold" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FBBF24" />
-          <stop offset="100%" stopColor="#F59E0B" />
+          <stop offset="0%" stopColor="var(--solar-gold-bright)" />
+          <stop offset="100%" stopColor="var(--solar-gold)" />
         </linearGradient>
 
         {/* Glow filter */}
@@ -136,7 +132,7 @@ export function SolarPanelSVG() {
       <g opacity="0.25">
         <circle cx="200" cy="200" r="140" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="5 15" />
         <ellipse cx="200" cy="200" rx="170" ry="85" stroke="rgba(255,255,255,0.06)" strokeWidth="1" strokeDasharray="8 6" transform="rotate(-15 200 200)" />
-        <ellipse cx="200" cy="200" rx="145" ry="60" stroke="#FBBF24" strokeWidth="0.75" strokeDasharray="3 12" transform="rotate(25 200 200)">
+        <ellipse cx="200" cy="200" rx="145" ry="60" stroke="var(--solar-gold-bright)" strokeWidth="0.75" strokeDasharray="3 12" transform="rotate(25 200 200)">
           <animateTransform
             attributeName="transform"
             type="rotate"
@@ -151,7 +147,7 @@ export function SolarPanelSVG() {
       {/* ── Glowing Sun and Ray Arc ── */}
       <g filter="url(#vectorGlow)" opacity="0.85">
         <circle cx="310" cy="90" r="18" fill="url(#energyGold)" />
-        <circle cx="310" cy="90" r="30" stroke="#FBBF24" strokeWidth="0.5" strokeDasharray="2 6" opacity="0.5">
+        <circle cx="310" cy="90" r="30" stroke="var(--solar-gold-bright)" strokeWidth="0.5" strokeDasharray="2 6" opacity="0.5">
           <animate attributeName="r" values="24;42;24" dur="4s" repeatCount="indefinite" />
         </circle>
         
@@ -164,7 +160,7 @@ export function SolarPanelSVG() {
               y1={90 + Math.sin(rad) * 22}
               x2={310 + Math.cos(rad) * 38}
               y2={90 + Math.sin(rad) * 38}
-              stroke="#FBBF24"
+              stroke="var(--solar-gold-bright)"
               strokeWidth="1.5"
               strokeLinecap="round"
               opacity="0.6"
@@ -213,7 +209,7 @@ export function SolarPanelSVG() {
         <polygon points="168,198 237,198 241,111 172,111" fill="url(#glassReflection)" />
 
         {/* Cell Grid Lines — Gold Busbars */}
-        <g stroke="#F59E0B" strokeWidth="0.5" opacity="0.35">
+        <g stroke="var(--solar-gold)" strokeWidth="0.5" opacity="0.35">
           <line x1="59" y1="20" x2="52" y2="200" />
           <line x1="134" y1="20" x2="128" y2="200" strokeWidth="0.75" />
           <line x1="209" y1="20" x2="203" y2="200" />
@@ -221,10 +217,10 @@ export function SolarPanelSVG() {
 
         {/* Glowing Energy Grid Nodes — Gold */}
         <g filter="url(#vectorGlow)">
-          <circle cx="131" cy="110" r="3.5" fill="#FBBF24" />
-          <circle cx="56" cy="110" r="2.5" fill="#FBBF24" />
-          <circle cx="206" cy="110" r="2.5" fill="#FBBF24" />
-          <circle cx="131" cy="110" r="6" stroke="#FBBF24" strokeWidth="0.5" opacity="0.5">
+          <circle cx="131" cy="110" r="3.5" fill="var(--solar-gold-bright)" />
+          <circle cx="56" cy="110" r="2.5" fill="var(--solar-gold-bright)" />
+          <circle cx="206" cy="110" r="2.5" fill="var(--solar-gold-bright)" />
+          <circle cx="131" cy="110" r="6" stroke="var(--solar-gold-bright)" strokeWidth="0.5" opacity="0.5">
             <animate attributeName="r" values="3;9;3" dur="2s" repeatCount="indefinite" />
           </circle>
         </g>
@@ -235,14 +231,14 @@ export function SolarPanelSVG() {
 
       {/* ── Orbiting Energy Particle ── */}
       <g filter="url(#vectorGlow)">
-        <circle cx="200" cy="200" r="4" fill="#FBBF24">
+        <circle cx="200" cy="200" r="4" fill="var(--solar-gold-bright)">
           <animateMotion
             path="M -135,0 A 135,50 0 1,1 135,0 A 135,50 0 1,1 -135,0"
             dur="6s"
             repeatCount="indefinite"
           />
         </circle>
-        <circle cx="200" cy="200" r="8" stroke="#FBBF24" strokeWidth="0.5" opacity="0.5">
+        <circle cx="200" cy="200" r="8" stroke="var(--solar-gold-bright)" strokeWidth="0.5" opacity="0.5">
           <animateMotion
             path="M -135,0 A 135,50 0 1,1 135,0 A 135,50 0 1,1 -135,0"
             dur="6s"
@@ -254,10 +250,10 @@ export function SolarPanelSVG() {
 
       {/* ── Lightning Energy Bolt Emblem ── */}
       <g transform="translate(182, 335) scale(1.3)" filter="url(#vectorGlow)">
-        <circle cx="12" cy="12" r="11" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.2)" strokeWidth="0.75" />
+        <circle cx="12" cy="12" r="11" fill="var(--solar-gold)" fillOpacity={0.08} stroke="var(--solar-gold)" strokeOpacity={0.2} strokeWidth={0.75} />
         <path
           d="M12 2 L6 12 L11 12 L8 22 L18 10 L13 10 L16 2 Z"
-          fill="#FBBF24"
+          fill="var(--solar-gold-bright)"
           opacity="0.9"
         >
           <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" />
@@ -334,12 +330,13 @@ function ShimmerButton({
       onClick={onClick}
       className={`magnetic relative overflow-hidden font-heading font-semibold px-8 py-4 rounded-xl text-sm cursor-pointer ${className}`}
       style={{
-        background: 'linear-gradient(135deg, #F59E0B, #D97706)',
+        backgroundColor: 'var(--solar-gold)',
         color: '#030712',
         boxShadow: '0 4px 24px rgba(245,158,11,0.3), inset 0 1px 0 rgba(255,255,255,0.15)',
       }}
       whileHover={{
         scale: 1.03,
+        backgroundColor: 'var(--solar-gold-bright)',
         boxShadow: '0 8px 32px rgba(245,158,11,0.5), inset 0 1px 0 rgba(255,255,255,0.2)',
       }}
       whileTap={{ scale: 0.98 }}
@@ -464,15 +461,13 @@ export default function Hero() {
             <motion.div
               className="flex flex-col gap-5 md:gap-6"
               initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.6 }}
             >
               {/* Badge */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
               >
                 <span
@@ -500,8 +495,7 @@ export default function Hero() {
               <motion.p
                 className="text-solar-text-muted text-sm sm:text-base max-w-lg leading-relaxed font-body"
                 initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
               >
                 Government subsidies up to{' '}
@@ -514,8 +508,7 @@ export default function Hero() {
               <motion.div
                 className="flex flex-col sm:flex-row gap-3 mt-1"
                 initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
               >
                 <ShimmerButton onClick={() => scrollToSection('calculator')}>
@@ -545,8 +538,7 @@ export default function Hero() {
               <motion.div
                 className="flex flex-wrap gap-x-5 gap-y-2.5 mt-2"
                 initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
+                animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
               >
                 {trustBadges.map((badge, i) => (
@@ -554,8 +546,7 @@ export default function Hero() {
                     key={badge}
                     className="flex items-center gap-1.5"
                     initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
+                    animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.3, delay: 0.7 + i * 0.06 }}
                   >
                     <CheckCircle2
@@ -573,8 +564,7 @@ export default function Hero() {
               <motion.div
                 className="hidden lg:flex justify-center items-center"
                 initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               >
                 <div
@@ -629,8 +619,7 @@ export default function Hero() {
               boxShadow: 'var(--shadow-card-lg)',
             }}
             initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-0 md:divide-x divide-solar-border">

@@ -59,15 +59,15 @@ export default function FarmersExtras() {
 
   return (
     <div className="relative py-24 bg-solar-bg overflow-hidden border-t border-solar-border">
-      <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-emerald-500/[0.015] blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-amber-500/[0.015] blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-solar-emerald opacity-[0.015] blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-solar-gold opacity-[0.015] blur-[100px] pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-28">
         
         {/* 1. KUSUM Pump Subsidy Matrix */}
         <section className="space-y-8">
           <div className="text-center space-y-3">
-            <span className="inline-block text-[10px] font-semibold tracking-widest text-emerald-400 uppercase bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/10">
+            <span className="inline-block text-[10px] font-semibold tracking-widest text-solar-emerald uppercase bg-solar-emerald-10 px-3 py-1 rounded-full border border-solar-emerald-20">
               Pump Subsidies
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-solar-text">
@@ -94,8 +94,8 @@ export default function FarmersExtras() {
                   <tr key={idx} className="hover:bg-solar-card/30 transition-colors">
                     <td className="p-4 sm:p-5 font-bold text-solar-text">{row.hp}</td>
                     <td className="p-4 sm:p-5 font-semibold">{row.cost}</td>
-                    <td className="p-4 sm:p-5 text-emerald-400 font-semibold">{row.subsidy}</td>
-                    <td className="p-4 sm:p-5 text-amber-400 font-bold">{row.farmer}</td>
+                    <td className="p-4 sm:p-5 text-solar-emerald font-semibold">{row.subsidy}</td>
+                    <td className="p-4 sm:p-5 text-solar-gold font-bold">{row.farmer}</td>
                     <td className="p-4 sm:p-5">{row.depth}</td>
                   </tr>
                 ))}
@@ -118,7 +118,7 @@ export default function FarmersExtras() {
             <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
             <span className="solar-panel-card-corner solar-panel-card-corner-br" />
 
-            <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 text-emerald-400">
+            <div className="w-14 h-14 rounded-2xl bg-solar-emerald-10 flex items-center justify-center border border-solar-emerald-20 text-solar-emerald">
               <LandPlot className="w-8 h-8" />
             </div>
 
@@ -133,11 +133,11 @@ export default function FarmersExtras() {
               </div>
               <div className="flex justify-between border-b border-solar-border/50 pb-2">
                 <span>PPA Agreement Tenure</span>
-                <span className="font-semibold text-emerald-400">25 Years Secure</span>
+                <span className="font-semibold text-solar-emerald">25 Years Secure</span>
               </div>
               <div className="flex justify-between border-b border-solar-border/50 pb-2">
                 <span>Compounding Escalation</span>
-                <span className="font-bold text-amber-400">5% Annual Increase</span>
+                <span className="font-bold text-solar-gold">5% Annual Increase</span>
               </div>
               <div className="flex justify-between pt-1">
                 <span>Required Plot Size</span>
@@ -153,12 +153,12 @@ export default function FarmersExtras() {
             variants={staggerContainer}
             className="lg:col-span-7 space-y-6"
           >
-            <span className="inline-block text-[10px] font-semibold tracking-widest text-emerald-400 uppercase bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/10 font-body">
+            <span className="inline-block text-[10px] font-semibold tracking-widest text-solar-emerald uppercase bg-solar-emerald-10 px-3 py-1 rounded-full border border-solar-emerald-20 font-body">
               Fallow Land Leasing
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-solar-text leading-tight">
               Earn Stable Income by Leasing{' '}
-              <span className="bg-gradient-to-r from-emerald-500 to-emerald-400 bg-clip-text text-transparent">
+              <span className="text-solar-emerald">
                 Barren Land
               </span>
             </h2>
@@ -174,7 +174,7 @@ export default function FarmersExtras() {
         {/* 3. Checklist of Documents */}
         <section className="space-y-12">
           <div className="text-center space-y-3">
-            <span className="inline-block text-[10px] font-semibold tracking-widest text-emerald-400 uppercase bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/10">
+            <span className="inline-block text-[10px] font-semibold tracking-widest text-solar-emerald uppercase bg-solar-emerald-10 px-3 py-1 rounded-full border border-solar-emerald-20">
               Checklist
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-solar-text">
@@ -191,7 +191,7 @@ export default function FarmersExtras() {
                 key={idx}
                 className="flex gap-4 p-5 rounded-2xl border border-solar-border/60 bg-solar-card/25 hover:border-solar-border transition-colors"
               >
-                <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-1" />
+                <CheckCircle2 className="w-5 h-5 text-solar-emerald shrink-0 mt-1" />
                 <div className="space-y-1">
                   <h4 className="font-heading font-bold text-sm sm:text-base text-solar-text">{item.title}</h4>
                   <p className="text-xs text-solar-text-muted font-body leading-relaxed">{item.desc}</p>
@@ -204,7 +204,7 @@ export default function FarmersExtras() {
         {/* 4. Farmers FAQs */}
         <section className="space-y-8 max-w-4xl mx-auto">
           <div className="text-center space-y-3">
-            <span className="inline-block text-[10px] font-semibold tracking-widest text-emerald-400 uppercase bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/10">
+            <span className="inline-block text-[10px] font-semibold tracking-widest text-solar-emerald uppercase bg-solar-emerald-10 px-3 py-1 rounded-full border border-solar-emerald-20">
               Farmers FAQ
             </span>
             <h3 className="text-2xl sm:text-3xl font-bold font-heading text-solar-text">

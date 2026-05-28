@@ -235,7 +235,7 @@ export default function HowItWorks() {
             className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-solar-text mb-5 leading-tight"
           >
             How It{' '}
-            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+            <span className="text-solar-gold">
               Works
             </span>
           </motion.h2>

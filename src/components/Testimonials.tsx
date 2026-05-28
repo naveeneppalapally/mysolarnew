@@ -88,7 +88,7 @@ export default function Testimonials() {
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-heading text-solar-text mb-4">
             Trusted by{' '}
-            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+            <span className="text-solar-gold">
               Homeowners
             </span>
           </h2>

@@ -15,14 +15,14 @@ const highlights = [
     title: 'Complete Surcharge Exemptions',
     subtitle: 'TSERC 2025 Grid Regulation',
     description: 'To promote clean energy, the 2025 TSERC policy grants absolute exemptions from banking charges, wheeling charges, cross-subsidy surcharges, and any additional utility surcharges for Net and Gross Metered installations.',
-    icon: <ShieldCheck className="w-5 h-5 text-sky-400" />,
+    icon: <ShieldCheck className="w-5 h-5 text-solar-purple" />,
     stats: '100% Exempt'
   },
   {
     title: 'Accelerated Depreciation',
     subtitle: '40% First-Year Tax Benefit',
     description: 'Businesses can claim 40% accelerated depreciation in the first year of installation, allowing massive tax savings that lower the net project cost and accelerate the return on your solar investment.',
-    icon: <TrendingUp className="w-5 h-5 text-emerald-400" />,
+    icon: <TrendingUp className="w-5 h-5 text-solar-emerald" />,
     stats: '40% AD Benefit'
   },
   {
@@ -60,8 +60,8 @@ export default function CommercialSolar() {
   return (
     <section id="commercial-solar" className="relative py-24 sm:py-32 overflow-hidden bg-solar-bg-secondary">
       {/* Ambient glows */}
-      <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] rounded-full bg-amber-500/[0.015] blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-sky-500/[0.015] blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] rounded-full bg-solar-gold opacity-[0.015] blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-solar-purple opacity-[0.015] blur-[100px] pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -84,7 +84,7 @@ export default function CommercialSolar() {
             className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-solar-text mb-5 leading-tight"
           >
             Commercial & Industrial Solar:{' '}
-            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+            <span className="text-solar-gold">
               Slash Overhead by 80%
             </span>
           </motion.h2>
@@ -131,7 +131,7 @@ export default function CommercialSolar() {
 
                 <div className="pt-3 border-t border-solar-border flex justify-between items-center text-xs">
                   <span className="text-solar-text-dim uppercase font-semibold tracking-wider font-body">Key Metric</span>
-                  <span className="text-sky-400 font-bold font-heading">{h.stats}</span>
+                  <span className="text-solar-purple font-bold font-heading">{h.stats}</span>
                 </div>
               </div>
             </motion.div>
@@ -146,11 +146,14 @@ export default function CommercialSolar() {
           transition={{ duration: 0.6 }}
           className="border border-solar-border rounded-3xl p-6 sm:p-8 lg:p-10 bg-solar-card backdrop-blur-xl relative overflow-hidden"
         >
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-sky-500/20 to-transparent" />
+          <div 
+            className="absolute top-0 left-0 right-0 h-[1px]" 
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(var(--solar-purple-rgb), 0.2), transparent)' }}
+          />
           
           <div className="flex flex-col lg:flex-row gap-8 items-center">
             <div className="lg:w-2/5 space-y-4">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-sky-500/10 text-sky-400 border border-sky-500/20 font-body">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-solar-purple-10 text-solar-purple border border-solar-purple-20 font-body">
                 Policy Compliance
               </span>
               <h3 className="text-xl sm:text-2xl font-bold font-heading text-solar-text">
@@ -195,12 +198,12 @@ export default function CommercialSolar() {
             className="
               inline-flex items-center gap-2
               px-8 py-4 rounded-full
-              bg-gradient-to-r from-amber-500 to-amber-400
-              text-gray-950 font-heading font-bold text-base
-              shadow-[0_0_30px_rgba(245,158,11,0.3)]
-              hover:shadow-[0_0_50px_rgba(245,158,11,0.45)]
+              text-white font-heading font-bold text-base
+              shadow-[0_0_20px_rgba(16,185,129,0.25)]
+              hover:opacity-90
               transition-shadow duration-300
             "
+            style={{ backgroundColor: 'var(--solar-emerald)' }}
           >
             Request Commercial Quote
             <ArrowRight className="w-4 h-4" />

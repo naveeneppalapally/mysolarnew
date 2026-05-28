@@ -209,9 +209,7 @@ function TypewriterText() {
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           style={{
             display: 'inline-block',
-            background: char === ' ' ? 'none' : 'linear-gradient(135deg, #F59E0B, #FBBF24, #F97316)',
-            WebkitBackgroundClip: char === ' ' ? undefined : 'text',
-            WebkitTextFillColor: char === ' ' ? undefined : 'transparent',
+            color: char === ' ' ? 'none' : '#F59E0B',
             minWidth: char === ' ' ? '0.5em' : undefined,
           }}
         >

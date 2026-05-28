@@ -11,7 +11,7 @@ const offerings = [
   {
     title: 'Solar for Homes (Residential)',
     description: 'Save up to 90% on your home electricity bill under the PM Surya Ghar Muft Bijli Yojana. We provide Tier-1 panels, DeccanShield structural mounts, and CEA-compliant inverters backed by a 25-year linear performance guarantee.',
-    icon: <Home className="w-6 h-6 text-amber-400" />,
+    icon: <Home className="w-6 h-6 text-solar-gold" />,
     badge: 'Up to ₹78,000 Subsidy',
     hash: '#homes',
     stats: [
@@ -23,7 +23,7 @@ const offerings = [
   {
     title: 'Housing Societies & RWAs',
     description: 'Cut common area maintenance costs (elevators, water pumps, lighting) dramatically. RWAs and GHS complexes in Telangana can install common rooftop arrays with huge capital subsidies and flexible payment/loan choices.',
-    icon: <Building2 className="w-6 h-6 text-sky-400" />,
+    icon: <Building2 className="w-6 h-6 text-solar-purple" />,
     badge: '₹18,000 / kW Subsidy',
     hash: '#societies',
     stats: [
@@ -35,7 +35,7 @@ const offerings = [
   {
     title: 'Commercial & Industrial Solar',
     description: 'Reduce high business overheads under the TSERC 2025 regulatory framework. Claim a first-year 40% Accelerated Depreciation tax benefit, and enjoy grid exemptions with paybacks under 4 years.',
-    icon: <Landmark className="w-6 h-6 text-emerald-400" />,
+    icon: <Landmark className="w-6 h-6 text-solar-emerald" />,
     badge: 'Slash Overheads by 80%',
     hash: '#commercial',
     stats: [
@@ -47,7 +47,7 @@ const offerings = [
   {
     title: 'Agricultural Solar (PM-KUSUM)',
     description: 'Empowering Telangana farmers with reliable solar energy. Special government subsidies for off-grid water pumps and opportunities to monetize barren/fallow land with grid-connected power plants.',
-    icon: <Sprout className="w-6 h-6 text-emerald-400" />,
+    icon: <Sprout className="w-6 h-6 text-solar-emerald" />,
     badge: 'Up to 60% Subsidized',
     hash: '#farmers',
     stats: [
@@ -60,37 +60,37 @@ const offerings = [
 
 const accentMap = {
   amber: {
-    border: 'border-amber-500/20 hover:border-amber-500/40',
-    iconBg: 'bg-amber-500/10',
-    iconText: 'text-amber-400',
-    glow: 'group-hover:shadow-[0_0_40px_-10px_rgba(245,158,11,0.18)]',
-    statBg: 'bg-amber-500/[0.06]',
-    statText: 'text-amber-400',
-    line: 'via-amber-500',
-    badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-    btn: 'bg-amber-500 text-gray-950 hover:bg-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.2)]',
+    border: 'border-solar-gold/20 hover:border-solar-gold/40',
+    iconBg: 'bg-solar-gold-10',
+    iconText: 'text-solar-gold',
+    glow: 'group-hover:shadow-glow-gold',
+    statBg: 'bg-solar-gold-6',
+    statText: 'text-solar-gold',
+    line: 'via-solar-gold',
+    badge: 'bg-solar-gold-10 text-solar-gold border-solar-gold-20',
+    btn: 'bg-solar-gold text-gray-950 hover:bg-solar-gold-bright shadow-[0_0_15px_rgba(245,158,11,0.2)]',
   },
   sky: {
-    border: 'border-sky-500/20 hover:border-sky-500/40',
-    iconBg: 'bg-sky-500/10',
-    iconText: 'text-sky-400',
-    glow: 'group-hover:shadow-[0_0_40px_-10px_rgba(14,165,233,0.18)]',
-    statBg: 'bg-sky-500/[0.06]',
-    statText: 'text-sky-400',
-    line: 'via-sky-500',
-    badge: 'bg-sky-500/10 text-sky-400 border-sky-500/20',
-    btn: 'bg-sky-600 text-white hover:bg-sky-500 shadow-[0_0_15px_rgba(14,165,233,0.2)]',
+    border: 'border-solar-purple-20 hover:border-solar-purple-40',
+    iconBg: 'bg-solar-purple-10',
+    iconText: 'text-solar-purple',
+    glow: 'group-hover:shadow-glow-purple',
+    statBg: 'bg-solar-purple-6',
+    statText: 'text-solar-purple',
+    line: 'via-solar-purple',
+    badge: 'bg-solar-purple-10 text-solar-purple border-solar-purple-20',
+    btn: 'bg-solar-indigo text-white hover:bg-solar-purple shadow-[0_0_15px_rgba(3,105,161,0.25)]',
   },
   emerald: {
-    border: 'border-emerald-500/20 hover:border-emerald-500/40',
-    iconBg: 'bg-emerald-500/10',
-    iconText: 'text-emerald-400',
-    glow: 'group-hover:shadow-[0_0_40px_-10px_rgba(16,185,129,0.18)]',
-    statBg: 'bg-emerald-500/[0.06]',
-    statText: 'text-emerald-400',
-    line: 'via-emerald-500',
-    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-    btn: 'bg-emerald-600 text-white hover:bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]',
+    border: 'border-solar-emerald-20 hover:border-solar-emerald-40',
+    iconBg: 'bg-solar-emerald-10',
+    iconText: 'text-solar-emerald',
+    glow: 'group-hover:shadow-glow-purple',
+    statBg: 'bg-solar-emerald-6',
+    statText: 'text-solar-emerald',
+    line: 'via-solar-emerald',
+    badge: 'bg-solar-emerald-10 text-solar-emerald border-solar-emerald-20',
+    btn: 'bg-solar-emerald text-white hover:opacity-90 shadow-[0_0_15px_rgba(16,185,129,0.25)]',
   },
 };
 
@@ -139,7 +139,7 @@ export default function HomeView() {
           >
             <motion.span
               variants={fadeInUp}
-              className="inline-block text-xs sm:text-sm font-semibold tracking-[0.3em] uppercase text-amber-400 mb-4 font-body"
+              className="inline-block text-xs sm:text-sm font-semibold tracking-[0.3em] uppercase text-solar-gold mb-4 font-body"
             >
               Our Offerings
             </motion.span>
@@ -148,7 +148,7 @@ export default function HomeView() {
               className="text-3xl sm:text-4xl lg:text-5xl font-bold font-heading text-solar-text mb-5 leading-tight"
             >
               Rooftop Solar Solutions for{' '}
-              <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+              <span className="text-solar-gold">
                 Every Sector
               </span>
             </motion.h2>

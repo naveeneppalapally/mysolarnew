@@ -168,7 +168,7 @@ export default function FAQ() {
           </span>
           <h2 className="text-4xl md:text-5xl font-bold font-heading text-solar-text mb-4">
             Frequently Asked{' '}
-            <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+            <span className="text-solar-gold">
               Questions
             </span>
           </h2>

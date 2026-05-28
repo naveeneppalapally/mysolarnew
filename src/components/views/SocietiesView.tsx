@@ -28,7 +28,7 @@ export default function SocietiesView() {
               className="text-4xl sm:text-5xl lg:text-6xl font-bold font-heading text-solar-text leading-tight"
             >
               Solar for Housing{' '}
-              <span className="bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 bg-clip-text text-transparent">
+              <span className="text-solar-gold">
                 Societies
               </span>
             </motion.h1>

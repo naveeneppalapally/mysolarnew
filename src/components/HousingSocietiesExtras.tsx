@@ -77,15 +77,15 @@ export default function HousingSocietiesExtras() {
 
   return (
     <div className="relative py-24 bg-solar-bg-secondary border-t border-solar-border overflow-hidden">
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-sky-500/[0.015] blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-amber-500/[0.015] blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-solar-purple opacity-[0.015] blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-solar-gold opacity-[0.015] blur-[100px] pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-28">
         
         {/* 1. Common Area Load Analysis */}
         <section className="space-y-12">
           <div className="text-center space-y-3">
-            <span className="inline-block text-[10px] font-semibold tracking-widest text-sky-400 uppercase bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/10">
+            <span className="inline-block text-[10px] font-semibold tracking-widest text-solar-purple uppercase bg-solar-purple-10 px-3 py-1 rounded-full border border-solar-purple-20">
               Load Analysis
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-solar-text">
@@ -108,7 +108,7 @@ export default function HousingSocietiesExtras() {
                 <span className="solar-panel-card-corner solar-panel-card-corner-br" />
 
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center font-heading font-bold text-xs">
+                  <div className="w-10 h-10 rounded-xl bg-solar-purple-10 border border-solar-purple-20 text-solar-purple flex items-center justify-center font-heading font-bold text-xs">
                     0{idx + 1}
                   </div>
                   <h4 className="font-heading font-bold text-base text-solar-text">{item.title}</h4>
@@ -117,7 +117,7 @@ export default function HousingSocietiesExtras() {
 
                 <div className="pt-3 border-t border-solar-border/60 flex items-center justify-between text-[11px] font-body">
                    <span className="text-solar-text-dim">Est. Consumption</span>
-                  <span className="font-semibold text-sky-400">{item.stat}</span>
+                  <span className="font-semibold text-solar-purple">{item.stat}</span>
                 </div>
               </div>
             ))}
@@ -127,7 +127,7 @@ export default function HousingSocietiesExtras() {
         {/* 2. Step-by-Step Installation Roadmap */}
         <section className="space-y-12">
           <div className="text-center space-y-3">
-            <span className="inline-block text-[10px] font-semibold tracking-widest text-amber-400 uppercase bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/10">
+            <span className="inline-block text-[10px] font-semibold tracking-widest text-solar-gold uppercase bg-solar-gold-10 px-3 py-1 rounded-full border border-solar-gold-20">
               Roadmap
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-solar-text">
@@ -140,7 +140,10 @@ export default function HousingSocietiesExtras() {
 
           <div className="relative">
             {/* Connecting line for desktop */}
-            <div className="hidden lg:block absolute top-1/2 left-4 right-4 h-[2px] bg-gradient-to-r from-sky-500/10 via-sky-500/30 to-sky-500/10 -translate-y-1/2 pointer-events-none" />
+            <div 
+              className="hidden lg:block absolute top-1/2 left-4 right-4 h-[2px] -translate-y-1/2 pointer-events-none" 
+              style={{ background: 'linear-gradient(90deg, rgba(var(--solar-purple-rgb), 0.1), rgba(var(--solar-purple-rgb), 0.3), rgba(var(--solar-purple-rgb), 0.1))' }}
+            />
 
             <div className="grid lg:grid-cols-5 gap-6 sm:gap-8">
               {roadmapSteps.map((step, idx) => (
@@ -148,7 +151,10 @@ export default function HousingSocietiesExtras() {
                   key={idx}
                   className="relative p-5 rounded-2xl border border-solar-border bg-solar-card/40 backdrop-blur-md hover:border-solar-border-hover transition-colors space-y-3"
                 >
-                  <div className="absolute -top-3 left-4 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-sky-600 to-sky-800 text-white font-heading font-bold text-[10px] tracking-wide">
+                  <div 
+                    className="absolute -top-3 left-4 px-2.5 py-0.5 rounded-full text-white font-heading font-bold text-[10px] tracking-wide"
+                    style={{ backgroundColor: 'var(--solar-purple)' }}
+                  >
                     STEP {step.step}
                   </div>
                   <h4 className="font-heading font-bold text-sm sm:text-base text-solar-text pt-2">{step.title}</h4>
@@ -162,7 +168,7 @@ export default function HousingSocietiesExtras() {
         {/* 3. Financing Comparison Matrix */}
         <section className="space-y-8">
           <div className="text-center space-y-3">
-            <span className="inline-block text-[10px] font-semibold tracking-widest text-sky-400 uppercase bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/10">
+            <span className="inline-block text-[10px] font-semibold tracking-widest text-solar-purple uppercase bg-solar-purple-10 px-3 py-1 rounded-full border border-solar-purple-20">
               Financial Models
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-solar-text">
@@ -193,9 +199,9 @@ export default function HousingSocietiesExtras() {
                 ].map((row, idx) => (
                   <tr key={idx} className="hover:bg-solar-card/30 transition-colors">
                     <td className="p-4 sm:p-5 font-bold text-solar-text">{row.param}</td>
-                    <td className="p-4 sm:p-5 text-amber-400 font-semibold">{row.capex}</td>
-                    <td className="p-4 sm:p-5 text-sky-400 font-semibold">{row.zip}</td>
-                    <td className="p-4 sm:p-5 text-emerald-400 font-semibold">{row.opex}</td>
+                    <td className="p-4 sm:p-5 text-solar-gold font-semibold">{row.capex}</td>
+                    <td className="p-4 sm:p-5 text-solar-purple font-semibold">{row.zip}</td>
+                    <td className="p-4 sm:p-5 text-solar-emerald font-semibold">{row.opex}</td>
                   </tr>
                 ))}
               </tbody>
@@ -206,7 +212,7 @@ export default function HousingSocietiesExtras() {
         {/* 4. RWA FAQ accordion list */}
         <section className="space-y-8 max-w-4xl mx-auto">
           <div className="text-center space-y-3">
-            <span className="inline-block text-[10px] font-semibold tracking-widest text-amber-400 uppercase bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/10">
+            <span className="inline-block text-[10px] font-semibold tracking-widest text-solar-gold uppercase bg-solar-gold-10 px-3 py-1 rounded-full border border-solar-gold-20">
               RWA FAQ
             </span>
             <h3 className="text-2xl sm:text-3xl font-bold font-heading text-solar-text">

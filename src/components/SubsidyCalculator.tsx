@@ -87,10 +87,10 @@ function ResultCard({ icon, label, value, accent = 'default', hero = false, dela
   const valueColor = {
     default: 'text-solar-text',
     gold: 'text-amber-400',
-    cyan: 'text-blue-400',
-    indigo: 'text-blue-400',
-    purple: 'text-sky-400',
-    emerald: 'text-emerald-400',
+    cyan: 'text-solar-purple',
+    indigo: 'text-solar-indigo',
+    purple: 'text-solar-purple',
+    emerald: 'text-solar-emerald',
   }[accent];
 
   return (
@@ -112,9 +112,10 @@ function ResultCard({ icon, label, value, accent = 'default', hero = false, dela
 
       <div className="flex items-center gap-2 mb-3 relative z-10">
         <span className={`
-          ${accent === 'gold' ? 'text-amber-500/70' :
-            accent === 'cyan' ? 'text-cyan-500/70' :
-            accent === 'emerald' ? 'text-emerald-500/70' :
+          opacity-75
+          ${accent === 'gold' ? 'text-solar-gold' :
+            accent === 'cyan' ? 'text-solar-purple' :
+            accent === 'emerald' ? 'text-solar-emerald' :
             'text-solar-text-dim'}
         `}>
           {icon}
@@ -190,12 +191,12 @@ export default function SubsidyCalculator() {
               <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-2 rounded-full bg-solar-border" />
               {/* Track fill */}
               <div
-                className="absolute top-1/2 -translate-y-1/2 left-0 h-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 transition-all duration-75"
-                style={{ width: `${sliderPercent}%` }}
+                className="absolute top-1/2 -translate-y-1/2 left-0 h-2 rounded-full transition-all duration-75"
+                style={{ width: `${sliderPercent}%`, backgroundColor: 'var(--solar-gold)' }}
               />
               {/* Glow on thumb position */}
               <div
-                className="absolute top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-amber-500/30 blur-xl pointer-events-none transition-all duration-75"
+                className="absolute top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-solar-gold opacity-30 blur-xl pointer-events-none transition-all duration-75"
                 style={{ left: `calc(${sliderPercent}% - 24px)` }}
               />
 
@@ -303,12 +304,12 @@ export default function SubsidyCalculator() {
               className="
                 inline-flex items-center gap-2
                 px-8 py-4 rounded-full
-                bg-gradient-to-r from-amber-500 to-amber-400
                 text-gray-950 font-heading font-bold text-base
-                shadow-[0_0_30px_rgba(245,158,11,0.3)]
-                hover:shadow-[0_0_50px_rgba(245,158,11,0.45)]
-                transition-shadow duration-300
+                shadow-[0_0_20px_rgba(245,158,11,0.2)]
+                hover:bg-solar-gold-bright
+                transition-colors duration-300
               "
+              style={{ backgroundColor: 'var(--solar-gold)' }}
             >
               Get Your Exact Quote
               <ArrowRight className="w-4 h-4" />

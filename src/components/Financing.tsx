@@ -41,34 +41,34 @@ const options = [
 
 const accentMap = {
   amber: {
-    border: 'border-amber-500/20 hover:border-amber-500/40',
-    iconBg: 'bg-amber-500/10',
-    iconText: 'text-amber-400',
-    glow: 'group-hover:shadow-[0_0_40px_-10px_rgba(245,158,11,0.18)]',
-    statBg: 'bg-amber-500/[0.06]',
-    statText: 'text-amber-400',
-    line: 'via-amber-500',
-    badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+    border: 'border-solar-gold/20 hover:border-solar-gold/40',
+    iconBg: 'bg-solar-gold-10',
+    iconText: 'text-solar-gold',
+    glow: 'group-hover:shadow-glow-gold',
+    statBg: 'bg-solar-gold-6',
+    statText: 'text-solar-gold',
+    line: 'via-solar-gold',
+    badge: 'bg-solar-gold-10 text-solar-gold border-solar-gold-20',
   },
   sky: {
-    border: 'border-sky-500/20 hover:border-sky-500/40',
-    iconBg: 'bg-sky-500/10',
-    iconText: 'text-sky-400',
-    glow: 'group-hover:shadow-[0_0_40px_-10px_rgba(14,165,233,0.18)]',
-    statBg: 'bg-sky-500/[0.06]',
-    statText: 'text-sky-400',
-    line: 'via-sky-500',
-    badge: 'bg-sky-500/10 text-sky-400 border-sky-500/20',
+    border: 'border-solar-purple-20 hover:border-solar-purple-40',
+    iconBg: 'bg-solar-purple-10',
+    iconText: 'text-solar-purple',
+    glow: 'group-hover:shadow-glow-purple',
+    statBg: 'bg-solar-purple-6',
+    statText: 'text-solar-purple',
+    line: 'via-solar-purple',
+    badge: 'bg-solar-purple-10 text-solar-purple border-solar-purple-20',
   },
   emerald: {
-    border: 'border-emerald-500/20 hover:border-emerald-500/40',
-    iconBg: 'bg-emerald-500/10',
-    iconText: 'text-emerald-400',
-    glow: 'group-hover:shadow-[0_0_40px_-10px_rgba(16,185,129,0.18)]',
-    statBg: 'bg-emerald-500/[0.06]',
-    statText: 'text-emerald-400',
-    line: 'via-emerald-500',
-    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+    border: 'border-solar-emerald-20 hover:border-solar-emerald-40',
+    iconBg: 'bg-solar-emerald-10',
+    iconText: 'text-solar-emerald',
+    glow: 'group-hover:shadow-glow-purple',
+    statBg: 'bg-solar-emerald-6',
+    statText: 'text-solar-emerald',
+    line: 'via-solar-emerald',
+    badge: 'bg-solar-emerald-10 text-solar-emerald border-solar-emerald-20',
   },
 };
 
@@ -192,12 +192,12 @@ export default function Financing() {
             className="
               inline-flex items-center gap-2
               px-8 py-4 rounded-full
-              bg-gradient-to-r from-amber-500 to-amber-400
               text-gray-950 font-heading font-bold text-base
-              shadow-[0_0_30px_rgba(245,158,11,0.3)]
-              hover:shadow-[0_0_50px_rgba(245,158,11,0.45)]
-              transition-shadow duration-300
+              shadow-[0_0_20px_rgba(245,158,11,0.2)]
+              hover:bg-solar-gold-bright
+              transition-colors duration-300
             "
+            style={{ backgroundColor: 'var(--solar-gold)' }}
           >
             Explore Financing Options
             <ArrowRight className="w-4 h-4" />
