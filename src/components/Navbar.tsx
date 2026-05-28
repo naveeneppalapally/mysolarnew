@@ -61,20 +61,24 @@ const techItems: DropdownItem[] = [
 ];
 
 function BioSolarMenuIcon({ isOpen }: { isOpen: boolean }) {
+  const { theme } = useTheme();
+  const baseColor = theme === 'dark' ? '#f3f4f6' : '#1f2937';
+  const activeColor = '#F59E0B'; // Premium Brand Gold
+
   return (
     <div className="relative w-6 h-5 flex flex-col justify-between items-center cursor-pointer">
       <motion.span
-        animate={isOpen ? { rotate: 45, y: 8, backgroundColor: "rgb(239, 68, 68)" } : { rotate: 0, y: 0, backgroundColor: "rgb(16, 185, 129)" }}
+        animate={isOpen ? { rotate: 45, y: 8, backgroundColor: activeColor } : { rotate: 0, y: 0, backgroundColor: baseColor }}
         transition={{ duration: 0.3 }}
         className="w-6 h-[2.5px] rounded origin-center"
       />
       <motion.span
-        animate={isOpen ? { scaleX: 0, opacity: 0 } : { scaleX: 1, opacity: 1, backgroundColor: "rgb(52, 211, 153)" }}
+        animate={isOpen ? { scaleX: 0, opacity: 0 } : { scaleX: 1, opacity: 1, backgroundColor: baseColor }}
         transition={{ duration: 0.2 }}
         className="w-6 h-[2.5px] rounded origin-center"
       />
       <motion.span
-        animate={isOpen ? { rotate: -45, y: -8, backgroundColor: "rgb(239, 68, 68)" } : { rotate: 0, y: 0, backgroundColor: "rgb(5, 150, 105)" }}
+        animate={isOpen ? { rotate: -45, y: -8, backgroundColor: activeColor } : { rotate: 0, y: 0, backgroundColor: baseColor }}
         transition={{ duration: 0.3 }}
         className="w-6 h-[2.5px] rounded origin-center"
       />
@@ -288,8 +292,8 @@ export default function Navbar() {
           onClick={() => navigateTo('#home')}
           className="flex items-center gap-2 cursor-pointer"
         >
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-purple-600 flex items-center justify-center">
-            <Sun size={16} className="text-gray-900" />
+          <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500">
+            <Sun size={16} />
           </div>
           <span className="text-lg font-bold font-heading tracking-wide">
             <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
@@ -331,7 +335,7 @@ export default function Navbar() {
               Solutions
               <ChevronDown size={14} className={`transition-transform duration-200 ${hoveredMenu === 'offerings' ? 'rotate-180' : ''}`} />
               <motion.span
-                className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-purple-500 rounded-full"
+                className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full"
                 initial={false}
                 animate={{ scaleX: isSolutionsActive ? 1 : 0 }}
                 transition={{ duration: 0.2 }}
@@ -388,7 +392,7 @@ export default function Navbar() {
               Technology
               <ChevronDown size={14} className={`transition-transform duration-200 ${hoveredMenu === 'tech' ? 'rotate-180' : ''}`} />
               <motion.span
-                className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-purple-500 rounded-full"
+                className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full"
                 initial={false}
                 animate={{ scaleX: isTechActive ? 1 : 0 }}
                 transition={{ duration: 0.2 }}

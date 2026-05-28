@@ -284,7 +284,7 @@ Please contact me for a free site assessment and quote.`;
 
             {/* Mandatory Net-Metering Documents Checklist */}
             <div className="border border-solar-border rounded-2xl p-5 bg-solar-card-solid relative overflow-hidden font-body text-xs sm:text-sm">
-              <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-amber-500 to-purple-500" />
+              <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-amber-400 to-amber-600" />
               <h4 className="font-heading font-bold text-sm text-solar-text mb-2 pl-2">
                 Mandatory Net-Metering Checklist
               </h4>

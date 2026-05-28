@@ -100,8 +100,8 @@ export default function Footer() {
           {/* Column 1 — Company */}
           <div className="space-y-4 lg:col-span-1 sm:col-span-2 md:col-span-3 lg:w-auto">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-purple-600 flex items-center justify-center">
-                <Sun size={16} className="text-solar-bg" />
+              <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500">
+                <Sun size={16} />
               </div>
               <span className="text-lg font-bold font-heading tracking-wide">
                 <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">

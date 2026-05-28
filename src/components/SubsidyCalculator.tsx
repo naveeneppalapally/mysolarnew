@@ -190,12 +190,12 @@ export default function SubsidyCalculator() {
               <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 h-2 rounded-full bg-solar-border" />
               {/* Track fill */}
               <div
-                className="absolute top-1/2 -translate-y-1/2 left-0 h-2 rounded-full bg-gradient-to-r from-amber-500 via-purple-500 to-indigo-600 transition-all duration-75"
+                className="absolute top-1/2 -translate-y-1/2 left-0 h-2 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 transition-all duration-75"
                 style={{ width: `${sliderPercent}%` }}
               />
               {/* Glow on thumb position */}
               <div
-                className="absolute top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-purple-500/30 blur-xl pointer-events-none transition-all duration-75"
+                className="absolute top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-amber-500/30 blur-xl pointer-events-none transition-all duration-75"
                 style={{ left: `calc(${sliderPercent}% - 24px)` }}
               />
 

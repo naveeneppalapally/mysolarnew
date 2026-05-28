@@ -140,7 +140,7 @@ export default function HousingSocietiesExtras() {
 
           <div className="relative">
             {/* Connecting line for desktop */}
-            <div className="hidden lg:block absolute top-1/2 left-4 right-4 h-[2px] bg-gradient-to-r from-purple-500/10 via-amber-500/20 to-purple-500/10 -translate-y-1/2 pointer-events-none" />
+            <div className="hidden lg:block absolute top-1/2 left-4 right-4 h-[2px] bg-gradient-to-r from-purple-500/10 via-purple-500/30 to-purple-500/10 -translate-y-1/2 pointer-events-none" />
 
             <div className="grid lg:grid-cols-5 gap-6 sm:gap-8">
               {roadmapSteps.map((step, idx) => (
@@ -148,7 +148,7 @@ export default function HousingSocietiesExtras() {
                   key={idx}
                   className="relative p-5 rounded-2xl border border-solar-border bg-solar-card/40 backdrop-blur-md hover:border-solar-border-hover transition-colors space-y-3"
                 >
-                  <div className="absolute -top-3 left-4 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-purple-600 to-amber-500 text-white font-heading font-bold text-[10px] tracking-wide">
+                  <div className="absolute -top-3 left-4 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-purple-600 to-purple-800 text-white font-heading font-bold text-[10px] tracking-wide">
                     STEP {step.step}
                   </div>
                   <h4 className="font-heading font-bold text-sm sm:text-base text-solar-text pt-2">{step.title}</h4>
