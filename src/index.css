@@ -403,11 +403,17 @@ html.style-none.light-theme {
   background-color: rgba(192, 124, 10, 0.035) !important; /* Soft Amber/Gold Glow */
 }
 
-/* 2. Global Heading & Text Gradient Overrides (Amber to Purple-Indigo) */
+/* 2. Global Heading & Text Gradient Overrides (Amber to Gold/Orange) */
 .light-theme .bg-gradient-to-r.from-amber-400.via-yellow-300.to-amber-500,
 .light-theme .bg-gradient-to-r.from-amber-300.to-amber-500,
 .light-theme .bg-gradient-to-r.from-amber-400.via-yellow-400.to-orange-400,
-.light-theme .gradient-text-gold,
+.light-theme .gradient-text-gold {
+  background: linear-gradient(135deg, #c07c0a 0%, #d4580a 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
 .light-theme .gradient-text-cyan {
   background: linear-gradient(135deg, var(--solar-purple) 0%, var(--solar-indigo) 100%) !important;
   -webkit-background-clip: text !important;
@@ -417,13 +423,13 @@ html.style-none.light-theme {
 
 /* 3. Section Badges (Labels) Overrides */
 .light-theme .section-label {
-  color: var(--solar-purple) !important;
-  border-color: rgba(124, 58, 237, 0.18) !important;
-  background: rgba(124, 58, 237, 0.04) !important;
+  color: #c07c0a !important;
+  border-color: rgba(192, 124, 10, 0.18) !important;
+  background: rgba(192, 124, 10, 0.04) !important;
 }
 .light-theme .section-label::before {
-  background: var(--solar-purple) !important;
-  box-shadow: 0 0 8px var(--solar-purple) !important;
+  background: #c07c0a !important;
+  box-shadow: 0 0 8px #c07c0a !important;
 }
 
 /* 4. Glass Card Hover Glows */
@@ -431,17 +437,17 @@ html.style-none.light-theme {
   background-color: rgba(255, 252, 245, 0.92);
   box-shadow: 
     0 15px 40px rgba(180, 130, 20, 0.10), 
-    0 0 35px rgba(124, 58, 237, 0.12) !important;
+    0 0 35px rgba(14, 165, 233, 0.12) !important;
 }
 
 /* 5. Outline Buttons */
 .light-theme .outline-btn {
-  border-color: rgba(124, 58, 237, 0.15) !important;
-  background: rgba(124, 58, 237, 0.02) !important;
+  border-color: rgba(14, 165, 233, 0.15) !important;
+  background: rgba(14, 165, 233, 0.02) !important;
 }
 .light-theme .outline-btn:hover {
   border-color: var(--solar-purple) !important;
-  box-shadow: 0 0 20px rgba(124, 58, 237, 0.12) !important;
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.12) !important;
   color: var(--solar-purple) !important;
 }
 
