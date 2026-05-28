@@ -217,7 +217,6 @@ const Loader = ({ isVisible }: LoaderProps) => {
   const corona2Ref = useRef<SVGGElement>(null);
   const flareRef = useRef<SVGRectElement>(null);
   const lightRaysRef = useRef<SVGGElement>(null);
-  const maskGroupRef = useRef<SVGGElement>(null);
   const revealStartTimeRef = useRef<number | null>(null);
 
   // We will initialize the SVG mask only when the reveal phase starts
@@ -281,42 +280,25 @@ const Loader = ({ isVisible }: LoaderProps) => {
         // Phase 3: Sunburst Ray Reveal (triggered when isVisible changes to false)
         if (revealStartTimeRef.current === null) {
           revealStartTimeRef.current = Date.now();
-          if (blackBgRef.current) {
-            blackBgRef.current.style.setProperty('mask-image', 'url(#rayRevealMask)');
-            blackBgRef.current.style.setProperty('-webkit-mask-image', 'url(#rayRevealMask)');
-          }
         }
         const revealElapsed = Date.now() - revealStartTimeRef.current;
-        const pct = Math.min(1, revealElapsed / 1600); // 1600ms reveal wipe
+        const pct = Math.min(1, revealElapsed / 1200); // 1200ms reveal wipe
         const easedReveal = easeOutQuad(pct);
         const opacityVal = 1 - easedReveal;
 
-        // Animate rays scale & rotation from Phase 2 values to reveal ends
-        rayScale = 1.3 + easedReveal * 5.2; // Grows from 1.3x to 6.5x
-        rayRotation = 15 + easedReveal * 25; // Rotates from 15deg to 40deg
+        // Animate rays scale & rotation to create dynamic expansion
+        rayScale = 1.3 + easedReveal * 2.7; // Grows from 1.3x to 4.0x
+        rayRotation = 15 + easedReveal * 20; // Rotates
         rayOpacity = 0.85 * opacityVal; // Fades out as reveal completes
 
-        // Fade out sun and text in center
+        // Fade out and scale up the sun core to disperse it
         if (sunWrapperRef.current) {
           sunWrapperRef.current.style.opacity = String(opacityVal);
-          sunWrapperRef.current.style.transform = `scale(${1.0 + easedReveal * 0.08})`;
+          sunWrapperRef.current.style.transform = `scale(${1.0 + easedReveal * 0.3})`;
         }
         if (textContainerRef.current) {
           textContainerRef.current.style.opacity = String(opacityVal);
         }
-      }
-
-      // Update SVG mask position, scale, and rotation (mask is only active during reveal phase)
-      if (maskGroupRef.current) {
-        let cx = window.innerWidth / 2;
-        let cy = window.innerHeight / 2;
-        if (sunWrapperRef.current) {
-          const rect = sunWrapperRef.current.getBoundingClientRect();
-          cx = rect.left + rect.width / 2;
-          cy = rect.top + rect.height / 2;
-        }
-        const maskScale = isVisible === false ? rayScale : 0;
-        maskGroupRef.current.style.transform = `translate(${cx}px, ${cy}px) scale(${maskScale}) rotate(${rayRotation}deg)`;
       }
 
       // Update visual volumetric rays transform and opacity in sync
@@ -397,38 +379,6 @@ const Loader = ({ isVisible }: LoaderProps) => {
             </motion.p>
           </div>
 
-          {/* SVG Sunburst Mask Definition */}
-          <svg 
-            className="absolute pointer-events-none"
-            style={{ width: '1px', height: '1px', opacity: 0, overflow: 'hidden' }}
-          >
-            <defs>
-              {/* Blur filter for feathering mask edges for realistic soft light reveals */}
-              <filter id="maskBlur" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="15" />
-              </filter>
-
-              <mask id="rayRevealMask" maskUnits="userSpaceOnUse">
-                {/* Loader is visible where white */}
-                <rect x="0" y="0" width="100%" height="100%" fill="white" />
-                {/* Website is revealed where black (sun core + 12 rays with feathered edges) */}
-                <g ref={maskGroupRef} style={{ transformOrigin: '0px 0px' }} filter="url(#maskBlur)">
-                  <circle cx="0" cy="0" r="76" fill="black" />
-                  {Array.from({ length: 12 }).map((_, i) => (
-                    <polygon
-                      key={i}
-                      points="-18,0 0,-1200 18,0"
-                      fill="black"
-                      style={{
-                        transform: `rotate(${i * 30}deg)`,
-                        transformOrigin: '0px 0px',
-                      }}
-                    />
-                  ))}
-                </g>
-              </mask>
-            </defs>
-          </svg>
         </motion.div>
       )}
     </AnimatePresence>

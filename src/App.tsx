@@ -155,8 +155,7 @@ function AppContent() {
           background: 'var(--solar-bg)',
           minHeight: '100vh',
           opacity: isLoading ? 0 : 1,
-          pointerEvents: isLoading ? 'none' : 'auto',
-          visibility: isLoading ? 'hidden' : 'visible'
+          pointerEvents: isLoading ? 'none' : 'auto'
         }}
       >
         {mounted && (
