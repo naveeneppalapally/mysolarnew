@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import WhySolar from '../WhySolar';
 import HowItWorks from '../HowItWorks';
+import ResidentialExtras from '../ResidentialExtras';
 import ContactForm from '../ContactForm';
 
 export default function HomesView() {
@@ -47,6 +48,9 @@ export default function HomesView() {
 
       {/* How It Works Component (Features 6-step net metering timeline) */}
       <HowItWorks />
+
+      {/* Information dense tables, leakage anchoring guarantee and checklists */}
+      <ResidentialExtras />
 
       {/* Document checklist & Contact form */}
       <ContactForm />

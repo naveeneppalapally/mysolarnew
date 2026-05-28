@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import CommercialSolar from '../CommercialSolar';
+import CommercialSolarExtras from '../CommercialSolarExtras';
+import ContactForm from '../ContactForm';
 
 export default function CommercialView() {
   return (
@@ -42,6 +44,12 @@ export default function CommercialView() {
 
       {/* Commercial Solar Content */}
       <CommercialSolar />
+
+      {/* Commercial extras: tax, comparative table, CEIG */}
+      <CommercialSolarExtras />
+
+      {/* Contact lead capture */}
+      <ContactForm />
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import TelanganaPolicy from '../TelanganaPolicy';
+import FarmersExtras from '../FarmersExtras';
+import ContactForm from '../ContactForm';
 
 export default function FarmersView() {
   return (
@@ -42,6 +44,12 @@ export default function FarmersView() {
 
       {/* Farmers PM-KUSUM Content */}
       <TelanganaPolicy />
+
+      {/* Farmers extras: pump splits, leasing income guide, agricultural FAQs */}
+      <FarmersExtras />
+
+      {/* Lead Capture Form */}
+      <ContactForm />
     </div>
   );
 }

@@ -18,6 +18,8 @@ import { SolarTimeProvider, useSolarTime } from './context/SolarTimeContext';
 import { BackgroundSettingsProvider } from './context/BackgroundSettingsContext';
 import { ThemeProvider } from './context/ThemeContext';
 
+import { smoothScrollTo } from './lib/utils';
+
 // How long the loader plays before fading out (ms)
 const LOADER_HIDE_DELAY = 2400;
 
@@ -75,8 +77,16 @@ function AppContent() {
       const baseHash = fullHash.split('?')[0];
       setCurrentHash(baseHash);
       
-      // Reset scroll position to top instantly when page changes
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      if (fullHash.includes('tab=')) {
+        // If switching pages, reset top first, then scroll down to #why-solar
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        setTimeout(() => {
+          smoothScrollTo('why-solar');
+        }, 150);
+      } else {
+        // Reset scroll position to top instantly when page changes
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
     };
 
     window.addEventListener('hashchange', handleHashChange);

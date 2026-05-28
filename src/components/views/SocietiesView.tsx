@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import HousingSocieties from '../HousingSocieties';
+import HousingSocietiesExtras from '../HousingSocietiesExtras';
+import ContactForm from '../ContactForm';
 
 export default function SocietiesView() {
   return (
@@ -42,6 +44,12 @@ export default function SocietiesView() {
 
       {/* Housing Societies Content */}
       <HousingSocieties />
+
+      {/* RWA roadmaps, FAQs and load breakdowns */}
+      <HousingSocietiesExtras />
+
+      {/* Lead Capture Form */}
+      <ContactForm />
     </div>
   );
 }
