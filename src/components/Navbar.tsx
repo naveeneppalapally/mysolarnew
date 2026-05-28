@@ -364,16 +364,10 @@ export default function Navbar() {
           <button
             onClick={() => navigateTo('#home')}
             className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer ${
-              activeHash === '#home' ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
+              activeHash === '#home' ? 'text-solar-gold font-semibold' : 'text-solar-text-muted hover:text-solar-text'
             }`}
           >
             Home
-            <motion.span
-              className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-solar-gold rounded-full"
-              initial={false}
-              animate={{ scaleX: activeHash === '#home' ? 1 : 0 }}
-              transition={{ duration: 0.2 }}
-            />
           </button>
 
           {/* Solutions Dropdown Trigger */}
@@ -384,17 +378,11 @@ export default function Navbar() {
           >
             <button
               className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer flex items-center gap-1 ${
-                isSolutionsActive ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
+                isSolutionsActive ? 'text-solar-gold font-semibold' : 'text-solar-text-muted hover:text-solar-text'
               }`}
             >
               Solutions
               <ChevronDown size={14} className={`transition-transform duration-200 ${hoveredMenu === 'offerings' ? 'rotate-180' : ''}`} />
-              <motion.span
-                className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-solar-gold rounded-full"
-                initial={false}
-                animate={{ scaleX: isSolutionsActive ? 1 : 0 }}
-                transition={{ duration: 0.2 }}
-              />
             </button>
 
             {/* solutions Mega Menu Dropdown */}
@@ -441,17 +429,11 @@ export default function Navbar() {
           >
             <button
               className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer flex items-center gap-1 ${
-                isTechActive ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
+                isTechActive ? 'text-solar-gold font-semibold' : 'text-solar-text-muted hover:text-solar-text'
               }`}
             >
               Technology
               <ChevronDown size={14} className={`transition-transform duration-200 ${hoveredMenu === 'tech' ? 'rotate-180' : ''}`} />
-              <motion.span
-                className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-solar-gold rounded-full"
-                initial={false}
-                animate={{ scaleX: isTechActive ? 1 : 0 }}
-                transition={{ duration: 0.2 }}
-              />
             </button>
 
             {/* tech Dropdown Menu */}
@@ -497,33 +479,21 @@ export default function Navbar() {
           <button
             onClick={() => navigateTo('#calculator')}
             className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer flex items-center gap-1.5 ${
-              activeHash === '#calculator' ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
+              activeHash === '#calculator' ? 'text-solar-gold font-semibold' : 'text-solar-text-muted hover:text-solar-text'
             }`}
           >
             <Calculator className="w-3.5 h-3.5" />
             Calculator
-            <motion.span
-              className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-solar-gold rounded-full"
-              initial={false}
-              animate={{ scaleX: activeHash === '#calculator' ? 1 : 0 }}
-              transition={{ duration: 0.2 }}
-            />
           </button>
 
           {/* FAQ Link */}
           <button
             onClick={() => navigateTo('#faq')}
             className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer ${
-              activeHash === '#faq' ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
+              activeHash === '#faq' ? 'text-solar-gold font-semibold' : 'text-solar-text-muted hover:text-solar-text'
             }`}
           >
             FAQ
-            <motion.span
-              className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-solar-gold rounded-full"
-              initial={false}
-              animate={{ scaleX: activeHash === '#faq' ? 1 : 0 }}
-              transition={{ duration: 0.2 }}
-            />
           </button>
         </div>
 
