@@ -228,42 +228,15 @@ export default function Navbar() {
   const [mobileOfferingsOpen, setMobileOfferingsOpen] = useState(false);
   const [mobileTechOpen, setMobileTechOpen] = useState(false);
 
-  // Lock body scroll when mobile menu is open using high-fidelity fixed positioning (preventing touch overscroll background movement)
+  // Lock body scroll when mobile menu is open using high-fidelity overflow control (preventing scroll interference)
   useEffect(() => {
     if (mobileOpen) {
-      const scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
-      document.body.setAttribute('data-scroll-y', scrollY.toString());
-      
-      document.documentElement.style.overflow = 'hidden';
-      document.documentElement.style.height = '100vh';
     } else {
-      const scrollAttr = document.body.getAttribute('data-scroll-y');
-      const scrollY = scrollAttr ? parseInt(scrollAttr, 10) : 0;
-      
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
       document.body.style.overflow = '';
-      document.body.removeAttribute('data-scroll-y');
-      
-      document.documentElement.style.overflow = '';
-      document.documentElement.style.height = '';
-      
-      if (scrollY > 0) {
-        window.scrollTo({ top: scrollY, behavior: 'instant' as ScrollBehavior });
-      }
     }
     return () => {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
       document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      document.documentElement.style.height = '';
     };
   }, [mobileOpen]);
 
@@ -296,15 +269,21 @@ export default function Navbar() {
     
     const [path] = href.split('?');
     
-    if (path === '#contact') {
-      // If navigating to contact, go to home hash first then scroll
-      if (window.location.hash !== '#home') {
+    if (path === '#contact' || path === '#quote-form') {
+      const targetId = 'quote-form';
+      if (window.location.hash !== '#home' && window.location.hash !== '') {
         window.location.hash = '#home';
         setTimeout(() => {
-          smoothScrollTo('contact');
+          smoothScrollTo(targetId);
         }, 150);
       } else {
-        smoothScrollTo('contact');
+        smoothScrollTo(targetId);
+      }
+    } else if (path === '#home') {
+      if (window.location.hash === '#home' || window.location.hash === '') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.location.hash = '#home';
       }
     } else {
       window.location.hash = href;
@@ -545,19 +524,21 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            /* UPGRADED: The outer container is completely fixed and does NOT scroll, preventing background leak during overscroll bounce */
-            className="fixed inset-0 z-[99] text-solar-text backdrop-blur-2xl overflow-hidden"
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            /* UPGRADED: The outer container is completely fixed, does NOT scroll, and extends far below the screen to prevent background leak during overscroll/dynamic URL bar resizing */
+            className="fixed top-0 left-0 right-0 z-[99] text-solar-text overflow-hidden"
             style={{
               /* UPGRADED: subtle gradient background that dynamically adapts to light/dark themes */
               background: theme === 'light'
                 ? 'linear-gradient(to bottom, #faf7f2 0%, #ede5d8 100%)'
                 : 'linear-gradient(to bottom, #0a0f1e 0%, #030712 100%)',
+              bottom: '-150px', // UPGRADED: Over-extend backdrop far below screen to 100% block dynamic viewport leaks
             }}
           >
-            {/* UPGRADED: The inner container handles the native scrolling and overscroll behavior inside the solid backdrop */}
+            {/* UPGRADED: The inner container handles native scrolling comfortably high above phone dynamic bottom nav bars */}
             <div 
-              className="w-full h-full overflow-y-auto pt-24 pb-12 px-4"
+              data-lenis-prevent
+              className="w-full h-screen overflow-y-auto pt-24 pb-36 px-4"
               style={{
                 overscrollBehavior: 'contain',
               }}

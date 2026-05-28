@@ -1,31 +1,43 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef, useLayoutEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Zap, Gift, Wallet, PiggyBank, Clock, TrendingUp, Gauge, ArrowRight } from 'lucide-react';
 import { calculateSubsidy } from '../lib/utils';
 
 /* ─── Animated Number Counter ─── */
+const formatValue = (val: number, decimals: number) => {
+  return decimals > 0 
+    ? val.toFixed(decimals) 
+    : Math.round(val).toLocaleString('en-IN');
+};
+
 function AnimatedValue({ value, prefix = '', suffix = '', decimals = 0 }: {
   value: number; prefix?: string; suffix?: string; decimals?: number;
 }) {
   const spanRef = useRef<HTMLSpanElement>(null);
   const prevValueRef = useRef(value);
+  const animationFrameRef = useRef<number | null>(null);
+
+  useLayoutEffect(() => {
+    if (spanRef.current) {
+      spanRef.current.innerText = `${prefix}${formatValue(value, decimals)}${suffix}`;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    let startTimestamp: number | null = null;
-    const duration = 250; // Snappy 250ms count-up/down
     const startVal = prevValueRef.current;
     const endVal = value;
     prevValueRef.current = value;
 
     if (startVal === endVal) {
       if (spanRef.current) {
-        const num = decimals > 0 ? endVal.toFixed(decimals) : Math.round(endVal).toLocaleString('en-IN');
-        spanRef.current.innerText = `${prefix}${num}${suffix}`;
+        spanRef.current.innerText = `${prefix}${formatValue(endVal, decimals)}${suffix}`;
       }
       return;
     }
 
-    let animationFrameId: number;
+    let startTimestamp: number | null = null;
+    const duration = 250; // Snappy 250ms count-up/down
 
     const step = (timestamp: number) => {
       if (!startTimestamp) startTimestamp = timestamp;
@@ -37,22 +49,23 @@ function AnimatedValue({ value, prefix = '', suffix = '', decimals = 0 }: {
       const currentVal = startVal + (endVal - startVal) * easedProgress;
 
       if (spanRef.current) {
-        const num = decimals > 0 ? currentVal.toFixed(decimals) : Math.round(currentVal).toLocaleString('en-IN');
-        spanRef.current.innerText = `${prefix}${num}${suffix}`;
+        spanRef.current.innerText = `${prefix}${formatValue(currentVal, decimals)}${suffix}`;
       }
 
       if (progress < 1) {
-        animationFrameId = requestAnimationFrame(step);
+        animationFrameRef.current = requestAnimationFrame(step);
       }
     };
 
-    animationFrameId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(animationFrameId);
+    animationFrameRef.current = requestAnimationFrame(step);
+    return () => {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
   }, [value, prefix, suffix, decimals]);
 
-  // Render initial value on mount
-  const initialNum = decimals > 0 ? value.toFixed(decimals) : Math.round(value).toLocaleString('en-IN');
-  return <span ref={spanRef}>{`${prefix}${initialNum}${suffix}`}</span>;
+  return <span ref={spanRef} />;
 }
 
 /* ─── IndianRupee inline icon ─── */
@@ -69,12 +82,13 @@ interface CardProps {
   icon: React.ReactNode;
   label: string;
   value: React.ReactNode;
+  valueText?: string;
   accent?: 'default' | 'gold' | 'cyan' | 'emerald' | 'indigo' | 'purple';
   hero?: boolean;
   delay?: number;
 }
 
-function ResultCard({ icon, label, value, accent = 'default', hero = false, delay = 0 }: CardProps) {
+function ResultCard({ icon, label, value, valueText, accent = 'default', hero = false, delay = 0 }: CardProps) {
   const panelAccentClass = {
     default: 'solar-panel-card-gold',
     gold: 'solar-panel-card-gold',
@@ -93,6 +107,19 @@ function ResultCard({ icon, label, value, accent = 'default', hero = false, dela
     emerald: 'text-solar-emerald',
   }[accent];
 
+  // Dynamically adjust font size for mobile based on text length to prevent overflow
+  const isLong = valueText && valueText.length >= 8;
+  const isVeryLong = valueText && valueText.length >= 10;
+  
+  let mobileTextSize = hero ? 'text-xl' : 'text-lg'; // base mobile sizes
+  if (isVeryLong) {
+    mobileTextSize = hero ? 'text-base' : 'text-sm';
+  } else if (isLong) {
+    mobileTextSize = hero ? 'text-lg' : 'text-base';
+  }
+
+  const textSizeClass = `${mobileTextSize} sm:${hero ? 'text-3xl' : 'text-2xl'}`;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 24, scale: 0.95 }}
@@ -100,7 +127,7 @@ function ResultCard({ icon, label, value, accent = 'default', hero = false, dela
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}
       className={`
-        solar-panel-card ${panelAccentClass} p-5 cursor-default group
+        solar-panel-card ${panelAccentClass} p-4 sm:p-5 cursor-default group overflow-hidden
         ${hero ? 'md:col-span-1' : ''}
       `}
     >
@@ -125,7 +152,10 @@ function ResultCard({ icon, label, value, accent = 'default', hero = false, dela
         </span>
       </div>
 
-      <div className={`font-heading font-bold leading-none relative z-10 ${valueColor} ${hero ? 'text-2xl sm:text-3xl' : 'text-xl sm:text-2xl'}`}>
+      <div 
+        className={`font-heading font-bold leading-none relative z-10 truncate ${valueColor} ${textSizeClass}`}
+        style={{ minWidth: '40px', maxWidth: '100%' }}
+      >
         {value}
       </div>
     </motion.div>
@@ -134,10 +164,20 @@ function ResultCard({ icon, label, value, accent = 'default', hero = false, dela
 
 /* ─── Main SubsidyCalculator ─── */
 export default function SubsidyCalculator() {
+  const [localBill, setLocalBill] = useState(3000);
   const [bill, setBill] = useState(3000);
+
+  // Debounce bill state update by 16ms to avoid render flashes
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setBill(localBill);
+    }, 16);
+    return () => clearTimeout(handler);
+  }, [localBill]);
+
   const result = useMemo(() => calculateSubsidy(bill), [bill]);
 
-  const sliderPercent = ((bill - 500) / (15000 - 500)) * 100;
+  const sliderPercent = ((localBill - 500) / (15000 - 500)) * 100;
 
   return (
     <section id="calculator" className="relative overflow-hidden">
@@ -166,12 +206,12 @@ export default function SubsidyCalculator() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative rounded-3xl border border-solar-border bg-solar-card backdrop-blur-xl overflow-hidden"
+          className="relative rounded-3xl border border-solar-border bg-solar-card backdrop-blur-xl"
         >
           {/* Gold top border */}
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-500 to-transparent" />
 
-          {/* ─── Slider Area ─── */}
+          {/* ─── Slider Area (Restored to stable non-sticky position) ─── */}
           <div className="px-6 sm:px-10 pt-10 pb-8 border-b border-solar-border">
             <p className="text-solar-text-muted text-sm font-body tracking-wide text-center mb-6">
               What's your monthly electricity bill?
@@ -205,8 +245,8 @@ export default function SubsidyCalculator() {
                 min={500}
                 max={15000}
                 step={100}
-                value={bill}
-                onChange={(e) => setBill(Number(e.target.value))}
+                value={localBill}
+                onChange={(e) => setLocalBill(Number(e.target.value))}
                 className="relative z-10 w-full h-2 appearance-none bg-transparent cursor-pointer
                   [&::-webkit-slider-thumb]:appearance-none
                   [&::-webkit-slider-thumb]:w-6
@@ -239,23 +279,27 @@ export default function SubsidyCalculator() {
 
           {/* ─── Results Dashboard ─── */}
           <div className="px-6 sm:px-10 py-10">
+
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               <ResultCard
                 icon={<Zap className="w-4 h-4" />}
                 label="Recommended System"
-                value={<><AnimatedValue value={result.systemSize} /> <span className="text-sm font-normal text-solar-text-dim">kW</span></>}
+                value={<><AnimatedValue value={result.systemSize} /> <span className="text-xs sm:text-sm font-normal text-solar-text-dim">kW</span></>}
+                valueText={`${result.systemSize} kW`}
                 delay={0}
               />
               <ResultCard
                 icon={<RupeeIcon className="w-4 h-4" />}
                 label="Total Cost"
                 value={<AnimatedValue value={result.totalCost} prefix="₹" />}
+                valueText={`₹${result.totalCost.toLocaleString('en-IN')}`}
                 delay={0.05}
               />
               <ResultCard
                 icon={<Gift className="w-4 h-4" />}
                 label="Government Subsidy"
                 value={<AnimatedValue value={result.totalSubsidy} prefix="₹" />}
+                valueText={`₹${result.totalSubsidy.toLocaleString('en-IN')}`}
                 accent="emerald"
                 delay={0.1}
               />
@@ -263,6 +307,7 @@ export default function SubsidyCalculator() {
                 icon={<Wallet className="w-4 h-4" />}
                 label="You Pay Only"
                 value={<AnimatedValue value={result.netCost} prefix="₹" />}
+                valueText={`₹${result.netCost.toLocaleString('en-IN')}`}
                 accent="gold"
                 hero
                 delay={0.15}
@@ -271,18 +316,21 @@ export default function SubsidyCalculator() {
                 icon={<PiggyBank className="w-4 h-4" />}
                 label="Monthly Savings"
                 value={<AnimatedValue value={Math.round(result.annualSavings / 12)} prefix="₹" />}
+                valueText={`₹${Math.round(result.annualSavings / 12).toLocaleString('en-IN')}`}
                 delay={0.2}
               />
               <ResultCard
                 icon={<Clock className="w-4 h-4" />}
                 label="Payback Period"
-                value={<><AnimatedValue value={result.paybackYears} decimals={1} /> <span className="text-sm font-normal text-solar-text-dim">Years</span></>}
+                value={<><AnimatedValue value={result.paybackYears} decimals={1} /> <span className="text-xs sm:text-sm font-normal text-solar-text-dim">Years</span></>}
+                valueText={`${result.paybackYears.toFixed(1)} Years`}
                 delay={0.25}
               />
               <ResultCard
                 icon={<TrendingUp className="w-4 h-4" />}
                 label="25-Year Savings"
                 value={<AnimatedValue value={Math.round(result.savings25Year)} prefix="₹" />}
+                valueText={`₹${Math.round(result.savings25Year).toLocaleString('en-IN')}`}
                 accent="cyan"
                 hero
                 delay={0.3}
@@ -290,7 +338,8 @@ export default function SubsidyCalculator() {
               <ResultCard
                 icon={<Gauge className="w-4 h-4" />}
                 label="Monthly Generation"
-                value={<><AnimatedValue value={result.monthlyGeneration} /> <span className="text-sm font-normal text-solar-text-dim">units</span></>}
+                value={<><AnimatedValue value={result.monthlyGeneration} /> <span className="text-xs sm:text-sm font-normal text-solar-text-dim">units</span></>}
+                valueText={`${result.monthlyGeneration.toLocaleString('en-IN')} units`}
                 delay={0.35}
               />
             </div>

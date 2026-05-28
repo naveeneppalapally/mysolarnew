@@ -80,7 +80,15 @@ function AppContent() {
       const fullHash = window.location.hash || '#home';
       // Normalize e.g., #homes?tab=panels -> #homes
       const baseHash = fullHash.split('?')[0];
-      setCurrentHash(baseHash);
+      
+      // If the target is #contact or #quote-form, it is a section of the #home view!
+      const activeHash = (baseHash === '#contact' || baseHash === '#quote-form') ? '#home' : baseHash;
+      
+      let prevHash = '#home';
+      setCurrentHash((prev) => {
+        prevHash = prev;
+        return activeHash;
+      });
       
       if (fullHash.includes('tab=')) {
         if (baseHash === '#homes') {
@@ -94,8 +102,11 @@ function AppContent() {
           window.scrollTo({ top: 0, behavior: 'instant' });
         }
       } else {
-        // Reset scroll position to top instantly when page changes
-        window.scrollTo({ top: 0, behavior: 'instant' });
+        // ONLY reset scroll position to top instantly if we are actually changing view pages!
+        // If we are navigating to an anchor section within the same view, do NOT reset scroll!
+        if (activeHash !== prevHash) {
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        }
       }
     };
 

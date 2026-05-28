@@ -268,7 +268,8 @@ export function smoothScrollTo(elementId: string): void {
   const target = document.querySelector(targetId);
   if (!target) return;
 
-  const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+  const offset = 80; // Fixed navbar offset
+  const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
   const startPosition = window.pageYOffset;
   const distance = targetPosition - startPosition;
   const duration = 900; // 900ms smooth scroll

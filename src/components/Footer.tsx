@@ -66,14 +66,21 @@ const certifications = [
 export default function Footer() {
   const navigateTo = (href: string) => {
     const [path] = href.split('?');
-    if (path === '#contact') {
-      if (window.location.hash !== '#home') {
+    if (path === '#contact' || path === '#quote-form') {
+      const targetId = 'quote-form';
+      if (window.location.hash !== '#home' && window.location.hash !== '') {
         window.location.hash = '#home';
         setTimeout(() => {
-          smoothScrollTo('contact');
+          smoothScrollTo(targetId);
         }, 150);
       } else {
-        smoothScrollTo('contact');
+        smoothScrollTo(targetId);
+      }
+    } else if (path === '#home') {
+      if (window.location.hash === '#home' || window.location.hash === '') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        window.location.hash = '#home';
       }
     } else {
       window.location.hash = href;
