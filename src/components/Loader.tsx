@@ -209,7 +209,7 @@ function TypewriterText() {
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           style={{
             display: 'inline-block',
-            color: char === ' ' ? 'none' : '#F59E0B',
+            color: char === ' ' ? 'transparent' : '#F59E0B',
             minWidth: char === ' ' ? '0.5em' : undefined,
           }}
         >
@@ -280,12 +280,12 @@ const Loader = ({ isVisible }: LoaderProps) => {
         flareRef.current.style.transform = `scaleY(${flareScale})`;
       }
 
-      // 3. SVG Heat Shimmer & Ray turbulence animation (creates organic atmospheric dust motion)
+      // 3. SVG Heat Shimmer & Ray turbulence animation (disabled dynamic seed updates for performance)
       if (turbulenceRef.current) {
-        turbulenceRef.current.setAttribute('seed', String(Math.floor(elapsed / 80) % 100));
+        // turbulenceRef.current.setAttribute('seed', String(Math.floor(elapsed / 80) % 100));
       }
       if (rayTurbulenceRef.current) {
-        rayTurbulenceRef.current.setAttribute('seed', String(Math.floor(elapsed / 100) % 100));
+        // rayTurbulenceRef.current.setAttribute('seed', String(Math.floor(elapsed / 100) % 100));
       }
 
       // 4. Reveal Mask & Opacity Timelines
