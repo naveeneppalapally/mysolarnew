@@ -43,19 +43,19 @@ const techItems: DropdownItem[] = [
   {
     label: 'DeccanShield™ Structure',
     description: 'Cyclone-grade 160km/h structural engineering & chemical anchoring.',
-    href: '#homes?tab=structure',
+    href: '#technology?tab=structure',
     icon: <Shield className="w-5 h-5 text-amber-400" />,
   },
   {
     label: 'Tier-1 Panels Database',
     description: 'Premier Energies TOPCon & Adani Mono-PERC datasheets.',
-    href: '#homes?tab=panels',
+    href: '#technology?tab=panels',
     icon: <Database className="w-5 h-5 text-purple-400" />,
   },
   {
     label: '10-Point Technical Code',
     description: 'Rigid installation standards & safety SOPs.',
-    href: '#homes?tab=standards',
+    href: '#technology?tab=standards',
     icon: <Hammer className="w-5 h-5 text-emerald-400" />,
   },
 ];

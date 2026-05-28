@@ -14,6 +14,7 @@ import CommercialView from './components/views/CommercialView';
 import FarmersView from './components/views/FarmersView';
 import CalculatorView from './components/views/CalculatorView';
 import FAQView from './components/views/FAQView';
+import TechnologyView from './components/views/TechnologyView';
 import { SolarTimeProvider, useSolarTime } from './context/SolarTimeContext';
 import { BackgroundSettingsProvider } from './context/BackgroundSettingsContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -78,11 +79,16 @@ function AppContent() {
       setCurrentHash(baseHash);
       
       if (fullHash.includes('tab=')) {
-        // If switching pages, reset top first, then scroll down to #why-solar
-        window.scrollTo({ top: 0, behavior: 'instant' });
-        setTimeout(() => {
-          smoothScrollTo('why-solar');
-        }, 150);
+        if (baseHash === '#homes') {
+          // If switching pages, reset top first, then scroll down to #why-solar
+          window.scrollTo({ top: 0, behavior: 'instant' });
+          setTimeout(() => {
+            smoothScrollTo('why-solar');
+          }, 150);
+        } else {
+          // For other views like #technology, remain at top
+          window.scrollTo({ top: 0, behavior: 'instant' });
+        }
       } else {
         // Reset scroll position to top instantly when page changes
         window.scrollTo({ top: 0, behavior: 'instant' });
@@ -113,6 +119,8 @@ function AppContent() {
         return <CalculatorView />;
       case '#faq':
         return <FAQView />;
+      case '#technology':
+        return <TechnologyView />;
       default:
         return <HomeView />;
     }
