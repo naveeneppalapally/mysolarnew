@@ -20,7 +20,7 @@ function AnimatedHeadline() {
 
   return (
     <h1
-      className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-[4rem] font-bold leading-[1.08] tracking-[-0.03em]"
+      className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-[3.5rem] font-bold leading-[1.08] tracking-[-0.03em]"
     >
       {headlineLines.map((line, lineIdx) => {
         const words = line.text.split(' ');
@@ -455,11 +455,11 @@ export default function Hero() {
 
       {/* Main content */}
       <div className="relative z-10 w-full flex-1 flex items-center">
-        <div className="section-wrapper w-full !py-8 md:!py-12">
+        <div className="section-wrapper w-full !py-6 md:!py-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* LEFT: Text content */}
             <motion.div
-              className="flex flex-col gap-5 md:gap-6"
+              className="flex flex-col gap-4 md:gap-5"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6 }}
@@ -536,7 +536,7 @@ export default function Hero() {
 
               {/* Trust badges */}
               <motion.div
-                className="flex flex-wrap gap-x-5 gap-y-2.5 mt-2"
+                className="flex flex-wrap gap-x-5 gap-y-2 mt-1"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
@@ -611,10 +611,10 @@ export default function Hero() {
       </div>
 
       {/* Stats Bar */}
-      <div className="relative z-10 w-full pb-6 md:pb-10">
+      <div className="relative z-10 w-full pb-4 md:pb-6">
         <div className="section-wrapper !py-0">
           <motion.div
-            className="rounded-2xl border px-4 py-4 md:px-8 md:py-5 border-solar-border bg-solar-card backdrop-blur-xl"
+            className="rounded-2xl border px-4 py-3 md:px-8 md:py-4 border-solar-border bg-solar-card backdrop-blur-xl"
             style={{
               boxShadow: 'var(--shadow-card-lg)',
             }}

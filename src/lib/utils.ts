@@ -155,8 +155,8 @@ export function calculateSubsidy(monthlyBill: number): SubsidyResult {
   // 1 kW generates ~4 units/day = ~120 units/month in Hyderabad
   const unitsPerKw = 120;
   
-  // Recommended system size (between 1 and 10 kW)
-  const systemSize = Math.max(1, Math.min(10, Math.ceil(monthlyUnits / unitsPerKw)));
+  // Recommended system size (between 1 and 15 kW)
+  const systemSize = Math.max(1, Math.min(15, Math.ceil(monthlyUnits / unitsPerKw)));
 
   // Turnkey cost using PDF 2 competitive pricing
   const totalCost = getTurnkeyCost(systemSize);
