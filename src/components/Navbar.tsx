@@ -240,6 +240,12 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
+  // Set --navbar-height CSS variable once so Hero paddingTop stays stable (no CLS)
+  useEffect(() => {
+    document.documentElement.style.setProperty('--navbar-height', '64px');
+    return () => {};
+  }, []);
+
   useEffect(() => {
     const handleScroll = throttleAnimationFrame(() => {
       setScrolled(window.scrollY > 50);
@@ -319,14 +325,14 @@ export default function Navbar() {
     <>
       <motion.nav
         className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-4 sm:px-6 lg:px-8 transition-all duration-300"
-        animate={{
-          height: scrolled ? 60 : 72,
+        style={{
+          height: '64px',
           backgroundColor: scrolled ? 'var(--nav-bg)' : 'rgba(3,7,18,0)',
           backdropFilter: scrolled ? 'blur(24px)' : 'blur(0px)',
-        }}
-        transition={{ duration: 0.3 }}
-        style={{
+          WebkitBackdropFilter: scrolled ? 'blur(24px)' : 'blur(0px)',
           borderBottom: scrolled ? '1px solid var(--nav-border)' : '1px solid transparent',
+          // Use CSS transitions for compositor-only properties (no layout shift)
+          transition: 'background-color 0.3s ease, border-color 0.3s ease',
         }}
       >
         {/* Logo */}

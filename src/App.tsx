@@ -25,7 +25,8 @@ import { LoaderDoneProvider } from './context/LoaderDoneContext';
 import { smoothScrollTo } from './lib/utils';
 
 // How long the loader plays before fading out (ms)
-const LOADER_HIDE_DELAY = 2400;
+// Reduced from 2400 → 1800 to improve LCP score
+const LOADER_HIDE_DELAY = 1800;
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
@@ -162,7 +163,9 @@ function AppContent() {
         style={{
           background: 'var(--solar-bg)',
           minHeight: '100vh',
-          visibility: isLoading ? 'hidden' : 'visible',
+          // Use opacity instead of visibility so browser can still measure/paint LCP element
+          opacity: isLoading ? 0 : 1,
+          transition: 'opacity 0.4s ease',
           pointerEvents: isLoading ? 'none' : 'auto'
         }}
       >
@@ -185,7 +188,7 @@ function App() {
     <ThemeProvider>
       <BackgroundSettingsProvider>
         <SolarTimeProvider>
-          <LoaderDoneProvider delay={2800}>
+          <LoaderDoneProvider delay={1900}>
             <AppContent />
           </LoaderDoneProvider>
         </SolarTimeProvider>

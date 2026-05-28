@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import SunParticles from './SunParticles';
 import { scrollToSection } from '../lib/utils';
@@ -17,7 +17,6 @@ const headlineLines = [
 ];
 
 function AnimatedHeadline() {
-  const { loaderDone } = useLoaderDone();
   let globalWordIndex = 0;
 
   return (
@@ -43,7 +42,7 @@ function AnimatedHeadline() {
                         : 'text-solar-text'
                     }`}
                     initial={{ y: '110%', opacity: 0 }}
-                    animate={loaderDone ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
+                    animate={{ y: '0%', opacity: 1 }}
                     transition={{
                       duration: 0.5,
                       delay: 0.1 + delay,
@@ -366,21 +365,15 @@ export default function Hero() {
   const { loaderDone } = useLoaderDone();
   const [tilt, setTilt] = React.useState({ x: 0, y: 0 });
   const panelRef = React.useRef<HTMLDivElement>(null);
-  const [hidePanel, setHidePanel] = React.useState(false);
-  const badgeRef = React.useRef<HTMLSpanElement>(null);
-  const badgeInView = useInView(badgeRef, { once: true });
-
-  React.useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const isMobileDevice =
+  // Synchronous mobile detection — no setTimeout flip → no layout shift
+  const [hidePanel] = React.useState(() => {
+    if (typeof window === 'undefined') return false;
+    return (
       /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
       'ontouchstart' in window ||
-      navigator.maxTouchPoints > 0;
-    const timer = setTimeout(() => {
-      setHidePanel(isMobileDevice);
-    }, 0);
-    return () => clearTimeout(timer);
-  }, []);
+      navigator.maxTouchPoints > 0
+    );
+  });
 
   const handleMouseMove = React.useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -404,7 +397,7 @@ export default function Hero() {
     <section
       id="home"
       className="relative overflow-hidden lg:min-h-screen flex flex-col"
-      style={{ background: 'var(--solar-bg)', paddingTop: 'var(--navbar-height, 4rem)' }}
+      style={{ background: 'var(--solar-bg)', paddingTop: '64px' }}
     >
       {/* Particle background */}
       <SunParticles />
@@ -460,30 +453,26 @@ export default function Hero() {
       <div className="relative z-10 w-full flex-1 flex items-start lg:items-center">
         <div className="section-wrapper w-full !pt-6 !pb-4 md:!py-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* LEFT: Text content */}
+            {/* LEFT: Text content — animates in immediately (no loaderDone gate on LCP content) */}
             <motion.div
               className="flex flex-col gap-4 md:gap-5"
               initial={{ opacity: 0 }}
-              animate={loaderDone ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ duration: 0.6 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.05 }}
             >
               {/* Badge */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.5, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               >
                 <span
-                  ref={badgeRef}
                   className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase px-4 py-2.5 rounded-full border"
                   style={{
                     color: '#F59E0B',
                     borderColor: 'rgba(245,158,11,0.25)',
                     background: 'rgba(245,158,11,0.06)',
-                    boxShadow: badgeInView
-                      ? '0 0 20px rgba(245,158,11,0.1), inset 0 0 20px rgba(245,158,11,0.03)'
-                      : 'none',
-                    transition: 'box-shadow 1s ease',
+                    boxShadow: '0 0 20px rgba(245,158,11,0.1), inset 0 0 20px rgba(245,158,11,0.03)',
                   }}
                 >
                   <span className="text-sm">☀️</span>
@@ -494,12 +483,12 @@ export default function Hero() {
               {/* Headline */}
               <AnimatedHeadline />
 
-              {/* Subheadline */}
+              {/* Subheadline — LCP element, no animation gate */}
               <motion.p
                 className="text-solar-text-muted text-sm sm:text-base max-w-lg leading-relaxed font-body"
-                initial={{ opacity: 0, y: 20 }}
-                animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.5, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               >
                 Government subsidies up to{' '}
                 <strong className="text-solar-text font-medium">₹78,000</strong>. MNRE
@@ -511,8 +500,8 @@ export default function Hero() {
               <motion.div
                 className="flex flex-col sm:flex-row gap-3 mt-1"
                 initial={{ opacity: 0, y: 20 }}
-                animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.5, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               >
                 <ShimmerButton onClick={() => scrollToSection('calculator')}>
                   Calculate Your Savings →
@@ -541,16 +530,16 @@ export default function Hero() {
               <motion.div
                 className="flex flex-wrap gap-x-5 gap-y-2 mt-1"
                 initial={{ opacity: 0 }}
-                animate={loaderDone ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ duration: 0.5, delay: 0.7 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
               >
                 {trustBadges.map((badge, i) => (
                   <motion.div
                     key={badge}
                     className="flex items-center gap-1.5"
                     initial={{ opacity: 0, x: -10 }}
-                    animate={loaderDone ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
-                    transition={{ duration: 0.3, delay: 0.7 + i * 0.06 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.4 + i * 0.06 }}
                   >
                     <CheckCircle2
                       className="w-3.5 h-3.5 flex-shrink-0"
@@ -622,8 +611,8 @@ export default function Hero() {
               boxShadow: 'var(--shadow-card-lg)',
             }}
             initial={{ opacity: 0, y: 40 }}
-            animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-            transition={{ duration: 0.6, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
           >
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-0 md:divide-x divide-solar-border">
               {statsData.map((stat) => (

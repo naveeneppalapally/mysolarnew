@@ -67,8 +67,10 @@ export default function StandardsView() {
               className="relative rounded-3xl overflow-hidden border border-solar-border/80 bg-solar-card shadow-card-lg max-w-md w-full"
             >
               <img 
-                src="/standards_tech.png" 
+                src="/standards_tech.webp" 
                 alt="10-Point Technical Code Inverter Setup"
+                width="800"
+                height="600"
                 className="w-full h-auto object-cover aspect-[4/3]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-gray-950/70 via-transparent to-transparent pointer-events-none" />

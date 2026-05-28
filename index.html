@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- SEO Meta Tags -->
@@ -26,10 +26,32 @@
     <!-- Theme Color -->
     <meta name="theme-color" content="#030712" />
     
-    <!-- Preconnect to Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <!-- Critical Font Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+    <!-- Critical inline styles: set dark background before CSS loads to prevent white-flash -->
+    <style>
+      html { background: #030712; color: #f8fafc; }
+      html.light-theme { background: #faf7f2; color: #1a1208; }
+      /* Reserve navbar height before JS runs — prevents Hero paddingTop mismatch */
+      :root { --navbar-height: 64px; }
+    </style>
+
+    <!-- All fonts in one non-blocking request, display=swap so they render on first visit -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Poppins:wght@400;500;600;700;800&family=Syne:wght@500;600;700;800&family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Poppins:wght@400;500;600;700;800&family=Syne:wght@500;600;700;800&family=Noto+Sans+Telugu:wght@400;500;600;700&display=swap" />
+    </noscript>
+
+
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
@@ -68,3 +90,4 @@
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+

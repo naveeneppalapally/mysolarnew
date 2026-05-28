@@ -52,10 +52,10 @@ const Instagram = ({ size = 24, ...props }: SocialIconProps) => (
 );
 
 const MAP_LEVELS = [
-  { img: '/map_telangana.png', label: 'Telangana', sub: 'Regional Coverage', coords: { x: '53%', y: '54%' } },
-  { img: '/map_hyderabad.png', label: 'Hyderabad', sub: 'Metro & Suburbs', coords: { x: '70%', y: '60%' } },
-  { img: '/map_hayathnagar.png', label: 'Hayathnagar', sub: 'Hayathnagar Depot Region', coords: { x: '52%', y: '48%' } },
-  { img: '/map_office.png', label: 'Office Suite', sub: 'beside Union Bank', coords: { x: '50%', y: '50%' } },
+  { img: '/map_telangana.webp', label: 'Telangana', sub: 'Regional Coverage', coords: { x: '53%', y: '54%' } },
+  { img: '/map_hyderabad.webp', label: 'Hyderabad', sub: 'Metro & Suburbs', coords: { x: '70%', y: '60%' } },
+  { img: '/map_hayathnagar.webp', label: 'Hayathnagar', sub: 'Hayathnagar Depot Region', coords: { x: '52%', y: '48%' } },
+  { img: '/map_office.webp', label: 'Office Suite', sub: 'beside Union Bank', coords: { x: '50%', y: '50%' } },
 ] as const;
 
 interface FormData {

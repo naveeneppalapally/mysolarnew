@@ -1160,10 +1160,15 @@ export default function SunParticles() {
       animFrameRef.current = requestAnimationFrame(animate);
     };
 
-    animFrameRef.current = requestAnimationFrame(animate);
+    // Defer RAF start by 400ms so canvas doesn't compete with LCP paint
+    // Canvas is already sized/initialized above; animation starts after first paint
+    const deferTimer = setTimeout(() => {
+      animFrameRef.current = requestAnimationFrame(animate);
+    }, 400);
     window.addEventListener('resize', resize);
 
     return () => {
+      clearTimeout(deferTimer);
       cancelAnimationFrame(animFrameRef.current);
       window.removeEventListener('resize', resize);
     };
