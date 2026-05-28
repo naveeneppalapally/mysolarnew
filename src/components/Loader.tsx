@@ -5,8 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
    ULTRA-REALISTIC SOOTHING SUN
    ============================================ */
 interface RealisticSunProps {
-  turbulenceRef: React.RefObject<SVGFETurbulenceElement | null>;
-  rayTurbulenceRef: React.RefObject<SVGFETurbulenceElement | null>;
   corona1Ref: React.RefObject<SVGGElement | null>;
   corona2Ref: React.RefObject<SVGGElement | null>;
   flareRef: React.RefObject<SVGRectElement | null>;
@@ -14,8 +12,6 @@ interface RealisticSunProps {
 }
 
 function RealisticSun({
-  turbulenceRef,
-  rayTurbulenceRef,
   corona1Ref,
   corona2Ref,
   flareRef,
@@ -30,45 +26,6 @@ function RealisticSun({
         className="w-full h-full overflow-visible"
       >
         <defs>
-          {/* Gentle, realistic heat shimmer displacement filter (very low frequency) */}
-          <filter id="solarHeatShimmer" x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence
-              ref={turbulenceRef}
-              type="fractalNoise"
-              baseFrequency="0.015"
-              numOctaves="2"
-              result="noise"
-              seed="1"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="noise"
-              scale="6"
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-          </filter>
-
-          {/* Volumetric ray filter (shimmer noise + high blur for glowing Crepuscular Rays) */}
-          <filter id="rayVolumetric" x="-30%" y="-30%" width="160%" height="160%">
-            <feTurbulence
-              ref={rayTurbulenceRef}
-              type="fractalNoise"
-              baseFrequency="0.012"
-              numOctaves="2"
-              result="noise"
-              seed="2"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="noise"
-              scale="22"
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-            <feGaussianBlur stdDeviation="12" />
-          </filter>
-
           {/* Volumetric sun core gradient */}
           <radialGradient id="sunCoreGrad" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="#FFFFFF" />
@@ -101,11 +58,6 @@ function RealisticSun({
             <stop offset="45%" stopColor="#F59E0B" stopOpacity="0.18" />
             <stop offset="100%" stopColor="#D97706" stopOpacity="0" />
           </linearGradient>
-
-          {/* Soft blur for horizontal lens flare */}
-          <filter id="flareBlur" x="-10%" y="-10%" width="120%" height="120%">
-            <feGaussianBlur stdDeviation="4" />
-          </filter>
         </defs>
 
         {/* Soft atmospheric aura */}
@@ -138,7 +90,15 @@ function RealisticSun({
         </g>
 
         {/* Volumetric Ray Beams (Visible overlay, scaled, rotated, and noise-shifted dynamically) */}
-        <g ref={lightRaysRef} style={{ transformOrigin: '200px 200px', opacity: 0 }} filter="url(#rayVolumetric)">
+        <g 
+          ref={lightRaysRef} 
+          style={{ 
+            transformOrigin: '200px 200px', 
+            opacity: 0,
+            filter: 'blur(12px)',
+            WebkitFilter: 'blur(12px)'
+          }}
+        >
           {Array.from({ length: 12 }).map((_, i) => (
             <g key={i} style={{ transform: `rotate(${i * 30}deg)`, transformOrigin: '200px 200px' }}>
               {/* Wide volumetric glow shaft */}
@@ -158,7 +118,7 @@ function RealisticSun({
         </g>
 
         {/* Realistic Burning Sun Core with Heat Shimmer */}
-        <circle cx="200" cy="200" r="82" fill="url(#sunCoreGrad)" filter="url(#solarHeatShimmer)" />
+        <circle cx="200" cy="200" r="82" fill="url(#sunCoreGrad)" />
 
         {/* Horizontal Anamorphic Lens Flare */}
         <rect
@@ -168,8 +128,11 @@ function RealisticSun({
           width="600"
           height="8"
           fill="url(#lensFlareGrad)"
-          filter="url(#flareBlur)"
-          style={{ transformOrigin: '200px 200px' }}
+          style={{ 
+            transformOrigin: '200px 200px',
+            filter: 'blur(4px)',
+            WebkitFilter: 'blur(4px)'
+          }}
         />
       </svg>
     </div>
@@ -242,8 +205,6 @@ const Loader = ({ isVisible }: LoaderProps) => {
   const sunWrapperRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
 
-  const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
-  const rayTurbulenceRef = useRef<SVGFETurbulenceElement>(null);
   const corona1Ref = useRef<SVGGElement>(null);
   const corona2Ref = useRef<SVGGElement>(null);
   const flareRef = useRef<SVGRectElement>(null);
@@ -278,14 +239,6 @@ const Loader = ({ isVisible }: LoaderProps) => {
       if (flareRef.current) {
         const flareScale = 1.0 + Math.sin(elapsed * 0.003) * 0.06;
         flareRef.current.style.transform = `scaleY(${flareScale})`;
-      }
-
-      // 3. SVG Heat Shimmer & Ray turbulence animation (disabled dynamic seed updates for performance)
-      if (turbulenceRef.current) {
-        // turbulenceRef.current.setAttribute('seed', String(Math.floor(elapsed / 80) % 100));
-      }
-      if (rayTurbulenceRef.current) {
-        // rayTurbulenceRef.current.setAttribute('seed', String(Math.floor(elapsed / 100) % 100));
       }
 
       // 4. Reveal Mask & Opacity Timelines
@@ -405,8 +358,6 @@ const Loader = ({ isVisible }: LoaderProps) => {
             style={{ opacity: 0, transform: 'scale(0.92)', willChange: 'opacity, transform' }}
           >
             <RealisticSun
-              turbulenceRef={turbulenceRef}
-              rayTurbulenceRef={rayTurbulenceRef}
               corona1Ref={corona1Ref}
               corona2Ref={corona2Ref}
               flareRef={flareRef}

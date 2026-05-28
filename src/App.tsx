@@ -20,6 +20,7 @@ import StandardsView from './components/views/StandardsView';
 import { SolarTimeProvider, useSolarTime } from './context/SolarTimeContext';
 import { BackgroundSettingsProvider } from './context/BackgroundSettingsContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { LoaderDoneProvider } from './context/LoaderDoneContext';
 
 import { smoothScrollTo } from './lib/utils';
 
@@ -28,6 +29,7 @@ const LOADER_HIDE_DELAY = 2400;
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const { currentPhase } = useSolarTime();
   const [currentHash, setCurrentHash] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -35,6 +37,13 @@ function AppContent() {
     }
     return '#home';
   });
+
+  // Mount site content early under the loading screen (after 200ms)
+  // to avoid synchronous layout jank/freeze when the loader starts its reveal.
+  useEffect(() => {
+    const mountTimer = setTimeout(() => setMounted(true), 200);
+    return () => clearTimeout(mountTimer);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), LOADER_HIDE_DELAY);
@@ -144,10 +153,12 @@ function AppContent() {
         style={{
           background: 'var(--solar-bg)',
           minHeight: '100vh',
-          opacity: isLoading ? 0 : 1
+          opacity: isLoading ? 0 : 1,
+          pointerEvents: isLoading ? 'none' : 'auto',
+          visibility: isLoading ? 'hidden' : 'visible'
         }}
       >
-        {!isLoading && (
+        {mounted && (
           <>
             <div className="noise-overlay" />
             <Navbar />
@@ -170,7 +181,9 @@ function App() {
     <ThemeProvider>
       <BackgroundSettingsProvider>
         <SolarTimeProvider>
-          <AppContent />
+          <LoaderDoneProvider delay={2400}>
+            <AppContent />
+          </LoaderDoneProvider>
         </SolarTimeProvider>
       </BackgroundSettingsProvider>
     </ThemeProvider>
