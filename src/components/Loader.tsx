@@ -145,46 +145,54 @@ function RealisticSun({
 const brandText = 'MYHOME SOLAR';
 
 function TypewriterText() {
-  const [visibleCount, setVisibleCount] = useState(0);
-
-  useEffect(() => {
-    const startDelay = setTimeout(() => {
-      let count = 0;
-      const interval = setInterval(() => {
-        count++;
-        setVisibleCount(count);
-        if (count >= brandText.length) {
-          clearInterval(interval);
-        }
-      }, 100);
-      return () => clearInterval(interval);
-    }, 450);
-    return () => clearTimeout(startDelay);
-  }, []);
-
   return (
-    <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold tracking-[0.25em] select-none">
-      {brandText.split('').map((char, i) => (
-        <motion.span
-          key={i}
-          initial={{ opacity: 0, y: 12 }}
-          animate={i < visibleCount ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            display: 'inline-block',
-            color: char === ' ' ? 'transparent' : '#F59E0B',
-            minWidth: char === ' ' ? '0.5em' : undefined,
-          }}
-        >
-          {char}
-        </motion.span>
-      ))}
-      <motion.span
-        className="inline-block w-[2px] h-[1em] ml-1 align-middle"
-        style={{ background: '#F59E0B' }}
-        animate={{ opacity: [1, 0, 1] }}
-        transition={{ duration: 0.8, repeat: Infinity, ease: (t) => Math.round(t) }}
-      />
+    <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold tracking-[0.25em] select-none flex items-center justify-center">
+      <style>{`
+        @keyframes typeInChar {
+          0% { opacity: 0; transform: translateY(10px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes blinkCursor {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+        .typewriter-char {
+          display: inline-block;
+          color: #F59E0B;
+          opacity: 0;
+          animation: typeInChar 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .typewriter-space {
+          display: inline-block;
+          min-width: 0.5em;
+        }
+        .typewriter-cursor {
+          display: inline-block;
+          width: 2px;
+          height: 1em;
+          margin-left: 6px;
+          background: #F59E0B;
+          vertical-align: middle;
+          animation: blinkCursor 0.8s steps(2, start) infinite;
+        }
+      `}</style>
+      {brandText.split('').map((char, i) => {
+        if (char === ' ') {
+          return <span key={i} className="typewriter-space" />;
+        }
+        return (
+          <span
+            key={i}
+            className="typewriter-char"
+            style={{
+              animationDelay: `${350 + i * 85}ms`,
+            }}
+          >
+            {char}
+          </span>
+        );
+      })}
+      <span className="typewriter-cursor" />
     </h1>
   );
 }
