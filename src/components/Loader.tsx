@@ -300,8 +300,13 @@ const Loader = ({ isVisible }: LoaderProps) => {
 
       // Update SVG mask position, scale, and rotation (mask is only active during reveal phase)
       if (maskGroupRef.current) {
-        const cx = window.innerWidth / 2;
-        const cy = window.innerHeight / 2;
+        let cx = window.innerWidth / 2;
+        let cy = window.innerHeight / 2;
+        if (sunWrapperRef.current) {
+          const rect = sunWrapperRef.current.getBoundingClientRect();
+          cx = rect.left + rect.width / 2;
+          cy = rect.top + rect.height / 2;
+        }
         const maskScale = isVisible === false ? rayScale : 0;
         maskGroupRef.current.style.transform = `translate(${cx}px, ${cy}px) scale(${maskScale}) rotate(${rayRotation}deg)`;
       }
@@ -385,7 +390,10 @@ const Loader = ({ isVisible }: LoaderProps) => {
           </div>
 
           {/* SVG Sunburst Mask Definition */}
-          <svg className="absolute w-0 h-0 pointer-events-none">
+          <svg 
+            className="absolute pointer-events-none"
+            style={{ width: '1px', height: '1px', opacity: 0, overflow: 'hidden' }}
+          >
             <defs>
               {/* Blur filter for feathering mask edges for realistic soft light reveals */}
               <filter id="maskBlur" x="-20%" y="-20%" width="140%" height="140%">

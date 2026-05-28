@@ -181,7 +181,7 @@ function App() {
     <ThemeProvider>
       <BackgroundSettingsProvider>
         <SolarTimeProvider>
-          <LoaderDoneProvider delay={2400}>
+          <LoaderDoneProvider delay={2800}>
             <AppContent />
           </LoaderDoneProvider>
         </SolarTimeProvider>
