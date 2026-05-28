@@ -8,6 +8,8 @@ import Marquee from './components/Marquee';
 import WhySolar from './components/WhySolar';
 import SubsidySection from './components/SubsidySection';
 import Services from './components/Services';
+import HousingSocieties from './components/HousingSocieties';
+import CommercialSolar from './components/CommercialSolar';
 import HowItWorks from './components/HowItWorks';
 import TelanganaPolicy from './components/TelanganaPolicy';
 import SavingsChart from './components/SavingsChart';
@@ -102,6 +104,9 @@ function AppContent() {
               <WhySolar />
               <SubsidySection />
               <Services />
+              <CurvedDivider />
+              <HousingSocieties />
+              <CommercialSolar />
               <CurvedDivider />
               <HowItWorks />
               <SubsidyCalculator />

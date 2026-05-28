@@ -9,6 +9,8 @@ const navLinks = [
   { label: 'Home', href: '#home' },
   { label: 'Why Solar', href: '#why-solar' },
   { label: 'Services', href: '#services' },
+  { label: 'Societies', href: '#housing-societies' },
+  { label: 'Commercial', href: '#commercial-solar' },
   { label: 'Calculator', href: '#calculator' },
   { label: 'Subsidy', href: '#subsidy' },
   { label: 'FAQ', href: '#faq' },

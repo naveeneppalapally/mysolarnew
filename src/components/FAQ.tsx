@@ -9,45 +9,50 @@ interface FAQItem {
 
 const faqs: FAQItem[] = [
   {
-    question: 'How much does a solar system cost for my home?',
+    question: 'How much does a solar system cost for my home in Telangana?',
     answer:
-      'A typical 3kW residential system costs around ₹1,95,000 before subsidies. After the PM Surya Ghar central government subsidy of ₹78,000, your net cost is only ₹1,17,000.',
+      'A typical 3 kW premium residential system costs around ₹2,20,000 (inclusive of Tier-1 panels, DeccanShield structure, and Growatt/Solis string inverter). After the PM Surya Ghar central government subsidy of ₹78,000, your net out-of-pocket cost is ₹1,42,000.',
   },
   {
-    question: 'How much subsidy will I get under PM Surya Ghar?',
+    question: 'What is the direct bank transfer (DBT) subsidy structure under the PM Surya Ghar scheme?',
     answer:
-      'Under PM Surya Ghar Muft Bijli Yojana, you get ₹30,000/kW for the first 2kW and ₹18,000/kW for the 3rd kW. The maximum central subsidy is capped at ₹78,000 for system sizes of 3kW and above.',
+      'Under the national PM Surya Ghar Muft Bijli Yojana, residential subsidies are credited directly to your Aadhaar-linked bank account within 30 days of net-meter commissioning. The subsidy is structured as: ₹30,000 flat for a 1 kW system, ₹60,000 flat for a 2 kW system, and capped at ₹78,000 for any system sizes of 3 kW and above.',
   },
   {
-    question: 'How long does installation take?',
+    question: 'How does the Telangana "Gruha Jyothi" scheme (free electricity up to 200 units) impact solar returns?',
     answer:
-      'Typical installation takes 1-2 days. The complete process from site survey to commissioning takes about 7-15 days including paperwork.',
+      'The Gruha Jyothi scheme applies exclusively to domestic consumers whose total monthly consumption remains under 200 units AND who hold a valid White Ration Card. If your household consumption exceeds 200 units, you are billed for the entire amount at standard telescopic slab rates (which escalate up to ₹10.00/unit). Solar is highly profitable for households exceeding 200 units as it offsets your highest tariff slabs and brings you back into the zero-bill or lowest-rate bracket.',
   },
   {
-    question: 'What is net metering?',
+    question: 'What is the maximum solar capacity I am allowed to install on my residence in Hyderabad?',
     answer:
-      'Net metering allows you to export excess solar power to the grid and get credit on your electricity bill. We handle the complete DISCOM application and meter installation.',
+      'Under TSERC guidelines, you can install a rooftop system up to 100% of your active sanctioned load (e.g., a 4 kW sanctioned load allows up to a 4 kWp solar system). Low-tension (LT) domestic net metering is capped at 75 kWp; capacities above 75 kWp require a dedicated high-tension (HT) sub-station connection. If a larger system is needed, MyHome Solar will manage the sanctioned load enhancement filings with TGSPDCL/TGNPDCL.',
   },
   {
-    question: 'Do solar panels work on cloudy days?',
+    question: 'How long does the entire feasibility clearance and net-metering process take?',
     answer:
-      'Yes! Solar panels generate 25-40% of their rated capacity even on cloudy days. Hyderabad gets 300+ sunny days per year, making it ideal for solar.',
+      'The regulatory timeline typically takes between 25 to 30 days. We manage 100% of the process: days 1–3 for National Portal registration, days 4–12 for TGSPDCL/TGNPDCL Assistant Engineer (AE) physical verification and feasibility clearance, days 13–18 for physical panel installation, days 19–21 for completion report filings, and days 22–30 for safety inspection and net-meter integration.',
   },
   {
-    question: 'What warranty do the panels come with?',
+    question: 'Does MyHome Solar provide a performance guarantee for daily power generation?',
     answer:
-      'We provide 25-year performance warranty on panels and 5-year warranty on inverter. Our panels are guaranteed to produce at least 80% power even after 25 years.',
+      'Yes. Every system we install is backed by our signature MyHome Solar Shield™ 5-Year Performance Guarantee. We perform a site-specific 3D shadow analysis. If the system underperforms by more than 5% due to installation faults, we reimburse you the cash value of the lost generation at the active TGSPDCL/TGNPDCL tariff rate.',
   },
   {
-    question: 'Do you handle all the paperwork?',
+    question: 'What solar panel and inverter brands do you utilize?',
     answer:
-      'Yes! We handle 100% of the paperwork — PM Surya Ghar application, DISCOM net metering application, and all approvals. You just sit back and relax.',
+      'We exclusively utilize Tier-1 BIS-certified modules (Premier Energies, Waaree, Adani Solar) featuring Mono-PERC or next-generation TOPCon cells with up to 23.3% efficiency. For inverters, we install CEA-compliant string inverters (Growatt and Solis) or Enphase Energy microinverters for complex, shaded roofs.',
   },
   {
-    question: 'What about maintenance?',
+    question: 'Will solar panels damage my roof or cause water leakage during monsoons?',
     answer:
-      'Solar panels require minimal maintenance. We offer annual maintenance packages including panel cleaning, electrical checks, and performance monitoring.',
+      'No. We do not use mechanical expansion bolts that drill into your waterproofing layer. We utilize Hilti HIT-RE 500 chemical anchoring which forms a molecular concrete bond, followed by constructing raised concrete pedestals sealed with weatherproofing polyurethane sealants. This is backed by our water leakage warranty.',
   },
+  {
+    question: 'What happens to my solar generation during a power cut or grid outage?',
+    answer:
+      'Standard grid-tied systems automatically shut down during grid failures as a safety measure called anti-islanding, preventing power from feeding back into the lines and harming DISCOM technicians. For continuous power backup, we can install a Hybrid Solar System equipped with a hybrid inverter and high-cycle lithium-ion batteries.',
+  }
 ];
 
 function AccordionItem({

@@ -32,7 +32,7 @@ const services = [
     icon: Gauge,
     title: 'Net Metering Setup',
     description:
-      'Complete bidirectional net meter coordination and installation with TSSPDCL & TSNPDCL to sell surplus solar power back to the grid.',
+      'Complete bidirectional net meter coordination and installation with TGSPDCL & TGNPDCL to sell surplus solar power back to the grid.',
   },
   {
     icon: Wrench,
@@ -107,7 +107,7 @@ export default function Services() {
           initial="hidden"
           whileInView="visible"
           viewport={sectionViewport}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mb-20"
         >
           {services.map((service, i) => (
             <motion.div
@@ -151,7 +151,99 @@ export default function Services() {
             </motion.div>
           ))}
         </motion.div>
+
+        {/* ─── Grid-Tied Inverter Specs Database ─── */}
+        <InvertersSpecsBlock />
       </div>
     </section>
+  );
+}
+
+/* ─── Inverters Database sub-component ─── */
+import { Cpu, ShieldAlert, Wifi, Activity, CheckSquare } from 'lucide-react';
+
+function InvertersSpecsBlock() {
+  const inverters = [
+    {
+      brand: 'Growatt MIN 3000-10000TL-X',
+      arch: 'Single-Phase On-Grid (Dual MPPT Tracker)',
+      eff: 'Max: 98.4% | MPPT: 99.9%',
+      protection: 'DC Switch, DC/AC Type II SPD, Anti-islanding (IEEE 1547), Ground fault monitor',
+      monitoring: 'WiFi-X, ShineServer Web Portal & Mobile App',
+      warranty: '5-Year Standard Warranty'
+    },
+    {
+      brand: 'Solis (Ginlong) S6-GR1P',
+      arch: 'Single-Phase On-Grid (Wide Voltage Range)',
+      eff: 'Max: 97.7% | MPPT: 99.5%',
+      protection: 'AFCI (Arc Fault protection), Leakage current, IP66 waterproof, DC reverse-polarity',
+      monitoring: 'Solis Datalogger (Wi-Fi/GPRS), SolisCloud App',
+      warranty: '5-Year Manufacturer Warranty'
+    },
+    {
+      brand: 'Enphase Energy IQ8HC',
+      arch: 'Panel-Level Distributed Microinverter (Rapid Shutdown)',
+      eff: 'CEC: 97.0% | Max Peak: 384 VA',
+      protection: 'Sub-50V DC low-voltage, Integrated shutdown (NEC 2017), Class II double-insulated, Grid-forming',
+      monitoring: 'Enphase Envoy-S Gateway, module-level analytics',
+      warranty: '15-Year Standard Warranty'
+    }
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      className="rounded-3xl border border-solar-border bg-solar-card backdrop-blur-xl p-6 sm:p-8 lg:p-10 relative overflow-hidden"
+    >
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
+
+      <div className="flex flex-col items-center text-center mb-8">
+        <span className="text-[10px] font-semibold tracking-widest text-amber-400 uppercase bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/10 mb-3 font-body flex items-center gap-1.5">
+          <Cpu className="w-3.5 h-3.5" />
+          DISCOM Empanelled Brains
+        </span>
+        <h3 className="text-2xl sm:text-3xl font-bold font-heading text-solar-text">
+          Authorized Grid-Tie Inverters Database
+        </h3>
+        <p className="text-sm text-solar-text-muted max-w-2xl mt-2 font-body">
+          We exclusively install high-efficiency inverters fully empanelled under TGSPDCL & TGNPDCL grid guidelines for safety and performance compliance.
+        </p>
+      </div>
+
+      <div className="grid lg:grid-cols-3 gap-6">
+        {inverters.map((inv) => (
+          <div key={inv.brand} className="border border-solar-border rounded-2xl p-5 bg-solar-card-solid hover:border-amber-500/20 transition-all duration-300 group flex flex-col justify-between">
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-heading font-bold text-base text-solar-text group-hover:text-solar-gold transition-colors">{inv.brand}</h4>
+                <p className="text-[10px] text-solar-text-dim font-body tracking-wider mt-0.5">{inv.arch}</p>
+              </div>
+
+              <div className="space-y-2.5 text-xs font-body text-solar-text-muted">
+                <div className="flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-amber-500/60 shrink-0" />
+                  <span><strong>Conversion:</strong> {inv.eff}</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <ShieldAlert className="w-4 h-4 text-amber-500/60 shrink-0 mt-0.5" />
+                  <span><strong>Protections:</strong> {inv.protection}</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Wifi className="w-4 h-4 text-amber-500/60 shrink-0 mt-0.5" />
+                  <span><strong>Monitoring:</strong> {inv.monitoring}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckSquare className="w-4 h-4 text-amber-500/60 shrink-0" />
+                  <span className="text-purple-400 font-semibold">{inv.warranty}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </motion.div>
   );
 }

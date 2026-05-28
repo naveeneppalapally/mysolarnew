@@ -51,23 +51,117 @@ export interface SubsidyResult {
   monthlyGeneration: number; // units
 }
 
+/**
+ * Calculate exact monthly TGSPDCL (formerly TSSPDCL) domestic bill based on monthly unit consumption.
+ * Implements the category-telescopic tariff order.
+ */
+export function calculateTGSPDCLBill(units: number, sanctionedLoad: number = 3): number {
+  if (units <= 0) {
+    // Fixed charges only + customer charges for lowest tier
+    const fixedCharges = sanctionedLoad * 10;
+    const customerCharges = 40;
+    return fixedCharges + customerCharges;
+  }
+
+  let energyCharges = 0;
+  let customerCharges = 0;
+
+  if (units <= 100) {
+    // Category LT-I(A)
+    if (units <= 50) {
+      energyCharges = units * 1.95;
+      customerCharges = 40;
+    } else {
+      energyCharges = (50 * 1.95) + ((units - 50) * 3.10);
+      customerCharges = 70;
+    }
+  } else if (units <= 200) {
+    // Category LT-I(B)(i)
+    energyCharges = (100 * 3.40) + ((units - 100) * 4.80);
+    customerCharges = 90;
+  } else {
+    // Category LT-I(B)(ii)
+    if (units <= 300) {
+      energyCharges = (200 * 5.10) + ((units - 200) * 7.70);
+      customerCharges = 125;
+    } else if (units <= 400) {
+      energyCharges = (200 * 5.10) + (100 * 7.70) + ((units - 300) * 9.00);
+      customerCharges = 140;
+    } else if (units <= 800) {
+      energyCharges = (200 * 5.10) + (100 * 7.70) + (100 * 9.00) + ((units - 400) * 9.50);
+      customerCharges = 160;
+    } else {
+      energyCharges = (200 * 5.10) + (100 * 7.70) + (100 * 9.00) + (400 * 9.50) + ((units - 800) * 10.00);
+      customerCharges = 160;
+    }
+  }
+
+  // Fixed charges: ₹10 per kW of sanctioned load (unless above 800 units where it might go up, standard is ₹10/kW)
+  const fixedCharges = sanctionedLoad * 10;
+
+  // Electricity duty: 6% on energy charges
+  const duty = energyCharges * 0.06;
+
+  return Math.round(energyCharges + customerCharges + fixedCharges + duty);
+}
+
+/**
+ * Solves for the monthly consumption units that yield a given monthly bill target.
+ * Uses binary search (bisection method) because the billing function is strictly monotonic.
+ */
+export function findUnitsFromBill(targetBill: number, sanctionedLoad: number = 3): number {
+  const minBill = calculateTGSPDCLBill(0, sanctionedLoad);
+  if (targetBill <= minBill) return 0;
+
+  let low = 0;
+  let high = 3000; // Cap search at 3000 units (~₹30,000+ bills)
+  let mid = 0;
+  
+  // 15 iterations is more than enough for decimal-point accuracy
+  for (let i = 0; i < 15; i++) {
+    mid = (low + high) / 2;
+    const bill = calculateTGSPDCLBill(mid, sanctionedLoad);
+    if (bill < targetBill) {
+      low = mid;
+    } else {
+      high = mid;
+    }
+  }
+
+  return Math.round(mid);
+}
+
+export function getTurnkeyCost(systemSize: number): number {
+  if (systemSize <= 1) return 90000;
+  if (systemSize === 2) return 160000;
+  if (systemSize === 3) return 220000;
+  if (systemSize === 4) return 285000;
+  if (systemSize === 5) return 350000;
+  if (systemSize === 6) return 410000;
+  if (systemSize === 7) return 470000;
+  if (systemSize === 8) return 525000;
+  if (systemSize === 9) return 580000;
+  if (systemSize === 10) return 640000;
+  return 640000 + (systemSize - 10) * 60000;
+}
+
 export function calculateSubsidy(monthlyBill: number): SubsidyResult {
-  // Average tariff ₹7.7/unit in Telangana
-  const tariffRate = 7.7;
-  const monthlyUnits = monthlyBill / tariffRate;
+  // Determine standard sanctioned load based on monthly bill size
+  const sanctionedLoad = monthlyBill <= 2000 ? 2 : monthlyBill <= 5000 ? 3 : monthlyBill <= 9000 ? 5 : 10;
+  
+  // Solve for units
+  const monthlyUnits = findUnitsFromBill(monthlyBill, sanctionedLoad);
 
   // 1 kW generates ~4 units/day = ~120 units/month in Hyderabad
   const unitsPerKw = 120;
+  
+  // Recommended system size (between 1 and 10 kW)
   const systemSize = Math.max(1, Math.min(10, Math.ceil(monthlyUnits / unitsPerKw)));
 
-  // Cost per kW (approximate market rate including installation)
-  const costPerKw = systemSize <= 3 ? 88000 : systemSize <= 5 ? 82000 : 76000;
-  const totalCost = systemSize * costPerKw;
+  // Turnkey cost using PDF 2 competitive pricing
+  const totalCost = getTurnkeyCost(systemSize);
 
-  // Central subsidy (PM Surya Ghar Muft Bijli Yojana)
-  // 1kw 30000/-
-  // 2kw 60000/-
-  // 3kw and above 78000/-
+  // Central subsidy (PM Surya Ghar Muft Bijli Yojana flat limits)
   let centralSubsidy: number;
   if (systemSize === 1) {
     centralSubsidy = 30000;
@@ -77,23 +171,39 @@ export function calculateSubsidy(monthlyBill: number): SubsidyResult {
     centralSubsidy = 78000;
   }
 
-  // State subsidy is disabled per user request (was Telangana TSREDCO top-up)
   const stateSubsidy = 0;
   const totalSubsidy = centralSubsidy;
   const netCost = Math.max(0, totalCost - totalSubsidy);
 
+  // Monthly generation & savings
   const monthlyGeneration = systemSize * unitsPerKw;
-  const monthlySavings = Math.round(monthlyGeneration * tariffRate);
+  const netGridUnits = Math.max(0, monthlyUnits - monthlyGeneration);
+  const newNetBill = calculateTGSPDCLBill(netGridUnits, sanctionedLoad);
+  
+  // Surplus units valued at average power purchase cost of ₹4.0/unit
+  const surplusUnits = Math.max(0, monthlyGeneration - monthlyUnits);
+  const surplusCredit = surplusUnits * 4.0;
+  
+  // Savings = Old Bill - New Net Bill + Surplus Credits
+  const monthlySavings = Math.round(monthlyBill - newNetBill + surplusCredit);
   const annualSavings = monthlySavings * 12;
   const paybackYears = annualSavings > 0 ? parseFloat((netCost / annualSavings).toFixed(1)) : 0;
 
   // 25-year savings (accounting for ~5% annual tariff rise)
   let savings25Year = 0;
-  let currentTariff = tariffRate;
+  let cumulativeSavings = 0;
+  let currentTariffEscalation = 1.0;
+  
   for (let year = 1; year <= 25; year++) {
-    savings25Year += monthlyGeneration * 12 * currentTariff;
-    currentTariff *= 1.05;
+    // Escalate the old bill and the new bill base components by 5%
+    const oldBillEscalated = monthlyBill * currentTariffEscalation;
+    const newBillEscalated = newNetBill * currentTariffEscalation;
+    const creditEscalated = surplusCredit * currentTariffEscalation;
+    
+    cumulativeSavings += (oldBillEscalated - newBillEscalated + creditEscalated) * 12;
+    currentTariffEscalation *= 1.05;
   }
+  savings25Year = Math.round(cumulativeSavings);
 
   return {
     systemSize,
@@ -115,17 +225,25 @@ export function calculateSubsidy(monthlyBill: number): SubsidyResult {
  */
 export function generateSavingsData() {
   const data = [];
-  const baseUnits = 360 * 12; // 3 kW system, ~360 units/month
-  let currentTariff = 7.7;
+  const baseUnits = 360; // 3 kW system, ~360 units/month
+  const sanctionedLoad = 3;
+  
+  const baseOldBill = calculateTGSPDCLBill(baseUnits, sanctionedLoad);
+  const baseNewBill = calculateTGSPDCLBill(0, sanctionedLoad);
+  const baseMonthlySavings = baseOldBill - baseNewBill;
+
   let cumulativeFlat = 0;
   let cumulativeRising = 0;
+  let currentTariffEscalation = 1.0;
 
   for (let year = 1; year <= 25; year++) {
-    const flatSavings = baseUnits * 7.7;
-    const risingSavings = baseUnits * currentTariff;
-
-    cumulativeFlat += flatSavings;
-    cumulativeRising += risingSavings;
+    cumulativeFlat += baseMonthlySavings * 12;
+    
+    const escalatedOldBill = baseOldBill * currentTariffEscalation;
+    const escalatedNewBill = baseNewBill * currentTariffEscalation;
+    const escalatedSavings = (escalatedOldBill - escalatedNewBill) * 12;
+    
+    cumulativeRising += escalatedSavings;
 
     data.push({
       year,
@@ -135,7 +253,7 @@ export function generateSavingsData() {
       risingLabel: formatCurrency(Math.round(cumulativeRising)),
     });
 
-    currentTariff *= 1.05;
+    currentTariffEscalation *= 1.05;
   }
 
   return data;

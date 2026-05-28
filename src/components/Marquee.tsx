@@ -4,7 +4,7 @@ import { sectionViewport } from '../lib/animations';
 const trustItems = [
   'TSREDCO Empanelled',
   'MNRE Vendor ID: TSRE260875',
-  'TSSPDCL & TSNPDCL Approved',
+  'TGSPDCL & TGNPDCL Approved',
   'PM Surya Ghar Registered',
   '15+ Completed Projects',
   '70+ kW Capacity Installed',

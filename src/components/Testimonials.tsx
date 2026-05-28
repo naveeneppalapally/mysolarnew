@@ -7,37 +7,38 @@ interface Testimonial {
   location: string;
   quote: string;
   rating: number;
+  specs: string;
+  impact: string;
 }
 
 const testimonials: Testimonial[] = [
   {
-    name: 'Rajesh Kumar',
-    location: 'Hayathnagar',
+    name: 'Srinivasa Rao (Retired Central Govt. Employee)',
+    location: 'Phase 3, KPHB Colony, Kukatpally, Hyderabad',
     quote:
-      'MyHome Solar made the entire process seamless. From subsidy paperwork to installation, everything was handled professionally. My electricity bill went from ₹4,000 to almost zero!',
+      'Our monthly household bills averaged ₹3,800 to ₹4,200 during summer heatwaves, driven by two 1.5-ton ACs. Since MyHome Solar handled our TGSPDCL connection paperwork and installed our 3 kW array, our bills dropped to the base fixed charges of ₹180 to ₹220. The government subsidy of ₹78,000 was credited directly to my bank account within 24 days. The DeccanShield structural wind anchors are robust and survived heavy pre-monsoon storm winds without a single vibration.',
     rating: 5,
+    specs: '3 kW System — 6x Premier Energies 550W Mono-PERC + Solis S6 String Inverter',
+    impact: 'Monthly Bill: ₹4,000 → ₹200 (₹78,000 Subsidy Credited)'
   },
   {
-    name: 'Priya Sharma',
-    location: 'LB Nagar',
+    name: 'Ananya Reddy (Software Architect)',
+    location: 'Narsingi, Near Gachibowli ORR, Hyderabad',
     quote:
-      'I was skeptical about solar panels, but the team explained everything clearly. The subsidy of ₹78,000 was credited directly to my account. Best investment ever!',
+      'We wanted to transition to solar energy but were unwilling to lose our open terrace usability. MyHome Solar custom-engineered an elevated DeccanShield galvanized steel structure, raising the panels 9 feet above our terrace floor to preserve our patio space while positioning panels above the shadow of the overhead water tank. Our system now generates an average of 620 units per month, completely offsetting our Gachibowli villa bill and charging our EV overnight.',
     rating: 5,
+    specs: '5 kW System (Elevated) — 9x Premier Energies NeoBlack 600W TOPCon Bifacial + Growatt MIN 5000TL-X',
+    impact: 'Average Generation: 620 Units/Month (EV Charger Compatible)'
   },
   {
-    name: 'Venkat Reddy',
-    location: 'Uppal',
+    name: 'Dr. K. Bhaskar (Medical Practitioner)',
+    location: 'Hunter Road, Hanamkonda, Warangal District',
     quote:
-      'Excellent service! They designed a 5kW system perfectly suited for my home. The net metering setup was done quickly. Highly recommend MyHome Solar.',
+      'My clinic and residence share a single three-phase commercial connection in Hanamkonda. Our monthly bill was touching ₹9,500 due to high air-conditioning loads during peak patient hours. MyHome Solar executed a detailed shadow analysis, and optimized the stringing configuration to ensure maximum output despite minor shadow casting from a neighboring building. Our monthly bills have plunged by 85%, and the excess generation credits are settled twice a year by TGNPDCL.',
     rating: 5,
-  },
-  {
-    name: 'Lakshmi Devi',
-    location: 'Dilsukhnagar',
-    quote:
-      'The team was very helpful in explaining the PM Surya Ghar scheme. My 3kW system was installed in just 2 days. Very professional and reliable.',
-    rating: 4,
-  },
+    specs: '10 kW System — 18x Waaree Bi-550W Mono-PERC Bifacial + Sungrow 10kW Inverter',
+    impact: 'Plunged Bills by 85% (Three-Phase Clinic Setup)'
+  }
 ];
 
 function StarRating({ rating }: { rating: number }) {
@@ -126,23 +127,36 @@ export default function Testimonials() {
                   }}
                 />
 
-                <div className="relative z-10">
-                  <StarRating rating={t.rating} />
-
-                  <p className="text-solar-text-muted italic leading-relaxed mb-6 text-[15px]">
-                    "{t.quote}"
-                  </p>
-
-                  <div className="flex items-center gap-3">
-                    {/* Avatar circle */}
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500/30 to-purple-500/20 flex items-center justify-center text-solar-text font-semibold text-sm font-heading border border-solar-border">
-                      {t.name.charAt(0)}
+                <div className="relative z-10 flex flex-col justify-between h-full min-h-[300px]">
+                  <div>
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                      <StarRating rating={t.rating} />
+                      <span className="text-[9px] uppercase font-bold tracking-wider text-purple-400 bg-purple-500/10 border border-purple-500/10 px-2 py-0.5 rounded font-mono">
+                        {t.impact}
+                      </span>
                     </div>
-                    <div>
-                      <p className="text-solar-text font-semibold text-sm">
-                        {t.name}
-                      </p>
-                      <p className="text-solar-text-dim text-xs">{t.location}</p>
+
+                    <p className="text-solar-text-muted italic leading-relaxed mb-6 text-[14px]">
+                      "{t.quote}"
+                    </p>
+                  </div>
+
+                  <div>
+                    <div className="text-[11px] font-mono text-solar-gold mb-5 bg-amber-500/5 dark:bg-amber-500/[0.03] px-3 py-2 rounded border border-solar-border flex items-center gap-1.5">
+                      <span className="text-solar-gold">⚙️</span> {t.specs}
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      {/* Avatar circle */}
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500/30 to-purple-500/20 flex items-center justify-center text-solar-text font-semibold text-sm font-heading border border-solar-border shrink-0">
+                        {t.name.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-solar-text font-bold text-sm">
+                          {t.name}
+                        </p>
+                        <p className="text-solar-text-dim text-xs font-body">{t.location}</p>
+                      </div>
                     </div>
                   </div>
                 </div>

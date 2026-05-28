@@ -43,6 +43,8 @@ const Instagram = ({ size = 24, ...props }: SocialIconProps) => (
 const quickLinks = [
   { label: 'Home', href: '#home' },
   { label: 'Services', href: '#services' },
+  { label: 'Societies', href: '#housing-societies' },
+  { label: 'Commercial', href: '#commercial-solar' },
   { label: 'Calculator', href: '#calculator' },
   { label: 'Subsidy', href: '#subsidy' },
   { label: 'FAQ', href: '#faq' },
@@ -52,7 +54,7 @@ const quickLinks = [
 const certifications = [
   'TSREDCO Empanelled',
   'MNRE Empanelled Vendor',
-  'TSSPDCL & TSNPDCL Approved',
+  'TGSPDCL & TGNPDCL Approved',
   'PM Surya Ghar Registered',
   'MNRE ID: TSRE260875',
 ];

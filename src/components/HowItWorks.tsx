@@ -1,51 +1,51 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import {
-  ClipboardCheck,
-  PenTool,
-  FileText,
-  HardHat,
+  FileSearch,
+  CheckCircle2,
+  Construction,
+  FileSignature,
   Gauge,
-  HeartHandshake,
+  Sparkles
 } from 'lucide-react';
 import { fadeInUp, staggerContainer, sectionViewport } from '../lib/animations';
 
 const steps = [
   {
-    icon: ClipboardCheck,
-    title: 'Free Site Survey',
+    icon: FileSearch,
+    title: '1. Feasibility Application (Days 1–3)',
     description:
-      'Our team visits your home for a free assessment — evaluating roof area, orientation, shading, and your energy consumption.',
+      'We register your service connection on the National PM Surya Ghar Portal and submit the net-metering application to TGSPDCL/TGNPDCL. We pay the DISCOM registration fee (₹2,500 LT / ₹15,000 HT) on your behalf.',
   },
   {
-    icon: PenTool,
-    title: 'Custom System Design',
+    icon: CheckCircle2,
+    title: '2. Technical Feasibility (Days 4–12)',
     description:
-      'We design the optimal system for your roof layout and monthly usage, maximizing generation and ROI.',
+      'The local DISCOM sub-divisional Assistant Engineer (AE) conducts a physical transformer capacity audit and issues the official feasibility clearance. Load enhancements are handled by us if needed.',
   },
   {
-    icon: FileText,
-    title: 'Subsidy Paperwork',
+    icon: Construction,
+    title: '3. Installation & Cabling (Days 13–18)',
     description:
-      'We handle all PM Surya Ghar and TSREDCO subsidy applications, approvals, and documentation — zero hassle for you.',
+      'Our technicians install your DeccanShield™ structural mount and Tier-1 solar modules (Premier/Waaree/Adani) alongside dual chemical earthing pits, AC/DC boxes, and UV-rated PVC conduits.',
   },
   {
-    icon: HardHat,
-    title: 'Professional Installation',
+    icon: FileSignature,
+    title: '4. Completion & Agreement (Days 19–21)',
     description:
-      'Certified technicians install your entire system in just 1-2 days with minimal disruption to your daily routine.',
+      'We compile and submit your official Work Completion Report, flash test sheets, and structural diagrams, executing the mandatory Net-Metering Agreement on a ₹200 non-judicial stamp paper.',
   },
   {
     icon: Gauge,
-    title: 'Net Metering Setup',
+    title: '5. Inspection & Metering (Days 22–30)',
     description:
-      'We coordinate with DISCOM for bidirectional meter installation so you can sell excess power back to the grid.',
+      'The DISCOM divisional engineer conducts a safety inspection (anti-islanding checks). Upon approval, your old energy meter is replaced with a smart bi-directional Net Meter.',
   },
   {
-    icon: HeartHandshake,
-    title: 'Lifetime Support',
+    icon: Sparkles,
+    title: '6. Commissioning & Subsidy (Days 31–60)',
     description:
-      '25-year warranty with annual maintenance included. Real-time monitoring and dedicated support whenever you need it.',
+      'Your solar plant goes live! Within 30 days of net-meter commissioning, your Aadhaar-linked bank account receives the direct PM Surya Ghar DBT subsidy credit (up to ₹78,000).',
   },
 ];
 

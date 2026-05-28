@@ -273,7 +273,7 @@ export function SolarPanelSVG() {
 const trustBadges = [
   'TSREDCO Empanelled',
   'MNRE Empanelled (TSRE260875)',
-  'TSSPDCL & TSNPDCL Approved',
+  'TGSPDCL & TGNPDCL Approved',
   'PM Surya Ghar Registered',
 ];
 

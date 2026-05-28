@@ -75,7 +75,7 @@ const initialFormData: FormData = {
 const badges = [
   'TSREDCO Empanelled',
   'MNRE Empanelled (TSRE260875)',
-  'TSSPDCL & TSNPDCL Approved',
+  'TGSPDCL & TGNPDCL Approved',
   'PM Surya Ghar Registered',
 ];
 
@@ -280,6 +280,39 @@ Please contact me for a free site assessment and quote.`;
                   </a>
                 </div>
               </ContactRow>
+            </div>
+
+            {/* Mandatory Net-Metering Documents Checklist */}
+            <div className="border border-solar-border rounded-2xl p-5 bg-solar-card-solid relative overflow-hidden font-body text-xs sm:text-sm">
+              <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-amber-500 to-purple-500" />
+              <h4 className="font-heading font-bold text-sm text-solar-text mb-2 pl-2">
+                Mandatory Net-Metering Checklist
+              </h4>
+              <p className="text-solar-text-muted mb-4 pl-2 text-xs">
+                To initiate grid connection filings with TGSPDCL / TGNPDCL, please keep these documents ready:
+              </p>
+              <ul className="space-y-2.5 text-solar-text-muted pl-2">
+                <li className="flex gap-2 items-start">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0" />
+                  <span><strong>Latest Electricity Bill:</strong> Legible copy of your TGSPDCL/TGNPDCL bill matching ownership records.</span>
+                </li>
+                <li className="flex gap-2 items-start">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0" />
+                  <span><strong>Aadhaar Card:</strong> Self-attested copy of connection owner (names must match exactly).</span>
+                </li>
+                <li className="flex gap-2 items-start">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0" />
+                  <span><strong>PAN Card:</strong> Self-attested copy required for National Portal DBT subsidy linkage.</span>
+                </li>
+                <li className="flex gap-2 items-start">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0" />
+                  <span><strong>Property Ownership Proof:</strong> Latest municipal tax receipt, registered Sale Deed, or Land EC.</span>
+                </li>
+                <li className="flex gap-2 items-start">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0" />
+                  <span><strong>Aadhaar-Linked Bank Passbook:</strong> Passbook copy or cancelled cheque showing IFSC & Account number.</span>
+                </li>
+              </ul>
             </div>
 
             {/* Badges */}
