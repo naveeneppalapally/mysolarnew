@@ -251,8 +251,15 @@ export default function Navbar() {
       setActiveHash(baseHash);
     };
 
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setMobileOpen(false);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('resize', handleResize);
     
     setScrolled(window.scrollY > 50);
     handleHashChange();
@@ -260,6 +267,7 @@ export default function Navbar() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -526,7 +534,7 @@ export default function Navbar() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
             /* UPGRADED: The outer container is completely fixed, does NOT scroll, and extends far below the screen to prevent background leak during overscroll/dynamic URL bar resizing */
-            className="fixed top-0 left-0 right-0 z-[99] text-solar-text overflow-hidden"
+            className="fixed top-0 left-0 right-0 z-[99] text-solar-text overflow-hidden lg:hidden"
             style={{
               /* UPGRADED: subtle gradient background that dynamically adapts to light/dark themes */
               background: theme === 'light'
