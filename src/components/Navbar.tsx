@@ -43,19 +43,19 @@ const techItems: DropdownItem[] = [
   {
     label: 'DeccanShield™ Structure',
     description: 'Cyclone-grade 160km/h structural engineering & chemical anchoring.',
-    href: '#technology?tab=structure',
+    href: '#structure',
     icon: <Shield className="w-5 h-5 text-amber-400" />,
   },
   {
     label: 'Tier-1 Panels Database',
     description: 'Premier Energies TOPCon & Adani Mono-PERC datasheets.',
-    href: '#technology?tab=panels',
+    href: '#panels',
     icon: <Database className="w-5 h-5 text-sky-400" />,
   },
   {
     label: '10-Point Technical Code',
     description: 'Rigid installation standards & safety SOPs.',
-    href: '#technology?tab=standards',
+    href: '#standards',
     icon: <Hammer className="w-5 h-5 text-emerald-400" />,
   },
 ];
@@ -271,7 +271,7 @@ export default function Navbar() {
   };
 
   const isSolutionsActive = offeringsItems.some(item => activeHash === item.href);
-  const isTechActive = techItems.some(item => activeHash.startsWith(item.href.split('?')[0]));
+  const isTechActive = ['#structure', '#panels', '#standards'].includes(activeHash);
 
   return (
     <>

@@ -49,9 +49,9 @@ const offeringsLinks = [
 
 const resourcesLinks = [
   { label: 'Sizing Calculator', href: '#calculator' },
-  { label: 'DeccanShield™ Mounts', href: '#technology?tab=structure' },
-  { label: 'Panels Database', href: '#technology?tab=panels' },
-  { label: 'Technical Code SOPs', href: '#technology?tab=standards' },
+  { label: 'DeccanShield™ Mounts', href: '#structure' },
+  { label: 'Panels Database', href: '#panels' },
+  { label: 'Technical Code SOPs', href: '#standards' },
   { label: 'FAQ & Support', href: '#faq' },
 ];
 

@@ -14,7 +14,9 @@ import CommercialView from './components/views/CommercialView';
 import FarmersView from './components/views/FarmersView';
 import CalculatorView from './components/views/CalculatorView';
 import FAQView from './components/views/FAQView';
-import TechnologyView from './components/views/TechnologyView';
+import StructureView from './components/views/StructureView';
+import PanelsView from './components/views/PanelsView';
+import StandardsView from './components/views/StandardsView';
 import { SolarTimeProvider, useSolarTime } from './context/SolarTimeContext';
 import { BackgroundSettingsProvider } from './context/BackgroundSettingsContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -119,8 +121,12 @@ function AppContent() {
         return <CalculatorView />;
       case '#faq':
         return <FAQView />;
-      case '#technology':
-        return <TechnologyView />;
+      case '#structure':
+        return <StructureView />;
+      case '#panels':
+        return <PanelsView />;
+      case '#standards':
+        return <StandardsView />;
       default:
         return <HomeView />;
     }
