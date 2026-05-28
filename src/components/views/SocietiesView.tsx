@@ -9,7 +9,7 @@ export default function SocietiesView() {
       {/* Page Header */}
       <section className="relative pt-32 pb-16 overflow-hidden bg-solar-bg-secondary border-b border-solar-border">
         {/* Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-purple-500/[0.02] rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-sky-500/[0.02] rounded-full blur-[100px] pointer-events-none" />
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-8 items-center text-left">
           <div className="lg:col-span-7 space-y-6">
@@ -17,7 +17,7 @@ export default function SocietiesView() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-block text-xs font-semibold tracking-[0.3em] uppercase text-purple-400 font-body"
+              className="inline-block text-xs font-semibold tracking-[0.3em] uppercase text-sky-400 font-body"
             >
               RWAs & Apartments
             </motion.span>
@@ -44,7 +44,7 @@ export default function SocietiesView() {
 
           <div className="lg:col-span-5 relative mt-6 lg:mt-0 flex justify-center">
             {/* Visual background glow */}
-            <div className="absolute inset-0 bg-purple-500/10 rounded-3xl blur-2xl pointer-events-none scale-90" />
+            <div className="absolute inset-0 bg-sky-500/10 rounded-3xl blur-2xl pointer-events-none scale-90" />
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -59,7 +59,7 @@ export default function SocietiesView() {
               <div className="absolute inset-0 bg-gradient-to-t from-gray-950/70 via-transparent to-transparent pointer-events-none" />
               <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center text-[10px] text-white/90 bg-gray-950/50 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 font-body">
                 <span className="font-semibold">Registered RWA Common System</span>
-                <span className="text-purple-400 font-bold">Up to 500 kWp Cap</span>
+                <span className="text-sky-400 font-bold">Up to 500 kWp Cap</span>
               </div>
             </motion.div>
           </div>

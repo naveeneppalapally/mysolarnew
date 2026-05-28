@@ -131,7 +131,7 @@ export default function Testimonials() {
                   <div>
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                       <StarRating rating={t.rating} />
-                      <span className="text-[9px] uppercase font-bold tracking-wider text-purple-400 bg-purple-500/10 border border-purple-500/10 px-2 py-0.5 rounded font-mono">
+                      <span className="text-[9px] uppercase font-bold tracking-wider text-sky-400 bg-sky-500/10 border border-sky-500/10 px-2 py-0.5 rounded font-mono">
                         {t.impact}
                       </span>
                     </div>
@@ -148,7 +148,7 @@ export default function Testimonials() {
 
                     <div className="flex items-center gap-3">
                       {/* Avatar circle */}
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500/30 to-purple-500/20 flex items-center justify-center text-solar-text font-semibold text-sm font-heading border border-solar-border shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500/30 to-sky-500/20 flex items-center justify-center text-solar-text font-semibold text-sm font-heading border border-solar-border shrink-0">
                         {t.name.charAt(0)}
                       </div>
                       <div>

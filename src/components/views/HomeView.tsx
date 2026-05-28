@@ -23,14 +23,14 @@ const offerings = [
   {
     title: 'Housing Societies & RWAs',
     description: 'Cut common area maintenance costs (elevators, water pumps, lighting) dramatically. RWAs and GHS complexes in Telangana can install common rooftop arrays with huge capital subsidies and flexible payment/loan choices.',
-    icon: <Building2 className="w-6 h-6 text-purple-400" />,
+    icon: <Building2 className="w-6 h-6 text-sky-400" />,
     badge: '₹18,000 / kW Subsidy',
     hash: '#societies',
     stats: [
       { label: 'Capacity Cap', value: 'Up to 500 kWp' },
       { label: 'Subsidy Cap', value: 'Max ₹90 Lakhs' },
     ],
-    accent: 'purple' as const,
+    accent: 'sky' as const,
   },
   {
     title: 'Commercial & Industrial Solar',
@@ -70,16 +70,16 @@ const accentMap = {
     badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
     btn: 'bg-amber-500 text-gray-950 hover:bg-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.2)]',
   },
-  purple: {
-    border: 'border-purple-500/20 hover:border-purple-500/40',
-    iconBg: 'bg-purple-500/10',
-    iconText: 'text-purple-400',
-    glow: 'group-hover:shadow-[0_0_40px_-10px_rgba(139,92,246,0.18)]',
-    statBg: 'bg-purple-500/[0.06]',
-    statText: 'text-purple-400',
-    line: 'via-purple-500',
-    badge: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
-    btn: 'bg-purple-600 text-white hover:bg-purple-500 shadow-[0_0_15px_rgba(139,92,246,0.2)]',
+  sky: {
+    border: 'border-sky-500/20 hover:border-sky-500/40',
+    iconBg: 'bg-sky-500/10',
+    iconText: 'text-sky-400',
+    glow: 'group-hover:shadow-[0_0_40px_-10px_rgba(14,165,233,0.18)]',
+    statBg: 'bg-sky-500/[0.06]',
+    statText: 'text-sky-400',
+    line: 'via-sky-500',
+    badge: 'bg-sky-500/10 text-sky-400 border-sky-500/20',
+    btn: 'bg-sky-600 text-white hover:bg-sky-500 shadow-[0_0_15px_rgba(14,165,233,0.2)]',
   },
   emerald: {
     border: 'border-emerald-500/20 hover:border-emerald-500/40',
@@ -126,7 +126,7 @@ export default function HomeView() {
       <section className="relative py-24 sm:py-32 overflow-hidden bg-solar-bg">
         {/* Background glow effects */}
         <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-amber-500/[0.015] blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-purple-500/[0.015] blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-sky-500/[0.015] blur-[100px] pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
@@ -166,7 +166,7 @@ export default function HomeView() {
               const a = accentMap[off.accent];
               const panelAccentClass = 
                 off.accent === 'amber' ? 'solar-panel-card-gold' :
-                off.accent === 'purple' ? 'solar-panel-card-indigo' :
+                off.accent === 'sky' ? 'solar-panel-card-sky' :
                 'solar-panel-card-emerald';
 
               return (

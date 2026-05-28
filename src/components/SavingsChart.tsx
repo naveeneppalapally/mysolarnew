@@ -82,7 +82,7 @@ export default function SavingsChart() {
   return (
     <section id="savings-chart" className="relative section-alt overflow-hidden">
       {/* Ambient glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-purple-500/[0.03] blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-sky-500/[0.03] blur-[100px] pointer-events-none" />
 
       <div className="section-wrapper">
         {/* Header */}
@@ -110,7 +110,7 @@ export default function SavingsChart() {
           className="relative rounded-3xl border border-solar-border bg-solar-card backdrop-blur-xl overflow-hidden"
         >
           {/* Top border */}
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-sky-500 to-transparent" />
 
           <div className="px-4 sm:px-8 pt-8 pb-6">
             <div

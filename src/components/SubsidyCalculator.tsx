@@ -78,18 +78,18 @@ function ResultCard({ icon, label, value, accent = 'default', hero = false, dela
   const panelAccentClass = {
     default: 'solar-panel-card-gold',
     gold: 'solar-panel-card-gold',
-    cyan: 'solar-panel-card-indigo',
-    indigo: 'solar-panel-card-indigo',
-    purple: 'solar-panel-card-indigo',
+    cyan: 'solar-panel-card-sky',
+    indigo: 'solar-panel-card-sky',
+    purple: 'solar-panel-card-sky',
     emerald: 'solar-panel-card-emerald',
   }[accent];
 
   const valueColor = {
     default: 'text-solar-text',
     gold: 'text-amber-400',
-    cyan: 'text-indigo-400',
-    indigo: 'text-indigo-400',
-    purple: 'text-purple-400',
+    cyan: 'text-blue-400',
+    indigo: 'text-blue-400',
+    purple: 'text-sky-400',
     emerald: 'text-emerald-400',
   }[accent];
 

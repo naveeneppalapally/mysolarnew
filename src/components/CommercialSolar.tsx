@@ -15,7 +15,7 @@ const highlights = [
     title: 'Complete Surcharge Exemptions',
     subtitle: 'TSERC 2025 Grid Regulation',
     description: 'To promote clean energy, the 2025 TSERC policy grants absolute exemptions from banking charges, wheeling charges, cross-subsidy surcharges, and any additional utility surcharges for Net and Gross Metered installations.',
-    icon: <ShieldCheck className="w-5 h-5 text-purple-400" />,
+    icon: <ShieldCheck className="w-5 h-5 text-sky-400" />,
     stats: '100% Exempt'
   },
   {
@@ -61,7 +61,7 @@ export default function CommercialSolar() {
     <section id="commercial-solar" className="relative py-24 sm:py-32 overflow-hidden bg-solar-bg-secondary">
       {/* Ambient glows */}
       <div className="absolute top-1/3 left-1/4 w-[600px] h-[600px] rounded-full bg-amber-500/[0.015] blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-purple-500/[0.015] blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-sky-500/[0.015] blur-[100px] pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
@@ -131,7 +131,7 @@ export default function CommercialSolar() {
 
                 <div className="pt-3 border-t border-solar-border flex justify-between items-center text-xs">
                   <span className="text-solar-text-dim uppercase font-semibold tracking-wider font-body">Key Metric</span>
-                  <span className="text-purple-400 font-bold font-heading">{h.stats}</span>
+                  <span className="text-sky-400 font-bold font-heading">{h.stats}</span>
                 </div>
               </div>
             </motion.div>
@@ -146,11 +146,11 @@ export default function CommercialSolar() {
           transition={{ duration: 0.6 }}
           className="border border-solar-border rounded-3xl p-6 sm:p-8 lg:p-10 bg-solar-card backdrop-blur-xl relative overflow-hidden"
         >
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500/20 to-transparent" />
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-sky-500/20 to-transparent" />
           
           <div className="flex flex-col lg:flex-row gap-8 items-center">
             <div className="lg:w-2/5 space-y-4">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-purple-500/10 text-purple-400 border border-purple-500/20 font-body">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase bg-sky-500/10 text-sky-400 border border-sky-500/20 font-body">
                 Policy Compliance
               </span>
               <h3 className="text-xl sm:text-2xl font-bold font-heading text-solar-text">

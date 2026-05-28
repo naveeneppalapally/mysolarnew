@@ -25,12 +25,12 @@ html.font-theme-syne {
 :root {
   /* Backgrounds */
   --solar-bg: #030712;                /* Deep Obsidian Black */
-  --solar-bg-secondary: #080718;      /* Luxurious Midnight Purple Tint */
-  --solar-bg-tertiary: #0c0a22;       /* Slate Purple Background */
+  --solar-bg-secondary: #090d16;      /* Slate Midnight Black Tint */
+  --solar-bg-tertiary: #0e1524;       /* Slate Background */
 
   /* Cards */
-  --solar-card: rgba(26, 21, 56, 0.2); /* Translucent Indigo-Purple Glass */
-  --solar-card-solid: #0b0a1a;        /* Solid Dark Purple-obsidian */
+  --solar-card: rgba(15, 23, 42, 0.3); /* Translucent Slate Glass */
+  --solar-card-solid: #0e1320;        /* Solid Dark Slate */
 
   /* Borders */
   --solar-border: rgba(255, 255, 255, 0.05);
@@ -48,27 +48,27 @@ html.font-theme-syne {
 
   /* Secondary — Accents */
   --solar-orange: #f97316;
-  --solar-cyan: #6366f1;              /* Indigo Accent */
-  --solar-cyan-bright: #818cf8;        /* Soft Indigo Accent */
+  --solar-cyan: #0284c7;              /* Steel Blue Accent */
+  --solar-cyan-bright: #38bdf8;        /* Soft Steel Blue Accent */
   --solar-emerald: #10b981;
-  --solar-purple: #8b5cf6;            /* Amethyst Royal Purple */
-  --solar-indigo: #4f46e5;            /* Deep Royal Indigo */
+  --solar-purple: #0ea5e9;            /* Sky Blue Accent */
+  --solar-indigo: #0369a1;            /* Deep Steel Blue */
 
   /* Shadows & Glows */
   --shadow-glow-gold: 0 0 60px rgba(251, 191, 36, 0.15), 0 0 120px rgba(245, 158, 11, 0.05);
-  --shadow-glow-cyan: 0 0 60px rgba(99, 102, 241, 0.15); /* Indigo Glow */
-  --shadow-glow-purple: 0 0 60px rgba(139, 92, 246, 0.15), 0 0 120px rgba(79, 70, 229, 0.05);
+  --shadow-glow-cyan: 0 0 60px rgba(14, 165, 233, 0.15); /* Steel Blue Glow */
+  --shadow-glow-purple: 0 0 60px rgba(14, 165, 233, 0.15), 0 0 120px rgba(3, 105, 161, 0.05);
   --shadow-card: 0 4px 30px rgba(0, 0, 0, 0.5);
   --shadow-card-lg: 0 8px 60px rgba(0, 0, 0, 0.6);
 
   /* Gradients */
   --gradient-gold: linear-gradient(135deg, #fbbf24, #f97316); /* Champagne to Orange */
-  --gradient-cyan: linear-gradient(135deg, #fbbf24 0%, #8b5cf6 50%, #4f46e5 100%); /* Trifold Gradient */
-  --gradient-hero: linear-gradient(180deg, #030712 0%, #080718 50%, #030712 100%);
+  --gradient-cyan: linear-gradient(135deg, #fbbf24 0%, #0ea5e9 50%, #0369a1 100%); /* Trifold Gradient */
+  --gradient-hero: linear-gradient(180deg, #030712 0%, #090d16 50%, #030712 100%);
 
   /* Navigation */
   --nav-bg: rgba(3, 2, 12, 0.82);
-  --nav-border: rgba(139, 92, 246, 0.08); /* Faint amethyst line */
+  --nav-border: rgba(14, 165, 233, 0.08); /* Faint steel blue line */
 
   /* Timing */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -91,7 +91,7 @@ html.font-theme-syne {
 
   /* Borders */
   --solar-border: rgba(180, 130, 20, 0.12);
-  --solar-border-hover: rgba(124, 58, 237, 0.40);
+  --solar-border-hover: rgba(245, 158, 11, 0.40);
 
   /* Typography */
   --solar-text: #1a1208;
@@ -105,22 +105,22 @@ html.font-theme-syne {
 
   /* Accents */
   --solar-orange: #d4580a;
-  --solar-cyan: #7c3aed;
-  --solar-cyan-bright: #9b5cf6;
+  --solar-cyan: #0ea5e9;
+  --solar-cyan-bright: #38bdf8;
   --solar-emerald: #047857;
-  --solar-purple: #7c3aed;
-  --solar-indigo: #4338ca;
+  --solar-purple: #0284c7;
+  --solar-indigo: #0369a1;
 
   /* Shadows — STRONG enough to show on warm white */
   --shadow-glow-gold: 0 0 60px rgba(192, 124, 10, 0.22), 0 0 120px rgba(224, 144, 16, 0.10);
-  --shadow-glow-cyan: 0 0 60px rgba(124, 58, 237, 0.18);
-  --shadow-glow-purple: 0 0 60px rgba(124, 58, 237, 0.18), 0 0 120px rgba(67, 56, 202, 0.08);
+  --shadow-glow-cyan: 0 0 60px rgba(14, 165, 233, 0.18);
+  --shadow-glow-purple: 0 0 60px rgba(14, 165, 233, 0.18), 0 0 120px rgba(3, 105, 161, 0.08);
   --shadow-card: 0 4px 24px rgba(180, 130, 20, 0.10), 0 1px 4px rgba(0,0,0,0.04);
-  --shadow-card-lg: 0 8px 48px rgba(180, 130, 20, 0.13), 0 2px 8px rgba(124, 58, 237, 0.06);
+  --shadow-card-lg: 0 8px 48px rgba(180, 130, 20, 0.13), 0 2px 8px rgba(14, 165, 233, 0.06);
 
   /* Gradients — Warm trifold, NOT cold flat */
   --gradient-gold: linear-gradient(135deg, #c07c0a, #d4580a);
-  --gradient-cyan: linear-gradient(135deg, #c07c0a 0%, #7c3aed 50%, #4338ca 100%);
+  --gradient-cyan: linear-gradient(135deg, #c07c0a 0%, #0284c7 50%, #0369a1 100%);
   --gradient-hero: linear-gradient(160deg, #fafaf8 0%, #fdf8f0 40%, #f5ead6 80%, #fafaf8 100%);
 
   /* Navigation */
@@ -331,15 +331,15 @@ html.style-none.light-theme {
   color: var(--solar-gold) !important;
 }
 
-.light-theme .text-indigo-300,
-.light-theme .text-indigo-400,
-.light-theme .text-indigo-500 {
+.light-theme .text-blue-300,
+.light-theme .text-blue-400,
+.light-theme .text-blue-500 {
   color: var(--solar-indigo) !important;
 }
 
-.light-theme .text-purple-300,
-.light-theme .text-purple-400,
-.light-theme .text-purple-500 {
+.light-theme .text-sky-300,
+.light-theme .text-sky-400,
+.light-theme .text-sky-500 {
   color: var(--solar-purple) !important;
 }
 
@@ -2352,13 +2352,13 @@ a:focus-visible {
   --panel-corner-hover: rgba(99, 102, 241, 0.7);
 }
 
-.solar-panel-card-indigo {
-  --panel-accent: rgba(139, 92, 246, 0.04); /* Purple Tint */
-  --panel-accent-hover: rgba(139, 92, 246, 0.12);
-  --panel-border-hover: rgba(139, 92, 246, 0.3);
-  --panel-glow-hover: rgba(139, 92, 246, 0.12);
-  --panel-corner: rgba(139, 92, 246, 0.35);
-  --panel-corner-hover: rgba(139, 92, 246, 0.7);
+.solar-panel-card-sky {
+  --panel-accent: rgba(14, 165, 233, 0.04); /* Purple Tint */
+  --panel-accent-hover: rgba(14, 165, 233, 0.12);
+  --panel-border-hover: rgba(14, 165, 233, 0.3);
+  --panel-glow-hover: rgba(14, 165, 233, 0.12);
+  --panel-corner: rgba(14, 165, 233, 0.35);
+  --panel-corner-hover: rgba(14, 165, 233, 0.7);
 }
 
 .solar-panel-card-emerald {

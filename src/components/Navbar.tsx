@@ -23,7 +23,7 @@ const offeringsItems: DropdownItem[] = [
     label: 'Housing Societies (RWAs)',
     description: 'R rooftop solar for shared apartments and housing societies.',
     href: '#societies',
-    icon: <Building2 className="w-5 h-5 text-purple-400" />,
+    icon: <Building2 className="w-5 h-5 text-sky-400" />,
   },
   {
     label: 'Commercial & Industrial',
@@ -50,7 +50,7 @@ const techItems: DropdownItem[] = [
     label: 'Tier-1 Panels Database',
     description: 'Premier Energies TOPCon & Adani Mono-PERC datasheets.',
     href: '#technology?tab=panels',
-    icon: <Database className="w-5 h-5 text-purple-400" />,
+    icon: <Database className="w-5 h-5 text-sky-400" />,
   },
   {
     label: '10-Point Technical Code',
@@ -195,7 +195,7 @@ function ThemeToggle() {
             animate={{ y: 0, opacity: 1, rotate: 0 }}
             exit={{ y: -20, opacity: 0, rotate: 40 }}
             transition={{ duration: 0.3 }}
-            className="text-purple-600 group-hover:text-purple-500"
+            className="text-blue-600 group-hover:text-blue-500"
           >
             <Moon size={18} />
           </motion.div>

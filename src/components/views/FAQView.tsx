@@ -7,14 +7,14 @@ export default function FAQView() {
       {/* Page Header */}
       <section className="relative pt-32 pb-16 overflow-hidden bg-solar-bg-secondary border-b border-solar-border">
         {/* Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-purple-500/[0.02] rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-sky-500/[0.02] rounded-full blur-[100px] pointer-events-none" />
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.span
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-block text-xs font-semibold tracking-[0.3em] uppercase text-purple-400 mb-3 font-body"
+            className="inline-block text-xs font-semibold tracking-[0.3em] uppercase text-sky-400 mb-3 font-body"
           >
             Knowledge Base
           </motion.span>

@@ -21,7 +21,7 @@ const models = [
     badge: 'Corpus Preserved',
     description: 'We arrange 100% financing for the installation through partner banks. The society pays zero upfront capital. The monthly EMIs are paid out of the immediate electricity bill savings, preserving the society\'s liquid corpus funds.',
     icon: <Landmark className="w-7 h-7" />,
-    accent: 'purple' as const,
+    accent: 'sky' as const,
     stats: [
       { label: 'Upfront Capital', value: '₹0 Upfront' },
       { label: 'Financing', value: '100% Covered' },
@@ -53,15 +53,15 @@ const accentMap = {
     line: 'via-amber-500',
     badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
   },
-  purple: {
-    border: 'border-purple-500/20 hover:border-purple-500/40',
-    iconBg: 'bg-purple-500/10',
-    iconText: 'text-purple-400',
-    glow: 'group-hover:shadow-[0_0_40px_-10px_rgba(139,92,246,0.18)]',
-    statBg: 'bg-purple-500/[0.06]',
-    statText: 'text-purple-400',
-    line: 'via-purple-500',
-    badge: 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+  sky: {
+    border: 'border-sky-500/20 hover:border-sky-500/40',
+    iconBg: 'bg-sky-500/10',
+    iconText: 'text-sky-400',
+    glow: 'group-hover:shadow-[0_0_40px_-10px_rgba(14,165,233,0.18)]',
+    statBg: 'bg-sky-500/[0.06]',
+    statText: 'text-sky-400',
+    line: 'via-sky-500',
+    badge: 'bg-sky-500/10 text-sky-400 border-sky-500/20',
   },
   emerald: {
     border: 'border-emerald-500/20 hover:border-emerald-500/40',
@@ -94,7 +94,7 @@ export default function HousingSocieties() {
   return (
     <section id="housing-societies" className="relative py-24 sm:py-32 overflow-hidden bg-solar-bg">
       {/* Ambient glows */}
-      <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-purple-500/[0.015] blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-sky-500/[0.015] blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] rounded-full bg-amber-500/[0.015] blur-[100px] pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -161,7 +161,7 @@ export default function HousingSocieties() {
               </div>
               <div className="border border-solar-border rounded-2xl p-4 bg-solar-card-solid">
                 <p className="text-[10px] text-solar-text-dim uppercase tracking-wider font-semibold">Capacity Cap</p>
-                <p className="font-bold text-lg sm:text-xl text-purple-400 mt-1">500 kW</p>
+                <p className="font-bold text-lg sm:text-xl text-sky-400 mt-1">500 kW</p>
                 <p className="text-[10px] text-solar-text-muted mt-0.5">Max ₹90L Subsidy</p>
               </div>
             </div>
@@ -174,7 +174,7 @@ export default function HousingSocieties() {
             const a = accentMap[model.accent];
             const panelAccentClass = 
               model.accent === 'amber' ? 'solar-panel-card-gold' :
-              model.accent === 'purple' ? 'solar-panel-card-indigo' :
+              model.accent === 'sky' ? 'solar-panel-card-sky' :
               'solar-panel-card-emerald';
 
             return (

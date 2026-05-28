@@ -43,7 +43,7 @@ export default function ResidentialExtras() {
 
   return (
     <div className="relative py-24 bg-solar-bg overflow-hidden">
-      <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-purple-500/[0.015] blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-sky-500/[0.015] blur-[100px] pointer-events-none" />
       <div className="absolute bottom-1/3 left-1/4 w-[600px] h-[600px] rounded-full bg-amber-500/[0.015] blur-[120px] pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-28">
@@ -175,7 +175,7 @@ export default function ResidentialExtras() {
             className="space-y-6"
           >
             <div className="space-y-2">
-              <div className="inline-flex items-center gap-1.5 text-xs text-purple-400 font-semibold tracking-wider font-body">
+              <div className="inline-flex items-center gap-1.5 text-xs text-sky-400 font-semibold tracking-wider font-body">
                 <FileText className="w-3.5 h-3.5" /> Documentation
               </div>
               <h3 className="text-2xl font-bold font-heading text-solar-text">
@@ -189,7 +189,7 @@ export default function ResidentialExtras() {
             <div className="space-y-3">
               {documents.map((doc, idx) => (
                 <div key={idx} className="flex gap-4 p-4 rounded-xl border border-solar-border/60 bg-solar-card/20 hover:border-solar-border transition-colors">
-                  <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center border border-purple-500/20 text-purple-400 font-heading font-bold text-sm shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-sky-500/10 flex items-center justify-center border border-sky-500/20 text-sky-400 font-heading font-bold text-sm shrink-0">
                     0{idx + 1}
                   </div>
                   <div className="space-y-0.5">

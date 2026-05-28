@@ -385,7 +385,7 @@ export default function BackgroundSettings() {
                     if (phase === 'dawn') return isActive ? 'bg-orange-500/20 border-orange-500 text-orange-400' : 'hover:border-orange-500/30 text-gray-400 hover:text-orange-400';
                     if (phase === 'noon') return isActive ? 'bg-yellow-500/20 border-yellow-500 text-yellow-400' : 'hover:border-yellow-500/30 text-gray-400 hover:text-yellow-400';
                     if (phase === 'dusk') return isActive ? 'bg-rose-500/20 border-rose-500 text-rose-400' : 'hover:border-rose-500/30 text-gray-400 hover:text-rose-400';
-                    return isActive ? 'bg-indigo-500/20 border-indigo-500 text-indigo-400' : 'hover:border-indigo-500/30 text-gray-400 hover:text-indigo-400';
+                    return isActive ? 'bg-blue-500/20 border-blue-500 text-blue-400' : 'hover:border-blue-500/30 text-gray-400 hover:text-blue-400';
                   };
 
                   return (

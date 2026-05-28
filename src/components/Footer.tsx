@@ -91,7 +91,7 @@ export default function Footer() {
         className="h-px w-full"
         style={{
           background:
-            'linear-gradient(90deg, transparent, rgba(139,92,246,0.15) 20%, rgba(251,191,36,0.45) 50%, rgba(139,92,246,0.15) 80%, transparent)',
+            'linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.15) 20%, rgba(251,191,36,0.45) 50%, rgba(14, 165, 233, 0.15) 80%, transparent)',
         }}
       />
 

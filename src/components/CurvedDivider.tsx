@@ -30,12 +30,12 @@ export default function CurvedDivider({
             <stop offset="70%" stopColor="#f59e0b" />
             <stop offset="100%" stopColor="#d97706" />
           </linearGradient>
-          <linearGradient id="purpleArchGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#6d28d9" />
-            <stop offset="30%" stopColor="#7c3aed" />
-            <stop offset="50%" stopColor="#a78bfa" />
-            <stop offset="70%" stopColor="#7c3aed" />
-            <stop offset="100%" stopColor="#6d28d9" />
+          <linearGradient id="blueArchGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#0369a1" />
+            <stop offset="30%" stopColor="#0ea5e9" />
+            <stop offset="50%" stopColor="#38bdf8" />
+            <stop offset="70%" stopColor="#0ea5e9" />
+            <stop offset="100%" stopColor="#0369a1" />
           </linearGradient>
         </defs>
 
@@ -45,10 +45,10 @@ export default function CurvedDivider({
           fill={baseColor}
         />
 
-        {/* 2. Middle Royal Purple Arch with smooth entry animation */}
+        {/* 2. Middle Royal Blue Arch with smooth entry animation */}
         <motion.path
           d="M0,50 Q720,5 1440,50 L1440,100 L0,100 Z"
-          fill="url(#purpleArchGrad)"
+          fill="url(#blueArchGrad)"
           initial={{ d: "M0,70 Q720,25 1440,70 L1440,100 L0,100 Z" }}
           whileInView={{ d: "M0,50 Q720,5 1440,50 L1440,100 L0,100 Z" }}
           viewport={{ once: true }}

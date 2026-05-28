@@ -77,7 +77,7 @@ export default function HousingSocietiesExtras() {
 
   return (
     <div className="relative py-24 bg-solar-bg-secondary border-t border-solar-border overflow-hidden">
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-purple-500/[0.015] blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-sky-500/[0.015] blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-amber-500/[0.015] blur-[100px] pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-28">
@@ -85,7 +85,7 @@ export default function HousingSocietiesExtras() {
         {/* 1. Common Area Load Analysis */}
         <section className="space-y-12">
           <div className="text-center space-y-3">
-            <span className="inline-block text-[10px] font-semibold tracking-widest text-purple-400 uppercase bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/10">
+            <span className="inline-block text-[10px] font-semibold tracking-widest text-sky-400 uppercase bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/10">
               Load Analysis
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-solar-text">
@@ -100,7 +100,7 @@ export default function HousingSocietiesExtras() {
             {loadAnalysis.map((item, idx) => (
               <div 
                 key={idx}
-                className="solar-panel-card solar-panel-card-indigo p-6 flex flex-col justify-between space-y-5"
+                className="solar-panel-card solar-panel-card-sky p-6 flex flex-col justify-between space-y-5"
               >
                 <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
                 <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
@@ -108,7 +108,7 @@ export default function HousingSocietiesExtras() {
                 <span className="solar-panel-card-corner solar-panel-card-corner-br" />
 
                 <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center font-heading font-bold text-xs">
+                  <div className="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center font-heading font-bold text-xs">
                     0{idx + 1}
                   </div>
                   <h4 className="font-heading font-bold text-base text-solar-text">{item.title}</h4>
@@ -116,8 +116,8 @@ export default function HousingSocietiesExtras() {
                 </div>
 
                 <div className="pt-3 border-t border-solar-border/60 flex items-center justify-between text-[11px] font-body">
-                  <span className="text-solar-text-dim">Est. Consumption</span>
-                  <span className="font-semibold text-purple-400">{item.stat}</span>
+                   <span className="text-solar-text-dim">Est. Consumption</span>
+                  <span className="font-semibold text-sky-400">{item.stat}</span>
                 </div>
               </div>
             ))}
@@ -140,7 +140,7 @@ export default function HousingSocietiesExtras() {
 
           <div className="relative">
             {/* Connecting line for desktop */}
-            <div className="hidden lg:block absolute top-1/2 left-4 right-4 h-[2px] bg-gradient-to-r from-purple-500/10 via-purple-500/30 to-purple-500/10 -translate-y-1/2 pointer-events-none" />
+            <div className="hidden lg:block absolute top-1/2 left-4 right-4 h-[2px] bg-gradient-to-r from-sky-500/10 via-sky-500/30 to-sky-500/10 -translate-y-1/2 pointer-events-none" />
 
             <div className="grid lg:grid-cols-5 gap-6 sm:gap-8">
               {roadmapSteps.map((step, idx) => (
@@ -148,7 +148,7 @@ export default function HousingSocietiesExtras() {
                   key={idx}
                   className="relative p-5 rounded-2xl border border-solar-border bg-solar-card/40 backdrop-blur-md hover:border-solar-border-hover transition-colors space-y-3"
                 >
-                  <div className="absolute -top-3 left-4 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-purple-600 to-purple-800 text-white font-heading font-bold text-[10px] tracking-wide">
+                  <div className="absolute -top-3 left-4 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-sky-600 to-sky-800 text-white font-heading font-bold text-[10px] tracking-wide">
                     STEP {step.step}
                   </div>
                   <h4 className="font-heading font-bold text-sm sm:text-base text-solar-text pt-2">{step.title}</h4>
@@ -162,7 +162,7 @@ export default function HousingSocietiesExtras() {
         {/* 3. Financing Comparison Matrix */}
         <section className="space-y-8">
           <div className="text-center space-y-3">
-            <span className="inline-block text-[10px] font-semibold tracking-widest text-purple-400 uppercase bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/10">
+            <span className="inline-block text-[10px] font-semibold tracking-widest text-sky-400 uppercase bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/10">
               Financial Models
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-solar-text">
@@ -194,7 +194,7 @@ export default function HousingSocietiesExtras() {
                   <tr key={idx} className="hover:bg-solar-card/30 transition-colors">
                     <td className="p-4 sm:p-5 font-bold text-solar-text">{row.param}</td>
                     <td className="p-4 sm:p-5 text-amber-400 font-semibold">{row.capex}</td>
-                    <td className="p-4 sm:p-5 text-purple-400 font-semibold">{row.zip}</td>
+                    <td className="p-4 sm:p-5 text-sky-400 font-semibold">{row.zip}</td>
                     <td className="p-4 sm:p-5 text-emerald-400 font-semibold">{row.opex}</td>
                   </tr>
                 ))}

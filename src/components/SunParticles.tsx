@@ -66,21 +66,21 @@ interface PrismaticShard {
 const GRID_SPACING = 60;
 
 // Style-specific locked color palettes to deliver 100% radical visual differences out-of-the-box
-const CYBER_GRID_PALETTE = ['#8B5CF6', '#4F46E5', '#fbbf24', '#f97316']; // Royal Purple, Deep Indigo, Satin Gold nodes
+const CYBER_GRID_PALETTE = ['#0ea5e9', '#0284c7', '#fbbf24', '#f97316']; // Sky Blue, Steel Blue, Satin Gold nodes
 
 const PALETTES: Record<SolarPhase, string[]> = {
-  dawn:  ['#fbbf24', '#f59e0b', '#f97316', '#8b5cf6'], /* Champagne Gold, Amber, Orange, Amethyst Purple */
+  dawn:  ['#fbbf24', '#f59e0b', '#f97316', '#0ea5e9'], /* Champagne Gold, Amber, Orange, Sky Blue */
   noon:  ['#FFFFFF', '#FFFBEB', '#fbbf24', '#f59e0b'], /* Diamond White, Champagne, Solar Gold */
-  dusk:  ['#8b5cf6', '#a78bfa', '#6366f1', '#fbbf24'], /* Royal Purple, Amethyst, Royal Indigo, Champagne Gold */
-  night: ['#4f46e5', '#6366f1', '#1e1b4b', '#8b5cf6'], /* Deep Indigo, Royal Purple, Amethyst, Obsidian Slate */
+  dusk:  ['#0ea5e9', '#38bdf8', '#0369a1', '#fbbf24'], /* Sky Blue, Soft Sky Blue, Deep Steel Blue, Champagne Gold */
+  night: ['#0284c7', '#0369a1', '#0b1329', '#0ea5e9'], /* Deep Steel Blue, Sky Blue, Obsidian Slate */
 };
 
 // Richer, high-visibility palettes for Light Mode so elements don't wash out on light backdrops
 const LIGHT_PALETTES: Record<SolarPhase, string[]> = {
-  dawn:  ['#8b5cf6', '#7c3aed', '#a78bfa', '#d946ef'], /* Amethyst Purple, Royal Purple, Lavender, Orchid Pink */
-  noon:  ['#7c3aed', '#8b5cf6', '#c084fc', '#d97706'], /* Royal Purple, Amethyst, Light Amethyst, Gold */
-  dusk:  ['#8b5cf6', '#a78bfa', '#d8b4fe', '#db2777'], /* Amethyst, Lavender, Pale Amethyst, Rich Rose */
-  night: ['#7c3aed', '#8b5cf6', '#a78bfa', '#6d28d9'], /* Royal Purple, Amethyst, Lavender, Deep Velvet Purple */
+  dawn:  ['#0ea5e9', '#0284c7', '#38bdf8', '#fbbf24'], /* Sky Blue, Steel Blue, Champagne Gold */
+  noon:  ['#0284c7', '#0ea5e9', '#7dd3fc', '#d97706'], /* Steel Blue, Sky Blue, Soft Sky Blue, Gold */
+  dusk:  ['#0ea5e9', '#38bdf8', '#7dd3fc', '#db2777'], /* Sky Blue, Soft Sky, Rich Rose */
+  night: ['#0284c7', '#0ea5e9', '#38bdf8', '#0369a1'], /* Steel Blue, Sky Blue, Deep Steel Blue */
 };
 
 export default function SunParticles() {
@@ -351,7 +351,7 @@ export default function SunParticles() {
       const targetCount = countRef.current;
       
       const isLight = themeRef.current === 'light';
-      const gridColor = isLight ? '#7c3aed' : CYBER_GRID_PALETTE[0]; // Amethyst purple in light mode
+      const gridColor = isLight ? '#0284c7' : CYBER_GRID_PALETTE[0]; // Sky blue in light mode
       const gridAlpha = isLight ? 0.20 : 0.05;
       ctx.strokeStyle = hexToRgba(gridColor, gridAlpha);
       ctx.lineWidth = 0.5;

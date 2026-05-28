@@ -174,7 +174,7 @@ export default function FarmersExtras() {
         {/* 3. Checklist of Documents */}
         <section className="space-y-12">
           <div className="text-center space-y-3">
-            <span className="inline-block text-[10px] font-semibold tracking-widest text-purple-400 uppercase bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/10">
+            <span className="inline-block text-[10px] font-semibold tracking-widest text-emerald-400 uppercase bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/10">
               Checklist
             </span>
             <h2 className="text-3xl sm:text-4xl font-bold font-heading text-solar-text">

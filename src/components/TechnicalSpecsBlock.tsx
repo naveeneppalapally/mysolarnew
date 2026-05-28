@@ -77,11 +77,11 @@ export default function TechnicalSpecsBlock() {
       transition={{ duration: 0.8, delay: 0.2 }}
       className="rounded-3xl border border-solar-border bg-solar-card backdrop-blur-xl p-6 sm:p-8 lg:p-10 relative overflow-hidden"
     >
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-purple-500/20 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-sky-500/20 to-transparent" />
 
       {/* Title */}
       <div className="flex flex-col items-center text-center mb-8">
-        <span className="text-[10px] font-semibold tracking-widest text-purple-400 uppercase bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/10 mb-3 font-body flex items-center gap-1.5">
+        <span className="text-[10px] font-semibold tracking-widest text-sky-400 uppercase bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/10 mb-3 font-body flex items-center gap-1.5">
           <Award className="w-3.5 h-3.5" />
           Telangana Engineering Standards
         </span>
@@ -105,7 +105,7 @@ export default function TechnicalSpecsBlock() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold tracking-wide font-heading cursor-pointer transition-all duration-300 ${
                 isActive
-                  ? 'bg-gradient-to-r from-amber-500/15 to-purple-500/15 border border-purple-500/30 text-solar-gold shadow-[0_0_15px_rgba(139,92,246,0.1)]'
+                  ? 'bg-gradient-to-r from-amber-500/15 to-sky-500/15 border border-sky-500/30 text-solar-gold shadow-[0_0_15px_rgba(14,165,233,0.1)]'
                   : 'border border-solar-border text-solar-text-muted hover:text-solar-text hover:bg-solar-card-solid'
               }`}
             >
@@ -193,10 +193,10 @@ export default function TechnicalSpecsBlock() {
             </p>
             <div className="grid md:grid-cols-3 gap-5">
               {panels.map((p) => (
-                <div key={p.model} className="border border-solar-border rounded-2xl p-5 bg-solar-card-solid flex flex-col justify-between hover:border-purple-500/20 transition-all duration-300 group">
+                <div key={p.model} className="border border-solar-border rounded-2xl p-5 bg-solar-card-solid flex flex-col justify-between hover:border-sky-500/20 transition-all duration-300 group">
                   <div>
                     <h5 className="font-bold text-base font-heading text-solar-text group-hover:text-solar-gold transition-colors mb-1">{p.model}</h5>
-                    <span className="text-[10px] text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/10 font-mono tracking-wider">{p.type}</span>
+                    <span className="text-[10px] text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/10 font-mono tracking-wider">{p.type}</span>
                     
                     <div className="grid grid-cols-2 gap-4 my-4 font-body">
                       <div>

@@ -65,7 +65,7 @@ export default function Services() {
     <section id="services" className="relative py-24 sm:py-32 overflow-hidden">
       {/* Background ambient glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-purple-500/[0.02] rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-sky-500/[0.02] rounded-full blur-[120px]" />
         <div className="absolute top-1/3 left-0 w-[400px] h-[400px] bg-amber-500/[0.015] rounded-full blur-[100px]" />
       </div>
 
@@ -237,7 +237,7 @@ function InvertersSpecsBlock() {
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckSquare className="w-4 h-4 text-amber-500/60 shrink-0" />
-                  <span className="text-purple-400 font-semibold">{inv.warranty}</span>
+                  <span className="text-sky-400 font-semibold">{inv.warranty}</span>
                 </div>
               </div>
             </div>
