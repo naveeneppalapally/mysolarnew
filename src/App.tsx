@@ -2,27 +2,18 @@ import { useState, useEffect } from 'react';
 import Lenis from '@studio-freight/lenis';
 import Loader from './components/Loader';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import CurvedDivider from './components/CurvedDivider';
-import Marquee from './components/Marquee';
-import WhySolar from './components/WhySolar';
-import SubsidySection from './components/SubsidySection';
-import Services from './components/Services';
-import HousingSocieties from './components/HousingSocieties';
-import CommercialSolar from './components/CommercialSolar';
-import HowItWorks from './components/HowItWorks';
-import TelanganaPolicy from './components/TelanganaPolicy';
-import SavingsChart from './components/SavingsChart';
-import SubsidyCalculator from './components/SubsidyCalculator';
-import Financing from './components/Financing';
-import Testimonials from './components/Testimonials';
-import FAQ from './components/FAQ';
-import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
 import FloatingCTA from './components/FloatingCTA';
 import ScrollToTop from './components/ScrollToTop';
 import CustomCursor from './components/CustomCursor';
 import BackgroundSettings from './components/BackgroundSettings';
+import HomeView from './components/views/HomeView';
+import HomesView from './components/views/HomesView';
+import SocietiesView from './components/views/SocietiesView';
+import CommercialView from './components/views/CommercialView';
+import FarmersView from './components/views/FarmersView';
+import CalculatorView from './components/views/CalculatorView';
+import FAQView from './components/views/FAQView';
 import { SolarTimeProvider, useSolarTime } from './context/SolarTimeContext';
 import { BackgroundSettingsProvider } from './context/BackgroundSettingsContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -33,6 +24,12 @@ const LOADER_HIDE_DELAY = 2400;
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
   const { currentPhase } = useSolarTime();
+  const [currentHash, setCurrentHash] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.location.hash || '#home';
+    }
+    return '#home';
+  });
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), LOADER_HIDE_DELAY);
@@ -71,6 +68,46 @@ function AppContent() {
     };
   }, [isLoading]);
 
+  useEffect(() => {
+    const handleHashChange = () => {
+      const fullHash = window.location.hash || '#home';
+      // Normalize e.g., #homes?tab=panels -> #homes
+      const baseHash = fullHash.split('?')[0];
+      setCurrentHash(baseHash);
+      
+      // Reset scroll position to top instantly when page changes
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange(); // Sync initial hash
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
+
+  const renderActiveView = () => {
+    switch (currentHash) {
+      case '#home':
+        return <HomeView />;
+      case '#homes':
+        return <HomesView />;
+      case '#societies':
+        return <SocietiesView />;
+      case '#commercial':
+        return <CommercialView />;
+      case '#farmers':
+        return <FarmersView />;
+      case '#calculator':
+        return <CalculatorView />;
+      case '#faq':
+        return <FAQView />;
+      default:
+        return <HomeView />;
+    }
+  };
+
   return (
     <>
       <CustomCursor />
@@ -78,13 +115,6 @@ function AppContent() {
       {/* Loader sits on top as a fixed overlay with z-100 */}
       <Loader isVisible={isLoading} />
 
-      {/*
-        All content is ALWAYS mounted (no conditional rendering).
-        The Loader covers it as a z-100 overlay, so users can't see it.
-        Hero uses whileInView (viewport: once) so animations only fire
-        when the element is actually visible — which happens naturally
-        after the Loader fades out. No mount burst, no jank.
-      */}
       <div
         className={`transition-all duration-1000 ease-in-out phase-${currentPhase}`}
         style={{
@@ -98,25 +128,7 @@ function AppContent() {
             <div className="noise-overlay" />
             <Navbar />
             <main>
-              <Hero />
-              <CurvedDivider />
-              <Marquee />
-              <WhySolar />
-              <SubsidySection />
-              <Services />
-              <CurvedDivider />
-              <HousingSocieties />
-              <CommercialSolar />
-              <CurvedDivider />
-              <HowItWorks />
-              <SubsidyCalculator />
-              <CurvedDivider />
-              <SavingsChart />
-              <TelanganaPolicy />
-              <Financing />
-              <Testimonials />
-              <FAQ />
-              <ContactForm />
+              {renderActiveView()}
             </main>
             <Footer />
             <FloatingCTA />

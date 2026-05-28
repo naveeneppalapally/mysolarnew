@@ -40,15 +40,19 @@ const Instagram = ({ size = 24, ...props }: SocialIconProps) => (
   </svg>
 );
 
-const quickLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'Services', href: '#services' },
-  { label: 'Societies', href: '#housing-societies' },
-  { label: 'Commercial', href: '#commercial-solar' },
-  { label: 'Calculator', href: '#calculator' },
-  { label: 'Subsidy', href: '#subsidy' },
-  { label: 'FAQ', href: '#faq' },
-  { label: 'Contact', href: '#contact' },
+const offeringsLinks = [
+  { label: 'Solar for Homes', href: '#homes' },
+  { label: 'Housing Societies', href: '#societies' },
+  { label: 'Commercial Solar', href: '#commercial' },
+  { label: 'Agricultural Solar', href: '#farmers' },
+];
+
+const resourcesLinks = [
+  { label: 'Sizing Calculator', href: '#calculator' },
+  { label: 'DeccanShield™ Mounts', href: '#homes?tab=structure' },
+  { label: 'Panels Database', href: '#homes?tab=panels' },
+  { label: 'Technical Code SOPs', href: '#homes?tab=standards' },
+  { label: 'FAQ & Support', href: '#faq' },
 ];
 
 const certifications = [
@@ -60,6 +64,22 @@ const certifications = [
 ];
 
 export default function Footer() {
+  const navigateTo = (href: string) => {
+    const [path] = href.split('?');
+    if (path === '#contact') {
+      if (window.location.hash !== '#home') {
+        window.location.hash = '#home';
+        setTimeout(() => {
+          smoothScrollTo('contact');
+        }, 150);
+      } else {
+        smoothScrollTo('contact');
+      }
+    } else {
+      window.location.hash = href;
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  };
 
   return (
     <footer
@@ -76,9 +96,9 @@ export default function Footer() {
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 lg:gap-8">
           {/* Column 1 — Company */}
-          <div className="space-y-4">
+          <div className="space-y-4 lg:col-span-1 sm:col-span-2 md:col-span-3 lg:w-auto">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-purple-600 flex items-center justify-center">
                 <Sun size={16} className="text-solar-bg" />
@@ -116,19 +136,40 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2 — Quick Links */}
+          {/* Column 2 — Our Offerings */}
           <div>
-            <h4 className="text-sm font-semibold text-solar-text uppercase tracking-wider mb-5 font-heading">
-              Quick Links
+            <h4 className="text-xs font-bold text-solar-text uppercase tracking-widest mb-5 font-heading">
+              Our Offerings
             </h4>
             <ul className="space-y-2.5">
-              {quickLinks.map((link) => (
+              {offeringsLinks.map((link) => (
                 <li key={link.label}>
                   <motion.button
                     whileHover={{ x: 6, color: 'var(--solar-gold)' }}
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                    onClick={() => smoothScrollTo(link.href)}
-                    className="text-solar-text-muted text-sm transition-colors duration-200 cursor-pointer flex items-center gap-1.5"
+                    onClick={() => navigateTo(link.href)}
+                    className="text-solar-text-muted text-sm transition-colors duration-200 cursor-pointer flex items-center gap-1.5 text-left"
+                  >
+                    {link.label}
+                  </motion.button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Column 3 — Resources */}
+          <div>
+            <h4 className="text-xs font-bold text-solar-text uppercase tracking-widest mb-5 font-heading">
+              Resources
+            </h4>
+            <ul className="space-y-2.5">
+              {resourcesLinks.map((link) => (
+                <li key={link.label}>
+                  <motion.button
+                    whileHover={{ x: 6, color: 'var(--solar-gold)' }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    onClick={() => navigateTo(link.href)}
+                    className="text-solar-text-muted text-sm transition-colors duration-200 cursor-pointer flex items-center gap-1.5 text-left"
                   >
                     {link.label}
                   </motion.button>

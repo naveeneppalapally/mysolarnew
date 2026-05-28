@@ -1,20 +1,63 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, ArrowRight, Moon } from 'lucide-react';
+import { Sun, ArrowRight, Moon, ChevronDown, Home, Building2, Landmark, Sprout, Shield, Database, Hammer, Calculator } from 'lucide-react';
 import { useSolarTime } from '../context/SolarTimeContext';
 import { useTheme } from '../context/ThemeContext';
 import { smoothScrollTo } from '../lib/utils';
 
-const navLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'Why Solar', href: '#why-solar' },
-  { label: 'Services', href: '#services' },
-  { label: 'Societies', href: '#housing-societies' },
-  { label: 'Commercial', href: '#commercial-solar' },
-  { label: 'Calculator', href: '#calculator' },
-  { label: 'Subsidy', href: '#subsidy' },
-  { label: 'FAQ', href: '#faq' },
-  { label: 'Contact', href: '#contact' },
+interface DropdownItem {
+  label: string;
+  description: string;
+  href: string;
+  icon: React.ReactNode;
+}
+
+const offeringsItems: DropdownItem[] = [
+  {
+    label: 'Solar for Homes',
+    description: 'Save up to 90% on home electricity. Subsidy guides & net metering.',
+    href: '#homes',
+    icon: <Home className="w-5 h-5 text-amber-400" />,
+  },
+  {
+    label: 'Housing Societies (RWAs)',
+    description: 'R rooftop solar for shared apartments and housing societies.',
+    href: '#societies',
+    icon: <Building2 className="w-5 h-5 text-purple-400" />,
+  },
+  {
+    label: 'Commercial & Industrial',
+    description: 'C&I solar under TSERC 2025 guidelines. Surcharge exemptions.',
+    href: '#commercial',
+    icon: <Landmark className="w-5 h-5 text-emerald-400" />,
+  },
+  {
+    label: 'PM-KUSUM for Farmers',
+    description: 'Agricultural solar pumps and fallow land leasing models.',
+    href: '#farmers',
+    icon: <Sprout className="w-5 h-5 text-emerald-500" />,
+  },
+];
+
+const techItems: DropdownItem[] = [
+  {
+    label: 'DeccanShield™ Structure',
+    description: 'Cyclone-grade 160km/h structural engineering & chemical anchoring.',
+    href: '#homes?tab=structure',
+    icon: <Shield className="w-5 h-5 text-amber-400" />,
+  },
+  {
+    label: 'Tier-1 Panels Database',
+    description: 'Premier Energies TOPCon & Adani Mono-PERC datasheets.',
+    href: '#homes?tab=panels',
+    icon: <Database className="w-5 h-5 text-purple-400" />,
+  },
+  {
+    label: '10-Point Technical Code',
+    description: 'Rigid installation standards & safety SOPs.',
+    href: '#homes?tab=standards',
+    icon: <Hammer className="w-5 h-5 text-emerald-400" />,
+  },
 ];
 
 function BioSolarMenuIcon({ isOpen }: { isOpen: boolean }) {
@@ -172,67 +215,77 @@ function ThemeToggle() {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeHash, setActiveHash] = useState('#home');
+  const [hoveredMenu, setHoveredMenu] = useState<'offerings' | 'tech' | null>(null);
+  
+  // Track active menu items for mobile collapsible panels
+  const [mobileOfferingsOpen, setMobileOfferingsOpen] = useState(false);
+  const [mobileTechOpen, setMobileTechOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 100);
+      setScrolled(window.scrollY > 50);
     };
+    
+    const handleHashChange = () => {
+      const fullHash = window.location.hash || '#home';
+      const baseHash = fullHash.split('?')[0];
+      setActiveHash(baseHash);
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('hashchange', handleHashChange);
+    
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    handleHashChange();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('hashchange', handleHashChange);
+    };
   }, []);
 
-  // Track active section via IntersectionObserver
-  useEffect(() => {
-    const sectionIds = navLinks.map((l) => l.href.replace('#', ''));
-    const observers: IntersectionObserver[] = [];
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setActiveSection(id);
-          }
-        },
-        { rootMargin: '-40% 0px -55% 0px' },
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
-
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
-
-  const scrollTo = (href: string) => {
+  const navigateTo = (href: string) => {
     setMobileOpen(false);
-    smoothScrollTo(href);
+    setHoveredMenu(null);
+    
+    const [path] = href.split('?');
+    
+    if (path === '#contact') {
+      // If navigating to contact, go to home hash first then scroll
+      if (window.location.hash !== '#home') {
+        window.location.hash = '#home';
+        setTimeout(() => {
+          smoothScrollTo('contact');
+        }, 150);
+      } else {
+        smoothScrollTo('contact');
+      }
+    } else {
+      window.location.hash = href;
+    }
   };
+
+  const isSolutionsActive = offeringsItems.some(item => activeHash === item.href);
+  const isTechActive = techItems.some(item => activeHash.startsWith(item.href.split('?')[0]));
 
   return (
     <>
       <motion.nav
         className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-4 sm:px-6 lg:px-8 transition-all duration-300"
         animate={{
-          height: scrolled ? 56 : 64,
-          backgroundColor: scrolled
-            ? 'var(--nav-bg)'
-            : 'rgba(3,7,18,0)',
+          height: scrolled ? 60 : 72,
+          backgroundColor: scrolled ? 'var(--nav-bg)' : 'rgba(3,7,18,0)',
           backdropFilter: scrolled ? 'blur(24px)' : 'blur(0px)',
         }}
         transition={{ duration: 0.3 }}
         style={{
-          borderBottom: scrolled
-            ? '1px solid var(--nav-border)'
-            : '1px solid transparent',
+          borderBottom: scrolled ? '1px solid var(--nav-border)' : '1px solid transparent',
         }}
       >
         {/* Logo */}
         <button
-          onClick={() => scrollTo('#home')}
+          onClick={() => navigateTo('#home')}
           className="flex items-center gap-2 cursor-pointer"
         >
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-purple-600 flex items-center justify-center">
@@ -247,33 +300,172 @@ export default function Navbar() {
         </button>
 
         {/* Desktop nav links */}
-        <div className="hidden lg:flex items-center gap-1">
-          {navLinks.map((link) => {
-            const sectionId = link.href.replace('#', '');
-            const isActive = activeSection === sectionId;
+        <div className="hidden lg:flex items-center gap-1 h-full">
+          {/* Home Link */}
+          <button
+            onClick={() => navigateTo('#home')}
+            className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer ${
+              activeHash === '#home' ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
+            }`}
+          >
+            Home
+            <motion.span
+              className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full"
+              initial={false}
+              animate={{ scaleX: activeHash === '#home' ? 1 : 0 }}
+              transition={{ duration: 0.2 }}
+            />
+          </button>
 
-            return (
-              <button
-                key={link.label}
-                onClick={() => scrollTo(link.href)}
-                className={`relative px-3 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer ${
-                  isActive
-                    ? 'text-solar-gold'
-                    : 'text-solar-text-muted hover:text-solar-text'
-                }`}
-              >
-                {link.label}
-                {/* Underline */}
-                <motion.span
-                  className="absolute bottom-0 left-3 right-3 h-0.5 bg-gradient-to-r from-amber-400 to-purple-500 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.4)]"
-                  initial={false}
-                  animate={{ scaleX: isActive ? 1 : 0 }}
-                  transition={{ duration: 0.2 }}
-                  style={{ transformOrigin: 'center' }}
-                />
-              </button>
-            );
-          })}
+          {/* Solutions Dropdown Trigger */}
+          <div
+            className="relative h-full flex items-center"
+            onMouseEnter={() => setHoveredMenu('offerings')}
+            onMouseLeave={() => setHoveredMenu(null)}
+          >
+            <button
+              className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer flex items-center gap-1 ${
+                isSolutionsActive ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
+              }`}
+            >
+              Solutions
+              <ChevronDown size={14} className={`transition-transform duration-200 ${hoveredMenu === 'offerings' ? 'rotate-180' : ''}`} />
+              <motion.span
+                className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-purple-500 rounded-full"
+                initial={false}
+                animate={{ scaleX: isSolutionsActive ? 1 : 0 }}
+                transition={{ duration: 0.2 }}
+              />
+            </button>
+
+            {/* solutions Mega Menu Dropdown */}
+            <AnimatePresence>
+              {hoveredMenu === 'offerings' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute top-[80%] left-[-80px] w-[560px] rounded-2xl border border-solar-border bg-solar-card-solid backdrop-blur-3xl shadow-card-lg p-5 grid grid-cols-2 gap-4"
+                >
+                  {offeringsItems.map((item) => (
+                    <button
+                      key={item.label}
+                      onClick={() => navigateTo(item.href)}
+                      className={`text-left p-3.5 rounded-xl border border-transparent transition-all duration-300 hover:border-solar-border hover:bg-solar-card group flex items-start gap-3.5 cursor-pointer ${
+                        activeHash === item.href ? 'border-amber-500/20 bg-amber-500/[0.02]' : ''
+                      }`}
+                    >
+                      <div className="p-2 rounded-lg bg-solar-card border border-solar-border group-hover:border-amber-500/20 group-hover:scale-105 transition-all">
+                        {item.icon}
+                      </div>
+                      <div className="space-y-0.5">
+                        <p className={`text-xs font-bold font-heading transition-colors ${activeHash === item.href ? 'text-solar-gold' : 'text-solar-text group-hover:text-solar-gold'}`}>
+                          {item.label}
+                        </p>
+                        <p className="text-[10px] text-solar-text-muted leading-relaxed font-body">
+                          {item.description}
+                        </p>
+                      </div>
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Technology & Safety Dropdown Trigger */}
+          <div
+            className="relative h-full flex items-center"
+            onMouseEnter={() => setHoveredMenu('tech')}
+            onMouseLeave={() => setHoveredMenu(null)}
+          >
+            <button
+              className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer flex items-center gap-1 ${
+                isTechActive ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
+              }`}
+            >
+              Technology
+              <ChevronDown size={14} className={`transition-transform duration-200 ${hoveredMenu === 'tech' ? 'rotate-180' : ''}`} />
+              <motion.span
+                className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-purple-500 rounded-full"
+                initial={false}
+                animate={{ scaleX: isTechActive ? 1 : 0 }}
+                transition={{ duration: 0.2 }}
+              />
+            </button>
+
+            {/* tech Dropdown Menu */}
+            <AnimatePresence>
+              {hoveredMenu === 'tech' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute top-[80%] left-[-100px] w-[340px] rounded-2xl border border-solar-border bg-solar-card-solid backdrop-blur-3xl shadow-card-lg p-3 space-y-1"
+                >
+                  {techItems.map((item) => {
+                    const isActive = window.location.hash === item.href;
+                    return (
+                      <button
+                        key={item.label}
+                        onClick={() => navigateTo(item.href)}
+                        className={`w-full text-left p-3 rounded-xl border border-transparent transition-all duration-300 hover:border-solar-border hover:bg-solar-card group flex items-start gap-3 cursor-pointer ${
+                          isActive ? 'border-amber-500/20 bg-amber-500/[0.02]' : ''
+                        }`}
+                      >
+                        <div className="p-1.5 rounded-lg bg-solar-card border border-solar-border group-hover:border-amber-500/20 transition-colors">
+                          {item.icon}
+                        </div>
+                        <div className="space-y-0.5">
+                          <p className={`text-xs font-bold font-heading transition-colors ${isActive ? 'text-solar-gold' : 'text-solar-text group-hover:text-solar-gold'}`}>
+                            {item.label}
+                          </p>
+                          <p className="text-[9px] text-solar-text-muted leading-relaxed font-body">
+                            {item.description}
+                          </p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Calculator Link */}
+          <button
+            onClick={() => navigateTo('#calculator')}
+            className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer flex items-center gap-1.5 ${
+              activeHash === '#calculator' ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
+            }`}
+          >
+            <Calculator className="w-3.5 h-3.5" />
+            Calculator
+            <motion.span
+              className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full"
+              initial={false}
+              animate={{ scaleX: activeHash === '#calculator' ? 1 : 0 }}
+              transition={{ duration: 0.2 }}
+            />
+          </button>
+
+          {/* FAQ Link */}
+          <button
+            onClick={() => navigateTo('#faq')}
+            className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer ${
+              activeHash === '#faq' ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
+            }`}
+          >
+            FAQ
+            <motion.span
+              className="absolute bottom-[-10px] left-4 right-4 h-0.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full"
+              initial={false}
+              animate={{ scaleX: activeHash === '#faq' ? 1 : 0 }}
+              transition={{ duration: 0.2 }}
+            />
+          </button>
         </div>
 
         {/* Desktop right actions */}
@@ -282,17 +474,16 @@ export default function Navbar() {
           <ThemeToggle />
           <a
             href="tel:9493936249"
-            className="text-amber-400 hover:text-amber-300 text-sm font-medium transition-colors flex items-center gap-1"
+            className="text-amber-400 hover:text-amber-300 text-sm font-semibold transition-colors flex items-center gap-1.5"
             title="Call MyHome Solar"
           >
             <span>📞</span> 9493936249
           </a>
           <button
-            onClick={() => scrollTo('#contact')}
-            className="relative group overflow-hidden rounded-lg px-4 py-2 text-xs font-semibold text-gray-900 cursor-pointer"
+            onClick={() => navigateTo('#contact')}
+            className="relative group overflow-hidden rounded-lg px-4.5 py-2.5 text-xs font-semibold text-gray-900 cursor-pointer"
             style={{
-              background:
-                'linear-gradient(135deg, #F59E0B, #FBBF24, #F59E0B)',
+              background: 'linear-gradient(135deg, #F59E0B, #FBBF24, #F59E0B)',
               backgroundSize: '200% 200%',
             }}
           >
@@ -313,7 +504,7 @@ export default function Navbar() {
         </button>
       </motion.nav>
 
-      {/* Mobile overlay */}
+      {/* Mobile navigation overlay */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -321,62 +512,124 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[99] bg-solar-bg-secondary/95 text-solar-text backdrop-blur-2xl flex flex-col items-center justify-start pt-28 pb-8 overflow-y-auto"
+            className="fixed inset-0 z-[99] bg-solar-bg-secondary/95 text-solar-text backdrop-blur-2xl flex flex-col justify-start pt-24 pb-8 overflow-y-auto px-4"
           >
-            <nav className="flex flex-col items-center gap-2 w-full">
+            <div className="flex flex-col gap-2 w-full max-w-md mx-auto">
               <div className="mb-6 scale-110 flex justify-center items-center gap-6">
                 <SolarOrbitSlider />
                 <ThemeToggle />
               </div>
-              {navLinks.map((link, i) => {
-                const sectionId = link.href.replace('#', '');
-                const isActive = activeSection === sectionId;
 
-                return (
-                  <motion.button
-                    key={link.label}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{
-                      duration: 0.3,
-                      delay: i * 0.05,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    onClick={() => scrollTo(link.href)}
-                    className={`text-2xl font-heading font-bold py-2 px-4 transition-colors cursor-pointer ${
-                      isActive ? 'text-solar-gold' : 'text-solar-text-muted hover:text-solar-text'
-                    }`}
-                  >
-                    {link.label}
-                  </motion.button>
-                );
-              })}
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.4 }}
-                className="mt-6 flex flex-col items-center gap-4"
+              {/* Home */}
+              <button
+                onClick={() => navigateTo('#home')}
+                className={`text-xl font-heading font-bold text-left py-2 border-b border-solar-border/40 ${
+                  activeHash === '#home' ? 'text-solar-gold' : 'text-solar-text-muted'
+                }`}
               >
+                Home
+              </button>
+
+              {/* Solutions Panel Trigger */}
+              <div className="border-b border-solar-border/40 py-2">
+                <button
+                  onClick={() => setMobileOfferingsOpen(!mobileOfferingsOpen)}
+                  className={`w-full text-xl font-heading font-bold text-left flex items-center justify-between ${
+                    isSolutionsActive ? 'text-solar-gold' : 'text-solar-text-muted'
+                  }`}
+                >
+                  <span>Solutions</span>
+                  <ChevronDown size={18} className={`transition-transform duration-200 ${mobileOfferingsOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {mobileOfferingsOpen && (
+                  <div className="pl-4 mt-2 space-y-2">
+                    {offeringsItems.map((item) => (
+                      <button
+                        key={item.label}
+                        onClick={() => navigateTo(item.href)}
+                        className={`w-full text-left py-1.5 flex items-center gap-2.5 ${
+                          activeHash === item.href ? 'text-solar-gold' : 'text-solar-text-muted'
+                        }`}
+                      >
+                        {item.icon}
+                        <span className="text-sm font-semibold">{item.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Tech Panel Trigger */}
+              <div className="border-b border-solar-border/40 py-2">
+                <button
+                  onClick={() => setMobileTechOpen(!mobileTechOpen)}
+                  className={`w-full text-xl font-heading font-bold text-left flex items-center justify-between ${
+                    isTechActive ? 'text-solar-gold' : 'text-solar-text-muted'
+                  }`}
+                >
+                  <span>Technology & Specs</span>
+                  <ChevronDown size={18} className={`transition-transform duration-200 ${mobileTechOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {mobileTechOpen && (
+                  <div className="pl-4 mt-2 space-y-2">
+                    {techItems.map((item) => {
+                      const isActive = window.location.hash === item.href;
+                      return (
+                        <button
+                          key={item.label}
+                          onClick={() => navigateTo(item.href)}
+                          className={`w-full text-left py-1.5 flex items-center gap-2.5 ${
+                            isActive ? 'text-solar-gold' : 'text-solar-text-muted'
+                          }`}
+                        >
+                          {item.icon}
+                          <span className="text-sm font-semibold">{item.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Calculator */}
+              <button
+                onClick={() => navigateTo('#calculator')}
+                className={`text-xl font-heading font-bold text-left py-2 border-b border-solar-border/40 ${
+                  activeHash === '#calculator' ? 'text-solar-gold' : 'text-solar-text-muted'
+                }`}
+              >
+                Cost Calculator
+              </button>
+
+              {/* FAQ */}
+              <button
+                onClick={() => navigateTo('#faq')}
+                className={`text-xl font-heading font-bold text-left py-2 border-b border-solar-border/40 ${
+                  activeHash === '#faq' ? 'text-solar-gold' : 'text-solar-text-muted'
+                }`}
+              >
+                FAQ & Knowledge Base
+              </button>
+
+              {/* Contact Actions */}
+              <div className="mt-8 flex flex-col items-center gap-4 text-center">
                 <a
                   href="tel:9493936249"
-                  className="text-amber-400 text-lg font-medium flex items-center gap-2"
+                  className="text-amber-400 text-lg font-semibold flex items-center gap-2"
                 >
-                  📞 9493936249
+                  📞 +91 9493936249
                 </a>
                 <button
-                  onClick={() => scrollTo('#contact')}
-                  className="rounded-lg px-6 py-3 text-sm font-semibold text-gray-900 font-heading cursor-pointer"
+                  onClick={() => navigateTo('#contact')}
+                  className="w-full rounded-xl py-3.5 text-sm font-bold text-gray-900 font-heading cursor-pointer"
                   style={{
-                    background:
-                      'linear-gradient(135deg, #F59E0B, #FBBF24)',
+                    background: 'linear-gradient(135deg, #F59E0B, #FBBF24)',
                   }}
                 >
                   Get Free Quote →
                 </button>
-              </motion.div>
-            </nav>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

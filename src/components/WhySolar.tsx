@@ -154,12 +154,35 @@ export default function WhySolar() {
 }
 
 /* ─── Premium Sub-Component for Databases & Code of Conduct ─── */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Database, Hammer, Shield, ChevronDown, ChevronUp, Check, Award, Wind } from 'lucide-react';
 
 function TechnicalSpecsBlock() {
   const [activeTab, setActiveTab] = useState<'structure' | 'panels' | 'standards'>('structure');
   const [openStandardIndex, setOpenStandardIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash.includes('tab=structure')) {
+        setActiveTab('structure');
+      } else if (hash.includes('tab=panels')) {
+        setActiveTab('panels');
+      } else if (hash.includes('tab=standards')) {
+        setActiveTab('standards');
+      }
+    };
+    
+    // Listen for hash change events
+    window.addEventListener('hashchange', handleHashChange);
+    
+    // Run initial check
+    handleHashChange();
+    
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
 
   const panels = [
     {
