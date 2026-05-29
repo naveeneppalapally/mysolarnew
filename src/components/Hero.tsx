@@ -6,6 +6,7 @@ import { scrollToSection } from '../lib/utils';
 import { useCountUp } from '../hooks/useCountUp';
 import { useTheme } from '../context/ThemeContext';
 import { useLoaderDone } from '../context/LoaderDoneContext';
+import { useBackgroundSettings } from '../context/BackgroundSettingsContext';
 
 /* ============================================
    ANIMATED HEADLINE — Clip-reveal per word
@@ -362,6 +363,7 @@ function ShimmerButton({
    ============================================ */
 export default function Hero() {
   const { theme } = useTheme();
+  const { whiteBackground } = useBackgroundSettings();
   const { loaderDone } = useLoaderDone();
   const [tilt, setTilt] = React.useState({ x: 0, y: 0 });
   const panelRef = React.useRef<HTMLDivElement>(null);
@@ -402,7 +404,8 @@ export default function Hero() {
       {/* Particle background */}
       <SunParticles />
 
-      {/* Premium Trifold "Solar Eclipse" Aura Overlay */}
+      {/* Premium Trifold "Solar Eclipse" Aura Overlay — hidden in white background mode */}
+      {!whiteBackground && (
       <div className="absolute inset-0 pointer-events-none z-[1] overflow-hidden flex items-center justify-center">
         {/* Massive circular atmosphere background (Amber/Orange in Light mode, Purple/Indigo in Dark mode) */}
         <div 
@@ -438,6 +441,7 @@ export default function Hero() {
           <div className="absolute w-[248px] h-[248px] rounded-full bg-solar-bg-secondary border border-solar-border shadow-[inset_0_4px_16px_rgba(255,255,255,0.02)]" />
         </div>
       </div>
+      )}
 
       {/* Noise texture overlay */}
       <div

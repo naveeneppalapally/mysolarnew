@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useTheme } from './ThemeContext';
 
 export type BackgroundStyle = 
   | 'none'
@@ -28,6 +29,8 @@ interface BackgroundSettingsContextType {
   setFontTheme: (theme: FontTheme) => void;
   cardColorMode: CardColorMode;
   setCardColorMode: (mode: CardColorMode) => void;
+  whiteBackground: boolean;
+  toggleWhiteBackground: () => void;
 }
 
 const BackgroundSettingsContext = createContext<BackgroundSettingsContextType | undefined>(undefined);
@@ -65,6 +68,22 @@ export const BackgroundSettingsProvider: React.FC<{ children: React.ReactNode }>
     return saved || 'unified';
   });
 
+  const [whiteBackground, setWhiteBackground] = useState<boolean>(() => {
+    return localStorage.getItem('solar_white_bg') === 'true';
+  });
+
+  const toggleWhiteBackground = () => {
+    setWhiteBackground((prev) => !prev);
+  };
+
+  // Auto-reset white background when switching to dark mode
+  const { theme } = useTheme();
+  useEffect(() => {
+    if (theme === 'dark' && whiteBackground) {
+      setWhiteBackground(false);
+    }
+  }, [theme]); // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     localStorage.setItem('solar_background_style', backgroundStyle);
   }, [backgroundStyle]);
@@ -85,6 +104,16 @@ export const BackgroundSettingsProvider: React.FC<{ children: React.ReactNode }>
     localStorage.setItem('solar_card_color_mode', cardColorMode);
   }, [cardColorMode]);
 
+  useEffect(() => {
+    localStorage.setItem('solar_white_bg', whiteBackground.toString());
+    const root = document.documentElement;
+    if (whiteBackground) {
+      root.classList.add('white-bg');
+    } else {
+      root.classList.remove('white-bg');
+    }
+  }, [whiteBackground]);
+
   return (
     <BackgroundSettingsContext.Provider 
       value={{ 
@@ -97,7 +126,9 @@ export const BackgroundSettingsProvider: React.FC<{ children: React.ReactNode }>
         fontTheme,
         setFontTheme,
         cardColorMode,
-        setCardColorMode
+        setCardColorMode,
+        whiteBackground,
+        toggleWhiteBackground
       }}
     >
       {children}

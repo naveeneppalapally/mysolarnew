@@ -194,7 +194,7 @@ export default function SunParticles() {
   const { theme } = useTheme();
   
   // Settings Context values
-  const { backgroundStyle, particleCount, speedMultiplier } = useBackgroundSettings();
+  const { backgroundStyle, particleCount, speedMultiplier, whiteBackground } = useBackgroundSettings();
   const { timeOfDay, currentPhase } = useSolarTime();
 
   // Low-spec and mobile viewport tracking
@@ -226,6 +226,7 @@ export default function SunParticles() {
   const phaseRef = useRef(currentPhase);
   const themeRef = useRef(theme);
   const timeOfDayRef = useRef(timeOfDay);
+  const whiteBgRef = useRef(whiteBackground);
 
   useEffect(() => {
     // If low-spec or user prefers reduced motion, force style to 'none' (static background)
@@ -244,7 +245,8 @@ export default function SunParticles() {
     phaseRef.current = currentPhase;
     themeRef.current = theme;
     timeOfDayRef.current = timeOfDay;
-  }, [backgroundStyle, particleCount, speedMultiplier, currentPhase, theme, timeOfDay, isLowEnd, isMobile]);
+    whiteBgRef.current = whiteBackground;
+  }, [backgroundStyle, particleCount, speedMultiplier, currentPhase, theme, timeOfDay, isLowEnd, isMobile, whiteBackground]);
   
   const timeRef = useRef(0);
   const pulsesRef = useRef<EnergyPulse[]>([]);
@@ -1021,41 +1023,49 @@ export default function SunParticles() {
 
       // 1. Calculate dynamic, time-of-day circadian colors and sun position
       const isLight = themeRef.current === 'light';
-      const dynamicBg = getDynamicBackdrop(timeOfDayRef.current, isLight, w, h);
 
-      // 2. Draw the dynamic astronomical sky gradient
-      const skyGrad = ctx.createRadialGradient(
-        dynamicBg.sunX,
-        dynamicBg.sunY,
-        0,
-        dynamicBg.sunX,
-        dynamicBg.sunY,
-        Math.max(w, h) * 0.95
-      );
-      skyGrad.addColorStop(0, dynamicBg.centerColor);
-      skyGrad.addColorStop(1, dynamicBg.outerColor);
-      ctx.fillStyle = skyGrad;
-      ctx.fillRect(0, 0, w, h);
+      // If white background is enabled, just fill white and skip all sky/glow drawing
+      if (whiteBgRef.current) {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, w, h);
+      } else {
+        const dynamicBg = getDynamicBackdrop(timeOfDayRef.current, isLight, w, h);
 
-      // 3. Draw the dynamic primary sun/moon core glow/flare
-      const sunGlow = ctx.createRadialGradient(
-        dynamicBg.sunX,
-        dynamicBg.sunY,
-        0,
-        dynamicBg.sunX,
-        dynamicBg.sunY,
-        280
-      );
-      sunGlow.addColorStop(0, hexToRgba(dynamicBg.glowColor, dynamicBg.glowOpacity));
-      sunGlow.addColorStop(0.3, hexToRgba(dynamicBg.glowColor, dynamicBg.glowOpacity * 0.4));
-      sunGlow.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = sunGlow;
-      ctx.beginPath();
-      ctx.arc(dynamicBg.sunX, dynamicBg.sunY, 280, 0, Math.PI * 2);
-      ctx.fill();
+        // 2. Draw the dynamic astronomical sky gradient
+        const skyGrad = ctx.createRadialGradient(
+          dynamicBg.sunX,
+          dynamicBg.sunY,
+          0,
+          dynamicBg.sunX,
+          dynamicBg.sunY,
+          Math.max(w, h) * 0.95
+        );
+        skyGrad.addColorStop(0, dynamicBg.centerColor);
+        skyGrad.addColorStop(1, dynamicBg.outerColor);
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, w, h);
 
-      // 4. Draw style-specific overlays on top of the dynamic backdrop (only in dark mode)
-      if (!isLight) {
+        // 3. Draw the dynamic primary sun/moon core glow/flare
+        const sunGlow = ctx.createRadialGradient(
+          dynamicBg.sunX,
+          dynamicBg.sunY,
+          0,
+          dynamicBg.sunX,
+          dynamicBg.sunY,
+          280
+        );
+        sunGlow.addColorStop(0, hexToRgba(dynamicBg.glowColor, dynamicBg.glowOpacity));
+        sunGlow.addColorStop(0.3, hexToRgba(dynamicBg.glowColor, dynamicBg.glowOpacity * 0.4));
+        sunGlow.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = sunGlow;
+        ctx.beginPath();
+        ctx.arc(dynamicBg.sunX, dynamicBg.sunY, 280, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 4. Draw style-specific overlays on top of the dynamic backdrop (only in dark mode, not when white bg)
+      if (!isLight && !whiteBgRef.current) {
         ctx.save();
         switch (currentStyle) {
           case 'liquid-lava':

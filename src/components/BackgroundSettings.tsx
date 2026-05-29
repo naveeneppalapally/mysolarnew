@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Settings, X, Sparkles, Sun, Zap, Wind, Activity, Layers, Cpu, Compass, Flame, Binary, Gem, Type, Palette } from 'lucide-react';
+import { Settings, X, Sparkles, Sun, Zap, Wind, Activity, Layers, Cpu, Compass, Flame, Binary, Gem, Type, Palette, Square } from 'lucide-react';
 import { useBackgroundSettings } from '../context/BackgroundSettingsContext';
 import type { BackgroundStyle } from '../context/BackgroundSettingsContext';
 import { useSolarTime } from '../context/SolarTimeContext';
+import { useTheme } from '../context/ThemeContext';
 
 export default function BackgroundSettings() {
   const [isOpen, setIsOpen] = useState(false);
+  const { theme } = useTheme();
+  const isLightMode = theme === 'light';
   const { 
     backgroundStyle, 
     setBackgroundStyle, 
@@ -17,7 +20,9 @@ export default function BackgroundSettings() {
     fontTheme,
     setFontTheme,
     cardColorMode,
-    setCardColorMode
+    setCardColorMode,
+    whiteBackground,
+    toggleWhiteBackground
   } = useBackgroundSettings();
 
   const { timeOfDay, setTimeOfDay, currentPhase } = useSolarTime();
@@ -191,6 +196,53 @@ export default function BackgroundSettings() {
                 <X size={18} />
               </button>
             </div>
+
+            {/* ── White Background Toggle — only shown in Light Mode ── */}
+            {isLightMode && (
+            <div className="flex flex-col gap-2 pb-3 border-b border-solar-border">
+              <div className="flex items-center gap-1.5 mb-1">
+                <Square size={11} className="text-amber-400" />
+                <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-400">
+                  Background Color
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {/* White */}
+                <button
+                  type="button"
+                  onClick={() => !whiteBackground && toggleWhiteBackground()}
+                  className={`py-2.5 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex flex-col items-center gap-1.5 ${
+                    whiteBackground
+                      ? 'bg-amber-500/10 border-amber-500/80 text-amber-400'
+                      : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
+                  }`}
+                >
+                  <div className="w-5 h-5 rounded border-2 border-gray-300 bg-white shadow-sm" />
+                  <span>White</span>
+                </button>
+
+                {/* Themed (warm light palette) */}
+                <button
+                  type="button"
+                  onClick={() => whiteBackground && toggleWhiteBackground()}
+                  className={`py-2.5 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex flex-col items-center gap-1.5 ${
+                    !whiteBackground
+                      ? 'bg-amber-500/10 border-amber-500/80 text-amber-400'
+                      : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
+                  }`}
+                >
+                  <div className="flex gap-0.5">
+                    <div className="w-2.5 h-5 rounded-sm" style={{ background: 'linear-gradient(180deg, #faf7f2 0%, #f5f0e8 100%)' }} />
+                    <div className="w-2.5 h-5 rounded-sm" style={{ background: 'linear-gradient(180deg, #fbbf24 0%, #f97316 100%)' }} />
+                  </div>
+                  <span>Themed</span>
+                </button>
+              </div>
+              <div className="text-[9px] text-gray-500 leading-tight">
+                White: clean minimal look. Themed: warm solar light palette.
+              </div>
+            </div>
+            )}
 
             {/* ── Card Color Style Toggle ── */}
             <div className="flex flex-col gap-2 pb-3 border-b border-solar-border">

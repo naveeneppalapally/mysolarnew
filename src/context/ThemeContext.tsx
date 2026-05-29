@@ -25,6 +25,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       root.classList.add('light-theme');
     } else {
       root.classList.remove('light-theme');
+      // Auto-reset white background when switching to dark mode
+      root.classList.remove('white-bg');
+      localStorage.setItem('solar_white_bg', 'false');
     }
     localStorage.setItem('solar-theme', theme);
   }, [theme]);
