@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import SubsidyCalculator from '../SubsidyCalculator';
 import SavingsChart from '../SavingsChart';
+import TariffSlabs from '../TariffSlabs';
 
 export default function CalculatorView() {
   return (
@@ -46,6 +47,9 @@ export default function CalculatorView() {
 
       {/* Savings Projection Chart */}
       <SavingsChart />
+
+      {/* Telangana Tariff Slabs Reference */}
+      <TariffSlabs />
     </div>
   );
 }
