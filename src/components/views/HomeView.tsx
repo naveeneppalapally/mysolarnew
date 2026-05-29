@@ -123,23 +123,6 @@ const panelDarkGoldAccent = {
   hoverShadow: 'rgba(212, 165, 26, 0.15)',
 };
 
-const panelBronzeGoldAccent = {
-  isDark: true,
-  background: '#0A1C66', // Deep secondary saturated ink-blue (perfectly matches website design system)
-  border: 'rgba(212, 165, 26, 0.20)',
-  text: '#FFFFFF', // Clean white
-  textMuted: '#CBD5E1', // Muted slate text
-  textDim: '#94A3B8', // Dimmed slate text
-  icon: 'rgba(212, 165, 26, 0.12)',
-  iconColor: '#D4A51A',
-  badge: { color: '#D4A51A', border: 'rgba(212, 165, 26, 0.3)', bg: 'rgba(212, 165, 26, 0.08)' },
-  stat: { bg: 'rgba(212, 165, 26, 0.06)', color: '#D4A51A' },
-  btn: { bg: 'rgba(212, 165, 26, 0.05)', color: '#D4A51A', border: 'rgba(212, 165, 26, 0.35)', hoverBg: '#D4A51A', hoverColor: '#0A1C66' },
-  topBorder: 'rgba(212, 165, 26, 0.7)',
-  hoverBorder: 'rgba(212, 165, 26, 0.45)',
-  hoverShadow: 'rgba(212, 165, 26, 0.15)',
-};
-
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
@@ -221,8 +204,8 @@ export default function HomeView() {
               if (cardColorMode === 'trifold') {
                 a = trifoldMap[off.trifoldAccent];
               } else if (isBrochurePanels) {
-                // Alternate panels: index 0 and 2 are dark/blue, 1 and 3 are dark bronze-charcoal
-                a = i % 2 === 0 ? panelDarkGoldAccent : panelBronzeGoldAccent;
+                // All panels use the highly premium left-side saturated deep ink-blue background (#061148)
+                a = panelDarkGoldAccent;
               } else {
                 a = goldAccent;
               }
