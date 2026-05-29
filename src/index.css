@@ -463,18 +463,18 @@ html.white-bg [aria-expanded="true"] span {
    • TEXT ON WHITE:   Dark Blue-Black #1A2744
    ════════════════════════════════════════════════════════════════════ */
 
-/* ─── DARK MODE: Royal Blue backgrounds + Bright Gold accents ─── */
+/* ─── DARK MODE: Ink Blue backgrounds + Bright Gold accents ─── */
 html.brand-trifold:not(.light-theme),
 html.brand-trifold .phase-dawn,
 html.brand-trifold .phase-noon,
 html.brand-trifold .phase-dusk,
 html.brand-trifold .phase-night {
-  --solar-bg: #152D78 !important;               /* Deep Royal Blue (brochure panel bg) */
-  --solar-bg-secondary: #1A3585 !important;     /* Royal Blue (primary brochure blue) */
-  --solar-bg-tertiary: #1F3D94 !important;      /* Lighter Royal Blue */
+  --solar-bg: #0B1E5E !important;               /* Deep Ink Blue (brochure panel bg) */
+  --solar-bg-secondary: #0F2368 !important;     /* Ink Blue (saturated) */
+  --solar-bg-tertiary: #142B75 !important;      /* Lighter Ink Blue */
   
-  --solar-card: rgba(21, 45, 120, 0.92) !important;
-  --solar-card-solid: #18327E !important;
+  --solar-card: rgba(11, 30, 94, 0.93) !important;
+  --solar-card-solid: #0D2062 !important;
   --solar-border: rgba(212, 165, 26, 0.15) !important;  /* Gold Border */
   --solar-border-hover: rgba(212, 165, 26, 0.40) !important;
   
@@ -484,11 +484,11 @@ html.brand-trifold .phase-night {
   --solar-gold-rgb: 212, 165, 26 !important;
   
   --solar-text: #FFFFFF !important;              /* Pure White (brochure text on blue) */
-  --solar-text-muted: #D0D8E8 !important;       /* Light blue-grey */
-  --solar-text-dim: #9AA8C4 !important;
+  --solar-text-muted: #C8D0E4 !important;       /* Light blue-grey */
+  --solar-text-dim: #8E9DBF !important;
   
-  --nav-bg: rgba(21, 45, 120, 0.96) !important;
-  --gradient-hero: linear-gradient(160deg, #132870 0%, #1A3585 50%, #1F3D94 100%) !important;
+  --nav-bg: rgba(11, 30, 94, 0.97) !important;
+  --gradient-hero: linear-gradient(160deg, #091A55 0%, #0B1E5E 50%, #142B75 100%) !important;
   
   /* Override accent colors to brochure gold */
   --solar-orange: #D4A51A !important;
@@ -562,7 +562,7 @@ html.brand-trifold.light-theme .phase-night {
   --shadow-card-lg: 0 8px 48px rgba(26, 53, 133, 0.10), 0 2px 8px rgba(212, 165, 26, 0.04) !important;
   
   --gradient-gold: linear-gradient(135deg, #B8891A, #9A7215) !important;
-  --gradient-cyan: linear-gradient(135deg, #B8891A 0%, #1A3585 50%, #152D78 100%) !important;
+  --gradient-cyan: linear-gradient(135deg, #B8891A 0%, #0F2368 50%, #0B1E5E 100%) !important;
 }
 
 /* ─── Tint background glows to brochure gold instead of killing them ─── */
@@ -578,7 +578,7 @@ html.brand-trifold.light-theme .nav-mobile-menu {
 }
 
 html.brand-trifold:not(.light-theme) .nav-mobile-menu {
-  background: linear-gradient(to bottom, #1A3585 0%, #152D78 100%) !important;
+  background: linear-gradient(to bottom, #0F2368 0%, #0B1E5E 100%) !important;
 }
 
 /* ════════════════════════════════════════════════════════════════════
