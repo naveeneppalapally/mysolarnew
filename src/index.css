@@ -402,11 +402,16 @@ html.white-bg .noise-overlay::before {
 }
 
 /* Hide all decorative background blur blobs, glows, and ambient radial gradients in white background mode to prevent any color leakages */
-html.white-bg [class*="blur-"],
-html.white-bg [class*="bg-amber-500/"],
-html.white-bg [class*="bg-sky-500/"],
-html.white-bg [class*="bg-emerald-500/"],
-html.white-bg [class*="bg-cyan-500/"] {
+html.white-bg .pointer-events-none [class*="blur-"],
+html.white-bg .pointer-events-none[class*="blur-"],
+html.white-bg .pointer-events-none [class*="bg-amber-500/"],
+html.white-bg .pointer-events-none[class*="bg-amber-500/"],
+html.white-bg .pointer-events-none [class*="bg-sky-500/"],
+html.white-bg .pointer-events-none[class*="bg-sky-500/"],
+html.white-bg .pointer-events-none [class*="bg-emerald-500/"],
+html.white-bg .pointer-events-none[class*="bg-emerald-500/"],
+html.white-bg .pointer-events-none [class*="bg-cyan-500/"],
+html.white-bg .pointer-events-none[class*="bg-cyan-500/"] {
   display: none !important;
   opacity: 0 !important;
 }
