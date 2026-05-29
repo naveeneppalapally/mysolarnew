@@ -16,7 +16,7 @@ export type BackgroundStyle =
   | 'prismatic-shards';
 
 export type FontTheme = 'poppins' | 'syne';
-export type CardColorMode = 'unified' | 'trifold';
+export type CardColorMode = 'unified' | 'trifold' | 'brochure' | 'brochure-panels';
 
 interface BackgroundSettingsContextType {
   backgroundStyle: BackgroundStyle;

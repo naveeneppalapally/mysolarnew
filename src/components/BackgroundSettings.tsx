@@ -54,16 +54,16 @@ export default function BackgroundSettings() {
     root.classList.add(`font-theme-${fontTheme}`);
   }, [fontTheme]);
 
-  // Inject card color mode — 'card-unified' overrides all accent CSS vars to gold, 'brand-trifold' enforces cobalt/gold
+  // Inject card color mode — 'card-unified' overrides all accent CSS vars to gold, 'brand-trifold' enforces ink-blue brochure theme
   useEffect(() => {
     const root = document.documentElement;
+    root.classList.remove('card-unified', 'brand-trifold');
     if (cardColorMode === 'unified') {
       root.classList.add('card-unified');
-      root.classList.remove('brand-trifold');
-    } else {
-      root.classList.remove('card-unified');
+    } else if (cardColorMode === 'brochure' || cardColorMode === 'brochure-panels') {
       root.classList.add('brand-trifold');
     }
+    // 'trifold' mode: no special class — uses original multi-color card accents
   }, [cardColorMode]);
 
   const handleTimeChange = (phase: 'dawn' | 'noon' | 'dusk' | 'night') => {
@@ -254,8 +254,8 @@ export default function BackgroundSettings() {
                   Card Color Style
                 </span>
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                {/* Unified Gold — the corrected option */}
+              <div className="grid grid-cols-2 gap-1.5">
+                {/* Unified Gold */}
                 <button
                   type="button"
                   onClick={() => setCardColorMode('unified')}
@@ -268,22 +268,21 @@ export default function BackgroundSettings() {
                     const touch = e.touches[0];
                     if (touch) e.currentTarget.setAttribute('data-touch-y', touch.clientY.toString());
                   }}
-                  className={`py-2.5 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex flex-col items-center gap-1.5 ${
+                  className={`py-2 px-2 rounded-xl border text-[10px] font-bold text-center transition-all duration-200 cursor-pointer flex flex-col items-center gap-1 ${
                     cardColorMode === 'unified'
                       ? 'bg-amber-500/10 border-amber-500/80 text-amber-400'
                       : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
                   }`}
                 >
-                  {/* Mini preview: all gold */}
                   <div className="flex gap-0.5">
-                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#F59E0B' }} />
-                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#F59E0B' }} />
-                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#F59E0B' }} />
+                    <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: '#F59E0B' }} />
+                    <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: '#F59E0B' }} />
+                    <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: '#F59E0B' }} />
                   </div>
                   <span>Unified Gold</span>
                 </button>
 
-                {/* Prestige Trifold option */}
+                {/* Original Trifold (multi-color cards) */}
                 <button
                   type="button"
                   onClick={() => setCardColorMode('trifold')}
@@ -296,23 +295,76 @@ export default function BackgroundSettings() {
                     const touch = e.touches[0];
                     if (touch) e.currentTarget.setAttribute('data-touch-y', touch.clientY.toString());
                   }}
-                  className={`py-2.5 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex flex-col items-center gap-1.5 ${
+                  className={`py-2 px-2 rounded-xl border text-[10px] font-bold text-center transition-all duration-200 cursor-pointer flex flex-col items-center gap-1 ${
                     cardColorMode === 'trifold'
                       ? 'bg-amber-500/10 border-amber-500/80 text-amber-400'
                       : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
                   }`}
                 >
-                  {/* Mini preview: cobalt + gold + white */}
                   <div className="flex gap-0.5">
-                    <div className="w-3 h-3 rounded-sm border border-white/20" style={{ backgroundColor: '#070d1e' }} />
-                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#c5a85a' }} />
-                    <div className="w-3 h-3 rounded-sm border border-white/20" style={{ backgroundColor: '#ffffff' }} />
+                    <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: '#F59E0B' }} />
+                    <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: '#38BDF8' }} />
+                    <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: '#34D399' }} />
                   </div>
-                  <span>Prestige Trifold</span>
+                  <span>Original Trifold</span>
+                </button>
+
+                {/* Brochure Theme (Ink Blue + Gold) */}
+                <button
+                  type="button"
+                  onClick={() => setCardColorMode('brochure')}
+                  onTouchEnd={(e) => {
+                    const touch = e.changedTouches[0];
+                    const startY = parseFloat(e.currentTarget.getAttribute('data-touch-y') || '0');
+                    if (touch && Math.abs(touch.clientY - startY) < 10) setCardColorMode('brochure');
+                  }}
+                  onTouchStart={(e) => {
+                    const touch = e.touches[0];
+                    if (touch) e.currentTarget.setAttribute('data-touch-y', touch.clientY.toString());
+                  }}
+                  className={`py-2 px-2 rounded-xl border text-[10px] font-bold text-center transition-all duration-200 cursor-pointer flex flex-col items-center gap-1 ${
+                    cardColorMode === 'brochure'
+                      ? 'bg-amber-500/10 border-amber-500/80 text-amber-400'
+                      : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
+                  }`}
+                >
+                  <div className="flex gap-0.5">
+                    <div className="w-2.5 h-2.5 rounded-sm border border-white/20" style={{ backgroundColor: '#061148' }} />
+                    <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: '#D4A51A' }} />
+                    <div className="w-2.5 h-2.5 rounded-sm border border-white/20" style={{ backgroundColor: '#061148' }} />
+                  </div>
+                  <span>Brochure Theme</span>
+                </button>
+
+                {/* Brochure Panels (Physical brochure panels alternation) */}
+                <button
+                  type="button"
+                  onClick={() => setCardColorMode('brochure-panels')}
+                  onTouchEnd={(e) => {
+                    const touch = e.changedTouches[0];
+                    const startY = parseFloat(e.currentTarget.getAttribute('data-touch-y') || '0');
+                    if (touch && Math.abs(touch.clientY - startY) < 10) setCardColorMode('brochure-panels');
+                  }}
+                  onTouchStart={(e) => {
+                    const touch = e.touches[0];
+                    if (touch) e.currentTarget.setAttribute('data-touch-y', touch.clientY.toString());
+                  }}
+                  className={`py-2 px-2 rounded-xl border text-[10px] font-bold text-center transition-all duration-200 cursor-pointer flex flex-col items-center gap-1 ${
+                    cardColorMode === 'brochure-panels'
+                      ? 'bg-amber-500/10 border-amber-500/80 text-amber-400'
+                      : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
+                  }`}
+                >
+                  <div className="flex gap-0.5">
+                    <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: '#061148' }} />
+                    <div className="w-2.5 h-2.5 rounded-sm border border-gray-400/30" style={{ backgroundColor: '#FFFFFF' }} />
+                    <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: '#061148' }} />
+                  </div>
+                  <span>Brochure Panels</span>
                 </button>
               </div>
               <div className="text-[9px] text-gray-500 leading-tight">
-                Align with the physical trifold brochure theme (Cobalt & Satin Gold) vs unified brand gold.
+                Unified: all gold • Trifold: multi-color • Brochure: cobalt & gold theme • Panels: physical brochure panels
               </div>
             </div>
 

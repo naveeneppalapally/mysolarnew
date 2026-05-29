@@ -59,37 +59,37 @@ const offerings = [
   },
 ];
 
-// Trifold accent colors (Upgraded to Cobalt & Satin Gold brand theme)
+// Trifold accent colors (original multi-color card style)
 const trifoldMap = {
   amber: {
-    icon: 'rgba(var(--solar-gold-rgb), 0.08)',
-    iconColor: 'var(--solar-gold)',
-    badge: { color: 'var(--solar-gold)', border: 'rgba(var(--solar-gold-rgb), 0.25)', bg: 'rgba(var(--solar-gold-rgb), 0.06)' },
-    stat: { bg: 'rgba(var(--solar-gold-rgb), 0.05)', color: 'var(--solar-gold)' },
-    btn: { bg: 'rgba(var(--solar-gold-rgb), 0.05)', color: 'var(--solar-gold)', border: 'rgba(var(--solar-gold-rgb), 0.35)', hoverBg: 'var(--solar-gold)', hoverColor: 'var(--solar-bg)' },
-    topBorder: 'rgba(var(--solar-gold-rgb), 0.6)',
-    hoverBorder: 'rgba(var(--solar-gold-rgb), 0.3)',
-    hoverShadow: 'rgba(var(--solar-gold-rgb), 0.08)',
+    icon: 'rgba(245,158,11,0.08)',
+    iconColor: '#F59E0B',
+    badge: { color: '#F59E0B', border: 'rgba(245,158,11,0.2)', bg: 'rgba(245,158,11,0.06)' },
+    stat: { bg: 'rgba(245,158,11,0.06)', color: '#F59E0B' },
+    btn: { bg: 'rgba(245,158,11,0.05)', color: '#F59E0B', border: 'rgba(245,158,11,0.35)', hoverBg: '#F59E0B', hoverColor: '#0a0a0a' },
+    topBorder: 'rgba(245,158,11,0.6)',
+    hoverBorder: 'rgba(245,158,11,0.3)',
+    hoverShadow: 'rgba(245,158,11,0.08)',
   },
   sky: {
-    icon: 'rgba(var(--solar-gold-rgb), 0.08)',
-    iconColor: 'var(--solar-gold)',
-    badge: { color: 'var(--solar-gold)', border: 'rgba(var(--solar-gold-rgb), 0.25)', bg: 'rgba(var(--solar-gold-rgb), 0.06)' },
-    stat: { bg: 'rgba(var(--solar-gold-rgb), 0.05)', color: 'var(--solar-gold)' },
-    btn: { bg: 'rgba(var(--solar-gold-rgb), 0.05)', color: 'var(--solar-gold)', border: 'rgba(var(--solar-gold-rgb), 0.35)', hoverBg: 'var(--solar-gold)', hoverColor: 'var(--solar-bg)' },
-    topBorder: 'rgba(var(--solar-gold-rgb), 0.6)',
-    hoverBorder: 'rgba(var(--solar-gold-rgb), 0.3)',
-    hoverShadow: 'rgba(var(--solar-gold-rgb), 0.08)',
+    icon: 'rgba(56,189,248,0.08)',
+    iconColor: '#38BDF8',
+    badge: { color: '#38BDF8', border: 'rgba(56,189,248,0.2)', bg: 'rgba(56,189,248,0.06)' },
+    stat: { bg: 'rgba(56,189,248,0.06)', color: '#38BDF8' },
+    btn: { bg: 'rgba(56,189,248,0.05)', color: '#38BDF8', border: 'rgba(56,189,248,0.35)', hoverBg: '#38BDF8', hoverColor: '#0a0a0a' },
+    topBorder: 'rgba(56,189,248,0.6)',
+    hoverBorder: 'rgba(56,189,248,0.3)',
+    hoverShadow: 'rgba(56,189,248,0.08)',
   },
   emerald: {
-    icon: 'rgba(var(--solar-gold-rgb), 0.08)',
-    iconColor: 'var(--solar-gold)',
-    badge: { color: 'var(--solar-gold)', border: 'rgba(var(--solar-gold-rgb), 0.25)', bg: 'rgba(var(--solar-gold-rgb), 0.06)' },
-    stat: { bg: 'rgba(var(--solar-gold-rgb), 0.05)', color: 'var(--solar-gold)' },
-    btn: { bg: 'rgba(var(--solar-gold-rgb), 0.05)', color: 'var(--solar-gold)', border: 'rgba(var(--solar-gold-rgb), 0.35)', hoverBg: 'var(--solar-gold)', hoverColor: 'var(--solar-bg)' },
-    topBorder: 'rgba(var(--solar-gold-rgb), 0.6)',
-    hoverBorder: 'rgba(var(--solar-gold-rgb), 0.3)',
-    hoverShadow: 'rgba(var(--solar-gold-rgb), 0.08)',
+    icon: 'rgba(52,211,153,0.08)',
+    iconColor: '#34D399',
+    badge: { color: '#34D399', border: 'rgba(52,211,153,0.2)', bg: 'rgba(52,211,153,0.06)' },
+    stat: { bg: 'rgba(52,211,153,0.06)', color: '#34D399' },
+    btn: { bg: 'rgba(52,211,153,0.05)', color: '#34D399', border: 'rgba(52,211,153,0.35)', hoverBg: '#34D399', hoverColor: '#0a0a0a' },
+    topBorder: 'rgba(52,211,153,0.6)',
+    hoverBorder: 'rgba(52,211,153,0.3)',
+    hoverShadow: 'rgba(52,211,153,0.08)',
   },
 };
 
@@ -103,6 +103,41 @@ const goldAccent = {
   topBorder: 'rgba(245,158,11,0.6)',
   hoverBorder: 'rgba(245,158,11,0.3)',
   hoverShadow: 'rgba(245,158,11,0.06)',
+};
+
+// Brochure panels: Panel A is deep saturated cobalt, Panel B is soft warm off-white
+const panelDarkGoldAccent = {
+  isDark: true,
+  background: '#061148',
+  border: 'rgba(212, 165, 26, 0.25)',
+  text: '#FFFFFF',
+  textMuted: '#CBD5E1',
+  textDim: '#94A3B8',
+  icon: 'rgba(212, 165, 26, 0.12)',
+  iconColor: '#D4A51A',
+  badge: { color: '#D4A51A', border: 'rgba(212, 165, 26, 0.3)', bg: 'rgba(212, 165, 26, 0.08)' },
+  stat: { bg: 'rgba(212, 165, 26, 0.06)', color: '#D4A51A' },
+  btn: { bg: 'rgba(212, 165, 26, 0.05)', color: '#D4A51A', border: 'rgba(212, 165, 26, 0.35)', hoverBg: '#D4A51A', hoverColor: '#061148' },
+  topBorder: 'rgba(212, 165, 26, 0.7)',
+  hoverBorder: 'rgba(212, 165, 26, 0.45)',
+  hoverShadow: 'rgba(212, 165, 26, 0.15)',
+};
+
+const panelLightGoldAccent = {
+  isDark: false,
+  background: '#F7F6F3',
+  border: 'rgba(15, 23, 42, 0.08)',
+  text: '#0F172A',
+  textMuted: '#475569',
+  textDim: '#64748B',
+  icon: 'rgba(171, 139, 57, 0.12)',
+  iconColor: '#AB8B39',
+  badge: { color: '#AB8B39', border: 'rgba(171, 139, 57, 0.3)', bg: 'rgba(171, 139, 57, 0.08)' },
+  stat: { bg: 'rgba(171, 139, 57, 0.06)', color: '#AB8B39' },
+  btn: { bg: 'rgba(171, 139, 57, 0.05)', color: '#AB8B39', border: 'rgba(171, 139, 57, 0.35)', hoverBg: '#AB8B39', hoverColor: '#FFFFFF' },
+  topBorder: 'rgba(171, 139, 57, 0.7)',
+  hoverBorder: 'rgba(171, 139, 57, 0.45)',
+  hoverShadow: 'rgba(171, 139, 57, 0.12)',
 };
 
 const cardVariants: Variants = {
@@ -181,9 +216,20 @@ export default function HomeView() {
           <div className="grid md:grid-cols-2 gap-5 sm:gap-6">
             {offerings.map((off, i) => {
               // Pick accent based on mode
-              const a = cardColorMode === 'trifold'
-                ? trifoldMap[off.trifoldAccent]
-                : goldAccent;
+              const isBrochurePanels = cardColorMode === 'brochure-panels';
+              let a: any;
+              if (cardColorMode === 'trifold') {
+                a = trifoldMap[off.trifoldAccent];
+              } else if (isBrochurePanels) {
+                // Alternate panels: index 0 and 2 are dark/blue, 1 and 3 are light/white
+                a = i % 2 === 0 ? panelDarkGoldAccent : panelLightGoldAccent;
+              } else {
+                a = goldAccent;
+              }
+
+              const bgStyle = isBrochurePanels ? a.background : 'var(--solar-card)';
+              const borderStyle = isBrochurePanels ? `1px solid ${a.border}` : '1px solid var(--solar-border)';
+              const defaultHoverBorder = isBrochurePanels ? a.border : 'var(--solar-border)';
 
               return (
               <motion.div
@@ -195,8 +241,8 @@ export default function HomeView() {
                 variants={cardVariants}
                 className="group relative flex flex-col rounded-2xl overflow-hidden cursor-default"
                 style={{
-                  background: 'var(--solar-card)',
-                  border: '1px solid var(--solar-border)',
+                  background: bgStyle,
+                  border: borderStyle,
                   transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
                 }}
                 onMouseEnter={e => {
@@ -204,7 +250,7 @@ export default function HomeView() {
                   (e.currentTarget as HTMLDivElement).style.boxShadow = `0 0 30px ${a.hoverShadow}`;
                 }}
                 onMouseLeave={e => {
-                  (e.currentTarget as HTMLDivElement).style.borderColor = 'var(--solar-border)';
+                  (e.currentTarget as HTMLDivElement).style.borderColor = defaultHoverBorder;
                   (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
                 }}
               >
@@ -239,13 +285,13 @@ export default function HomeView() {
                   <div className="space-y-2 flex-1">
                     <h3
                       className="font-heading font-bold text-lg leading-snug"
-                      style={{ color: 'var(--solar-text)' }}
+                      style={{ color: isBrochurePanels ? a.text : 'var(--solar-text)' }}
                     >
                       {off.title}
                     </h3>
                     <p
                       className="text-sm font-body leading-relaxed"
-                      style={{ color: 'var(--solar-text-muted)' }}
+                      style={{ color: isBrochurePanels ? a.textMuted : 'var(--solar-text-muted)' }}
                     >
                       {off.description}
                     </p>
@@ -254,7 +300,7 @@ export default function HomeView() {
                   {/* Stats */}
                   <div
                     className="grid grid-cols-2 gap-3 pt-4"
-                    style={{ borderTop: '1px solid var(--solar-border)' }}
+                    style={{ borderTop: isBrochurePanels ? `1px solid ${a.border}` : '1px solid var(--solar-border)' }}
                   >
                     {off.stats.map((stat) => (
                       <div
@@ -264,7 +310,7 @@ export default function HomeView() {
                       >
                         <p
                           className="text-[10px] uppercase tracking-wider font-semibold mb-0.5"
-                          style={{ color: 'var(--solar-text-dim)' }}
+                          style={{ color: isBrochurePanels ? a.textDim : 'var(--solar-text-dim)' }}
                         >
                           {stat.label}
                         </p>
