@@ -7,6 +7,7 @@ import Testimonials from '../Testimonials';
 import ContactForm from '../ContactForm';
 import { fadeInUp, staggerContainer, sectionViewport } from '../../lib/animations';
 import { useBackgroundSettings } from '../../context/BackgroundSettingsContext';
+import { useTheme } from '../../context/ThemeContext';
 
 const offerings = [
   {
@@ -123,6 +124,23 @@ const panelDarkGoldAccent = {
   hoverShadow: 'rgba(212, 165, 26, 0.15)',
 };
 
+const panelLightGoldAccent = {
+  isDark: false,
+  background: 'rgba(255, 252, 245, 0.85)', // Luxurious warm cream/gold card background from second image
+  border: 'rgba(180, 130, 20, 0.15)', // Light gold border
+  text: '#1A2744', // Slate black corporate text
+  textMuted: '#3D5075', // Muted slate text
+  textDim: '#5D7099', // Dimmed slate text
+  icon: 'rgba(171, 139, 57, 0.10)',
+  iconColor: '#AB8B39',
+  badge: { color: '#AB8B39', border: 'rgba(171, 139, 57, 0.25)', bg: 'rgba(171, 139, 57, 0.06)' },
+  stat: { bg: 'rgba(171, 139, 57, 0.05)', color: '#AB8B39', border: 'rgba(171, 139, 57, 0.25)' }, // Elegant light gold/cream box with subtle gold border
+  btn: { bg: 'rgba(171, 139, 57, 0.05)', color: '#AB8B39', border: 'rgba(171, 139, 57, 0.35)', hoverBg: '#AB8B39', hoverColor: '#FFFFFF' },
+  topBorder: 'rgba(171, 139, 57, 0.6)',
+  hoverBorder: 'rgba(180, 130, 20, 0.35)',
+  hoverShadow: 'rgba(180, 130, 20, 0.08)',
+};
+
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
@@ -137,6 +155,7 @@ const cardVariants: Variants = {
 };
 
 export default function HomeView() {
+  const { theme } = useTheme();
   const { cardColorMode } = useBackgroundSettings();
 
   const handleNavigate = (hash: string) => {
@@ -204,8 +223,8 @@ export default function HomeView() {
               if (cardColorMode === 'trifold') {
                 a = trifoldMap[off.trifoldAccent];
               } else if (isBrochurePanels) {
-                // All panels use the highly premium left-side saturated deep ink-blue background (#061148)
-                a = panelDarkGoldAccent;
+                // brochure-panels mode dynamically responds to light/dark theme:
+                a = theme === 'light' ? panelLightGoldAccent : panelDarkGoldAccent;
               } else {
                 a = goldAccent;
               }
@@ -213,6 +232,11 @@ export default function HomeView() {
               const bgStyle = isBrochurePanels ? a.background : 'var(--solar-card)';
               const borderStyle = isBrochurePanels ? `1px solid ${a.border}` : '1px solid var(--solar-border)';
               const defaultHoverBorder = isBrochurePanels ? a.border : 'var(--solar-border)';
+
+              // Apply the custom mesh grid classes from second image if in light mode brochure-panels
+              const cardClass = `group relative flex flex-col rounded-2xl overflow-hidden cursor-default transition-all duration-300 ${
+                isBrochurePanels && theme === 'light' ? 'solar-panel-card solar-panel-card-gold' : ''
+              }`;
 
               return (
               <motion.div
@@ -222,7 +246,7 @@ export default function HomeView() {
                 whileInView="visible"
                 viewport={{ once: true, margin: '-30px' }}
                 variants={cardVariants}
-                className="group relative flex flex-col rounded-2xl overflow-hidden cursor-default"
+                className={cardClass}
                 style={{
                   background: bgStyle,
                   border: borderStyle,
@@ -237,6 +261,16 @@ export default function HomeView() {
                   (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
                 }}
               >
+                {/* Render corner brackets in light-theme brochure panels mode (exactly like second image) */}
+                {isBrochurePanels && theme === 'light' && (
+                  <>
+                    <span className="solar-panel-card-corner solar-panel-card-corner-tl" />
+                    <span className="solar-panel-card-corner solar-panel-card-corner-tr" />
+                    <span className="solar-panel-card-corner solar-panel-card-corner-bl" />
+                    <span className="solar-panel-card-corner solar-panel-card-corner-br" />
+                  </>
+                )}
+
                 {/* Hover top border accent */}
                 <div
                   className="absolute top-0 left-0 right-0 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -289,7 +323,10 @@ export default function HomeView() {
                       <div
                         key={stat.label}
                         className="rounded-xl p-3"
-                        style={{ background: a.stat.bg }}
+                        style={{ 
+                          background: a.stat.bg,
+                          border: a.stat.border ? `1px solid ${a.stat.border}` : '1px solid transparent'
+                        }}
                       >
                         <p
                           className="text-[10px] uppercase tracking-wider font-semibold mb-0.5"
