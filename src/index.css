@@ -449,6 +449,78 @@ html.white-bg [aria-expanded="true"] span {
   color: var(--solar-gold-dark) !important;
 }
 
+/* ─── Prestige Cobalt & Gold Brochure Theme (Toggled via HUD) ─── */
+html.brand-trifold:not(.light-theme),
+html.brand-trifold .phase-dawn,
+html.brand-trifold .phase-noon,
+html.brand-trifold .phase-dusk,
+html.brand-trifold .phase-night {
+  --solar-bg: #070d1e !important;               /* Deep Midnight Cobalt */
+  --solar-bg-secondary: #0c142c !important;     /* Midnight Blue Tint */
+  --solar-bg-tertiary: #131e3d !important;      /* Slate Cobalt */
+  
+  --solar-card: rgba(12, 20, 44, 0.95) !important;
+  --solar-card-solid: #0c142c !important;
+  --solar-border: rgba(197, 168, 90, 0.12) !important; /* Elegant Gold Border */
+  --solar-border-hover: rgba(197, 168, 90, 0.40) !important;
+  
+  --solar-gold: #c5a85a !important;              /* Premium Satin Gold */
+  --solar-gold-bright: #e0be6c !important;
+  --solar-gold-dark: #a1833c !important;
+  --solar-gold-rgb: 197, 168, 90 !important;
+  
+  --solar-text: #f1f5f9 !important;              /* Ice White */
+  --solar-text-muted: #cbd5e1 !important;        /* Slate Light Grey */
+  --solar-text-dim: #94a3b8 !important;
+  
+  --nav-bg: rgba(7, 12, 30, 0.95) !important;
+  --gradient-hero: linear-gradient(160deg, #070c1e 0%, #0c142c 100%) !important;
+}
+
+html.brand-trifold.light-theme,
+html.brand-trifold.light-theme .phase-dawn,
+html.brand-trifold.light-theme .phase-noon,
+html.brand-trifold.light-theme .phase-dusk,
+html.brand-trifold.light-theme .phase-night {
+  --solar-bg: #ffffff !important;               /* Pure Gallery White */
+  --solar-bg-secondary: #f4f6fa !important;     /* Cool Light Grey */
+  --solar-bg-tertiary: #e9ecf3 !important;
+  
+  --solar-card: rgba(255, 255, 255, 0.95) !important;
+  --solar-card-solid: #ffffff !important;
+  --solar-border: rgba(15, 23, 42, 0.08) !important; /* Cool Slate Border */
+  --solar-border-hover: rgba(197, 168, 90, 0.35) !important;
+  
+  --solar-gold: #ab8b39 !important;              /* Darkened Gold (High Legibility) */
+  --solar-gold-bright: #c5a85a !important;
+  --solar-gold-dark: #816726 !important;
+  --solar-gold-rgb: 171, 139, 57 !important;
+  
+  --solar-text: #0f172a !important;              /* Deep Slate Black */
+  --solar-text-muted: #475569 !important;
+  --solar-text-dim: #64748b !important;
+  
+  --nav-bg: rgba(255, 255, 255, 0.95) !important;
+  --gradient-hero: linear-gradient(160deg, #ffffff 0%, #f4f6fa 100%) !important;
+}
+
+/* Hide background glows in brand-trifold mode just like white-bg mode for maximum crispness */
+html.brand-trifold .pointer-events-none [class*="blur-"],
+html.brand-trifold .pointer-events-none[class*="blur-"] {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+/* Mobile menu pure white background and dark-themed dividers in brand-trifold mode */
+html.brand-trifold.light-theme .nav-mobile-menu {
+  background: #ffffff !important;
+}
+
+html.brand-trifold:not(.light-theme) .nav-mobile-menu {
+  background: linear-gradient(to bottom, #0c142c 0%, #070d1e 100%) !important;
+}
+
+
 .light-theme .solar-panel-card {
   background-color: rgba(255, 252, 245, 0.80);
   border-color: rgba(180, 130, 20, 0.10);

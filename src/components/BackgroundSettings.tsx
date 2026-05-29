@@ -54,13 +54,15 @@ export default function BackgroundSettings() {
     root.classList.add(`font-theme-${fontTheme}`);
   }, [fontTheme]);
 
-  // Inject card color mode — 'card-unified' overrides all accent CSS vars to gold
+  // Inject card color mode — 'card-unified' overrides all accent CSS vars to gold, 'brand-trifold' enforces cobalt/gold
   useEffect(() => {
     const root = document.documentElement;
     if (cardColorMode === 'unified') {
       root.classList.add('card-unified');
+      root.classList.remove('brand-trifold');
     } else {
       root.classList.remove('card-unified');
+      root.classList.add('brand-trifold');
     }
   }, [cardColorMode]);
 
@@ -281,7 +283,7 @@ export default function BackgroundSettings() {
                   <span>Unified Gold</span>
                 </button>
 
-                {/* Trifold option */}
+                {/* Prestige Trifold option */}
                 <button
                   type="button"
                   onClick={() => setCardColorMode('trifold')}
@@ -296,21 +298,21 @@ export default function BackgroundSettings() {
                   }}
                   className={`py-2.5 px-3 rounded-xl border text-[11px] font-bold text-center transition-all duration-200 cursor-pointer flex flex-col items-center gap-1.5 ${
                     cardColorMode === 'trifold'
-                      ? 'bg-sky-500/10 border-sky-400/60 text-sky-400'
+                      ? 'bg-amber-500/10 border-amber-500/80 text-amber-400'
                       : 'bg-solar-card border-solar-border text-gray-400 hover:text-solar-text hover:border-solar-border-hover'
                   }`}
                 >
-                  {/* Mini preview: amber + blue + green */}
+                  {/* Mini preview: cobalt + gold + white */}
                   <div className="flex gap-0.5">
-                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#F59E0B' }} />
-                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#0EA5E9' }} />
-                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#10B981' }} />
+                    <div className="w-3 h-3 rounded-sm border border-white/20" style={{ backgroundColor: '#070d1e' }} />
+                    <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: '#c5a85a' }} />
+                    <div className="w-3 h-3 rounded-sm border border-white/20" style={{ backgroundColor: '#ffffff' }} />
                   </div>
-                  <span>Trifold Colors</span>
+                  <span>Prestige Trifold</span>
                 </button>
               </div>
               <div className="text-[9px] text-gray-500 leading-tight">
-                Compare unified brand gold vs the original amber/blue/green card scheme.
+                Align with the physical trifold brochure theme (Cobalt & Satin Gold) vs unified brand gold.
               </div>
             </div>
 
