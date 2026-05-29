@@ -449,237 +449,253 @@ html.white-bg [aria-expanded="true"] span {
   color: var(--solar-gold-dark) !important;
 }
 
-/* ─── Prestige Cobalt & Gold Brochure Theme (Toggled via HUD) ─── */
+/* ════════════════════════════════════════════════════════════════════
+   PRESTIGE TRIFOLD — Actual Brochure Color Extraction
+   ─────────────────────────────────────────────────────
+   Colors extracted directly from the SolarSmart.Energies trifold:
+   • LEFT PANEL BG:  Vivid Royal Blue  ~#1A3585
+   • RIGHT PANEL BG: Royal Blue → slight purple gradient
+   • CENTER PANEL:   Pure White
+   • GOLD ACCENTS:   Bright Golden Yellow ~#D4A51A (logo, curves, headings)
+   • GOLD BRIGHT:    ~#E8BC2A ("BE THE CHANGE" text)
+   • GOLD DARK:      ~#B8891A (darker gold touches)
+   • TEXT ON BLUE:    Pure White #FFFFFF
+   • TEXT ON WHITE:   Dark Blue-Black #1A2744
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ─── DARK MODE: Royal Blue backgrounds + Bright Gold accents ─── */
 html.brand-trifold:not(.light-theme),
 html.brand-trifold .phase-dawn,
 html.brand-trifold .phase-noon,
 html.brand-trifold .phase-dusk,
 html.brand-trifold .phase-night {
-  --solar-bg: #070d1e !important;               /* Deep Midnight Cobalt */
-  --solar-bg-secondary: #0c142c !important;     /* Midnight Blue Tint */
-  --solar-bg-tertiary: #131e3d !important;      /* Slate Cobalt */
+  --solar-bg: #152D78 !important;               /* Deep Royal Blue (brochure panel bg) */
+  --solar-bg-secondary: #1A3585 !important;     /* Royal Blue (primary brochure blue) */
+  --solar-bg-tertiary: #1F3D94 !important;      /* Lighter Royal Blue */
   
-  --solar-card: rgba(12, 20, 44, 0.95) !important;
-  --solar-card-solid: #0c142c !important;
-  --solar-border: rgba(197, 168, 90, 0.12) !important; /* Elegant Gold Border */
-  --solar-border-hover: rgba(197, 168, 90, 0.40) !important;
+  --solar-card: rgba(21, 45, 120, 0.92) !important;
+  --solar-card-solid: #18327E !important;
+  --solar-border: rgba(212, 165, 26, 0.15) !important;  /* Gold Border */
+  --solar-border-hover: rgba(212, 165, 26, 0.40) !important;
   
-  --solar-gold: #c5a85a !important;              /* Premium Satin Gold */
-  --solar-gold-bright: #e0be6c !important;
-  --solar-gold-dark: #a1833c !important;
-  --solar-gold-rgb: 197, 168, 90 !important;
+  --solar-gold: #D4A51A !important;              /* Brochure Bright Gold */
+  --solar-gold-bright: #E8BC2A !important;       /* "BE THE CHANGE" heading gold */
+  --solar-gold-dark: #B8891A !important;         /* Darker gold for contrast */
+  --solar-gold-rgb: 212, 165, 26 !important;
   
-  --solar-text: #f1f5f9 !important;              /* Ice White */
-  --solar-text-muted: #cbd5e1 !important;        /* Slate Light Grey */
-  --solar-text-dim: #94a3b8 !important;
+  --solar-text: #FFFFFF !important;              /* Pure White (brochure text on blue) */
+  --solar-text-muted: #D0D8E8 !important;       /* Light blue-grey */
+  --solar-text-dim: #9AA8C4 !important;
   
-  --nav-bg: rgba(7, 12, 30, 0.95) !important;
-  --gradient-hero: linear-gradient(160deg, #070c1e 0%, #0c142c 100%) !important;
+  --nav-bg: rgba(21, 45, 120, 0.96) !important;
+  --gradient-hero: linear-gradient(160deg, #132870 0%, #1A3585 50%, #1F3D94 100%) !important;
+  
+  /* Override accent colors to brochure gold */
+  --solar-orange: #D4A51A !important;
+  --solar-cyan: #D4A51A !important;
+  --solar-cyan-bright: #E8BC2A !important;
+  --solar-emerald: #D4A51A !important;
+  --solar-purple: #D4A51A !important;
+  --solar-indigo: #B8891A !important;
+  
+  --solar-orange-rgb: 212, 165, 26 !important;
+  --solar-cyan-rgb: 212, 165, 26 !important;
+  --solar-emerald-rgb: 212, 165, 26 !important;
+  --solar-purple-rgb: 212, 165, 26 !important;
+  --solar-indigo-rgb: 184, 137, 26 !important;
+  
+  --shadow-glow-gold: 0 0 60px rgba(212, 165, 26, 0.20), 0 0 120px rgba(212, 165, 26, 0.08) !important;
+  --shadow-glow-cyan: 0 0 60px rgba(212, 165, 26, 0.15) !important;
+  --shadow-glow-purple: 0 0 60px rgba(212, 165, 26, 0.15), 0 0 120px rgba(184, 137, 26, 0.06) !important;
+  --shadow-card: 0 4px 24px rgba(10, 20, 60, 0.30), 0 1px 4px rgba(0,0,0,0.15) !important;
+  --shadow-card-lg: 0 8px 48px rgba(10, 20, 60, 0.35), 0 2px 8px rgba(212, 165, 26, 0.06) !important;
+  
+  --gradient-gold: linear-gradient(135deg, #D4A51A, #B8891A) !important;
+  --gradient-cyan: linear-gradient(135deg, #D4A51A 0%, #E8BC2A 50%, #B8891A 100%) !important;
 }
 
+/* ─── LIGHT MODE: White backgrounds + Rich Gold accents ─── */
 html.brand-trifold.light-theme,
 html.brand-trifold.light-theme .phase-dawn,
 html.brand-trifold.light-theme .phase-noon,
 html.brand-trifold.light-theme .phase-dusk,
 html.brand-trifold.light-theme .phase-night {
-  --solar-bg: #fefefe !important;               /* Warm Gallery White */
-  --solar-bg-secondary: #f7f6f3 !important;     /* Warm White (matches brochure paper) */
-  --solar-bg-tertiary: #efede8 !important;      /* Warm Grey */
+  --solar-bg: #FFFFFF !important;               /* Pure White (brochure center panel) */
+  --solar-bg-secondary: #F5F6FA !important;     /* Very light blue-grey */
+  --solar-bg-tertiary: #ECEFF5 !important;      /* Light grey */
   
-  --solar-card: rgba(255, 253, 249, 0.95) !important;
-  --solar-card-solid: #fefdfb !important;
-  --solar-border: rgba(15, 23, 42, 0.07) !important; /* Soft Slate Border */
-  --solar-border-hover: rgba(197, 168, 90, 0.35) !important;
+  --solar-card: rgba(255, 255, 255, 0.95) !important;
+  --solar-card-solid: #FFFFFF !important;
+  --solar-border: rgba(26, 53, 133, 0.08) !important;  /* Blue-tinted border */
+  --solar-border-hover: rgba(212, 165, 26, 0.35) !important;
   
-  --solar-gold: #ab8b39 !important;              /* Darkened Gold (High Legibility) */
-  --solar-gold-bright: #c5a85a !important;
-  --solar-gold-dark: #816726 !important;
-  --solar-gold-rgb: 171, 139, 57 !important;
+  --solar-gold: #B8891A !important;              /* Darkened Gold (legible on white) */
+  --solar-gold-bright: #D4A51A !important;
+  --solar-gold-dark: #9A7215 !important;
+  --solar-gold-rgb: 184, 137, 26 !important;
   
-  --solar-text: #0f172a !important;              /* Deep Slate Black */
-  --solar-text-muted: #3d4a5c !important;       /* Slightly warmer muted */
-  --solar-text-dim: #5c6b7f !important;
+  --solar-text: #1A2744 !important;              /* Dark Blue-Black (brochure text on white) */
+  --solar-text-muted: #3D5075 !important;
+  --solar-text-dim: #5D7099 !important;
   
-  --nav-bg: rgba(254, 253, 251, 0.95) !important;
-  --gradient-hero: linear-gradient(160deg, #fefefe 0%, #f7f6f3 100%) !important;
+  --nav-bg: rgba(255, 255, 255, 0.96) !important;
+  --gradient-hero: linear-gradient(160deg, #FFFFFF 0%, #F5F6FA 100%) !important;
+  
+  /* Override accent colors to brochure gold */
+  --solar-orange: #B8891A !important;
+  --solar-cyan: #1A3585 !important;
+  --solar-cyan-bright: #2044A8 !important;
+  --solar-emerald: #B8891A !important;
+  --solar-purple: #1A3585 !important;
+  --solar-indigo: #152D78 !important;
+  
+  --solar-orange-rgb: 184, 137, 26 !important;
+  --solar-cyan-rgb: 26, 53, 133 !important;
+  --solar-emerald-rgb: 184, 137, 26 !important;
+  --solar-purple-rgb: 26, 53, 133 !important;
+  --solar-indigo-rgb: 21, 45, 120 !important;
+  
+  --shadow-glow-gold: 0 0 60px rgba(184, 137, 26, 0.15), 0 0 120px rgba(184, 137, 26, 0.05) !important;
+  --shadow-glow-cyan: 0 0 60px rgba(26, 53, 133, 0.12) !important;
+  --shadow-glow-purple: 0 0 60px rgba(26, 53, 133, 0.12), 0 0 120px rgba(21, 45, 120, 0.04) !important;
+  --shadow-card: 0 4px 24px rgba(26, 53, 133, 0.08), 0 1px 4px rgba(0,0,0,0.04) !important;
+  --shadow-card-lg: 0 8px 48px rgba(26, 53, 133, 0.10), 0 2px 8px rgba(212, 165, 26, 0.04) !important;
+  
+  --gradient-gold: linear-gradient(135deg, #B8891A, #9A7215) !important;
+  --gradient-cyan: linear-gradient(135deg, #B8891A 0%, #1A3585 50%, #152D78 100%) !important;
 }
 
-/* Hide background glows in brand-trifold mode just like white-bg mode for maximum crispness */
+/* ─── Tint background glows to brochure gold instead of killing them ─── */
 html.brand-trifold .pointer-events-none [class*="blur-"],
 html.brand-trifold .pointer-events-none[class*="blur-"] {
-  display: none !important;
-  opacity: 0 !important;
+  opacity: 0.4 !important;
+  filter: hue-rotate(-15deg) saturate(0.6) !important;
 }
 
-/* Mobile menu pure white background and dark-themed dividers in brand-trifold mode */
+/* Mobile menu backgrounds in brand-trifold mode */
 html.brand-trifold.light-theme .nav-mobile-menu {
-  background: #ffffff !important;
+  background: #FFFFFF !important;
 }
 
 html.brand-trifold:not(.light-theme) .nav-mobile-menu {
-  background: linear-gradient(to bottom, #0c142c 0%, #070d1e 100%) !important;
+  background: linear-gradient(to bottom, #1A3585 0%, #152D78 100%) !important;
 }
 
 /* ════════════════════════════════════════════════════════════════════
-   PRESTIGE TRIFOLD — COMPREHENSIVE TAILWIND AMBER → SATIN GOLD REMAP
-   Overrides ALL hardcoded Tailwind amber utilities to match the
-   brochure's satin gold (#c5a85a) instead of neon amber (#f59e0b).
+   TAILWIND AMBER → BROCHURE GOLD REMAP
+   Overrides ALL hardcoded Tailwind amber utilities to the brochure's
+   bright golden yellow (#D4A51A) instead of neon amber (#f59e0b).
    ════════════════════════════════════════════════════════════════════ */
 
 /* ─── Text Color Overrides ─── */
-html.brand-trifold .text-amber-300 { color: #e0be6c !important; }
-html.brand-trifold .text-amber-400 { color: #c5a85a !important; }
-html.brand-trifold .text-amber-500 { color: #ab8b39 !important; }
-html.brand-trifold .text-amber-600 { color: #96792e !important; }
+html.brand-trifold .text-amber-300 { color: #E8BC2A !important; }
+html.brand-trifold .text-amber-400 { color: #D4A51A !important; }
+html.brand-trifold .text-amber-500 { color: #B8891A !important; }
+html.brand-trifold .text-amber-600 { color: #9A7215 !important; }
 
 /* Hover text variants */
-html.brand-trifold .hover\:text-amber-300:hover { color: #e0be6c !important; }
-html.brand-trifold .hover\:text-amber-400:hover { color: #c5a85a !important; }
-html.brand-trifold .group:hover .group-hover\:text-amber-300 { color: #e0be6c !important; }
-html.brand-trifold .group:hover .group-hover\:text-amber-400 { color: #c5a85a !important; }
+html.brand-trifold .hover\:text-amber-300:hover { color: #E8BC2A !important; }
+html.brand-trifold .hover\:text-amber-400:hover { color: #D4A51A !important; }
+html.brand-trifold .group:hover .group-hover\:text-amber-300 { color: #E8BC2A !important; }
+html.brand-trifold .group:hover .group-hover\:text-amber-400 { color: #D4A51A !important; }
 
 /* ─── Solid Background Overrides ─── */
-html.brand-trifold .bg-amber-500 { background-color: #ab8b39 !important; }
-html.brand-trifold .bg-amber-400 { background-color: #c5a85a !important; }
+html.brand-trifold .bg-amber-500 { background-color: #D4A51A !important; }
+html.brand-trifold .bg-amber-400 { background-color: #E8BC2A !important; }
 
 /* ─── Background Tint Overrides (opacity variants) ─── */
 html.brand-trifold .bg-amber-500\/10,
-html.brand-trifold .bg-amber-500\/\[0\.1\] { background-color: rgba(197, 168, 90, 0.10) !important; }
+html.brand-trifold .bg-amber-500\/\[0\.1\] { background-color: rgba(212, 165, 26, 0.10) !important; }
 
 html.brand-trifold .bg-amber-500\/5,
-html.brand-trifold .bg-amber-500\/\[0\.05\] { background-color: rgba(197, 168, 90, 0.05) !important; }
+html.brand-trifold .bg-amber-500\/\[0\.05\] { background-color: rgba(212, 165, 26, 0.05) !important; }
 
-html.brand-trifold .bg-amber-500\/20 { background-color: rgba(197, 168, 90, 0.20) !important; }
+html.brand-trifold .bg-amber-500\/20 { background-color: rgba(212, 165, 26, 0.20) !important; }
 
-html.brand-trifold .bg-amber-500\/\[0\.02\] { background-color: rgba(197, 168, 90, 0.02) !important; }
-html.brand-trifold .bg-amber-500\/\[0\.015\] { background-color: rgba(197, 168, 90, 0.015) !important; }
-html.brand-trifold .bg-amber-500\/\[0\.04\] { background-color: rgba(197, 168, 90, 0.04) !important; }
-html.brand-trifold .bg-amber-500\/\[0\.06\] { background-color: rgba(197, 168, 90, 0.06) !important; }
-html.brand-trifold .bg-amber-500\/\[0\.03\] { background-color: rgba(197, 168, 90, 0.03) !important; }
+html.brand-trifold .bg-amber-500\/\[0\.02\] { background-color: rgba(212, 165, 26, 0.02) !important; }
+html.brand-trifold .bg-amber-500\/\[0\.015\] { background-color: rgba(212, 165, 26, 0.015) !important; }
+html.brand-trifold .bg-amber-500\/\[0\.04\] { background-color: rgba(212, 165, 26, 0.04) !important; }
+html.brand-trifold .bg-amber-500\/\[0\.06\] { background-color: rgba(212, 165, 26, 0.06) !important; }
+html.brand-trifold .bg-amber-500\/\[0\.03\] { background-color: rgba(212, 165, 26, 0.03) !important; }
 
 /* Hover background variants */
-html.brand-trifold .hover\:bg-amber-500:hover { background-color: #ab8b39 !important; }
-html.brand-trifold .hover\:bg-amber-500\/10:hover { background-color: rgba(197, 168, 90, 0.10) !important; }
+html.brand-trifold .hover\:bg-amber-500:hover { background-color: #D4A51A !important; }
+html.brand-trifold .hover\:bg-amber-500\/10:hover { background-color: rgba(212, 165, 26, 0.10) !important; }
 
 /* ─── Border Color Overrides ─── */
-html.brand-trifold .border-amber-500\/30 { border-color: rgba(197, 168, 90, 0.30) !important; }
-html.brand-trifold .border-amber-500\/20 { border-color: rgba(197, 168, 90, 0.20) !important; }
-html.brand-trifold .border-amber-500\/40 { border-color: rgba(197, 168, 90, 0.40) !important; }
-html.brand-trifold .border-amber-500\/10 { border-color: rgba(197, 168, 90, 0.10) !important; }
-html.brand-trifold .border-amber-500\/15 { border-color: rgba(197, 168, 90, 0.15) !important; }
-html.brand-trifold .border-amber-500\/80 { border-color: rgba(197, 168, 90, 0.80) !important; }
-html.brand-trifold .border-amber-400\/30 { border-color: rgba(197, 168, 90, 0.30) !important; }
-html.brand-trifold .border-amber-400\/40 { border-color: rgba(197, 168, 90, 0.40) !important; }
+html.brand-trifold .border-amber-500\/30 { border-color: rgba(212, 165, 26, 0.30) !important; }
+html.brand-trifold .border-amber-500\/20 { border-color: rgba(212, 165, 26, 0.20) !important; }
+html.brand-trifold .border-amber-500\/40 { border-color: rgba(212, 165, 26, 0.40) !important; }
+html.brand-trifold .border-amber-500\/10 { border-color: rgba(212, 165, 26, 0.10) !important; }
+html.brand-trifold .border-amber-500\/15 { border-color: rgba(212, 165, 26, 0.15) !important; }
+html.brand-trifold .border-amber-500\/80 { border-color: rgba(212, 165, 26, 0.80) !important; }
+html.brand-trifold .border-amber-400\/30 { border-color: rgba(212, 165, 26, 0.30) !important; }
+html.brand-trifold .border-amber-400\/40 { border-color: rgba(212, 165, 26, 0.40) !important; }
 
 /* Hover border variants */
-html.brand-trifold .hover\:border-amber-400:hover { border-color: #c5a85a !important; }
-html.brand-trifold .hover\:border-amber-500\/20:hover { border-color: rgba(197, 168, 90, 0.20) !important; }
-html.brand-trifold .hover\:border-amber-500\/30:hover { border-color: rgba(197, 168, 90, 0.30) !important; }
-html.brand-trifold .hover\:border-amber-500\/40:hover { border-color: rgba(197, 168, 90, 0.40) !important; }
-html.brand-trifold .hover\:border-amber-400\/40:hover { border-color: rgba(197, 168, 90, 0.40) !important; }
-html.brand-trifold .group:hover .group-hover\:border-amber-400\/40 { border-color: rgba(197, 168, 90, 0.40) !important; }
-html.brand-trifold .group:hover .group-hover\:border-amber-500\/20 { border-color: rgba(197, 168, 90, 0.20) !important; }
+html.brand-trifold .hover\:border-amber-400:hover { border-color: #D4A51A !important; }
+html.brand-trifold .hover\:border-amber-500\/20:hover { border-color: rgba(212, 165, 26, 0.20) !important; }
+html.brand-trifold .hover\:border-amber-500\/30:hover { border-color: rgba(212, 165, 26, 0.30) !important; }
+html.brand-trifold .hover\:border-amber-500\/40:hover { border-color: rgba(212, 165, 26, 0.40) !important; }
+html.brand-trifold .hover\:border-amber-400\/40:hover { border-color: rgba(212, 165, 26, 0.40) !important; }
+html.brand-trifold .group:hover .group-hover\:border-amber-400\/40 { border-color: rgba(212, 165, 26, 0.40) !important; }
+html.brand-trifold .group:hover .group-hover\:border-amber-500\/20 { border-color: rgba(212, 165, 26, 0.20) !important; }
 
 /* Focus border and ring */
-html.brand-trifold .focus\:border-amber-500\/50:focus { border-color: rgba(197, 168, 90, 0.50) !important; }
-html.brand-trifold .focus\:ring-amber-500\/20:focus { --tw-ring-color: rgba(197, 168, 90, 0.20) !important; }
+html.brand-trifold .focus\:border-amber-500\/50:focus { border-color: rgba(212, 165, 26, 0.50) !important; }
+html.brand-trifold .focus\:ring-amber-500\/20:focus { --tw-ring-color: rgba(212, 165, 26, 0.20) !important; }
 
 /* ─── Gradient Stop Overrides ─── */
-html.brand-trifold .from-amber-500 { --tw-gradient-from: #ab8b39 !important; }
-html.brand-trifold .from-amber-400 { --tw-gradient-from: #c5a85a !important; }
-html.brand-trifold .from-amber-500\/20 { --tw-gradient-from: rgba(171, 139, 57, 0.20) !important; }
-html.brand-trifold .from-amber-500\/\[0\.03\] { --tw-gradient-from: rgba(171, 139, 57, 0.03) !important; }
-html.brand-trifold .from-amber-400\/60 { --tw-gradient-from: rgba(197, 168, 90, 0.60) !important; }
+html.brand-trifold .from-amber-500 { --tw-gradient-from: #D4A51A !important; }
+html.brand-trifold .from-amber-400 { --tw-gradient-from: #E8BC2A !important; }
+html.brand-trifold .from-amber-500\/20 { --tw-gradient-from: rgba(212, 165, 26, 0.20) !important; }
+html.brand-trifold .from-amber-500\/\[0\.03\] { --tw-gradient-from: rgba(212, 165, 26, 0.03) !important; }
+html.brand-trifold .from-amber-400\/60 { --tw-gradient-from: rgba(232, 188, 42, 0.60) !important; }
 
-html.brand-trifold .via-amber-500\/20 { --tw-gradient-via: rgba(171, 139, 57, 0.20) !important; }
-html.brand-trifold .via-amber-500\/30 { --tw-gradient-via: rgba(171, 139, 57, 0.30) !important; }
-html.brand-trifold .via-amber-400 { --tw-gradient-via: #c5a85a !important; }
+html.brand-trifold .via-amber-500\/20 { --tw-gradient-via: rgba(212, 165, 26, 0.20) !important; }
+html.brand-trifold .via-amber-500\/30 { --tw-gradient-via: rgba(212, 165, 26, 0.30) !important; }
+html.brand-trifold .via-amber-400 { --tw-gradient-via: #E8BC2A !important; }
 
-html.brand-trifold .to-amber-600 { --tw-gradient-to: #96792e !important; }
-html.brand-trifold .to-amber-500\/20 { --tw-gradient-to: rgba(171, 139, 57, 0.20) !important; }
-html.brand-trifold .to-amber-600\/10 { --tw-gradient-to: rgba(150, 121, 46, 0.10) !important; }
+html.brand-trifold .to-amber-600 { --tw-gradient-to: #9A7215 !important; }
+html.brand-trifold .to-amber-500\/20 { --tw-gradient-to: rgba(212, 165, 26, 0.20) !important; }
+html.brand-trifold .to-amber-600\/10 { --tw-gradient-to: rgba(154, 114, 21, 0.10) !important; }
 
 /* ─── Shadow Overrides ─── */
-html.brand-trifold .shadow-amber-500\/5 { --tw-shadow-color: rgba(197, 168, 90, 0.05) !important; }
-html.brand-trifold .shadow-amber-500\/20 { --tw-shadow-color: rgba(197, 168, 90, 0.20) !important; }
+html.brand-trifold .shadow-amber-500\/5 { --tw-shadow-color: rgba(212, 165, 26, 0.05) !important; }
+html.brand-trifold .shadow-amber-500\/20 { --tw-shadow-color: rgba(212, 165, 26, 0.20) !important; }
 
 /* ─── Ring / Outline Overrides ─── */
-html.brand-trifold .ring-amber-500\/20 { --tw-ring-color: rgba(197, 168, 90, 0.20) !important; }
+html.brand-trifold .ring-amber-500\/20 { --tw-ring-color: rgba(212, 165, 26, 0.20) !important; }
 
 /* ─── Accent Color Override ─── */
-html.brand-trifold .accent-amber-500 { accent-color: #ab8b39 !important; }
+html.brand-trifold .accent-amber-500 { accent-color: #D4A51A !important; }
 
-/* ─── Group Hover Scale/Shadow in gold tint ─── */
+/* ─── Group Hover effects ─── */
 html.brand-trifold .group:hover .group-hover\:shadow-\[0_0_20px_rgba\(245\,158\,11\,0\.15\)\] {
-  box-shadow: 0 0 20px rgba(197, 168, 90, 0.12) !important;
+  box-shadow: 0 0 20px rgba(212, 165, 26, 0.15) !important;
 }
-html.brand-trifold .group:hover .group-hover\:text-amber-300 { color: #e0be6c !important; }
-html.brand-trifold .group:hover .group-hover\:scale-110 { transform: scale(1.08) !important; }
+html.brand-trifold .group:hover .group-hover\:text-amber-300 { color: #E8BC2A !important; }
 
 /* ─── Stroke Overrides ─── */
-html.brand-trifold .group:hover .group-hover\:stroke-amber-500\/30 { stroke: rgba(197, 168, 90, 0.30) !important; }
+html.brand-trifold .group:hover .group-hover\:stroke-amber-500\/30 { stroke: rgba(212, 165, 26, 0.30) !important; }
 
-/* ════════════════════════════════════════════════════════════════════
-   FIX 2: COMPLETE GLOW BLOB SUPPRESSION — Clean editorial layout
-   Kills ALL decorative ambient effects to match the brochure's
-   crisp, flat, sharp-edged design language.
-   ════════════════════════════════════════════════════════════════════ */
+/* ─── Sky/Cyan text → Brochure Gold (brochure has no cyan accents) ─── */
+html.brand-trifold .text-sky-400 { color: #D4A51A !important; }
+html.brand-trifold .text-sky-300 { color: #E8BC2A !important; }
 
-/* Catch inline radial-gradient blobs applied via JSX style={{}} */
-html.brand-trifold .pointer-events-none[style*="radial-gradient"] {
-  display: none !important;
-  opacity: 0 !important;
-}
-
-/* Catch subtle ambient tint divs that bypass blur- class filter */
-html.brand-trifold .pointer-events-none .bg-amber-500\/\[0\.02\],
-html.brand-trifold .pointer-events-none .bg-amber-500\/\[0\.015\],
-html.brand-trifold .pointer-events-none .bg-sky-500\/\[0\.02\],
-html.brand-trifold .pointer-events-none .bg-sky-500\/\[0\.015\],
-html.brand-trifold .pointer-events-none .bg-emerald-500\/\[0\.02\],
-html.brand-trifold .pointer-events-none .bg-emerald-500\/\[0\.015\] {
-  display: none !important;
-  opacity: 0 !important;
-}
-
-/* ════════════════════════════════════════════════════════════════════
-   FIX 3: FOOTER TOP BORDER — Pure gold gradient (remove sky blue)
-   The brochure only uses gold divider lines, never blue+gold mix.
-   ════════════════════════════════════════════════════════════════════ */
-
+/* ─── Footer top border: pure brochure gold gradient ─── */
 html.brand-trifold footer > .h-px {
-  background: linear-gradient(90deg, transparent, rgba(197, 168, 90, 0.20) 25%, rgba(197, 168, 90, 0.45) 50%, rgba(197, 168, 90, 0.20) 75%, transparent) !important;
+  background: linear-gradient(90deg, transparent, rgba(212, 165, 26, 0.20) 25%, rgba(212, 165, 26, 0.50) 50%, rgba(212, 165, 26, 0.20) 75%, transparent) !important;
 }
 
-/* Footer bottom bar background — slightly tinted */
 html.brand-trifold footer .border-t {
-  border-color: rgba(197, 168, 90, 0.08) !important;
+  border-color: rgba(212, 165, 26, 0.10) !important;
 }
 
-/* ════════════════════════════════════════════════════════════════════
-   FIX 5: HERO ECLIPSE AURA SUPPRESSION — Clean editorial hero
-   The brochure cover has clean text on navy, no blurry atmosphere.
-   ════════════════════════════════════════════════════════════════════ */
-
-/* Suppress the massive circular aura overlays in trifold mode */
-html.brand-trifold #home .pointer-events-none [class*="blur-"],
-html.brand-trifold #home .pointer-events-none[class*="blur-"] {
-  opacity: 0.15 !important;
-}
-
-/* Tone down the Solar Eclipse glow ring */
+/* ─── Hero eclipse aura: tint to brochure gold, keep warmth ─── */
 html.brand-trifold .animate-glow-pulse {
-  opacity: 0.12 !important;
+  filter: hue-rotate(-10deg) saturate(0.8) !important;
 }
-
-/* Make hero atmospheric blobs very subtle instead of prominent */
-html.brand-trifold #home .rounded-full[class*="blur-"] {
-  opacity: 0.08 !important;
-}
-
-/* ─── sky-400 text in trifold should also use satin gold ─── */
-html.brand-trifold .text-sky-400 { color: #c5a85a !important; }
-html.brand-trifold .text-sky-300 { color: #e0be6c !important; }
 
 
 .light-theme .solar-panel-card {
