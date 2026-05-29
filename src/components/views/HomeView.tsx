@@ -105,7 +105,7 @@ const goldAccent = {
   hoverShadow: 'rgba(245,158,11,0.06)',
 };
 
-// Brochure panels: Panel A is deep saturated cobalt, Panel B is soft warm off-white
+// Brochure panels: Panel A is deep saturated cobalt, Panel B is deep premium bronze-charcoal (bespoke out-of-website luxury tone)
 const panelDarkGoldAccent = {
   isDark: true,
   background: '#061148',
@@ -123,21 +123,21 @@ const panelDarkGoldAccent = {
   hoverShadow: 'rgba(212, 165, 26, 0.15)',
 };
 
-const panelLightGoldAccent = {
-  isDark: false,
-  background: '#F7F6F3',
-  border: 'rgba(15, 23, 42, 0.08)',
-  text: '#0F172A',
-  textMuted: '#475569',
-  textDim: '#64748B',
-  icon: 'rgba(171, 139, 57, 0.12)',
-  iconColor: '#AB8B39',
-  badge: { color: '#AB8B39', border: 'rgba(171, 139, 57, 0.3)', bg: 'rgba(171, 139, 57, 0.08)' },
-  stat: { bg: 'rgba(171, 139, 57, 0.06)', color: '#AB8B39' },
-  btn: { bg: 'rgba(171, 139, 57, 0.05)', color: '#AB8B39', border: 'rgba(171, 139, 57, 0.35)', hoverBg: '#AB8B39', hoverColor: '#FFFFFF' },
-  topBorder: 'rgba(171, 139, 57, 0.7)',
-  hoverBorder: 'rgba(171, 139, 57, 0.45)',
-  hoverShadow: 'rgba(171, 139, 57, 0.12)',
+const panelBronzeGoldAccent = {
+  isDark: true,
+  background: '#0A1C66', // Deep secondary saturated ink-blue (perfectly matches website design system)
+  border: 'rgba(212, 165, 26, 0.20)',
+  text: '#FFFFFF', // Clean white
+  textMuted: '#CBD5E1', // Muted slate text
+  textDim: '#94A3B8', // Dimmed slate text
+  icon: 'rgba(212, 165, 26, 0.12)',
+  iconColor: '#D4A51A',
+  badge: { color: '#D4A51A', border: 'rgba(212, 165, 26, 0.3)', bg: 'rgba(212, 165, 26, 0.08)' },
+  stat: { bg: 'rgba(212, 165, 26, 0.06)', color: '#D4A51A' },
+  btn: { bg: 'rgba(212, 165, 26, 0.05)', color: '#D4A51A', border: 'rgba(212, 165, 26, 0.35)', hoverBg: '#D4A51A', hoverColor: '#0A1C66' },
+  topBorder: 'rgba(212, 165, 26, 0.7)',
+  hoverBorder: 'rgba(212, 165, 26, 0.45)',
+  hoverShadow: 'rgba(212, 165, 26, 0.15)',
 };
 
 const cardVariants: Variants = {
@@ -221,8 +221,8 @@ export default function HomeView() {
               if (cardColorMode === 'trifold') {
                 a = trifoldMap[off.trifoldAccent];
               } else if (isBrochurePanels) {
-                // Alternate panels: index 0 and 2 are dark/blue, 1 and 3 are light/white
-                a = i % 2 === 0 ? panelDarkGoldAccent : panelLightGoldAccent;
+                // Alternate panels: index 0 and 2 are dark/blue, 1 and 3 are dark bronze-charcoal
+                a = i % 2 === 0 ? panelDarkGoldAccent : panelBronzeGoldAccent;
               } else {
                 a = goldAccent;
               }
