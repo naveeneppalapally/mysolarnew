@@ -27,10 +27,10 @@ function MarqueeRow({
       <div className={`flex shrink-0 ${animationClass}`}>
         {items.map((item, i) => (
           <div key={i} className="flex items-center shrink-0">
-            <span className="text-sm font-medium uppercase tracking-[0.25em] text-amber-200/70 whitespace-nowrap px-2 sm:px-4 font-body">
+            <span className="marquee-text text-sm font-medium uppercase tracking-[0.25em] text-amber-200/70 whitespace-nowrap px-2 sm:px-4 font-body">
               {item}
             </span>
-            <span className="text-amber-400/50 text-xs mx-1 sm:mx-3 drop-shadow-[0_0_6px_rgba(245,158,11,0.6)]">
+            <span className="marquee-bullet text-amber-400/50 text-xs mx-1 sm:mx-3 drop-shadow-[0_0_6px_rgba(245,158,11,0.6)]">
               ◆
             </span>
           </div>
@@ -50,7 +50,7 @@ export default function Marquee() {
       className="relative w-full overflow-hidden py-5 sm:py-6"
       style={{
         background:
-          'linear-gradient(180deg, rgba(245,158,11,0.03) 0%, rgba(15,18,28,1) 15%, rgba(15,18,28,1) 85%, rgba(245,158,11,0.03) 100%)',
+          'linear-gradient(180deg, rgba(245,158,11,0.03) 0%, var(--solar-bg) 15%, var(--solar-bg) 85%, rgba(245,158,11,0.03) 100%)',
       }}
     >
       {/* Top border line with gold gradient */}

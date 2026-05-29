@@ -363,25 +363,29 @@ html.style-none.light-theme {
 }
 
 /* ─── White Background Override ─── */
-/* Placed AFTER all style-* blocks so cascade order makes it win without !important */
+/* Placed AFTER all style-* blocks so cascade order makes it win without !important, but we use !important to guarantee overriding phase/themed overrides */
 html.white-bg,
 html.white-bg[class*="style-"],
-html.white-bg.light-theme {
-  --solar-bg: #ffffff;
-  --solar-bg-secondary: #f8f8f8;
-  --solar-bg-tertiary: #f0f0f0;
-  --solar-card: rgba(255, 255, 255, 0.95);
-  --solar-card-solid: #ffffff;
-  --solar-border: rgba(0, 0, 0, 0.08);
-  --solar-border-hover: rgba(245, 158, 11, 0.40);
-  --solar-text: #111111;
-  --solar-text-muted: #444444;
-  --solar-text-dim: #777777;
-  --nav-bg: rgba(255, 255, 255, 0.95);
-  --nav-border: rgba(0, 0, 0, 0.07);
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
-  --shadow-card-lg: 0 8px 48px rgba(0, 0, 0, 0.10);
-  --gradient-hero: linear-gradient(160deg, #ffffff 0%, #ffffff 100%);
+html.white-bg.light-theme,
+html.white-bg .phase-dawn,
+html.white-bg .phase-noon,
+html.white-bg .phase-dusk,
+html.white-bg .phase-night {
+  --solar-bg: #ffffff !important;
+  --solar-bg-secondary: #f8f8f8 !important;
+  --solar-bg-tertiary: #f0f0f0 !important;
+  --solar-card: rgba(255, 255, 255, 0.95) !important;
+  --solar-card-solid: #ffffff !important;
+  --solar-border: rgba(0, 0, 0, 0.08) !important;
+  --solar-border-hover: rgba(245, 158, 11, 0.40) !important;
+  --solar-text: #111111 !important;
+  --solar-text-muted: #444444 !important;
+  --solar-text-dim: #777777 !important;
+  --nav-bg: rgba(255, 255, 255, 0.95) !important;
+  --nav-border: rgba(0, 0, 0, 0.07) !important;
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08) !important;
+  --shadow-card-lg: 0 8px 48px rgba(0, 0, 0, 0.10) !important;
+  --gradient-hero: linear-gradient(160deg, #ffffff 0%, #ffffff 100%) !important;
 }
 
 html.white-bg body {
@@ -395,6 +399,49 @@ html.white-bg .section-alt {
 
 html.white-bg .noise-overlay::before {
   display: none !important;
+}
+
+/* Hide all decorative background blur blobs, glows, and ambient radial gradients in white background mode to prevent any color leakages */
+html.white-bg [class*="blur-"],
+html.white-bg [class*="bg-amber-500/"],
+html.white-bg [class*="bg-sky-500/"],
+html.white-bg [class*="bg-emerald-500/"],
+html.white-bg [class*="bg-cyan-500/"] {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+html.white-bg .pointer-events-none[style*="radial-gradient"] {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+/* ─── Premium Light Theme & White Mode Contrast Overrides ─── */
+.light-theme .marquee-text,
+html.white-bg .marquee-text {
+  color: #b45309 !important; /* Rich amber-700 for high visibility */
+}
+
+.light-theme .marquee-bullet,
+html.white-bg .marquee-bullet {
+  color: #f59e0b !important; /* Beautiful gold amber-500 */
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.45)) !important;
+}
+
+/* Mobile menu pure white background and dark-themed dividers in white mode */
+html.white-bg .nav-mobile-menu {
+  background: #ffffff !important;
+}
+
+.light-theme .nav-mobile-menu .bg-gradient-to-r.via-white\/\[0\.08\],
+html.white-bg .nav-mobile-menu .bg-gradient-to-r.via-white\/\[0\.08\] {
+  background-image: linear-gradient(to right, transparent, var(--solar-border), transparent) !important;
+}
+
+/* Ensure opened accordion items have rich gold/bronze contrast in light/white modes */
+.light-theme [aria-expanded="true"] span,
+html.white-bg [aria-expanded="true"] span {
+  color: var(--solar-gold-dark) !important;
 }
 
 .light-theme .solar-panel-card {
