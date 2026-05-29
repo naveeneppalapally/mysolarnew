@@ -482,13 +482,13 @@ html.brand-trifold.light-theme .phase-dawn,
 html.brand-trifold.light-theme .phase-noon,
 html.brand-trifold.light-theme .phase-dusk,
 html.brand-trifold.light-theme .phase-night {
-  --solar-bg: #ffffff !important;               /* Pure Gallery White */
-  --solar-bg-secondary: #f4f6fa !important;     /* Cool Light Grey */
-  --solar-bg-tertiary: #e9ecf3 !important;
+  --solar-bg: #fefefe !important;               /* Warm Gallery White */
+  --solar-bg-secondary: #f7f6f3 !important;     /* Warm White (matches brochure paper) */
+  --solar-bg-tertiary: #efede8 !important;      /* Warm Grey */
   
-  --solar-card: rgba(255, 255, 255, 0.95) !important;
-  --solar-card-solid: #ffffff !important;
-  --solar-border: rgba(15, 23, 42, 0.08) !important; /* Cool Slate Border */
+  --solar-card: rgba(255, 253, 249, 0.95) !important;
+  --solar-card-solid: #fefdfb !important;
+  --solar-border: rgba(15, 23, 42, 0.07) !important; /* Soft Slate Border */
   --solar-border-hover: rgba(197, 168, 90, 0.35) !important;
   
   --solar-gold: #ab8b39 !important;              /* Darkened Gold (High Legibility) */
@@ -497,11 +497,11 @@ html.brand-trifold.light-theme .phase-night {
   --solar-gold-rgb: 171, 139, 57 !important;
   
   --solar-text: #0f172a !important;              /* Deep Slate Black */
-  --solar-text-muted: #475569 !important;
-  --solar-text-dim: #64748b !important;
+  --solar-text-muted: #3d4a5c !important;       /* Slightly warmer muted */
+  --solar-text-dim: #5c6b7f !important;
   
-  --nav-bg: rgba(255, 255, 255, 0.95) !important;
-  --gradient-hero: linear-gradient(160deg, #ffffff 0%, #f4f6fa 100%) !important;
+  --nav-bg: rgba(254, 253, 251, 0.95) !important;
+  --gradient-hero: linear-gradient(160deg, #fefefe 0%, #f7f6f3 100%) !important;
 }
 
 /* Hide background glows in brand-trifold mode just like white-bg mode for maximum crispness */
@@ -519,6 +519,167 @@ html.brand-trifold.light-theme .nav-mobile-menu {
 html.brand-trifold:not(.light-theme) .nav-mobile-menu {
   background: linear-gradient(to bottom, #0c142c 0%, #070d1e 100%) !important;
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   PRESTIGE TRIFOLD — COMPREHENSIVE TAILWIND AMBER → SATIN GOLD REMAP
+   Overrides ALL hardcoded Tailwind amber utilities to match the
+   brochure's satin gold (#c5a85a) instead of neon amber (#f59e0b).
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ─── Text Color Overrides ─── */
+html.brand-trifold .text-amber-300 { color: #e0be6c !important; }
+html.brand-trifold .text-amber-400 { color: #c5a85a !important; }
+html.brand-trifold .text-amber-500 { color: #ab8b39 !important; }
+html.brand-trifold .text-amber-600 { color: #96792e !important; }
+
+/* Hover text variants */
+html.brand-trifold .hover\:text-amber-300:hover { color: #e0be6c !important; }
+html.brand-trifold .hover\:text-amber-400:hover { color: #c5a85a !important; }
+html.brand-trifold .group:hover .group-hover\:text-amber-300 { color: #e0be6c !important; }
+html.brand-trifold .group:hover .group-hover\:text-amber-400 { color: #c5a85a !important; }
+
+/* ─── Solid Background Overrides ─── */
+html.brand-trifold .bg-amber-500 { background-color: #ab8b39 !important; }
+html.brand-trifold .bg-amber-400 { background-color: #c5a85a !important; }
+
+/* ─── Background Tint Overrides (opacity variants) ─── */
+html.brand-trifold .bg-amber-500\/10,
+html.brand-trifold .bg-amber-500\/\[0\.1\] { background-color: rgba(197, 168, 90, 0.10) !important; }
+
+html.brand-trifold .bg-amber-500\/5,
+html.brand-trifold .bg-amber-500\/\[0\.05\] { background-color: rgba(197, 168, 90, 0.05) !important; }
+
+html.brand-trifold .bg-amber-500\/20 { background-color: rgba(197, 168, 90, 0.20) !important; }
+
+html.brand-trifold .bg-amber-500\/\[0\.02\] { background-color: rgba(197, 168, 90, 0.02) !important; }
+html.brand-trifold .bg-amber-500\/\[0\.015\] { background-color: rgba(197, 168, 90, 0.015) !important; }
+html.brand-trifold .bg-amber-500\/\[0\.04\] { background-color: rgba(197, 168, 90, 0.04) !important; }
+html.brand-trifold .bg-amber-500\/\[0\.06\] { background-color: rgba(197, 168, 90, 0.06) !important; }
+html.brand-trifold .bg-amber-500\/\[0\.03\] { background-color: rgba(197, 168, 90, 0.03) !important; }
+
+/* Hover background variants */
+html.brand-trifold .hover\:bg-amber-500:hover { background-color: #ab8b39 !important; }
+html.brand-trifold .hover\:bg-amber-500\/10:hover { background-color: rgba(197, 168, 90, 0.10) !important; }
+
+/* ─── Border Color Overrides ─── */
+html.brand-trifold .border-amber-500\/30 { border-color: rgba(197, 168, 90, 0.30) !important; }
+html.brand-trifold .border-amber-500\/20 { border-color: rgba(197, 168, 90, 0.20) !important; }
+html.brand-trifold .border-amber-500\/40 { border-color: rgba(197, 168, 90, 0.40) !important; }
+html.brand-trifold .border-amber-500\/10 { border-color: rgba(197, 168, 90, 0.10) !important; }
+html.brand-trifold .border-amber-500\/15 { border-color: rgba(197, 168, 90, 0.15) !important; }
+html.brand-trifold .border-amber-500\/80 { border-color: rgba(197, 168, 90, 0.80) !important; }
+html.brand-trifold .border-amber-400\/30 { border-color: rgba(197, 168, 90, 0.30) !important; }
+html.brand-trifold .border-amber-400\/40 { border-color: rgba(197, 168, 90, 0.40) !important; }
+
+/* Hover border variants */
+html.brand-trifold .hover\:border-amber-400:hover { border-color: #c5a85a !important; }
+html.brand-trifold .hover\:border-amber-500\/20:hover { border-color: rgba(197, 168, 90, 0.20) !important; }
+html.brand-trifold .hover\:border-amber-500\/30:hover { border-color: rgba(197, 168, 90, 0.30) !important; }
+html.brand-trifold .hover\:border-amber-500\/40:hover { border-color: rgba(197, 168, 90, 0.40) !important; }
+html.brand-trifold .hover\:border-amber-400\/40:hover { border-color: rgba(197, 168, 90, 0.40) !important; }
+html.brand-trifold .group:hover .group-hover\:border-amber-400\/40 { border-color: rgba(197, 168, 90, 0.40) !important; }
+html.brand-trifold .group:hover .group-hover\:border-amber-500\/20 { border-color: rgba(197, 168, 90, 0.20) !important; }
+
+/* Focus border and ring */
+html.brand-trifold .focus\:border-amber-500\/50:focus { border-color: rgba(197, 168, 90, 0.50) !important; }
+html.brand-trifold .focus\:ring-amber-500\/20:focus { --tw-ring-color: rgba(197, 168, 90, 0.20) !important; }
+
+/* ─── Gradient Stop Overrides ─── */
+html.brand-trifold .from-amber-500 { --tw-gradient-from: #ab8b39 !important; }
+html.brand-trifold .from-amber-400 { --tw-gradient-from: #c5a85a !important; }
+html.brand-trifold .from-amber-500\/20 { --tw-gradient-from: rgba(171, 139, 57, 0.20) !important; }
+html.brand-trifold .from-amber-500\/\[0\.03\] { --tw-gradient-from: rgba(171, 139, 57, 0.03) !important; }
+html.brand-trifold .from-amber-400\/60 { --tw-gradient-from: rgba(197, 168, 90, 0.60) !important; }
+
+html.brand-trifold .via-amber-500\/20 { --tw-gradient-via: rgba(171, 139, 57, 0.20) !important; }
+html.brand-trifold .via-amber-500\/30 { --tw-gradient-via: rgba(171, 139, 57, 0.30) !important; }
+html.brand-trifold .via-amber-400 { --tw-gradient-via: #c5a85a !important; }
+
+html.brand-trifold .to-amber-600 { --tw-gradient-to: #96792e !important; }
+html.brand-trifold .to-amber-500\/20 { --tw-gradient-to: rgba(171, 139, 57, 0.20) !important; }
+html.brand-trifold .to-amber-600\/10 { --tw-gradient-to: rgba(150, 121, 46, 0.10) !important; }
+
+/* ─── Shadow Overrides ─── */
+html.brand-trifold .shadow-amber-500\/5 { --tw-shadow-color: rgba(197, 168, 90, 0.05) !important; }
+html.brand-trifold .shadow-amber-500\/20 { --tw-shadow-color: rgba(197, 168, 90, 0.20) !important; }
+
+/* ─── Ring / Outline Overrides ─── */
+html.brand-trifold .ring-amber-500\/20 { --tw-ring-color: rgba(197, 168, 90, 0.20) !important; }
+
+/* ─── Accent Color Override ─── */
+html.brand-trifold .accent-amber-500 { accent-color: #ab8b39 !important; }
+
+/* ─── Group Hover Scale/Shadow in gold tint ─── */
+html.brand-trifold .group:hover .group-hover\:shadow-\[0_0_20px_rgba\(245\,158\,11\,0\.15\)\] {
+  box-shadow: 0 0 20px rgba(197, 168, 90, 0.12) !important;
+}
+html.brand-trifold .group:hover .group-hover\:text-amber-300 { color: #e0be6c !important; }
+html.brand-trifold .group:hover .group-hover\:scale-110 { transform: scale(1.08) !important; }
+
+/* ─── Stroke Overrides ─── */
+html.brand-trifold .group:hover .group-hover\:stroke-amber-500\/30 { stroke: rgba(197, 168, 90, 0.30) !important; }
+
+/* ════════════════════════════════════════════════════════════════════
+   FIX 2: COMPLETE GLOW BLOB SUPPRESSION — Clean editorial layout
+   Kills ALL decorative ambient effects to match the brochure's
+   crisp, flat, sharp-edged design language.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Catch inline radial-gradient blobs applied via JSX style={{}} */
+html.brand-trifold .pointer-events-none[style*="radial-gradient"] {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+/* Catch subtle ambient tint divs that bypass blur- class filter */
+html.brand-trifold .pointer-events-none .bg-amber-500\/\[0\.02\],
+html.brand-trifold .pointer-events-none .bg-amber-500\/\[0\.015\],
+html.brand-trifold .pointer-events-none .bg-sky-500\/\[0\.02\],
+html.brand-trifold .pointer-events-none .bg-sky-500\/\[0\.015\],
+html.brand-trifold .pointer-events-none .bg-emerald-500\/\[0\.02\],
+html.brand-trifold .pointer-events-none .bg-emerald-500\/\[0\.015\] {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   FIX 3: FOOTER TOP BORDER — Pure gold gradient (remove sky blue)
+   The brochure only uses gold divider lines, never blue+gold mix.
+   ════════════════════════════════════════════════════════════════════ */
+
+html.brand-trifold footer > .h-px {
+  background: linear-gradient(90deg, transparent, rgba(197, 168, 90, 0.20) 25%, rgba(197, 168, 90, 0.45) 50%, rgba(197, 168, 90, 0.20) 75%, transparent) !important;
+}
+
+/* Footer bottom bar background — slightly tinted */
+html.brand-trifold footer .border-t {
+  border-color: rgba(197, 168, 90, 0.08) !important;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   FIX 5: HERO ECLIPSE AURA SUPPRESSION — Clean editorial hero
+   The brochure cover has clean text on navy, no blurry atmosphere.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Suppress the massive circular aura overlays in trifold mode */
+html.brand-trifold #home .pointer-events-none [class*="blur-"],
+html.brand-trifold #home .pointer-events-none[class*="blur-"] {
+  opacity: 0.15 !important;
+}
+
+/* Tone down the Solar Eclipse glow ring */
+html.brand-trifold .animate-glow-pulse {
+  opacity: 0.12 !important;
+}
+
+/* Make hero atmospheric blobs very subtle instead of prominent */
+html.brand-trifold #home .rounded-full[class*="blur-"] {
+  opacity: 0.08 !important;
+}
+
+/* ─── sky-400 text in trifold should also use satin gold ─── */
+html.brand-trifold .text-sky-400 { color: #c5a85a !important; }
+html.brand-trifold .text-sky-300 { color: #e0be6c !important; }
 
 
 .light-theme .solar-panel-card {
